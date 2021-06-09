@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ResponseData;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Http\Resources\Auth\ProfileResource;
 use App\Models\User;
 
@@ -17,12 +17,10 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      */
-    public function register(RegisterRequest $request)
+    public function register(RegisterUserRequest $request)
     {
-        $data = $request->validated();
-        $data['password'] = bcrypt($request->password);
+        $user = User::query()->create($request->validated());
 
-        $user = User::create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
         $token = auth()->login($user);

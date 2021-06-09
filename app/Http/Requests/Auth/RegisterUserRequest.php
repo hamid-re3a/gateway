@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Ticket;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminReplyTicketRequest extends FormRequest
+class RegisterUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,10 @@ class AdminReplyTicketRequest extends FormRequest
     public function rules()
     {
         return [
-            'ticket_id' => 'required|exists:tickets,id',
-            'comment' => 'required|string'
+            'first_name' => ['required', 'string', 'min:4', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
+            'last_name' => ['required', 'string', 'min:4', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ];
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Ticket;
+namespace App\Http\Requests\KYC;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
 
-class StoreTicketRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,8 @@ class StoreTicketRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'document_type' => 'required|in:'.implode(',',DOCUMENT_TYPES),
+            'file'=> 'required|file'
         ];
     }
 }

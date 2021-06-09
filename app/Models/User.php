@@ -43,9 +43,12 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password', 'family', 'avatar'
-    ];
+    protected $guarded = [];
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -54,9 +57,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        'transaction_password'
     ];
 
 
@@ -70,16 +71,12 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+
     /**
      * relations
      */
-    public function tickets()
+    public function kycs()
     {
-        return $this->hasMany(Ticket::class);
-    }
-
-    public function sendCustomerAnsweredNotification($ticket_id)
-    {
-        $this->notify(new CustomerAnsweredNotification($ticket_id));
+        return $this->hasMany(KYC::class);
     }
 }

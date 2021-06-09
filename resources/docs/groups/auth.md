@@ -10,7 +10,7 @@
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/register"
+    "http://localhost:3541/api/register"
 );
 
 let headers = {
@@ -19,8 +19,8 @@ let headers = {
 };
 
 let body = {
-    "name": "consequatur",
-    "family": "consequatur",
+    "first_name": "consequatur",
+    "last_name": "consequatur",
     "email": "qkunze@example.com",
     "password": "consequatur"
 }
@@ -36,14 +36,14 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost:2222/api/register',
+    'http://localhost:3541/api/register',
     [
         'headers' => [
             'Accept' => 'application/json',
         ],
         'json' => [
-            'name' => 'consequatur',
-            'family' => 'consequatur',
+            'first_name' => 'consequatur',
+            'last_name' => 'consequatur',
             'email' => 'qkunze@example.com',
             'password' => 'consequatur',
         ],
@@ -57,10 +57,10 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/register'
+url = 'http://localhost:3541/api/register'
 payload = {
-    "name": "consequatur",
-    "family": "consequatur",
+    "first_name": "consequatur",
+    "last_name": "consequatur",
     "email": "qkunze@example.com",
     "password": "consequatur"
 }
@@ -75,10 +75,10 @@ response.json()
 
 ```bash
 curl -X POST \
-    "http://localhost:2222/api/register" \
+    "http://localhost:3541/api/register" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"name":"consequatur","family":"consequatur","email":"qkunze@example.com","password":"consequatur"}'
+    -d '{"first_name":"consequatur","last_name":"consequatur","email":"qkunze@example.com","password":"consequatur"}'
 
 ```
 
@@ -104,24 +104,28 @@ curl -X POST \
 </p>
 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
 <p>
-<b><code>name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="name" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<b><code>first_name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="first_name" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
+
 </p>
 <p>
-<b><code>family</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="family" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<b><code>last_name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="last_name" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
+
 </p>
 <p>
 <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
 <input type="text" name="email" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
-The value must be a valid email address.</p>
+The value must be a valid email address.
+</p>
 <p>
 <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="password" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<input type="password" name="password" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
+
 </p>
 
 </form>
@@ -136,7 +140,7 @@ The value must be a valid email address.</p>
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/login"
+    "http://localhost:3541/api/login"
 );
 
 let headers = {
@@ -160,7 +164,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost:2222/api/login',
+    'http://localhost:3541/api/login',
     [
         'headers' => [
             'Accept' => 'application/json',
@@ -179,7 +183,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/login'
+url = 'http://localhost:3541/api/login'
 payload = {
     "email": "qkunze@example.com",
     "password": "consequatur"
@@ -195,7 +199,7 @@ response.json()
 
 ```bash
 curl -X POST \
-    "http://localhost:2222/api/login" \
+    "http://localhost:3541/api/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"email":"qkunze@example.com","password":"consequatur"}'
@@ -227,11 +231,13 @@ curl -X POST \
 <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
 <input type="text" name="email" data-endpoint="POSTapi-login" data-component="body" required  hidden>
 <br>
-The value must be a valid email address.</p>
+The value must be a valid email address.
+</p>
 <p>
 <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="password" data-endpoint="POSTapi-login" data-component="body" required  hidden>
+<input type="password" name="password" data-endpoint="POSTapi-login" data-component="body" required  hidden>
 <br>
+
 </p>
 
 </form>
@@ -247,7 +253,7 @@ The value must be a valid email address.</p>
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/logout"
+    "http://localhost:3541/api/logout"
 );
 
 let headers = {
@@ -267,7 +273,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost:2222/api/logout',
+    'http://localhost:3541/api/logout',
     [
         'headers' => [
             'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
@@ -283,7 +289,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/logout'
+url = 'http://localhost:3541/api/logout'
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
   'Content-Type': 'application/json',
@@ -296,7 +302,7 @@ response.json()
 
 ```bash
 curl -X GET \
-    -G "http://localhost:2222/api/logout" \
+    -G "http://localhost:3541/api/logout" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
@@ -347,7 +353,7 @@ curl -X GET \
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/user"
+    "http://localhost:3541/api/user"
 );
 
 let headers = {
@@ -367,7 +373,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost:2222/api/user',
+    'http://localhost:3541/api/user',
     [
         'headers' => [
             'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
@@ -383,7 +389,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/user'
+url = 'http://localhost:3541/api/user'
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
   'Content-Type': 'application/json',
@@ -396,7 +402,7 @@ response.json()
 
 ```bash
 curl -X GET \
-    -G "http://localhost:2222/api/user" \
+    -G "http://localhost:3541/api/user" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"

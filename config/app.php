@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Ticketing'),
+    'name' => env('APP_NAME', 'R2F'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost:2222/'),
+    'url' => env('APP_URL', 'http://localhost:3541/'),
 
     'asset_url' => env('ASSET_URL', null),
 

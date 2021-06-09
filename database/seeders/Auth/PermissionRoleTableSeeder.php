@@ -2,6 +2,7 @@
 
 
 namespace Database\Seeders\Auth;
+
 use App\Models\ReferralTree;
 use App\Models\User;
 use Carbon\Carbon;
@@ -22,15 +23,18 @@ class PermissionRoleTableSeeder extends Seeder
     public function run()
     {
         // Create Roles
-        foreach (USER_ROLES as $role){
-            Role::firstOrCreate(['name' => $role]);
+        foreach (USER_ROLES as $role) {
+            Role::query()->firstOrCreate(['name' => $role]);
         }
 
-        $admin = User::firstOrCreate([
-            'email' => 'admin@r2f.com',
-            'name' => 'admin',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        ]);
-        $admin->assignRole(USER_ROLE_ADMIN);
+        if (!User::query()->where('email', 'admin@r2f.com')->exists()) {
+            $admin = User::query()->firstOrCreate([
+                'email' => 'admin@r2f.com',
+                'first_name' => 'admin',
+                'last_name' => 'admin',
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            ]);
+            $admin->assignRole(USER_ROLE_ADMIN);
+        }
     }
 }

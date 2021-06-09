@@ -14,16 +14,78 @@ const USER_ROLES = [
 ];
 
 /**
- * Ticket_status
+ * document_types
+ */
+const DOCUMENT_TYPES_DRIVING_LICENCE = 'driving_licence';
+const DOCUMENT_TYPES_PASSPORT = 'passport';
+const DOCUMENT_TYPES_NATIONAL_ID = 'national_id';
+const DOCUMENT_TYPES = [
+    DOCUMENT_TYPES_DRIVING_LICENCE,
+    DOCUMENT_TYPES_PASSPORT,
+    DOCUMENT_TYPES_NATIONAL_ID,
+];
+
+
+/**
+ * media types
  */
 
-const TICKET_ANSWERED = 'ANSWERED';
-const TICKET_NOT_ANSWERED = 'NOT_ANSWERED';
-const TICKET_IN_PROGRESS = 'IN_PROGRESS';
-const TICKET_SPAM = 'SPAM';
-const TICKET_STATUS = [
-    TICKET_ANSWERED,
-    TICKET_NOT_ANSWERED,
-    TICKET_IN_PROGRESS,
-    TICKET_SPAM
+const MEDIA_TYPE_VIDEO_STORAGE = "MEDIA_TYPE_VIDEO_STORAGE";
+const MEDIA_TYPE_IMAGE_STORAGE = "MEDIA_TYPE_IMAGE_STORAGE";
+const MEDIA_TYPE_VIDEOS = [
+    MEDIA_TYPE_VIDEO_STORAGE
+];
+const MEDIA_TYPE_IMAGES = [
+    MEDIA_TYPE_IMAGE_STORAGE
+];
+const MEDIA_TYPES = [
+    MEDIA_TYPE_VIDEO_STORAGE,
+    MEDIA_TYPE_IMAGE_STORAGE
+];
+
+
+const VIDEO_MIME_TYPES = [
+    'video/3gpp',
+    'video/mp4',
+    'video/mpeg',
+    'video/ogg',
+    'video/webm',
+];
+const IMAGE_MIME_TYPES = [
+    'image/gif',
+    'image/jpeg',
+    'image/png',
+];
+const PDF_MIME_TYPES = [
+    'application/pdf'
+];
+const AUDIO_MIME_TYPES = [
+    'audio/basic',
+    'audio/mp4',
+    'audio/mpeg',
+    'audio/ogg',
+    'audio/wav',
+    'audio/wave',
+    'audio/webm',
+];
+const ALL_MIME_TYPES =[
+    'video/3gpp',
+    'video/mp4',
+    'video/mpeg',
+    'video/ogg',
+    'video/webm',
+
+    'image/gif',
+    'image/jpeg',
+    'image/png',
+
+    'application/pdf',
+
+    'audio/basic',
+    'audio/mp4',
+    'audio/mpeg',
+    'audio/ogg',
+    'audio/wav',
+    'audio/wave',
+    'audio/webm',
 ];

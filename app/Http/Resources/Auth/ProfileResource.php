@@ -19,10 +19,18 @@ class ProfileResource extends JsonResource
     {
         return $this->filterFields([
             'id' => $this->id,
-            'name' => $this->name,
-            'family' => $this->family,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'email' => $this->email,
             'roles' => $this->roles,
+            'username' => $this->username,
+            'phone_number' => $this->phone_number,
+            'passport_number' => $this->passport_number,
+            'is_passport_number_accepted' => $this->is_passport_number_accepted,
+            'national_id' => $this->national_id,
+            'is_national_id_accepted' => $this->is_national_id_accepted,
+            'driving_licence' => $this->driving_licence,
+            'is_driving_licence_accepted' => $this->is_driving_licence_accepted,
             'created_at' => $this->created_at,
         ]);
     }

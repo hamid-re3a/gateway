@@ -142,7 +142,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'auth',
+            '_route' => 'authcurrent-user',
           ),
           1 => NULL,
           2 => 
@@ -156,107 +156,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/tickets' => 
+      '/api/kyc/upload' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'tickets.index',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-        1 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'tickets.store',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/ticket/comment' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'comment',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/admin/tickets' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'admin.tickets',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/admin/tickets/comment' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'admin.reply.comment',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/admin/tickets/change_status' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'admin.ticket.status',
+            '_route' => 'kyc-upload-file',
           ),
           1 => NULL,
           2 => 
@@ -272,66 +178,9 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/api/(?|tickets/([^/]++)(*:31)|admin/tickets/([^/]++)(*:60)))/?$}sDu',
     ),
     3 => 
     array (
-      31 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'tickets.show',
-          ),
-          1 => 
-          array (
-            0 => 'ticket',
-          ),
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => true,
-          6 => NULL,
-        ),
-      ),
-      60 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'admin.show.ticket',
-          ),
-          1 => 
-          array (
-            0 => 'id',
-          ),
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => true,
-          6 => NULL,
-        ),
-        1 => 
-        array (
-          0 => NULL,
-          1 => NULL,
-          2 => NULL,
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => 0,
-        ),
-      ),
     ),
     4 => NULL,
   ),
@@ -548,7 +397,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'auth' => 
+    'authcurrent-user' => 
     array (
       'methods' => 
       array (
@@ -564,7 +413,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@getAuthUser',
         'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@getAuthUser',
-        'as' => 'auth',
+        'as' => 'authcurrent-user',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
@@ -584,14 +433,13 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'tickets.index' => 
+    'kyc-upload-file' => 
     array (
       'methods' => 
       array (
-        0 => 'GET',
-        1 => 'HEAD',
+        0 => 'POST',
       ),
-      'uri' => 'api/tickets',
+      'uri' => 'api/kyc/upload',
       'action' => 
       array (
         'middleware' => 
@@ -599,277 +447,14 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'auth',
         ),
-        'as' => 'tickets.index',
-        'uses' => 'App\\Http\\Controllers\\Front\\TicketController@index',
-        'controller' => 'App\\Http\\Controllers\\Front\\TicketController@index',
+        'uses' => 'App\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'controller' => 'App\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'tickets.store' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/tickets',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'auth',
-        ),
-        'as' => 'tickets.store',
-        'uses' => 'App\\Http\\Controllers\\Front\\TicketController@store',
-        'controller' => 'App\\Http\\Controllers\\Front\\TicketController@store',
-        'namespace' => NULL,
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'tickets.show' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/tickets/{ticket}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'auth',
-        ),
-        'as' => 'tickets.show',
-        'uses' => 'App\\Http\\Controllers\\Front\\TicketController@show',
-        'controller' => 'App\\Http\\Controllers\\Front\\TicketController@show',
-        'namespace' => NULL,
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'comment' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/ticket/comment',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'auth',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Front\\CommentController@sendCommentTicket',
-        'controller' => 'App\\Http\\Controllers\\Front\\CommentController@sendCommentTicket',
-        'namespace' => NULL,
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => 'comment',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.tickets' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/admin/tickets',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@index',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@index',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.tickets',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.reply.comment' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/admin/tickets/comment',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@replyComment',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@replyComment',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.reply.comment',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.ticket.status' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/admin/tickets/change_status',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@changeTicketStatus',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@changeTicketStatus',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.ticket.status',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.show.ticket' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/admin/tickets/{id}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@show',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@show',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.show.ticket',
+        'as' => 'kyc-upload-file',
       ),
       'fallback' => false,
       'defaults' => 
