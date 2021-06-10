@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Resources\Auth;
+namespace R2FUser\Http\Resources\Auth;
 
-use App\Http\Helpers\ResponseData;
+use \App\Http\Helpers\ResponseData;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileResource extends JsonResource

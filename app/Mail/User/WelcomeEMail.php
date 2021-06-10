@@ -6,23 +6,20 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TicketAnsweredRequestMail extends Mailable
+class WelcomeEMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $user;
-    public $ticket_id;
 
     /**
      * Create a new message instance.
      *
      * @param $user
-     * @param $ticket_id
      */
-    public function __construct($user, $ticket_id)
+    public function __construct($user)
     {
         $this->user = $user;
-        $this->ticket_id = $ticket_id;
     }
 
     /**
@@ -32,6 +29,11 @@ class TicketAnsweredRequestMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.ticket-answered')->subject('Ticket Answered');
+        return $this->markdown('emails.welcome')
+            ->from('info@r2f.com', 'Site Management')
+            ->subject('Hello & Welcome!')
+            ->with([
+                'user', $this->user
+            ]);
     }
 }

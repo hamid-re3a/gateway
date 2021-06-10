@@ -1,5 +1,6 @@
 <?php
 
+const APP_NAME = 'R2F';
 
 /**
  * user_roles

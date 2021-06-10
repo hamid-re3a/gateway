@@ -14,12 +14,12 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
+        "kalnoy/nestedset": "^5.0",
         "laravel/framework": "^8.12",
+        "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "mtownsend/read-time": "^1.1",
-        "kalnoy/nestedset": "^5.0",
-        "spatie/laravel-permission": "^3.17",
-        "tymon/jwt-auth": "^1.0"
+        "spatie/laravel-permission": "^3.17"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -48,7 +48,8 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "R2FUser\\": "r2f_user"
         },
         "files": ["app/Helpers/functions.php","app/Helpers/constants.php"]
     },

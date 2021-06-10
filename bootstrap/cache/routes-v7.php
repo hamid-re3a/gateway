@@ -78,6 +78,26 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/sanctum/csrf-cookie' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::48gW21ClL4nRe94f',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/register' => 
       array (
         0 => 
@@ -291,6 +311,42 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
+    'generated::48gW21ClL4nRe94f' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'sanctum/csrf-cookie',
+      'action' => 
+      array (
+        'uses' => 'Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show',
+        'controller' => 'Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show',
+        'namespace' => NULL,
+        'prefix' => 'sanctum',
+        'where' => 
+        array (
+        ),
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'as' => 'generated::48gW21ClL4nRe94f',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
     'authregister' => 
     array (
       'methods' => 
@@ -304,10 +360,10 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@register',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@register',
+        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@register',
+        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@register',
         'as' => 'authregister',
-        'namespace' => NULL,
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
@@ -339,10 +395,10 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@login',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@login',
+        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@login',
+        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@login',
         'as' => 'authlogin',
-        'namespace' => NULL,
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
@@ -375,10 +431,10 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@logout',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@logout',
+        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@logout',
+        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@logout',
         'as' => 'authlogout',
-        'namespace' => NULL,
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
@@ -411,10 +467,10 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@getAuthUser',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@getAuthUser',
+        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@getAuthUser',
+        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@getAuthUser',
         'as' => 'authcurrent-user',
-        'namespace' => NULL,
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
@@ -445,11 +501,11 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth',
+          1 => 'auth:sanctum',
         ),
-        'uses' => 'App\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
-        'controller' => 'App\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
-        'namespace' => NULL,
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (

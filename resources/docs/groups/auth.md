@@ -314,7 +314,7 @@ curl -X GET \
 ```json
 {
     "data": [],
-    "message": "Token could not be parsed from the request.",
+    "message": "Auth driver [jwt] for guard [api] is not defined.",
     "status": 400
 }
 ```
@@ -414,7 +414,7 @@ curl -X GET \
 ```json
 {
     "data": [],
-    "message": "Trying to get property 'id' of non-object",
+    "message": "Auth driver [jwt] for guard [api] is not defined.",
     "status": 400
 }
 ```

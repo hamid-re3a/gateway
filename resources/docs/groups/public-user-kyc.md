@@ -48,7 +48,7 @@ $response = $client->post(
             ],
             [
                 'name' => 'file',
-                'contents' => fopen('/tmp/php9VDswR', 'r')
+                'contents' => fopen('/tmp/phpTirgtu', 'r')
             ],
         ],
     ]
@@ -63,7 +63,7 @@ import json
 
 url = 'http://localhost:3541/api/kyc/upload'
 files = {
-  'file': open('/tmp/php9VDswR', 'rb')
+  'file': open('/tmp/phpTirgtu', 'rb')
 }
 payload = {
     "document_type": "driving_licence"
@@ -85,7 +85,7 @@ curl -X POST \
     -H "Content-Type: multipart/form-data" \
     -H "Accept: application/json" \
     -F "document_type=driving_licence" \
-    -F "file=@/tmp/php9VDswR" 
+    -F "file=@/tmp/phpTirgtu" 
 ```
 
 

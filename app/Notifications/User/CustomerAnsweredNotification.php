@@ -2,7 +2,7 @@
 
 namespace App\Notifications\User;
 
-use App\Mail\User\TicketAnsweredRequestMail;
+use App\Mail\User\WelcomeEMail;
 use App\Services\User\VerifyCodeService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +35,7 @@ class CustomerAnsweredNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
-        return (new TicketAnsweredRequestMail($notifiable,$this->ticket_id))
+        return (new WelcomeEMail($notifiable,$this->ticket_id))
             ->to($notifiable->email);
 
     }

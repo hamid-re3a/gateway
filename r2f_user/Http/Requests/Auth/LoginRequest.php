@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\KYC;
+namespace R2FUser\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Validator;
 
-class StoreRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +24,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'document_type' => 'required|in:'.implode(',',DOCUMENT_TYPES),
-            'file'=> 'required|file'
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string',
         ];
     }
 }

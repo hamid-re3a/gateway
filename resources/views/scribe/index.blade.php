@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>R2f Documentation</title>
+    <title>R2F Documentation</title>
 
     <link href="https://fonts.googleapis.com/css?family=PT+Sans&display=swap" rel="stylesheet">
 
@@ -45,7 +45,7 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: June 9 2021</li>
+            <li>Last updated: June 10 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -329,7 +329,7 @@ response.json()</code></pre>
 </blockquote>
 <pre><code class="language-json">{
     "data": [],
-    "message": "Token could not be parsed from the request.",
+    "message": "Auth driver [jwt] for guard [api] is not defined.",
     "status": 400
 }</code></pre>
 <div id="execution-results-GETapi-logout" hidden>
@@ -409,7 +409,7 @@ response.json()</code></pre>
 </blockquote>
 <pre><code class="language-json">{
     "data": [],
-    "message": "Trying to get property 'id' of non-object",
+    "message": "Auth driver [jwt] for guard [api] is not defined.",
     "status": 400
 }</code></pre>
 <div id="execution-results-GETapi-user" hidden>
@@ -433,6 +433,78 @@ response.json()</code></pre>
 </p>
 <p>
 <label id="auth-GETapi-user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user" data-component="header"></label>
+</p>
+</form><h1>Endpoints</h1>
+<h2>Return an empty response simply to trigger the storage of the CSRF cookie in the browser.</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/sanctum/csrf-cookie"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/sanctum/csrf-cookie',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/sanctum/csrf-cookie'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/sanctum/csrf-cookie" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<div id="execution-results-GETsanctum-csrf-cookie" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETsanctum-csrf-cookie"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETsanctum-csrf-cookie"></code></pre>
+</div>
+<div id="execution-error-GETsanctum-csrf-cookie" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETsanctum-csrf-cookie"></code></pre>
+</div>
+<form id="form-GETsanctum-csrf-cookie" data-method="GET" data-path="sanctum/csrf-cookie" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETsanctum-csrf-cookie', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETsanctum-csrf-cookie" onclick="tryItOut('GETsanctum-csrf-cookie');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETsanctum-csrf-cookie" onclick="cancelTryOut('GETsanctum-csrf-cookie');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETsanctum-csrf-cookie" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>sanctum/csrf-cookie</code></b>
+</p>
+<p>
+<label id="auth-GETsanctum-csrf-cookie" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETsanctum-csrf-cookie" data-component="header"></label>
 </p>
 </form><h1>Public User &gt; KYC</h1>
 <h2>Upload New Document</h2>
@@ -475,7 +547,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/php9VDswR', 'r')
+                'contents' =&gt; fopen('/tmp/phpTirgtu', 'r')
             ],
         ],
     ]
@@ -487,7 +559,7 @@ import json
 
 url = 'http://localhost:3541/api/kyc/upload'
 files = {
-  'file': open('/tmp/php9VDswR', 'rb')
+  'file': open('/tmp/phpTirgtu', 'rb')
 }
 payload = {
     "document_type": "driving_licence"
@@ -506,7 +578,7 @@ response.json()</code></pre>
     -H "Content-Type: multipart/form-data" \
     -H "Accept: application/json" \
     -F "document_type=driving_licence" \
-    -F "file=@/tmp/php9VDswR" </code></pre>
+    -F "file=@/tmp/phpTirgtu" </code></pre>
 <div id="execution-results-POSTapi-kyc-upload" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-kyc-upload"></span>:</blockquote>
     <pre class="json"><code id="execution-response-content-POSTapi-kyc-upload"></code></pre>

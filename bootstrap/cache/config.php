@@ -71,6 +71,7 @@
       24 => 'App\\Providers\\AuthServiceProvider',
       25 => 'App\\Providers\\EventServiceProvider',
       26 => 'App\\Providers\\RouteServiceProvider',
+      27 => 'R2FUser\\UserServiceProvider',
     ),
     'aliases' => 
     array (
@@ -109,7 +110,6 @@
       'URL' => 'Illuminate\\Support\\Facades\\URL',
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
-      'JWTAuth' => 'Tymon\\JWTAuth\\Facades\\JWTAuth',
       'Payment' => 'Shetabit\\Payment\\Facade\\Payment',
     ),
   ),
@@ -129,9 +129,14 @@
       ),
       'api' => 
       array (
-        'driver' => 'jwt',
+        'driver' => 'sanctum',
         'provider' => 'users',
         'hash' => false,
+      ),
+      'sanctum' => 
+      array (
+        'driver' => 'sanctum',
+        'provider' => NULL,
       ),
     ),
     'providers' => 
@@ -510,7 +515,7 @@
   ),
   'jwt' => 
   array (
-    'secret' => 'z7XV8Bus3Av9DTRZG859536THDJFTt7mXOThRcf48RWjIym7sMfaguCPI26xMRNg',
+    'secret' => NULL,
     'keys' => 
     array (
       'public' => NULL,
@@ -629,11 +634,11 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'mailhog',
-        'port' => '1025',
-        'encryption' => NULL,
-        'username' => NULL,
-        'password' => NULL,
+        'host' => 'smtp.googlemail.com',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'hamire3a@gmail.com',
+        'password' => 'hamidkhanam66',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -666,8 +671,8 @@
     ),
     'from' => 
     array (
-      'address' => NULL,
-      'name' => 'R2F',
+      'address' => 'hello@example.com',
+      'name' => 'Example',
     ),
     'markdown' => 
     array (
@@ -774,6 +779,24 @@
       'driver' => 'database-uuids',
       'database' => 'mysql',
       'table' => 'failed_jobs',
+    ),
+  ),
+  'sanctum' => 
+  array (
+    'stateful' => 
+    array (
+      0 => 'localhost',
+      1 => 'localhost:3000',
+      2 => '127.0.0.1',
+      3 => '127.0.0.1:8000',
+      4 => '::1',
+      5 => 'localhost',
+    ),
+    'expiration' => NULL,
+    'middleware' => 
+    array (
+      'verify_csrf_token' => 'App\\Http\\Middleware\\VerifyCsrfToken',
+      'encrypt_cookies' => 'App\\Http\\Middleware\\EncryptCookies',
     ),
   ),
   'scribe' => 

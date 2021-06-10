@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Front;
+namespace R2FUser\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Http\Helpers\ResponseData;
-use App\Http\Requests\KYC\StoreRequest;
+use Illuminate\Routing\Controller;
 use App\Http\Traits\FileUploadTrait;
-use App\Models\KYC;
+use R2FUser\Http\Requests\KYC\StoreRequest;
 
 class KYCController extends Controller
 {

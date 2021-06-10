@@ -1,5 +1,5 @@
 ---
-title: R2f Documentation
+title: R2F Documentation
 
 language_tabs:
 - javascript

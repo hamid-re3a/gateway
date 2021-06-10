@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace R2FUser\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Helpers\ResponseData;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterUserRequest;
-use App\Http\Resources\Auth\ProfileResource;
 use App\Models\User;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
+use R2FUser\Http\Requests\Auth\LoginRequest;
+use R2FUser\Http\Requests\Auth\RegisterUserRequest;
+use R2FUser\Http\Resources\Auth\ProfileResource;
 
 class AuthController extends Controller
 {
@@ -21,9 +22,7 @@ class AuthController extends Controller
     {
         $user = User::query()->create($request->validated());
 
-        $user->assignRole(USER_ROLE_CLIENT);
-
-        $token = auth()->login($user);
+        $token = $user->createToken(APP_NAME)->plainTextToken;
 
         return $this->respondWithToken($token);
     }
@@ -36,12 +35,15 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
+
         $credentials = $request->only(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
+        $user = User::query()->where('email',$credentials['email'])->first();
+
+        if (!$user || Hash::check($credentials['password'],$user->password)) {
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
         }
-
+        $token = $user->createToken(APP_NAME)->plainTextToken;
         return $this->respondWithToken($token);
     }
     /**
@@ -51,7 +53,7 @@ class AuthController extends Controller
      */
     public function getAuthUser()
     {
-        return response()->json(ProfileResource::make(auth()->user()));
+        return ResponseData::success(ProfileResource::make(auth()->user()));
     }
 
     /**
@@ -61,7 +63,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth()->user()->tokens()->delete();
         return ResponseData::success(trans('responses.logout-successful'));
     }
 
@@ -71,7 +73,6 @@ class AuthController extends Controller
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
         ];
         return ResponseData::success(trans('responses.login-successful'), $data);
     }
