@@ -2,23 +2,24 @@
 
 namespace App\Notifications\User;
 
-use App\Mail\User\WelcomeEMail;
+use App\Mail\User\OtpEmail;
+use App\Mail\User\WelcomeEmail;
 use App\Services\User\VerifyCodeService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomerAnsweredNotification extends Notification implements ShouldQueue
+class OtpNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
 
-    private $ticket_id;
+    private $token;
 
-    public function __construct($ticket_id)
+    public function __construct($token)
     {
-        $this->ticket_id = $ticket_id;
+        $this->token = $token;
     }
 
     /**
@@ -35,7 +36,7 @@ class CustomerAnsweredNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
-        return (new WelcomeEMail($notifiable,$this->ticket_id))
+        return (new OtpEmail($notifiable,$this->token))
             ->to($notifiable->email);
 
     }

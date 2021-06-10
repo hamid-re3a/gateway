@@ -22,6 +22,7 @@ let body = {
     "first_name": "consequatur",
     "last_name": "consequatur",
     "email": "qkunze@example.com",
+    "username": "consequatur",
     "password": "consequatur"
 }
 
@@ -45,6 +46,7 @@ $response = $client->post(
             'first_name' => 'consequatur',
             'last_name' => 'consequatur',
             'email' => 'qkunze@example.com',
+            'username' => 'consequatur',
             'password' => 'consequatur',
         ],
     ]
@@ -62,6 +64,7 @@ payload = {
     "first_name": "consequatur",
     "last_name": "consequatur",
     "email": "qkunze@example.com",
+    "username": "consequatur",
     "password": "consequatur"
 }
 headers = {
@@ -78,7 +81,7 @@ curl -X POST \
     "http://localhost:3541/api/register" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"consequatur","last_name":"consequatur","email":"qkunze@example.com","password":"consequatur"}'
+    -d '{"first_name":"consequatur","last_name":"consequatur","email":"qkunze@example.com","username":"consequatur","password":"consequatur"}'
 
 ```
 
@@ -120,6 +123,12 @@ curl -X POST \
 <input type="text" name="email" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
 The value must be a valid email address.
+</p>
+<p>
+<b><code>username</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="username" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<br>
+
 </p>
 <p>
 <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
@@ -314,7 +323,7 @@ curl -X GET \
 ```json
 {
     "data": [],
-    "message": "Auth driver [jwt] for guard [api] is not defined.",
+    "message": "Call to a member function tokens() on null",
     "status": 400
 }
 ```
@@ -414,7 +423,7 @@ curl -X GET \
 ```json
 {
     "data": [],
-    "message": "Auth driver [jwt] for guard [api] is not defined.",
+    "message": "Trying to get property 'id' of non-object",
     "status": 400
 }
 ```
@@ -440,6 +449,129 @@ curl -X GET \
 <p>
 <label id="auth-GETapi-user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user" data-component="header"></label>
 </p>
+</form>
+
+
+## Forget Password
+
+<small class="badge badge-darkred">requires authentication</small>
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/forget_password"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com"
+}
+
+fetch(url, {
+    method: "GET",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'http://localhost:3541/api/forget_password',
+    [
+        'headers' => [
+            'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'email' => 'qkunze@example.com',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/forget_password'
+payload = {
+    "email": "qkunze@example.com"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X GET \
+    -G "http://localhost:3541/api/forget_password" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com"}'
+
+```
+
+
+> Example response (422):
+
+```json
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "email": [
+            "The selected email is invalid."
+        ]
+    }
+}
+```
+<div id="execution-results-GETapi-forget_password" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-forget_password"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-forget_password"></code></pre>
+</div>
+<div id="execution-error-GETapi-forget_password" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-forget_password"></code></pre>
+</div>
+<form id="form-GETapi-forget_password" data-method="GET" data-path="api/forget_password" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-forget_password', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-forget_password" onclick="tryItOut('GETapi-forget_password');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-forget_password" onclick="cancelTryOut('GETapi-forget_password');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-forget_password" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/forget_password</code></b>
+</p>
+<p>
+<label id="auth-GETapi-forget_password" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-forget_password" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="GETapi-forget_password" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+
 </form>
 
 

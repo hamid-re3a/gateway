@@ -86,6 +86,7 @@ let body = {
     "first_name": "consequatur",
     "last_name": "consequatur",
     "email": "qkunze@example.com",
+    "username": "consequatur",
     "password": "consequatur"
 }
 
@@ -106,6 +107,7 @@ $response = $client-&gt;post(
             'first_name' =&gt; 'consequatur',
             'last_name' =&gt; 'consequatur',
             'email' =&gt; 'qkunze@example.com',
+            'username' =&gt; 'consequatur',
             'password' =&gt; 'consequatur',
         ],
     ]
@@ -120,6 +122,7 @@ payload = {
     "first_name": "consequatur",
     "last_name": "consequatur",
     "email": "qkunze@example.com",
+    "username": "consequatur",
     "password": "consequatur"
 }
 headers = {
@@ -133,7 +136,7 @@ response.json()</code></pre>
     "http://localhost:3541/api/register" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"consequatur","last_name":"consequatur","email":"qkunze@example.com","password":"consequatur"}'
+    -d '{"first_name":"consequatur","last_name":"consequatur","email":"qkunze@example.com","username":"consequatur","password":"consequatur"}'
 </code></pre>
 <div id="execution-results-POSTapi-register" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-register"></span>:</blockquote>
@@ -172,6 +175,12 @@ response.json()</code></pre>
 <input type="text" name="email" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
 The value must be a valid email address.
+</p>
+<p>
+<b><code>username</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="username" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<br>
+
 </p>
 <p>
 <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
@@ -329,7 +338,7 @@ response.json()</code></pre>
 </blockquote>
 <pre><code class="language-json">{
     "data": [],
-    "message": "Auth driver [jwt] for guard [api] is not defined.",
+    "message": "Call to a member function tokens() on null",
     "status": 400
 }</code></pre>
 <div id="execution-results-GETapi-logout" hidden>
@@ -409,7 +418,7 @@ response.json()</code></pre>
 </blockquote>
 <pre><code class="language-json">{
     "data": [],
-    "message": "Auth driver [jwt] for guard [api] is not defined.",
+    "message": "Trying to get property 'id' of non-object",
     "status": 400
 }</code></pre>
 <div id="execution-results-GETapi-user" hidden>
@@ -434,6 +443,110 @@ response.json()</code></pre>
 <p>
 <label id="auth-GETapi-user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user" data-component="header"></label>
 </p>
+</form>
+<h2>Forget Password</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/forget_password"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com"
+}
+
+fetch(url, {
+    method: "GET",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/api/forget_password',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'email' =&gt; 'qkunze@example.com',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/forget_password'
+payload = {
+    "email": "qkunze@example.com"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, json=payload)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/forget_password" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com"}'
+</code></pre>
+<blockquote>
+<p>Example response (422):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "The given data was invalid.",
+    "errors": {
+        "email": [
+            "The selected email is invalid."
+        ]
+    }
+}</code></pre>
+<div id="execution-results-GETapi-forget_password" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-forget_password"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-forget_password"></code></pre>
+</div>
+<div id="execution-error-GETapi-forget_password" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-forget_password"></code></pre>
+</div>
+<form id="form-GETapi-forget_password" data-method="GET" data-path="api/forget_password" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-forget_password', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-forget_password" onclick="tryItOut('GETapi-forget_password');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-forget_password" onclick="cancelTryOut('GETapi-forget_password');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-forget_password" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/forget_password</code></b>
+</p>
+<p>
+<label id="auth-GETapi-forget_password" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-forget_password" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="GETapi-forget_password" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+
 </form><h1>Endpoints</h1>
 <h2>Return an empty response simply to trigger the storage of the CSRF cookie in the browser.</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
@@ -547,7 +660,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phpTirgtu', 'r')
+                'contents' =&gt; fopen('/tmp/phpwnWMDJ', 'r')
             ],
         ],
     ]
@@ -559,7 +672,7 @@ import json
 
 url = 'http://localhost:3541/api/kyc/upload'
 files = {
-  'file': open('/tmp/phpTirgtu', 'rb')
+  'file': open('/tmp/phpwnWMDJ', 'rb')
 }
 payload = {
     "document_type": "driving_licence"
@@ -578,7 +691,7 @@ response.json()</code></pre>
     -H "Content-Type: multipart/form-data" \
     -H "Accept: application/json" \
     -F "document_type=driving_licence" \
-    -F "file=@/tmp/phpTirgtu" </code></pre>
+    -F "file=@/tmp/phpwnWMDJ" </code></pre>
 <div id="execution-results-POSTapi-kyc-upload" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-kyc-upload"></span>:</blockquote>
     <pre class="json"><code id="execution-response-content-POSTapi-kyc-upload"></code></pre>

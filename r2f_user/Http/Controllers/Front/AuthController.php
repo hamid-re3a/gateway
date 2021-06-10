@@ -2,6 +2,7 @@
 
 namespace R2FUser\Http\Controllers\Front;
 
+use App\Notifications\User\OtpNotification;
 use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Http\Helpers\ResponseData;
 use App\Models\User;
@@ -62,16 +63,19 @@ class AuthController extends Controller
      * Forget Password
      * @group
      * Auth
+     * @throws \Exception
      */
     public function forgetPassword(ForgetPasswordRequest $request)
     {
-        list($token,$err) = auth()->user()->makeForgetPasswordOtp();
-        if($err){
-
+        $user = User::whereEmail($request->email)->first();
+        list($token,$err) = $user->makeForgetPasswordOtp();
+        if(!is_null($err)){
+            return ResponseData::error($err);
         }
 
+        $user->notify(new OtpNotification($token));
 
-        return ResponseData::success(ProfileResource::make(auth()->user()));
+        return ResponseData::success(trans('responses.otp-successfully-sent'));
     }
 
     /**
