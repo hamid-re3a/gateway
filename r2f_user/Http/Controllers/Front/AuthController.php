@@ -38,20 +38,31 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
-        $user = User::query()->where('email',$credentials['email'])->first();
+        $user = User::query()->where('email', $credentials['email'])->first();
 
-        if (!$user || Hash::check($credentials['password'],$user->password)) {
+        if (!$user || Hash::check($credentials['password'], $user->password)) {
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
         }
         $token = $user->createToken(APP_NAME)->plainTextToken;
         return $this->respondWithToken($token);
     }
+
     /**
      * Get Current User
      * @group
      * Auth
      */
     public function getAuthUser()
+    {
+        return ResponseData::success(ProfileResource::make(auth()->user()));
+    }
+
+    /**
+     * Forget Password
+     * @group
+     * Auth
+     */
+    public function forgetPassword(ForgetPasswordRequest $request)
     {
         return ResponseData::success(ProfileResource::make(auth()->user()));
     }
