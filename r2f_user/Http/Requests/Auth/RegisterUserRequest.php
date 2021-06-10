@@ -27,7 +27,8 @@ class RegisterUserRequest extends FormRequest
             'first_name' => ['required', 'string', 'min:4', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
             'last_name' => ['required', 'string', 'min:4', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'username' => ['required', 'unique:users', 'regex:/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/'],
+            'password' => ['required', 'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/'],
         ];
     }
 }

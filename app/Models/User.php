@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -66,6 +68,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTransactionPassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @property string|null $otp
+ * @property string|null $otp_datetime
+ * @property int|null $otp_tries
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereOtp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpDatetime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpTries($value)
  */
 class User extends Authenticatable
 {
@@ -75,7 +83,6 @@ class User extends Authenticatable
     use HasApiTokens;
 
     protected $guard_name = 'api';
-
 
     /**
      * The attributes that are mass assignable.
@@ -90,22 +97,37 @@ class User extends Authenticatable
     }
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'transaction_password'
-    ];
-
-
-
-    /**
      * relations
      */
     public function kycs()
     {
         return $this->hasMany(KYC::class);
+    }
+
+    /**
+     * methods
+     *
+     */
+    public function makeForgetPasswordOtp(): array
+    {
+        $token = null;
+        $error = null;
+
+        if(is_null($this->otp_datetime) || Carbon::now()->diffInMonths(Carbon::make($this->otp_datetime)) > 30){
+            $this->otp_datetime = Carbon::now();
+            $this->otp_tries = 1;
+            $token = Str::random(4);
+        }
+         ;
+//        if(){
+//            $this->otp_datetime = null;
+//            $this->otp_tries = null;
+//
+//            return [null,new \Exception(trans('responses.max-otp-exceed'))];
+//        }
+
+
+
+
     }
 }

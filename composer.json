@@ -22,15 +22,15 @@
         "spatie/laravel-permission": "^3.17"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "imanghafoori/laravel-microscope": "^1.0",
+        "knuckleswtf/scribe": "^2.5",
         "laravel/sail": "^0.0.5",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3",
-
-        "barryvdh/laravel-ide-helper": "^2.8",
-        "knuckleswtf/scribe": "^2.5"
+        "phpunit/phpunit": "^9.3.3"
     },
     "config": {
         "optimize-autoloader": true,

@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|KYC whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|KYC whereUserId($value)
  * @mixin \Eloquent
+ * @property string $document_type
+ * @method static \Illuminate\Database\Eloquent\Builder|KYC whereDocumentType($value)
  */
 class KYC extends Model
 {

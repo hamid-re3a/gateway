@@ -1,7 +1,8 @@
 <?php
 
-namespace R2FUser\Http\Controllers;
+namespace R2FUser\Http\Controllers\Front;
 
+use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Http\Helpers\ResponseData;
 use App\Models\User;
 use Illuminate\Routing\Controller;
@@ -64,6 +65,12 @@ class AuthController extends Controller
      */
     public function forgetPassword(ForgetPasswordRequest $request)
     {
+        list($token,$err) = auth()->user()->makeForgetPasswordOtp();
+        if($err){
+
+        }
+
+
         return ResponseData::success(ProfileResource::make(auth()->user()));
     }
 

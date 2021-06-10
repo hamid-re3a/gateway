@@ -1,12 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace R2FUser\database\seeders;
 
-use Database\Seeders\Auth\PermissionRoleTableSeeder;
-use Database\Seeders\Auth\UserRoleTableSeeder;
-use Database\Seeders\Auth\UserTableSeeder;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 /**
  * Class AuthTableSeeder.
@@ -19,12 +17,20 @@ class AuthTableSeeder extends Seeder
      * @return void
      */
     public function run()
-
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-//        DB::table('users')->truncate();
-        $this->call(PermissionRoleTableSeeder::class);
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        foreach (USER_ROLES as $role) {
+            Role::query()->firstOrCreate(['name' => $role]);
+        }
 
+        if (!User::query()->where('email', 'admin@r2f.com')->exists()) {
+            $admin = User::query()->firstOrCreate([
+                'email' => 'admin@r2f.com',
+                'first_name' => 'admin',
+                'username' => 'admin',
+                'last_name' => 'admin',
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            ]);
+            $admin->assignRole(USER_ROLE_ADMIN);
+        }
     }
 }

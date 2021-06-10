@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
 
             $table->string('first_name',100);
             $table->string('last_name',100);
-            $table->string('username',100)->nullable()->unique();
+            $table->string('username',100)->unique();
             $table->string('phone_number',100)->nullable();
             $table->string('email',100)->unique()->index();
             $table->string('password');
@@ -28,12 +28,10 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
 
             $table->string('passport_number')->nullable();
-            $table->boolean('is_passport_number_accepted')->nullable();
-            $table->string('national_id')->nullable();
-            $table->boolean('is_national_id_accepted')->nullable();
-            $table->string('driving_licence')->nullable();
-            $table->boolean('is_driving_licence_accepted')->nullable();
 
+            $table->string('otp')->nullable();
+            $table->timestamp('otp_datetime')->nullable();
+            $table->integer('otp_tries')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

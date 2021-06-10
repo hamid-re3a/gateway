@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::48gW21ClL4nRe94f',
+            '_route' => 'generated::99aBpeRIytD5tCOh',
           ),
           1 => NULL,
           2 => 
@@ -163,6 +163,26 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'authcurrent-user',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/forget_password' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authforget-password',
           ),
           1 => NULL,
           2 => 
@@ -311,7 +331,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::48gW21ClL4nRe94f' => 
+    'generated::99aBpeRIytD5tCOh' => 
     array (
       'methods' => 
       array (
@@ -332,7 +352,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::48gW21ClL4nRe94f',
+        'as' => 'generated::99aBpeRIytD5tCOh',
       ),
       'fallback' => false,
       'defaults' => 
@@ -360,8 +380,8 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@register',
-        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@register',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
         'as' => 'authregister',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
@@ -395,8 +415,8 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@login',
-        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@login',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
         'as' => 'authlogin',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
@@ -431,8 +451,8 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@logout',
-        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@logout',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
         'as' => 'authlogout',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
@@ -467,9 +487,45 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'R2FUser\\Http\\Controllers\\AuthController@getAuthUser',
-        'controller' => 'R2FUser\\Http\\Controllers\\AuthController@getAuthUser',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
         'as' => 'authcurrent-user',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'authforget-password' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/forget_password',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
+        'as' => 'authforget-password',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 

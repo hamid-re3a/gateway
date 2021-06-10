@@ -683,6 +683,19 @@
       ),
     ),
   ),
+  'microscope' => 
+  array (
+    'is_enabled' => true,
+    'no_fix' => false,
+    'ignore' => 
+    array (
+    ),
+    'log_unused_view_vars' => true,
+    'ignored_namespaces' => 
+    array (
+    ),
+    'class_search_buffer' => 2500,
+  ),
   'permission' => 
   array (
     'models' => 

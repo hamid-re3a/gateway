@@ -1,11 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace R2FUser\database\factories;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -24,8 +22,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->firstName,
-            'family' => $this->faker->lastName,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'username' => $this->faker->userName,
             'email' => $this->faker->unique()->safeEmail,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ];

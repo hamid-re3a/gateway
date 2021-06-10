@@ -35,6 +35,13 @@
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
     ),
   ),
+  'imanghafoori/laravel-microscope' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Imanghafoori\\LaravelMicroscope\\LaravelMicroscopeServiceProvider',
+    ),
+  ),
   'jenssegers/agent' => 
   array (
     'providers' => 

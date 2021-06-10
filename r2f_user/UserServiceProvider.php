@@ -10,6 +10,22 @@ class UserServiceProvider extends ServiceProvider
 
     public function register()
     {
+
+
+        if (! $this->app->runningInConsole()) {
+            return;
+        }
+        if ($this->shouldMigrate()) {
+            $this->loadMigrationsFrom([
+                __DIR__.'/database/migrations',
+            ]);
+        }
+
+        $this->publishes([
+            dirname(__DIR__).'/database/migrations/' => database_path('migrations'),
+        ], 'r2f-user-migrations');
+
+
     }
     public function boot()
     {
@@ -17,5 +33,14 @@ class UserServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(__DIR__.'/routes/api.php');
+    }
+    /**
+     * Determine if we should register the migrations.
+     *
+     * @return bool
+     */
+    protected function shouldMigrate(): bool
+    {
+        return UserConfigure::$runsMigrations;
     }
 }

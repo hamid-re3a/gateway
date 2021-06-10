@@ -2,6 +2,20 @@
 
 const APP_NAME = 'R2F';
 
+const USER_OTP_DURATION = 30;
+const USER_OTP_MAX_TRIES = 3;
+
+const SETTINGS = [
+    'USER_OTP_DURATION' => [
+        'value' => USER_OTP_DURATION,
+        'description' => '(in minutes) This is used with max user tries to stop user requesting a lot for forget password otp.'
+    ],
+    'USER_OTP_MAX_TRIES' =>[
+        'value' => USER_OTP_MAX_TRIES,
+        'description' => 'This is used with max user duration to stop user requesting a lot for forget password otp'
+    ],
+];
+
 /**
  * user_roles
  */
@@ -69,7 +83,7 @@ const AUDIO_MIME_TYPES = [
     'audio/wave',
     'audio/webm',
 ];
-const ALL_MIME_TYPES =[
+const ALL_MIME_TYPES = [
     'video/3gpp',
     'video/mp4',
     'video/mpeg',
