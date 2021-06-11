@@ -29,15 +29,14 @@ class OtpEmail extends Mailable
      * Build the message.
      *
      * @return $this
+     * @throws \Exception
      */
     public function build()
     {
-        return $this->markdown('emails.otp')
-            ->from('info@r2f.com', 'Site Management')
-            ->subject('Otp Password')
-            ->with([
-                'user', $this->user,
-                'token', $this->token
-            ]);
+        $setting = getEmailAndTextSetting('OTP_FORGET_PASSWORD_EMAIL');
+        return $this
+            ->from($setting['from'], $setting['from_name'])
+            ->subject($setting['subject'])
+            ->html(sprintf($setting['body'],$this->user->full_name,$this->token));
     }
 }

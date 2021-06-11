@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::wrWpv1wrq0W642Xb',
+            '_route' => 'generated::BL6K5amzpQLeyPAt',
           ),
           1 => NULL,
           2 => 
@@ -147,8 +147,7 @@ app('router')->setCompiledRoutes(
           1 => NULL,
           2 => 
           array (
-            'GET' => 0,
-            'HEAD' => 1,
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -207,8 +206,7 @@ app('router')->setCompiledRoutes(
           1 => NULL,
           2 => 
           array (
-            'GET' => 0,
-            'HEAD' => 1,
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -227,8 +225,7 @@ app('router')->setCompiledRoutes(
           1 => NULL,
           2 => 
           array (
-            'GET' => 0,
-            'HEAD' => 1,
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -247,8 +244,7 @@ app('router')->setCompiledRoutes(
           1 => NULL,
           2 => 
           array (
-            'GET' => 0,
-            'HEAD' => 1,
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -267,7 +263,7 @@ app('router')->setCompiledRoutes(
           1 => NULL,
           2 => 
           array (
-            'POST' => 0,
+            'PUT' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -391,7 +387,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::wrWpv1wrq0W642Xb' => 
+    'generated::BL6K5amzpQLeyPAt' => 
     array (
       'methods' => 
       array (
@@ -412,7 +408,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::wrWpv1wrq0W642Xb',
+        'as' => 'generated::BL6K5amzpQLeyPAt',
       ),
       'fallback' => false,
       'defaults' => 
@@ -501,8 +497,7 @@ app('router')->setCompiledRoutes(
     array (
       'methods' => 
       array (
-        0 => 'GET',
-        1 => 'HEAD',
+        0 => 'POST',
       ),
       'uri' => 'api/forget_password',
       'action' => 
@@ -611,8 +606,7 @@ app('router')->setCompiledRoutes(
     array (
       'methods' => 
       array (
-        0 => 'GET',
-        1 => 'HEAD',
+        0 => 'POST',
       ),
       'uri' => 'api/generate2fa_secret',
       'action' => 
@@ -648,8 +642,7 @@ app('router')->setCompiledRoutes(
     array (
       'methods' => 
       array (
-        0 => 'GET',
-        1 => 'HEAD',
+        0 => 'POST',
       ),
       'uri' => 'api/generate2fa_enable',
       'action' => 
@@ -685,8 +678,7 @@ app('router')->setCompiledRoutes(
     array (
       'methods' => 
       array (
-        0 => 'GET',
-        1 => 'HEAD',
+        0 => 'POST',
       ),
       'uri' => 'api/generate2fa_disable',
       'action' => 
@@ -723,7 +715,7 @@ app('router')->setCompiledRoutes(
     array (
       'methods' => 
       array (
-        0 => 'POST',
+        0 => 'PUT',
       ),
       'uri' => 'api/kyc/upload',
       'action' => 

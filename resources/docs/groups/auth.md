@@ -276,7 +276,7 @@ let body = {
 }
 
 fetch(url, {
-    method: "GET",
+    method: "POST",
     headers,
     body: JSON.stringify(body),
 }).then(response => response.json());
@@ -285,7 +285,7 @@ fetch(url, {
 ```php
 
 $client = new \GuzzleHttp\Client();
-$response = $client->get(
+$response = $client->post(
     'http://localhost:3541/api/forget_password',
     [
         'headers' => [
@@ -315,13 +315,13 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers, json=payload)
+response = requests.request('POST', url, headers=headers, json=payload)
 response.json()
 ```
 
 ```bash
-curl -X GET \
-    -G "http://localhost:3541/api/forget_password" \
+curl -X POST \
+    "http://localhost:3541/api/forget_password" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
@@ -330,44 +330,32 @@ curl -X GET \
 ```
 
 
-> Example response (422):
-
-```json
-{
-    "message": "The given data was invalid.",
-    "errors": {
-        "email": [
-            "The selected email is invalid."
-        ]
-    }
-}
-```
-<div id="execution-results-GETapi-forget_password" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-forget_password"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-forget_password"></code></pre>
+<div id="execution-results-POSTapi-forget_password" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-forget_password"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-forget_password"></code></pre>
 </div>
-<div id="execution-error-GETapi-forget_password" hidden>
+<div id="execution-error-POSTapi-forget_password" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-forget_password"></code></pre>
+    <pre><code id="execution-error-message-POSTapi-forget_password"></code></pre>
 </div>
-<form id="form-GETapi-forget_password" data-method="GET" data-path="api/forget_password" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-forget_password', this);">
+<form id="form-POSTapi-forget_password" data-method="POST" data-path="api/forget_password" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-forget_password', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-forget_password" onclick="tryItOut('GETapi-forget_password');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-forget_password" onclick="cancelTryOut('GETapi-forget_password');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-forget_password" hidden>Send Request 💥</button>
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-forget_password" onclick="tryItOut('POSTapi-forget_password');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-forget_password" onclick="cancelTryOut('POSTapi-forget_password');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-forget_password" hidden>Send Request 💥</button>
     </h3>
 <p>
-<small class="badge badge-green">GET</small>
+<small class="badge badge-black">POST</small>
  <b><code>api/forget_password</code></b>
 </p>
 <p>
-<label id="auth-GETapi-forget_password" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-forget_password" data-component="header"></label>
+<label id="auth-POSTapi-forget_password" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-forget_password" data-component="header"></label>
 </p>
 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
 <p>
 <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="email" data-endpoint="GETapi-forget_password" data-component="body" required  hidden>
+<input type="text" name="email" data-endpoint="POSTapi-forget_password" data-component="body" required  hidden>
 <br>
 The value must be a valid email address.
 </p>
@@ -596,7 +584,7 @@ let headers = {
 
 
 fetch(url, {
-    method: "GET",
+    method: "POST",
     headers,
 }).then(response => response.json());
 ```
@@ -604,7 +592,7 @@ fetch(url, {
 ```php
 
 $client = new \GuzzleHttp\Client();
-$response = $client->get(
+$response = $client->post(
     'http://localhost:3541/api/generate2fa_secret',
     [
         'headers' => [
@@ -628,49 +616,40 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers)
+response = requests.request('POST', url, headers=headers)
 response.json()
 ```
 
 ```bash
-curl -X GET \
-    -G "http://localhost:3541/api/generate2fa_secret" \
+curl -X POST \
+    "http://localhost:3541/api/generate2fa_secret" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 
-> Example response (400):
-
-```json
-{
-    "data": [],
-    "message": "Unauthenticated.",
-    "status": 400
-}
-```
-<div id="execution-results-GETapi-generate2fa_secret" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-generate2fa_secret"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-generate2fa_secret"></code></pre>
+<div id="execution-results-POSTapi-generate2fa_secret" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-generate2fa_secret"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-generate2fa_secret"></code></pre>
 </div>
-<div id="execution-error-GETapi-generate2fa_secret" hidden>
+<div id="execution-error-POSTapi-generate2fa_secret" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-generate2fa_secret"></code></pre>
+    <pre><code id="execution-error-message-POSTapi-generate2fa_secret"></code></pre>
 </div>
-<form id="form-GETapi-generate2fa_secret" data-method="GET" data-path="api/generate2fa_secret" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-generate2fa_secret', this);">
+<form id="form-POSTapi-generate2fa_secret" data-method="POST" data-path="api/generate2fa_secret" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-generate2fa_secret', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-generate2fa_secret" onclick="tryItOut('GETapi-generate2fa_secret');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-generate2fa_secret" onclick="cancelTryOut('GETapi-generate2fa_secret');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-generate2fa_secret" hidden>Send Request 💥</button>
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-generate2fa_secret" onclick="tryItOut('POSTapi-generate2fa_secret');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-generate2fa_secret" onclick="cancelTryOut('POSTapi-generate2fa_secret');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-generate2fa_secret" hidden>Send Request 💥</button>
     </h3>
 <p>
-<small class="badge badge-green">GET</small>
+<small class="badge badge-black">POST</small>
  <b><code>api/generate2fa_secret</code></b>
 </p>
 <p>
-<label id="auth-GETapi-generate2fa_secret" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-generate2fa_secret" data-component="header"></label>
+<label id="auth-POSTapi-generate2fa_secret" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-generate2fa_secret" data-component="header"></label>
 </p>
 </form>
 
@@ -695,11 +674,11 @@ let headers = {
 };
 
 let body = {
-    "secret": "consequatur"
+    "one_time_password": "consequatur"
 }
 
 fetch(url, {
-    method: "GET",
+    method: "POST",
     headers,
     body: JSON.stringify(body),
 }).then(response => response.json());
@@ -708,7 +687,7 @@ fetch(url, {
 ```php
 
 $client = new \GuzzleHttp\Client();
-$response = $client->get(
+$response = $client->post(
     'http://localhost:3541/api/generate2fa_enable',
     [
         'headers' => [
@@ -716,7 +695,7 @@ $response = $client->get(
             'Accept' => 'application/json',
         ],
         'json' => [
-            'secret' => 'consequatur',
+            'one_time_password' => 'consequatur',
         ],
     ]
 );
@@ -730,7 +709,7 @@ import json
 
 url = 'http://localhost:3541/api/generate2fa_enable'
 payload = {
-    "secret": "consequatur"
+    "one_time_password": "consequatur"
 }
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
@@ -738,56 +717,47 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers, json=payload)
+response = requests.request('POST', url, headers=headers, json=payload)
 response.json()
 ```
 
 ```bash
-curl -X GET \
-    -G "http://localhost:3541/api/generate2fa_enable" \
+curl -X POST \
+    "http://localhost:3541/api/generate2fa_enable" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"secret":"consequatur"}'
+    -d '{"one_time_password":"consequatur"}'
 
 ```
 
 
-> Example response (400):
-
-```json
-{
-    "data": [],
-    "message": "Unauthenticated.",
-    "status": 400
-}
-```
-<div id="execution-results-GETapi-generate2fa_enable" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-generate2fa_enable"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-generate2fa_enable"></code></pre>
+<div id="execution-results-POSTapi-generate2fa_enable" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-generate2fa_enable"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-generate2fa_enable"></code></pre>
 </div>
-<div id="execution-error-GETapi-generate2fa_enable" hidden>
+<div id="execution-error-POSTapi-generate2fa_enable" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-generate2fa_enable"></code></pre>
+    <pre><code id="execution-error-message-POSTapi-generate2fa_enable"></code></pre>
 </div>
-<form id="form-GETapi-generate2fa_enable" data-method="GET" data-path="api/generate2fa_enable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-generate2fa_enable', this);">
+<form id="form-POSTapi-generate2fa_enable" data-method="POST" data-path="api/generate2fa_enable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-generate2fa_enable', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-generate2fa_enable" onclick="tryItOut('GETapi-generate2fa_enable');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-generate2fa_enable" onclick="cancelTryOut('GETapi-generate2fa_enable');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-generate2fa_enable" hidden>Send Request 💥</button>
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-generate2fa_enable" onclick="tryItOut('POSTapi-generate2fa_enable');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-generate2fa_enable" onclick="cancelTryOut('POSTapi-generate2fa_enable');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-generate2fa_enable" hidden>Send Request 💥</button>
     </h3>
 <p>
-<small class="badge badge-green">GET</small>
+<small class="badge badge-black">POST</small>
  <b><code>api/generate2fa_enable</code></b>
 </p>
 <p>
-<label id="auth-GETapi-generate2fa_enable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-generate2fa_enable" data-component="header"></label>
+<label id="auth-POSTapi-generate2fa_enable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-generate2fa_enable" data-component="header"></label>
 </p>
 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
 <p>
-<b><code>secret</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="secret" data-endpoint="GETapi-generate2fa_enable" data-component="body" required  hidden>
+<b><code>one_time_password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="one_time_password" data-endpoint="POSTapi-generate2fa_enable" data-component="body" required  hidden>
 <br>
 
 </p>
@@ -814,22 +784,29 @@ let headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "one_time_password": "consequatur"
+}
 
 fetch(url, {
-    method: "GET",
+    method: "POST",
     headers,
+    body: JSON.stringify(body),
 }).then(response => response.json());
 ```
 
 ```php
 
 $client = new \GuzzleHttp\Client();
-$response = $client->get(
+$response = $client->post(
     'http://localhost:3541/api/generate2fa_disable',
     [
         'headers' => [
             'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
             'Accept' => 'application/json',
+        ],
+        'json' => [
+            'one_time_password' => 'consequatur',
         ],
     ]
 );
@@ -842,56 +819,60 @@ import requests
 import json
 
 url = 'http://localhost:3541/api/generate2fa_disable'
+payload = {
+    "one_time_password": "consequatur"
+}
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
   'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers)
+response = requests.request('POST', url, headers=headers, json=payload)
 response.json()
 ```
 
 ```bash
-curl -X GET \
-    -G "http://localhost:3541/api/generate2fa_disable" \
+curl -X POST \
+    "http://localhost:3541/api/generate2fa_disable" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -d '{"one_time_password":"consequatur"}'
+
 ```
 
 
-> Example response (400):
-
-```json
-{
-    "data": [],
-    "message": "Unauthenticated.",
-    "status": 400
-}
-```
-<div id="execution-results-GETapi-generate2fa_disable" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-generate2fa_disable"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-generate2fa_disable"></code></pre>
+<div id="execution-results-POSTapi-generate2fa_disable" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-generate2fa_disable"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-generate2fa_disable"></code></pre>
 </div>
-<div id="execution-error-GETapi-generate2fa_disable" hidden>
+<div id="execution-error-POSTapi-generate2fa_disable" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-generate2fa_disable"></code></pre>
+    <pre><code id="execution-error-message-POSTapi-generate2fa_disable"></code></pre>
 </div>
-<form id="form-GETapi-generate2fa_disable" data-method="GET" data-path="api/generate2fa_disable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-generate2fa_disable', this);">
+<form id="form-POSTapi-generate2fa_disable" data-method="POST" data-path="api/generate2fa_disable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-generate2fa_disable', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-generate2fa_disable" onclick="tryItOut('GETapi-generate2fa_disable');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-generate2fa_disable" onclick="cancelTryOut('GETapi-generate2fa_disable');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-generate2fa_disable" hidden>Send Request 💥</button>
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-generate2fa_disable" onclick="tryItOut('POSTapi-generate2fa_disable');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-generate2fa_disable" onclick="cancelTryOut('POSTapi-generate2fa_disable');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-generate2fa_disable" hidden>Send Request 💥</button>
     </h3>
 <p>
-<small class="badge badge-green">GET</small>
+<small class="badge badge-black">POST</small>
  <b><code>api/generate2fa_disable</code></b>
 </p>
 <p>
-<label id="auth-GETapi-generate2fa_disable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-generate2fa_disable" data-component="header"></label>
+<label id="auth-POSTapi-generate2fa_disable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-generate2fa_disable" data-component="header"></label>
 </p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>one_time_password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="one_time_password" data-endpoint="POSTapi-generate2fa_disable" data-component="body" required  hidden>
+<br>
+
+</p>
+
 </form>
 
 

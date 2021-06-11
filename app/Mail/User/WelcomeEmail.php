@@ -26,14 +26,14 @@ class WelcomeEmail extends Mailable
      * Build the message.
      *
      * @return $this
+     * @throws \Exception
      */
     public function build()
     {
-        return $this->markdown('emails.welcome')
-            ->from('info@r2f.com', 'Site Management')
-            ->subject('Hello & Welcome!')
-            ->with([
-                'user', $this->user
-            ]);
+        $setting = getEmailAndTextSetting('USER_REGISTRATION_WELCOME_EMAIL');
+        return $this
+            ->from($setting['from'], $setting['from_name'])
+            ->subject($setting['subject'])
+            ->html(sprintf($setting['body'],$this->user->full_name));
     }
 }

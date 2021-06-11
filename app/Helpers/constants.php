@@ -17,7 +17,7 @@ const SETTINGS = [
         'description' => '(in minutes) This is used with max user tries to stop user requesting a lot for forget password otp.',
         'category' => 'Notification'
     ],
-    'USER_OTP_MAX_TRIES' =>[
+    'USER_OTP_MAX_TRIES' => [
         'value' => USER_OTP_MAX_TRIES,
         'description' => 'This is used with max user duration to stop user requesting a lot for forget password otp',
         'category' => 'Notification'
@@ -28,6 +28,29 @@ const SETTINGS = [
         'category' => 'User Registration'
     ]
 ];
+
+const EMAIL_AND_TEXT_SETTINGS = [
+    'OTP_FORGET_PASSWORD_EMAIL' => [
+        'subject' => 'Forget Password Otp',
+        'from' => 'info@r2f.com',
+        'from_name' => 'Site Administration',
+        'body' => '<p>Hello, %s</p><p>Your otp token is %s</p>',
+        'variables_number' => 2,
+        'variables_description' => '%s user full name, %s otp token',
+        'type' => 'email'
+    ],
+    'USER_REGISTRATION_WELCOME_EMAIL' => [
+        'subject' => 'Welcome',
+        'from' => 'info@r2f.com',
+        'from_name' => 'Site Administration',
+        'body' => '<p>Hello, %s</p><p>Welcome to Ride to Future</p>',
+        'variables_number' => 1,
+        'variables_description' => '%s user full name',
+        'type' => 'email'
+    ]
+
+];
+
 
 /**
  * user_roles

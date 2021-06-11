@@ -21,9 +21,11 @@ class LoginSecurityController extends Controller
 
         $google2fa = (new \PragmaRX\Google2FAQRCode\Google2FA());
 
-        $user->google2fa_enable = 0;
-        $user->google2fa_secret = $google2fa->generateSecretKey();
-        $user->save();
+        if(is_null($user->google2fa_secret)){
+            $user->google2fa_enable = false;
+            $user->google2fa_secret = $google2fa->generateSecretKey();
+            $user->save();
+        }
 
         $google2fa_url = $google2fa->getQRCodeInline(
             getSetting("APP_NAME"),
@@ -55,7 +57,7 @@ class LoginSecurityController extends Controller
         $valid = $google2fa->verifyKey($user->google2fa_secret, $secret);
 
         if ($valid) {
-            $user->google2fa_enable = 1;
+            $user->google2fa_enable = true;
             $user->save();
             return ResponseData::success(trans('responses.2FA-is-enabled-successfully'));
         } else {
@@ -71,7 +73,7 @@ class LoginSecurityController extends Controller
     public function disable2fa(OtpRequest $request)
     {
         $user = auth()->user();
-        $user->google2fa_enable = 0;
+        $user->google2fa_enable = false;
         $user->save();
         return ResponseData::success(trans('responses.2FA-is-now-disabled'));
     }
