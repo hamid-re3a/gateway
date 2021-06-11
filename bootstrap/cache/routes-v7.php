@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::99aBpeRIytD5tCOh',
+            '_route' => 'generated::wrWpv1wrq0W642Xb',
           ),
           1 => NULL,
           2 => 
@@ -136,13 +136,33 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/forget_password' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authforget-password',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/logout' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'authlogout',
+            '_route' => 'logout',
           ),
           1 => NULL,
           2 => 
@@ -162,7 +182,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authcurrent-user',
+            '_route' => 'current-user',
           ),
           1 => NULL,
           2 => 
@@ -176,13 +196,53 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/forget_password' => 
+      '/api/generate2fa_secret' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'authforget-password',
+            '_route' => '2fa-secret',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_enable' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-enable',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_disable' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-disable',
           ),
           1 => NULL,
           2 => 
@@ -331,7 +391,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::99aBpeRIytD5tCOh' => 
+    'generated::wrWpv1wrq0W642Xb' => 
     array (
       'methods' => 
       array (
@@ -352,7 +412,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::99aBpeRIytD5tCOh',
+        'as' => 'generated::wrWpv1wrq0W642Xb',
       ),
       'fallback' => false,
       'defaults' => 
@@ -437,78 +497,6 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authlogout' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/logout',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
-        'as' => 'authlogout',
-        'namespace' => 'R2FUser\\Http\\Controllers',
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'authcurrent-user' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/user',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
-        'as' => 'authcurrent-user',
-        'namespace' => 'R2FUser\\Http\\Controllers',
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
     'authforget-password' => 
     array (
       'methods' => 
@@ -531,6 +519,192 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'logout' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/logout',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'logout',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'current-user' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/user',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'current-user',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-secret' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/generate2fa_secret',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-secret',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-enable' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/generate2fa_enable',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-enable',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-disable' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/generate2fa_disable',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+          2 => '2fa',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-disable',
       ),
       'fallback' => false,
       'defaults' => 

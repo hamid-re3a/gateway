@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Setting whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Setting whereValue($value)
  * @mixin \Eloquent
+ * @property string|null $category
+ * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCategory($value)
  */
 class Setting extends Model
 {

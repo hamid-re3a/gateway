@@ -45,7 +45,7 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: June 10 2021</li>
+            <li>Last updated: June 11 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -284,166 +284,6 @@ The value must be a valid email address.
 </p>
 
 </form>
-<h2>Log out</h2>
-<p><small class="badge badge-darkred">requires authentication</small></p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-javascript">const url = new URL(
-    "http://localhost:3541/api/logout"
-);
-
-let headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-<pre><code class="language-php">
-$client = new \GuzzleHttp\Client();
-$response = $client-&gt;get(
-    'http://localhost:3541/api/logout',
-    [
-        'headers' =&gt; [
-            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
-            'Accept' =&gt; 'application/json',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre>
-<pre><code class="language-python">import requests
-import json
-
-url = 'http://localhost:3541/api/logout'
-headers = {
-  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
-  'Content-Type': 'application/json',
-  'Accept': 'application/json'
-}
-
-response = requests.request('GET', url, headers=headers)
-response.json()</code></pre>
-<pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:3541/api/logout" \
-    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
-<blockquote>
-<p>Example response (400):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "data": [],
-    "message": "Call to a member function tokens() on null",
-    "status": 400
-}</code></pre>
-<div id="execution-results-GETapi-logout" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-logout"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-logout"></code></pre>
-</div>
-<div id="execution-error-GETapi-logout" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-logout"></code></pre>
-</div>
-<form id="form-GETapi-logout" data-method="GET" data-path="api/logout" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-logout', this);">
-<h3>
-    Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-logout" onclick="tryItOut('GETapi-logout');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-logout" onclick="cancelTryOut('GETapi-logout');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-logout" hidden>Send Request 💥</button>
-    </h3>
-<p>
-<small class="badge badge-green">GET</small>
- <b><code>api/logout</code></b>
-</p>
-<p>
-<label id="auth-GETapi-logout" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-logout" data-component="header"></label>
-</p>
-</form>
-<h2>Get Current User</h2>
-<p><small class="badge badge-darkred">requires authentication</small></p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-javascript">const url = new URL(
-    "http://localhost:3541/api/user"
-);
-
-let headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-<pre><code class="language-php">
-$client = new \GuzzleHttp\Client();
-$response = $client-&gt;get(
-    'http://localhost:3541/api/user',
-    [
-        'headers' =&gt; [
-            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
-            'Accept' =&gt; 'application/json',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre>
-<pre><code class="language-python">import requests
-import json
-
-url = 'http://localhost:3541/api/user'
-headers = {
-  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
-  'Content-Type': 'application/json',
-  'Accept': 'application/json'
-}
-
-response = requests.request('GET', url, headers=headers)
-response.json()</code></pre>
-<pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:3541/api/user" \
-    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
-<blockquote>
-<p>Example response (400):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "data": [],
-    "message": "Trying to get property 'id' of non-object",
-    "status": 400
-}</code></pre>
-<div id="execution-results-GETapi-user" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-user"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-user"></code></pre>
-</div>
-<div id="execution-error-GETapi-user" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-user"></code></pre>
-</div>
-<form id="form-GETapi-user" data-method="GET" data-path="api/user" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-user', this);">
-<h3>
-    Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-user" onclick="tryItOut('GETapi-user');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-user" onclick="cancelTryOut('GETapi-user');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-user" hidden>Send Request 💥</button>
-    </h3>
-<p>
-<small class="badge badge-green">GET</small>
- <b><code>api/user</code></b>
-</p>
-<p>
-<label id="auth-GETapi-user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user" data-component="header"></label>
-</p>
-</form>
 <h2>Forget Password</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <blockquote>
@@ -547,6 +387,427 @@ response.json()</code></pre>
 The value must be a valid email address.
 </p>
 
+</form>
+<h2>Log out</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/logout"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/api/logout',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/logout'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/logout" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-logout" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-logout"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-logout"></code></pre>
+</div>
+<div id="execution-error-GETapi-logout" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-logout"></code></pre>
+</div>
+<form id="form-GETapi-logout" data-method="GET" data-path="api/logout" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-logout', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-logout" onclick="tryItOut('GETapi-logout');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-logout" onclick="cancelTryOut('GETapi-logout');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-logout" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/logout</code></b>
+</p>
+<p>
+<label id="auth-GETapi-logout" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-logout" data-component="header"></label>
+</p>
+</form>
+<h2>Get Current User</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/user"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/api/user',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/user'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/user" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-user" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-user"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-user"></code></pre>
+</div>
+<div id="execution-error-GETapi-user" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-user"></code></pre>
+</div>
+<form id="form-GETapi-user" data-method="GET" data-path="api/user" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-user', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-user" onclick="tryItOut('GETapi-user');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-user" onclick="cancelTryOut('GETapi-user');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-user" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/user</code></b>
+</p>
+<p>
+<label id="auth-GETapi-user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user" data-component="header"></label>
+</p>
+</form>
+<h2>Generate 2FA secret key</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/generate2fa_secret"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/api/generate2fa_secret',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/generate2fa_secret'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/generate2fa_secret" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-generate2fa_secret" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-generate2fa_secret"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-generate2fa_secret"></code></pre>
+</div>
+<div id="execution-error-GETapi-generate2fa_secret" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-generate2fa_secret"></code></pre>
+</div>
+<form id="form-GETapi-generate2fa_secret" data-method="GET" data-path="api/generate2fa_secret" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-generate2fa_secret', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-generate2fa_secret" onclick="tryItOut('GETapi-generate2fa_secret');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-generate2fa_secret" onclick="cancelTryOut('GETapi-generate2fa_secret');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-generate2fa_secret" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/generate2fa_secret</code></b>
+</p>
+<p>
+<label id="auth-GETapi-generate2fa_secret" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-generate2fa_secret" data-component="header"></label>
+</p>
+</form>
+<h2>Enable 2FA</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/generate2fa_enable"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "secret": "consequatur"
+}
+
+fetch(url, {
+    method: "GET",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/api/generate2fa_enable',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'secret' =&gt; 'consequatur',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/generate2fa_enable'
+payload = {
+    "secret": "consequatur"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, json=payload)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/generate2fa_enable" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"secret":"consequatur"}'
+</code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-generate2fa_enable" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-generate2fa_enable"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-generate2fa_enable"></code></pre>
+</div>
+<div id="execution-error-GETapi-generate2fa_enable" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-generate2fa_enable"></code></pre>
+</div>
+<form id="form-GETapi-generate2fa_enable" data-method="GET" data-path="api/generate2fa_enable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-generate2fa_enable', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-generate2fa_enable" onclick="tryItOut('GETapi-generate2fa_enable');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-generate2fa_enable" onclick="cancelTryOut('GETapi-generate2fa_enable');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-generate2fa_enable" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/generate2fa_enable</code></b>
+</p>
+<p>
+<label id="auth-GETapi-generate2fa_enable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-generate2fa_enable" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>secret</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="secret" data-endpoint="GETapi-generate2fa_enable" data-component="body" required  hidden>
+<br>
+
+</p>
+
+</form>
+<h2>Disable 2FA</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/generate2fa_disable"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:3541/api/generate2fa_disable',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/generate2fa_disable'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/generate2fa_disable" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-generate2fa_disable" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-generate2fa_disable"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-generate2fa_disable"></code></pre>
+</div>
+<div id="execution-error-GETapi-generate2fa_disable" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-generate2fa_disable"></code></pre>
+</div>
+<form id="form-GETapi-generate2fa_disable" data-method="GET" data-path="api/generate2fa_disable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-generate2fa_disable', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-generate2fa_disable" onclick="tryItOut('GETapi-generate2fa_disable');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-generate2fa_disable" onclick="cancelTryOut('GETapi-generate2fa_disable');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-generate2fa_disable" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/generate2fa_disable</code></b>
+</p>
+<p>
+<label id="auth-GETapi-generate2fa_disable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-generate2fa_disable" data-component="header"></label>
+</p>
 </form><h1>Endpoints</h1>
 <h2>Return an empty response simply to trigger the storage of the CSRF cookie in the browser.</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
@@ -660,7 +921,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phpwnWMDJ', 'r')
+                'contents' =&gt; fopen('/tmp/phpLbB2To', 'r')
             ],
         ],
     ]
@@ -672,7 +933,7 @@ import json
 
 url = 'http://localhost:3541/api/kyc/upload'
 files = {
-  'file': open('/tmp/phpwnWMDJ', 'rb')
+  'file': open('/tmp/phpLbB2To', 'rb')
 }
 payload = {
     "document_type": "driving_licence"
@@ -691,7 +952,7 @@ response.json()</code></pre>
     -H "Content-Type: multipart/form-data" \
     -H "Accept: application/json" \
     -F "document_type=driving_licence" \
-    -F "file=@/tmp/phpwnWMDJ" </code></pre>
+    -F "file=@/tmp/phpLbB2To" </code></pre>
 <div id="execution-results-POSTapi-kyc-upload" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-kyc-upload"></span>:</blockquote>
     <pre class="json"><code id="execution-response-content-POSTapi-kyc-upload"></code></pre>

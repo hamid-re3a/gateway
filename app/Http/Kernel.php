@@ -70,10 +70,6 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-        'admin' => Admin::class,
-        'network' => Network::class,
-        'client' => Client::class,
-        'all_block' => AllBlockMiddleware::class,
-        'temporary_block' => TemporaryBlockMiddleware::class,
+        '2fa' => \R2FUser\Http\Middlewares\LoginSecurityMiddleware::class,
     ];
 }

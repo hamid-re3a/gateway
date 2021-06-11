@@ -71,7 +71,8 @@
       24 => 'App\\Providers\\AuthServiceProvider',
       25 => 'App\\Providers\\EventServiceProvider',
       26 => 'App\\Providers\\RouteServiceProvider',
-      27 => 'R2FUser\\UserServiceProvider',
+      27 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
+      28 => 'R2FUser\\UserServiceProvider',
     ),
     'aliases' => 
     array (
@@ -111,6 +112,7 @@
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Payment' => 'Shetabit\\Payment\\Facade\\Payment',
+      'Google2FA' => 'PragmaRX\\Google2FALaravel\\Facade',
     ),
   ),
   'auth' => 
@@ -416,6 +418,28 @@
     array (
       '/var/www/public/storage' => '/var/www/storage/app/public',
     ),
+  ),
+  'google2fa' => 
+  array (
+    'enabled' => true,
+    'lifetime' => 0,
+    'keep_alive' => true,
+    'auth' => 'auth',
+    'guard' => '',
+    'session_var' => 'google2fa',
+    'otp_input' => 'one_time_password',
+    'window' => 1,
+    'forbid_old_passwords' => false,
+    'otp_secret_column' => 'google2fa_secret',
+    'view' => 'google2fa.index',
+    'error_messages' => 
+    array (
+      'wrong_otp' => 'The \'One Time Password\' typed was wrong.',
+      'cannot_be_empty' => 'One Time Password cannot be empty.',
+      'unknown' => 'An unknown error has occurred. Please try again.',
+    ),
+    'throw_exceptions' => true,
+    'qrcode_image_backend' => 'imagemagick',
   ),
   'gravatar' => 
   array (

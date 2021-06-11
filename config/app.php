@@ -174,7 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        PragmaRX\Google2FALaravel\ServiceProvider::class,
         \R2FUser\UserServiceProvider::class,
     ],
 
@@ -228,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Payment' => Shetabit\Payment\Facade\Payment::class,
+        'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
     ],
 
 ];

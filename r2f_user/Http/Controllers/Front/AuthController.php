@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         $user = User::query()->create($request->validated());
 
-        $token = $user->createToken(APP_NAME)->plainTextToken;
+        $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
 
         return $this->respondWithToken($token);
     }
@@ -45,7 +45,7 @@ class AuthController extends Controller
         if (!$user || Hash::check($credentials['password'], $user->password)) {
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
         }
-        $token = $user->createToken(APP_NAME)->plainTextToken;
+        $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
         return $this->respondWithToken($token);
     }
 
@@ -56,7 +56,7 @@ class AuthController extends Controller
      */
     public function getAuthUser()
     {
-        return ResponseData::success(ProfileResource::make(auth()->user()));
+        return ResponseData::success(trans('responses.success'),ProfileResource::make(auth()->user()));
     }
 
     /**

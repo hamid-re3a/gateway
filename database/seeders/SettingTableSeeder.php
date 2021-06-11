@@ -24,6 +24,7 @@ class SettingTableSeeder extends Seeder
             if(is_null($key->value)){
                 $key->value = $setting['value'];
                 $key->description = $setting['description'];
+                $key->category = $setting['category'];
                 $key->save();
             }
         }

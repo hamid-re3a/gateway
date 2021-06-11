@@ -43,4 +43,7 @@ class UserServiceProvider extends ServiceProvider
     {
         return UserConfigure::$runsMigrations;
     }
+
+
+
 }

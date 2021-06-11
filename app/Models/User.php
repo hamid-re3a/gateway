@@ -104,6 +104,7 @@ class User extends Authenticatable
         return $this->hasMany(KYC::class);
     }
 
+
     /**
      * methods
      */
@@ -121,20 +122,20 @@ class User extends Authenticatable
 
         $diff_last_try_in_minutes = Carbon::now()->diffInMonths(Carbon::make($this->otp_datetime));
         if ($diff_last_try_in_minutes > getSetting("USER_OTP_DURATION")) {
-            $this->otp_datetime = Carbon::now();
             $this->otp_tries = 1;
         }
+
+        $this->otp_datetime = Carbon::now();
+        $this->otp_tries += 1;
 
 
         if ($this->otp_tries >= getSetting("USER_OTP_MAX_TRIES")) {
             $error = trans('responses.max-otp-exceed');
         } else {
-            $this->otp_datetime = Carbon::now();
-            $this->otp_tries += 1;
             $token = Str::random(4);
             $this->otp = $token;
-            $this->save();
         }
+        $this->save();
 
         return [$token, $error];
 

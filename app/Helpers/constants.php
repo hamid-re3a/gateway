@@ -1,19 +1,32 @@
 <?php
 
-const APP_NAME = 'R2F';
 
+const APP_NAME = 'Ride To Future';
 const USER_OTP_DURATION = 30;
 const USER_OTP_MAX_TRIES = 3;
+const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 
 const SETTINGS = [
+    'APP_NAME' => [
+        'value' => APP_NAME,
+        'description' => 'Website name',
+        'category' => 'General'
+    ],
     'USER_OTP_DURATION' => [
         'value' => USER_OTP_DURATION,
-        'description' => '(in minutes) This is used with max user tries to stop user requesting a lot for forget password otp.'
+        'description' => '(in minutes) This is used with max user tries to stop user requesting a lot for forget password otp.',
+        'category' => 'Notification'
     ],
     'USER_OTP_MAX_TRIES' =>[
         'value' => USER_OTP_MAX_TRIES,
-        'description' => 'This is used with max user duration to stop user requesting a lot for forget password otp'
+        'description' => 'This is used with max user duration to stop user requesting a lot for forget password otp',
+        'category' => 'Notification'
     ],
+    'USER_REGISTRATION_PASSWORD_CRITERIA' => [
+        'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
+        'description' => 'Password pattern for user registration',
+        'category' => 'User Registration'
+    ]
 ];
 
 /**

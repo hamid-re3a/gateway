@@ -33,6 +33,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('otp_datetime')->nullable();
             $table->integer('otp_tries')->nullable();
 
+            $table->boolean('google2fa_enable')->default(false);
+            $table->string('google2fa_secret')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
