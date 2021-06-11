@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property string $document_type
  * @method static \Illuminate\Database\Eloquent\Builder|KYC whereDocumentType($value)
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|KYC whereDeletedAt($value)
  */
 class KYC extends Model
 {

@@ -73,6 +73,7 @@
       26 => 'App\\Providers\\RouteServiceProvider',
       27 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
       28 => 'R2FUser\\UserServiceProvider',
+      29 => 'Torann\\GeoIP\\GeoIPServiceProvider',
     ),
     'aliases' => 
     array (
@@ -111,8 +112,8 @@
       'URL' => 'Illuminate\\Support\\Facades\\URL',
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
-      'Payment' => 'Shetabit\\Payment\\Facade\\Payment',
       'Google2FA' => 'PragmaRX\\Google2FALaravel\\Facade',
+      'GeoIP' => 'Torann\\GeoIP\\Facades\\GeoIP',
     ),
   ),
   'auth' => 
@@ -200,7 +201,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'file',
+    'default' => 'redis',
     'stores' => 
     array (
       'apc' => 
@@ -417,6 +418,89 @@
     'links' => 
     array (
       '/var/www/public/storage' => '/var/www/storage/app/public',
+    ),
+  ),
+  'geoip' => 
+  array (
+    'log_failures' => true,
+    'include_currency' => true,
+    'service' => 'maxmind_database',
+    'services' => 
+    array (
+      'maxmind_database' => 
+      array (
+        'class' => 'Torann\\GeoIP\\Services\\MaxMindDatabase',
+        'database_path' => '/var/www/storage/app/geoip.mmdb',
+        'update_url' => 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=&suffix=tar.gz',
+        'locales' => 
+        array (
+          0 => 'en',
+        ),
+      ),
+      'maxmind_api' => 
+      array (
+        'class' => 'Torann\\GeoIP\\Services\\MaxMindWebService',
+        'user_id' => NULL,
+        'license_key' => NULL,
+        'locales' => 
+        array (
+          0 => 'en',
+        ),
+      ),
+      'ipapi' => 
+      array (
+        'class' => 'Torann\\GeoIP\\Services\\IPApi',
+        'secure' => true,
+        'key' => NULL,
+        'continent_path' => '/var/www/storage/app/continents.json',
+        'lang' => 'en',
+      ),
+      'ipgeolocation' => 
+      array (
+        'class' => 'Torann\\GeoIP\\Services\\IPGeoLocation',
+        'secure' => true,
+        'key' => NULL,
+        'continent_path' => '/var/www/storage/app/continents.json',
+        'lang' => 'en',
+      ),
+      'ipdata' => 
+      array (
+        'class' => 'Torann\\GeoIP\\Services\\IPData',
+        'key' => NULL,
+        'secure' => true,
+      ),
+      'ipfinder' => 
+      array (
+        'class' => 'Torann\\GeoIP\\Services\\IPFinder',
+        'key' => NULL,
+        'secure' => true,
+        'locales' => 
+        array (
+          0 => 'en',
+        ),
+      ),
+    ),
+    'cache' => 'all',
+    'cache_tags' => 
+    array (
+      0 => 'torann-geoip-location',
+    ),
+    'cache_expires' => 30,
+    'default_location' => 
+    array (
+      'ip' => '127.0.0.0',
+      'iso_code' => 'US',
+      'country' => 'United States',
+      'city' => 'New Haven',
+      'state' => 'CT',
+      'state_name' => 'Connecticut',
+      'postal_code' => '06510',
+      'lat' => 41.31,
+      'lon' => -72.92,
+      'timezone' => 'America/New_York',
+      'continent' => 'NA',
+      'default' => true,
+      'currency' => 'USD',
     ),
   ),
   'google2fa' => 

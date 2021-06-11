@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKYCSTable extends Migration
+class CreateLoginAttemptsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateKYCSTable extends Migration
      */
     public function up()
     {
-        Schema::create('k_y_c_s', function (Blueprint $table) {
+        Schema::create('login_attempts', function (Blueprint $table) {
             $table->id();
+
+
+
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('document_type');
 
             $table->softDeletes();
             $table->timestamps();
@@ -31,6 +33,6 @@ class CreateKYCSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('k_y_c_s');
+        Schema::dropIfExists('login_attempts');
     }
 }

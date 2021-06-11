@@ -74,6 +74,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOtp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpDatetime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpTries($value)
+ * @property int $google2fa_enable
+ * @property string|null $google2fa_secret
+ * @property-read mixed $full_name
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGoogle2faEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGoogle2faSecret($value)
  */
 class User extends Authenticatable
 {
