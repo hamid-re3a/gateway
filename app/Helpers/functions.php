@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\EmailAndTextSetting;
+use App\Models\EmailSetting;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +19,7 @@ function getSetting($key){
 
 function getEmailAndTextSetting($key){
     if(DB::table('email_and_text_settings')->exists()){
-        $setting = EmailAndTextSetting::query()->where('key',$key)->first();
+        $setting = EmailSetting::query()->where('key',$key)->first();
         if($setting && !empty($setting->value))
             return $setting->toArray();
     }

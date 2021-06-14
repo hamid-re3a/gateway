@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\EmailAndTextSetting;
+use App\Models\EmailSetting;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
@@ -31,14 +31,14 @@ class SettingTableSeeder extends Seeder
         }
         foreach (EMAIL_AND_TEXT_SETTINGS as $key => $setting) {
 
-            if (!EmailAndTextSetting::query()->whereKey($key)->exists()) {
-                EmailAndTextSetting::query()->create([
+            if (!EmailSetting::query()->whereKey($key)->exists()) {
+                EmailSetting::query()->create([
                     'key' => $key,
                     'subject' => $setting['subject'],
                     'from' => $setting['from'],
                     'from_name' => $setting['from_name'],
                     'body' => $setting['body'],
-                    'variables_number' => $setting['variables_number'],
+                    'variables' => $setting['variables'],
                     'variables_description' => $setting['variables_description'],
                     'type' => $setting['type'],
                 ]);

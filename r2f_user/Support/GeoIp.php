@@ -2,19 +2,19 @@
 
 namespace R2FUser\Support;
 
-use App\Models\UserAgent;
 use MaxMind\Db\Reader\InvalidDatabaseException;
-use PragmaRX\Google2FALaravel\Exceptions\InvalidSecretKey;
 
 class GeoIp
 {
     public static function getInfo($ip)
     {
+        if(is_null($ip))
+            return null;
         if (!$ip)
             $ip = request()->ip();
 
         try {
-            $reader = new \GeoIp2\Database\Reader(storage_path('app/new_geoip.mmdb'));
+            $reader = new \GeoIp2\Database\Reader(__DIR__ . '/../storage/geoip.mmdb');
             $city = $reader->city($ip);
             $user_agent = new UserAgent();
             $user_agent->iso_code = $city->country->isoCode;
@@ -29,6 +29,7 @@ class GeoIp
             $user_agent->state = $city->mostSpecificSubdivision->isoCode;
             return $user_agent;
         } catch (InvalidDatabaseException $e) {
+            return null;
         }
     }
 

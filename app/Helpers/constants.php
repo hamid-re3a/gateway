@@ -34,18 +34,18 @@ const EMAIL_AND_TEXT_SETTINGS = [
         'subject' => 'Forget Password Otp',
         'from' => 'info@r2f.com',
         'from_name' => 'Site Administration',
-        'body' => '<p>Hello, %s</p><p>Your otp token is %s</p>',
-        'variables_number' => 2,
-        'variables_description' => '%s user full name, %s otp token',
+        'body' => '<p>Hello, {{full_name}}</p><p>Your otp token is {{otp}}</p>',
+        'variables' => 'full_name,otp',
+        'variables_description' => 'full_name user full name, otp otp token',
         'type' => 'email'
     ],
     'USER_REGISTRATION_WELCOME_EMAIL' => [
         'subject' => 'Welcome',
         'from' => 'info@r2f.com',
         'from_name' => 'Site Administration',
-        'body' => '<p>Hello, %s</p><p>Welcome to Ride to Future</p>',
-        'variables_number' => 1,
-        'variables_description' => '%s user full name',
+        'body' => '<p>Hello, {{full_name}}</p><p>Welcome to Ride to Future</p>',
+        'variables' => 'full_name',
+        'variables_description' => 'full_name user full name',
         'type' => 'email'
     ]
 

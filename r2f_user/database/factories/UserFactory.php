@@ -2,7 +2,7 @@
 
 namespace R2FUser\database\factories;
 
-use App\Models\User;
+use R2FUser\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory

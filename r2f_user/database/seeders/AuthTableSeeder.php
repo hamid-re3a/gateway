@@ -2,7 +2,7 @@
 
 namespace R2FUser\database\seeders;
 
-use App\Models\User;
+use R2FUser\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -28,7 +28,7 @@ class AuthTableSeeder extends Seeder
                 'first_name' => 'admin',
                 'username' => 'admin',
                 'last_name' => 'admin',
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'password' => 'password'
             ]);
             $admin->assignRole(USER_ROLE_ADMIN);
         }

@@ -1,6 +1,8 @@
 <?php
 namespace R2FUser;
 
+use R2FUser\Models\User;
+use R2FUser\Observers\UserObserver;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,6 +35,9 @@ class UserServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(__DIR__.'/routes/api.php');
+
+//        User::observe(UserObserver::class);
+
     }
     /**
      * Determine if we should register the migrations.

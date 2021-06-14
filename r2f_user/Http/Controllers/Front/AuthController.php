@@ -2,10 +2,12 @@
 
 namespace R2FUser\Http\Controllers\Front;
 
-use App\Notifications\User\OtpNotification;
+use Illuminate\Support\Facades\Mail;
+use R2FUser\Mail\User\OtpEmail;
+use R2FUser\Models\User;;
+use R2FUser\Notifications\User\OtpNotification;
 use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Http\Helpers\ResponseData;
-use App\Models\User;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use R2FUser\Http\Requests\Auth\LoginRequest;
@@ -41,7 +43,6 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         $user = User::query()->where('email', $credentials['email'])->first();
-
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
         }
@@ -73,7 +74,7 @@ class AuthController extends Controller
             return ResponseData::error($err);
         }
 
-        $user->notify(new OtpNotification($token));
+        Mail::to($user->email)->send(new OtpEmail($user,$token));
 
         return ResponseData::success(trans('responses.otp-successfully-sent'));
     }
