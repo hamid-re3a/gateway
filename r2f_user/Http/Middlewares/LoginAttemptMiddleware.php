@@ -2,6 +2,7 @@
 
 namespace R2FUser\Http\Middlewares;
 
+use R2FUser\Jobs\EmailJob;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class LoginAttemptMiddleware
      */
     private function isLoginFromNewIp($ip_db, $user)
     {
-        return !is_null($ip_db) && LoginAttemptModel::query()->where('user_id',$user->id)->where("ip_id", $ip_db->id)->count() == 1;
+        return !is_null($ip_db) && LoginAttemptModel::query()->where('user_id', $user->id)->where("ip_id", $ip_db->id)->count() == 1;
     }
 
     /**
@@ -62,7 +63,7 @@ class LoginAttemptMiddleware
      */
     private function isLoginFromNewAgent($agent_db, $user): bool
     {
-        return (!is_null($agent_db) && LoginAttemptModel::query()->where('user_id',$user->id)->where("agent_id", $agent_db->id)->count() == 1 );
+        return (!is_null($agent_db) && LoginAttemptModel::query()->where('user_id', $user->id)->where("agent_id", $agent_db->id)->count() == 1);
     }
 
     /**
@@ -82,21 +83,23 @@ class LoginAttemptMiddleware
     private function blockSuspiciousActivity($user, $login_attempt): void
     {
         $intervals = explode(',', getSetting('MAX_LOGIN_ATTEMPTS_INTERVALS'));
-        array_reverse($intervals);
 
         $tries = getSetting('MAX_LOGIN_ATTEMPTS_TRIES');
 
         foreach ($intervals as $key => $interval) {
-
-            if (LoginAttemptModel::query()->where('is_success', false)
-                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), Carbon::tomorrow()->format('Y-m-d H:i:s')])
-                    ->count() >= ($key + 1) * $tries) {
+            if ($key == 0)
+                $sub_interval = 0;
+            else
+                $sub_interval = $intervals[$key - 1];
+            if (LoginAttemptModel::query()->where('is_success', 2)
+                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), now()->subSeconds($sub_interval)->format('Y-m-d H:i:s')])
+                    ->count() >= $tries) {
                 //if($key == 0 ){
                 //TODO block user
                 //}
-                $login_attempt->is_success = 2;
+                $login_attempt->is_success = 3;
                 $login_attempt->save();
-                Mail::to($user->email)->send(new SuspiciousLoginAttemptEmail($user, $login_attempt));
+                EmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt),$user->email)->onQueue(QUEUES_EMAIL);
                 abort(401, trans('responses.max-login-attempt-exceeded'));
             }
         }
@@ -108,7 +111,7 @@ class LoginAttemptMiddleware
      * @param $agent_db
      * @param $login_attempt
      */
-    private function sendMailForSuspiciousNewIpOrDevice($user, $ip_db, $agent_db, $login_attempt): void
+    private function sendMailForSuspiciousNewIpOrDevice($user, $ip_db, $agent_db, LoginAttemptModel $login_attempt): void
     {
         if (
             $this->userHasAlreadyAtLeastOneLoginAttempt($user) &&
@@ -117,7 +120,9 @@ class LoginAttemptMiddleware
                 $this->isLoginFromNewAgent($agent_db, $user)
             )
         ) {
-            Mail::to($user->email)->send(new SuspiciousLoginAttemptEmail($user, $login_attempt));
+            $login_attempt->is_from_new_device = 1;
+            $login_attempt->save();
+            EmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt),$user->email)->onQueue(QUEUES_EMAIL);
         }
     }
 }

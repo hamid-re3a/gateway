@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\User;
 
-use App\Models\Order;
-use App\Models\ReferralTree;
 use R2FUser\Models\User;
 use Tests\TestCase;
 

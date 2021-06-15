@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class OtpEmail extends Mailable
+class EmailVerifyOtp extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -25,6 +25,7 @@ class OtpEmail extends Mailable
         $this->token = $token;
     }
 
+
     /**
      * Build the message.
      *
@@ -33,14 +34,14 @@ class OtpEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('OTP_FORGET_PASSWORD_EMAIL');
+        $setting = getEmailAndTextSetting('EMAIL_VERIFICATION_OTP_EMAIL');
 
+        $setting['body'] = str_replace('{{otp}}',$this->token,$setting['body']);
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
-        $setting['body'] = str_replace('{{otp}}',$this->user->token,$setting['body']);
 
         return $this
             ->from($setting['from'], $setting['from_name'])
             ->subject($setting['subject'])
-            ->html($setting['body']);
+            ->html( $setting['body']);
     }
 }

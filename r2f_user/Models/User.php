@@ -2,12 +2,18 @@
 
 namespace R2FUser\Models;
 
+use R2FUser\Jobs\EmailJob;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use R2FUser\Mail\User\EmailVerifyOtp;
+use R2FUser\Mail\User\ForgetPasswordOtpEmail;
+use R2FUser\Mail\User\WelcomeEmail;
+use R2FUser\Support\UserActivityHelper;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -79,6 +85,14 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read mixed $full_name
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGoogle2faEnable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGoogle2faSecret($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\R2FUser\Models\LoginAttempt[] $loginAttempts
+ * @property-read int|null $login_attempts_count
+ * @property int $is_email_verified
+ * @property string|null $email_verified_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\R2FUser\Models\Otp[] $otps
+ * @property-read int|null $otps_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsEmailVerified($value)
  */
 class User extends Authenticatable
 {
@@ -100,6 +114,7 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
     public function getFullNameAttribute()
     {
         return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
@@ -112,9 +127,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(KYC::class);
     }
+
     public function loginAttempts()
     {
         return $this->hasMany(LoginAttempt::class);
+    }
+
+    public function otps()
+    {
+        return $this->hasMany(Otp::class);
     }
 
 
@@ -122,6 +143,10 @@ class User extends Authenticatable
      * methods
      */
 
+    public function isEmailVerified():bool
+    {
+        return (bool) ($this->is_email_verified == true);
+    }
 
     /**
      * @throws \Exception
@@ -130,28 +155,91 @@ class User extends Authenticatable
     {
         $token = null;
         $error = null;
-        if (is_null($this->otp_datetime))
-            $this->otp_datetime = Carbon::now();
 
-        $diff_last_try_in_minutes = Carbon::now()->diffInMonths(Carbon::make($this->otp_datetime));
-        if ($diff_last_try_in_minutes > getSetting("USER_OTP_DURATION")) {
-            $this->otp_tries = 1;
+        $intervals = explode(',', getSetting('USER_FORGET_PASSWORD_OTP_INTERVALS'));
+
+        $tries = getSetting('USER_FORGET_PASSWORD_OTP_TRIES');
+
+        foreach ($intervals as $key => $interval) {
+            if ($key == 0)
+                $sub_interval = 0;
+            else
+                $sub_interval = $intervals[$key - 1];
+
+
+            if (Otp::query()
+                    ->type(OTP_EMAIL_FORGET_PASSWORD)
+                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), now()->subSeconds($sub_interval)->format('Y-m-d H:i:s')])
+                    ->count() <= $tries) {
+                $token = Str::random(4);
+
+                list($ip_db, $agent_db) = UserActivityHelper::getInfo();
+                Otp::query()->create([
+                    "user_id" => $this->id,
+                    "ip_id" => is_null($ip_db) ? null : $ip_db->id,
+                    "agent_id" => is_null($agent_db) ? null : $agent_db->id,
+                    "otp" => $token,
+                    "type" => OTP_EMAIL_FORGET_PASSWORD
+                ]);
+                EmailJob::dispatch(new ForgetPasswordOtpEmail($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
+                return [$token, $error];
+
+            }
         }
-
-        $this->otp_datetime = Carbon::now();
-        $this->otp_tries += 1;
-
-
-        if ($this->otp_tries >= getSetting("USER_OTP_MAX_TRIES")) {
-            $error = trans('responses.max-otp-exceed');
-        } else {
-            $token = Str::random(4);
-            $this->otp = $token;
-        }
-        $this->save();
-
+        $error = true;
         return [$token, $error];
 
 
     }
+
+    /**
+     * @param bool $is_welcome
+     * @return array
+     * @throws \Exception
+     */
+    public function makeEmailVerificationOtp($is_welcome = true): array
+    {
+        $token = null;
+        $error = null;
+
+        $intervals = explode(',', getSetting('USER_EMAIL_VERIFICATION_OTP_INTERVALS'));
+
+        $tries = getSetting('USER_EMAIL_VERIFICATION_OTP_TRIES');
+
+        foreach ($intervals as $key => $interval) {
+            if ($key == 0)
+                $sub_interval = 0;
+            else
+                $sub_interval = $intervals[$key - 1];
+
+
+            if (Otp::query()
+                    ->type(OTP_EMAIL_VERIFICATION)
+                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), now()->subSeconds($sub_interval)->format('Y-m-d H:i:s')])
+                    ->count() <= $tries) {
+                $token = Str::random(4);
+
+                list($ip_db, $agent_db) = UserActivityHelper::getInfo();
+                Otp::query()->create([
+                    "user_id" => $this->id,
+                    "ip_id" => is_null($ip_db) ? null : $ip_db->id,
+                    "agent_id" => is_null($agent_db) ? null : $agent_db->id,
+                    "otp" => $token,
+                    "type" => OTP_EMAIL_VERIFICATION
+                ]);
+
+                if ($is_welcome)
+                    EmailJob::dispatch(new WelcomeEmail($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
+                else
+                    EmailJob::dispatch(new EmailVerifyOtp($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
+                return [$token, $error];
+
+            }
+        }
+        $error = true;
+        return [$token, $error];
+
+
+    }
+
 }

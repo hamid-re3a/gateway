@@ -72,6 +72,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Agent wherePlatformVersion($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Agent whereRobot($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Agent whereUserAgent($value)
+ * @property string|null $is_phone
+ * @property int $hit
+ * @method static \Illuminate\Database\Eloquent\Builder|Agent whereHit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Agent whereIsPhone($value)
  */
 class Agent extends Model
 {

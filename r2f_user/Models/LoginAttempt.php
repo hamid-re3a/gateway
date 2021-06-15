@@ -28,6 +28,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIsFromNewDevice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIsSuccess($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereUserAgentId($value)
+ * @property int|null $ip_id
+ * @property-read \R2FUser\Models\Agent|null $agent
+ * @property-read string $login_status
+ * @property-read \R2FUser\Models\Ip|null $ip
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereAgentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIpId($value)
  */
 class LoginAttempt extends Model
 {
@@ -38,16 +44,16 @@ class LoginAttempt extends Model
     public function getLoginStatusAttribute(): string
     {
         switch ($this->is_success) {
-            case 0:
+            case 2:
                 $status = 'failed';
                 break;
             case 1:
                 $status = 'succeed';
                 break;
-            case 2:
+            case 3:
                 $status = 'blocked';
                 break;
-            case null:
+            case 0:
             default:
                 $status = 'on going';
         }

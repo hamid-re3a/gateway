@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::LsiMZMOHndCatpiT',
+            '_route' => 'generated::sQmGp2sZ5odEzZc1',
           ),
           1 => NULL,
           2 => 
@@ -136,6 +136,44 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/get_email_verify_token' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authask-for-email-otp',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/verify_email_token' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authverify-email-otp',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/forget_password' => 
       array (
         0 => 
@@ -143,6 +181,25 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'authforget-password',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/reset_forget_password' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authreset-forget-password',
           ),
           1 => NULL,
           2 => 
@@ -387,7 +444,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::LsiMZMOHndCatpiT' => 
+    'generated::sQmGp2sZ5odEzZc1' => 
     array (
       'methods' => 
       array (
@@ -408,7 +465,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::LsiMZMOHndCatpiT',
+        'as' => 'generated::sQmGp2sZ5odEzZc1',
       ),
       'fallback' => false,
       'defaults' => 
@@ -496,6 +553,78 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
+    'authask-for-email-otp' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/get_email_verify_token',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
+        'as' => 'authask-for-email-otp',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'authverify-email-otp' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/verify_email_token',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
+        'as' => 'authverify-email-otp',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
     'authforget-password' => 
     array (
       'methods' => 
@@ -513,6 +642,42 @@ app('router')->setCompiledRoutes(
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
         'as' => 'authforget-password',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'authreset-forget-password' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/reset_forget_password',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
+        'as' => 'authreset-forget-password',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -585,6 +750,7 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'user_activity',
           2 => 'auth:sanctum',
+          3 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
@@ -622,6 +788,7 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'user_activity',
           2 => 'auth:sanctum',
+          3 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
@@ -659,6 +826,7 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'user_activity',
           2 => 'auth:sanctum',
+          3 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
@@ -696,7 +864,8 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'user_activity',
           2 => 'auth:sanctum',
-          3 => '2fa',
+          3 => 'email_verified',
+          4 => '2fa',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
@@ -734,6 +903,7 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'user_activity',
           2 => 'auth:sanctum',
+          3 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',

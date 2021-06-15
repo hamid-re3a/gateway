@@ -6,7 +6,7 @@ use App\Http\Helpers\ResponseData;
 use R2FUser\Support\Google2FAAuthenticator;
 use Closure;
 
-class LoginSecurityMiddleware
+class Login2FAMiddleware
 {
 
     public function handle($request, Closure $next)

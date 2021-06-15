@@ -50,6 +50,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Ip whereUserId($value)
  * @property string|null $os
  * @method static \Illuminate\Database\Eloquent\Builder|Ip whereOs($value)
+ * @property int $hit
+ * @method static \Illuminate\Database\Eloquent\Builder|Ip whereHit($value)
  */
 class Ip extends Model
 {

@@ -2,8 +2,15 @@
 
 
 const APP_NAME = 'Ride To Future';
-const USER_OTP_DURATION = 30;
-const USER_OTP_MAX_TRIES = 3;
+const USER_FORGET_PASSWORD_OTP_DURATION = 90;
+const USER_FORGET_PASSWORD_OTP_INTERVALS = 90;
+const USER_FORGET_PASSWORD_OTP_TRIES = 3;
+
+const USER_EMAIL_VERIFICATION_OTP_DURATION = 90;
+const USER_EMAIL_VERIFICATION_OTP_INTERVALS = 90;
+const USER_EMAIL_VERIFICATION_OTP_TRIES = 3;
+
+
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 const MAX_LOGIN_ATTEMPTS_INTERVALS = '3,30,90';
 const MAX_LOGIN_ATTEMPTS_TRIES = 3;
@@ -14,30 +21,50 @@ const SETTINGS = [
         'description' => 'Website name',
         'category' => 'General'
     ],
-    'USER_OTP_DURATION' => [
-        'value' => USER_OTP_DURATION,
-        'description' => '(in minutes) This is used with max user tries to stop user requesting a lot for forget password otp.',
-        'category' => 'Notification'
+    'USER_FORGET_PASSWORD_OTP_INTERVALS' => [
+        'value' => USER_FORGET_PASSWORD_OTP_INTERVALS,
+        'description' => '(in seconds) This is used with max user tries to stop user requesting a lot for forget password otp.',
+        'category' => 'User'
     ],
-    'USER_OTP_MAX_TRIES' => [
-        'value' => USER_OTP_MAX_TRIES,
+    'USER_FORGET_PASSWORD_OTP_DURATION' => [
+        'value' => USER_FORGET_PASSWORD_OTP_DURATION,
+        'description' => '(in seconds) Forget otp is valid for 90 seconds as default.',
+        'category' => 'User'
+    ],
+    'USER_FORGET_PASSWORD_OTP_TRIES' => [
+        'value' => USER_FORGET_PASSWORD_OTP_TRIES,
         'description' => 'This is used with max user duration to stop user requesting a lot for forget password otp',
-        'category' => 'Notification'
+        'category' => 'User'
+    ],
+    'USER_EMAIL_VERIFICATION_OTP_INTERVALS' => [
+        'value' => USER_EMAIL_VERIFICATION_OTP_INTERVALS,
+        'description' => '(in seconds) This is used with max user tries to stop user requesting a lot for email verification  otp.',
+        'category' => 'User'
+    ],
+    'USER_EMAIL_VERIFICATION_OTP_DURATION' => [
+        'value' => USER_EMAIL_VERIFICATION_OTP_DURATION,
+        'description' => '(in seconds) Email verification otp is valid for 90 seconds as default.',
+        'category' => 'User'
+    ],
+    'USER_EMAIL_VERIFICATION_OTP_TRIES' => [
+        'value' => USER_EMAIL_VERIFICATION_OTP_TRIES,
+        'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
+        'category' => 'User'
     ],
     'USER_REGISTRATION_PASSWORD_CRITERIA' => [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
         'description' => 'Password pattern for user registration',
-        'category' => 'User Registration'
+        'category' => 'User'
     ],
     'MAX_LOGIN_ATTEMPTS_INTERVALS' => [
         'value' => MAX_LOGIN_ATTEMPTS_INTERVALS,
         'description' => 'Max login attempt intervals separated with , ',
-        'category' => 'User Login'
+        'category' => 'User'
     ],
     'MAX_LOGIN_ATTEMPTS_TRIES' => [
         'value' => MAX_LOGIN_ATTEMPTS_TRIES,
         'description' => 'Max login attempt per interval ',
-        'category' => 'User Login'
+        'category' => 'User'
     ]
 ];
 
@@ -51,13 +78,22 @@ const EMAIL_SETTINGS = [
         'variables_description' => 'full_name user full name, otp otp token',
         'type' => 'email'
     ],
+    'EMAIL_VERIFICATION_OTP_EMAIL' => [
+        'subject' => 'Email Verification Otp',
+        'from' => 'info@r2f.com',
+        'from_name' => 'Site Administration',
+        'body' => '<p>Hello, {{full_name}}</p><p>Your otp token to verify email is {{otp}}</p>',
+        'variables' => 'full_name,otp',
+        'variables_description' => 'full_name user full name, otp otp token',
+        'type' => 'email'
+    ],
     'USER_REGISTRATION_WELCOME_EMAIL' => [
         'subject' => 'Welcome',
         'from' => 'info@r2f.com',
         'from_name' => 'Site Administration',
-        'body' => '<p>Hello, {{full_name}}</p><p>Welcome to Ride to Future</p>',
-        'variables' => 'full_name',
-        'variables_description' => 'full_name user full name',
+        'body' => '<p>Hello, {{full_name}}</p><p>Welcome to Ride to Future, You can activate your email by this token {{otp}}</p>',
+        'variables' => 'full_name,otp',
+        'variables_description' => 'full_name user full name, otp otp token',
         'type' => 'email'
     ],
     'SUSPICIOUS_LOGIN_ATTEMPT_EMAIL' => [
@@ -73,6 +109,7 @@ const EMAIL_SETTINGS = [
 
 ];
 
+const QUEUES_EMAIL = 'emails';
 
 /**
  * user_roles
@@ -97,8 +134,15 @@ const DOCUMENT_TYPES = [
     DOCUMENT_TYPES_PASSPORT,
     DOCUMENT_TYPES_NATIONAL_ID,
 ];
-
-
+/**
+ * otp types
+ */
+const OTP_EMAIL_VERIFICATION = 'OTP_EMAIL_VERIFICATION';
+const OTP_EMAIL_FORGET_PASSWORD = 'OTP_EMAIL_FORGET_PASSWORD';
+const OTP_TYPES = [
+    OTP_EMAIL_VERIFICATION,
+    OTP_EMAIL_FORGET_PASSWORD
+];
 /**
  * media types
  */

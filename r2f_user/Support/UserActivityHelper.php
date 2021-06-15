@@ -13,15 +13,22 @@ class UserActivityHelper
      * @param Request $request
      * @return array
      */
-    public static function getInfo(Request $request): array
+    public static function getInfo(?Request $request = null ): array
     {
+
+        if(is_null($request))
+            $request = new Request();
         $ip_db = null;
         if (!is_null($request->ip())) {
             $ip = GeoIp::getInfo($request->ip());
-            $ip_db = Ip::query()->firstOrCreate($ip->toArray());
-
-            $ip_db->hit = $ip_db->hit+1 ;
-            $ip_db->save();
+            if(is_null($ip))
+                $ip_db = Ip::query()->firstOrCreate($ip->toArray());
+            else
+                $ip_db = Ip::query()->firstOrCreate(['ip'=>$request->ip()]);
+            if(!is_null($request)){
+                $ip_db->hit = $ip_db->hit+1 ;
+                $ip_db->save();
+            }
         }
         $agent_db = null;
         if (!is_null($request->userAgent())) {
@@ -41,8 +48,10 @@ class UserActivityHelper
                 "browser_version" => $agentJess->version($agentJess->browser()),
                 "user_agent" => $request->userAgent(),
             ]);
-            $agent_db->hit = $agent_db->hit+1 ;
-            $agent_db->save();
+            if(!is_null($request)) {
+                $agent_db->hit = $agent_db->hit + 1;
+                $agent_db->save();
+            }
         }
         return array($ip_db, $agent_db);
     }
