@@ -18,14 +18,16 @@ function getSetting($key){
 }
 
 function getEmailAndTextSetting($key){
-    if(DB::table('email_and_text_settings')->exists()){
+    if(DB::table('email_settings')->exists()){
         $setting = EmailSetting::query()->where('key',$key)->first();
         if($setting && !empty($setting->value))
             return $setting->toArray();
     }
 
-    if(isset(EMAIL_AND_TEXT_SETTINGS[$key]))
-        return EMAIL_AND_TEXT_SETTINGS[$key];
+    if(isset(EMAIL_SETTINGS[$key]))
+        return EMAIL_SETTINGS[$key];
 
     throw new Exception(trans('responses.main-key-settings-is-missing'));
 }
+
+

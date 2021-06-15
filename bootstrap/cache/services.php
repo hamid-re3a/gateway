@@ -48,6 +48,7 @@
     44 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
     45 => 'R2FUser\\UserServiceProvider',
     46 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+    47 => 'Jenssegers\\Agent\\AgentServiceProvider',
   ),
   'eager' => 
   array (
@@ -83,6 +84,7 @@
     29 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
     30 => 'R2FUser\\UserServiceProvider',
     31 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+    32 => 'Jenssegers\\Agent\\AgentServiceProvider',
   ),
   'deferred' => 
   array (

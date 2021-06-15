@@ -8,6 +8,8 @@ use App\Http\Middleware\Client;
 use App\Http\Middleware\Network;
 use App\Http\Middleware\TemporaryBlockMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use R2FUser\Http\Middlewares\LoginAttemptMiddleware;
+use R2FUser\Http\Middlewares\UserActivityMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -45,7 +47,7 @@ class Kernel extends HttpKernel
         ],
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            'throttle:api',
+//            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -71,5 +73,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         '2fa' => \R2FUser\Http\Middlewares\LoginSecurityMiddleware::class,
+        'user_activity' => UserActivityMiddleware::class,
+        'login_attempt' => LoginAttemptMiddleware::class,
     ];
 }

@@ -37,7 +37,7 @@ toc_footers:
 <script>
     var baseUrl = "http://localhost:3541";
 </script>
-<script src="js/tryitout-2.7.7.js"></script>
+<script src="js/tryitout-2.7.9.js"></script>
 
 > Base URL
 

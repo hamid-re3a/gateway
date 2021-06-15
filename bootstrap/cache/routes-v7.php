@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::fakXZnf2zwUxrmqy',
+            '_route' => 'generated::LsiMZMOHndCatpiT',
           ),
           1 => NULL,
           2 => 
@@ -387,7 +387,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::fakXZnf2zwUxrmqy' => 
+    'generated::LsiMZMOHndCatpiT' => 
     array (
       'methods' => 
       array (
@@ -408,7 +408,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::fakXZnf2zwUxrmqy',
+        'as' => 'generated::LsiMZMOHndCatpiT',
       ),
       'fallback' => false,
       'defaults' => 
@@ -435,6 +435,7 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
@@ -470,6 +471,8 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
+          2 => 'login_attempt',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
@@ -505,6 +508,7 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
@@ -541,7 +545,8 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth:sanctum',
+          1 => 'user_activity',
+          2 => 'auth:sanctum',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
@@ -578,7 +583,8 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth:sanctum',
+          1 => 'user_activity',
+          2 => 'auth:sanctum',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
@@ -614,7 +620,8 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth:sanctum',
+          1 => 'user_activity',
+          2 => 'auth:sanctum',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
@@ -650,7 +657,8 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth:sanctum',
+          1 => 'user_activity',
+          2 => 'auth:sanctum',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
@@ -686,8 +694,9 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth:sanctum',
-          2 => '2fa',
+          1 => 'user_activity',
+          2 => 'auth:sanctum',
+          3 => '2fa',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
@@ -723,7 +732,8 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth:sanctum',
+          1 => 'user_activity',
+          2 => 'auth:sanctum',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',

@@ -36,7 +36,7 @@ class UserServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(__DIR__.'/routes/api.php');
 
-//        User::observe(UserObserver::class);
+        User::observe(UserObserver::class);
 
     }
     /**

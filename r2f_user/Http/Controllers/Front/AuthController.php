@@ -4,8 +4,9 @@ namespace R2FUser\Http\Controllers\Front;
 
 use Illuminate\Support\Facades\Mail;
 use R2FUser\Mail\User\OtpEmail;
+use R2FUser\Mail\User\SuspiciousLoginAttemptEmail;
+use R2FUser\Models\LoginAttempt;
 use R2FUser\Models\User;;
-use R2FUser\Notifications\User\OtpNotification;
 use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Http\Helpers\ResponseData;
 use Illuminate\Routing\Controller;
@@ -43,7 +44,14 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         $user = User::query()->where('email', $credentials['email'])->first();
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+
+        if (!Hash::check($credentials['password'], $user->password)) {
+            $login_attempt  = LoginAttempt::find($request->attributes->get('login_attempt'));
+            if($login_attempt){
+                $login_attempt->is_success = false;
+                $login_attempt->save();
+                Mail::to($user->email)->send(new SuspiciousLoginAttemptEmail($user, $login_attempt));
+            }
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
         }
         $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;

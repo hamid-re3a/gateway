@@ -177,6 +177,7 @@ return [
         PragmaRX\Google2FALaravel\ServiceProvider::class,
         \R2FUser\UserServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
     ],
 
     /*
@@ -230,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];

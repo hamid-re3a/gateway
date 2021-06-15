@@ -3,6 +3,7 @@
 namespace R2FUser\Support;
 
 use MaxMind\Db\Reader\InvalidDatabaseException;
+use R2FUser\Models\Ip;
 
 class GeoIp
 {
@@ -16,7 +17,8 @@ class GeoIp
         try {
             $reader = new \GeoIp2\Database\Reader(__DIR__ . '/../storage/geoip.mmdb');
             $city = $reader->city($ip);
-            $user_agent = new UserAgent();
+            $user_agent = new Ip();
+            $user_agent->ip = request()->ip();
             $user_agent->iso_code = $city->country->isoCode;
             $user_agent->country = $city->country->name;
             $user_agent->city = $city->city->name;

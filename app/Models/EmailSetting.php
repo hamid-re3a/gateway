@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSetting whereVariablesDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EmailSetting whereVariablesNumber($value)
  * @mixin \Eloquent
+ * @property string $variables
+ * @method static \Illuminate\Database\Eloquent\Builder|EmailSetting whereVariables($value)
  */
 class EmailSetting extends Model
 {

@@ -112,6 +112,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(KYC::class);
     }
+    public function loginAttempts()
+    {
+        return $this->hasMany(LoginAttempt::class);
+    }
 
 
     /**

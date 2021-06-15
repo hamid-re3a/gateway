@@ -74,6 +74,7 @@
       27 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
       28 => 'R2FUser\\UserServiceProvider',
       29 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+      30 => 'Jenssegers\\Agent\\AgentServiceProvider',
     ),
     'aliases' => 
     array (
@@ -114,6 +115,7 @@
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Google2FA' => 'PragmaRX\\Google2FALaravel\\Facade',
       'GeoIP' => 'Torann\\GeoIP\\Facades\\GeoIP',
+      'Agent' => 'Jenssegers\\Agent\\Facades\\Agent',
     ),
   ),
   'auth' => 
@@ -147,7 +149,7 @@
       'users' => 
       array (
         'driver' => 'eloquent',
-        'model' => 'App\\Models\\User',
+        'model' => 'R2FUser\\Models\\User',
       ),
     ),
     'passwords' => 
@@ -578,6 +580,7 @@
     'model_locations' => 
     array (
       0 => 'app',
+      1 => 'r2f_user',
     ),
     'ignored_models' => 
     array (

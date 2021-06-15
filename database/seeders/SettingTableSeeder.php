@@ -29,7 +29,7 @@ class SettingTableSeeder extends Seeder
                 $key->save();
             }
         }
-        foreach (EMAIL_AND_TEXT_SETTINGS as $key => $setting) {
+        foreach (EMAIL_SETTINGS as $key => $setting) {
 
             if (!EmailSetting::query()->whereKey($key)->exists()) {
                 EmailSetting::query()->create([

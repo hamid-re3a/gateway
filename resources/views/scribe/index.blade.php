@@ -45,7 +45,7 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: June 11 2021</li>
+            <li>Last updated: June 14 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -61,7 +61,7 @@
 <script>
     var baseUrl = "http://localhost:3541";
 </script>
-<script src="{{ asset("vendor/scribe/js/tryitout-2.7.7.js") }}"></script>
+<script src="{{ asset("vendor/scribe/js/tryitout-2.7.9.js") }}"></script>
 <blockquote>
 <p>Base URL</p>
 </blockquote>
@@ -907,7 +907,7 @@ $response = $client-&gt;put(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phppnFm0K', 'r')
+                'contents' =&gt; fopen('/tmp/phpHfyeko', 'r')
             ],
         ],
     ]
@@ -919,7 +919,7 @@ import json
 
 url = 'http://localhost:3541/api/kyc/upload'
 files = {
-  'file': open('/tmp/phppnFm0K', 'rb')
+  'file': open('/tmp/phpHfyeko', 'rb')
 }
 payload = {
     "document_type": "driving_licence"
@@ -938,7 +938,7 @@ response.json()</code></pre>
     -H "Content-Type: multipart/form-data" \
     -H "Accept: application/json" \
     -F "document_type=driving_licence" \
-    -F "file=@/tmp/phppnFm0K" </code></pre>
+    -F "file=@/tmp/phpHfyeko" </code></pre>
 <div id="execution-results-PUTapi-kyc-upload" hidden>
     <blockquote>Received response<span id="execution-response-status-PUTapi-kyc-upload"></span>:</blockquote>
     <pre class="json"><code id="execution-response-content-PUTapi-kyc-upload"></code></pre>

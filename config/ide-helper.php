@@ -129,6 +129,7 @@ return [
 
     'model_locations' => [
         'app',
+        'r2f_user',
     ],
 
     /*

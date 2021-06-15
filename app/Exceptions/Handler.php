@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
         if ($this->isHttpException($e)) {
             switch ($e->getStatusCode()) {
                 case '401':
-                    return ResponseData::error(trans('responses.login-again'), [], 401);
+                    return ResponseData::error($e->getMessage() ?? trans('responses.login-again'), [], 401);
                     break;
                 case '404':
                     return ResponseData::error(trans('responses.not-found'), [], 404);
@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
 
             }
         }
-            return ResponseData::error($e->getMessage(), [], 400);
+        return ResponseData::error($e->getMessage(), [], 400);
 
     }
 }

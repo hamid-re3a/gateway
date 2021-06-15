@@ -5,6 +5,8 @@ const APP_NAME = 'Ride To Future';
 const USER_OTP_DURATION = 30;
 const USER_OTP_MAX_TRIES = 3;
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
+const MAX_LOGIN_ATTEMPTS_INTERVALS = '3,30,90';
+const MAX_LOGIN_ATTEMPTS_TRIES = 3;
 
 const SETTINGS = [
     'APP_NAME' => [
@@ -26,10 +28,20 @@ const SETTINGS = [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
         'description' => 'Password pattern for user registration',
         'category' => 'User Registration'
+    ],
+    'MAX_LOGIN_ATTEMPTS_INTERVALS' => [
+        'value' => MAX_LOGIN_ATTEMPTS_INTERVALS,
+        'description' => 'Max login attempt intervals separated with , ',
+        'category' => 'User Login'
+    ],
+    'MAX_LOGIN_ATTEMPTS_TRIES' => [
+        'value' => MAX_LOGIN_ATTEMPTS_TRIES,
+        'description' => 'Max login attempt per interval ',
+        'category' => 'User Login'
     ]
 ];
 
-const EMAIL_AND_TEXT_SETTINGS = [
+const EMAIL_SETTINGS = [
     'OTP_FORGET_PASSWORD_EMAIL' => [
         'subject' => 'Forget Password Otp',
         'from' => 'info@r2f.com',
@@ -47,7 +59,17 @@ const EMAIL_AND_TEXT_SETTINGS = [
         'variables' => 'full_name',
         'variables_description' => 'full_name user full name',
         'type' => 'email'
+    ],
+    'SUSPICIOUS_LOGIN_ATTEMPT_EMAIL' => [
+        'subject' => 'Suspicious Login Attempt',
+        'from' => 'info@r2f.com',
+        'from_name' => 'Site Administration',
+        'body' => '<p>Hello, {{full_name}}</p><p>Someone tries to Login from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}} and login is {{status}} </p>',
+        'variables' => 'full_name,country,city,ip,platform,browser,status',
+        'variables_description' => 'full_name user full name',
+        'type' => 'email'
     ]
+
 
 ];
 
