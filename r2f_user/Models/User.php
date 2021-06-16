@@ -121,14 +121,13 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-
-        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD") ){
-            if(Hash::check($value,$this->attributes['password']))
+        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")){
+            if(!is_null($this->password) && Hash::check($value,$this->password) )
                 abort(400,trans('responses.password-already-used-by-you-try-another-one'));
 
             $passwords = $this->passwordHistories()->get();
             foreach($passwords as $item)
-                if(Hash::check($value,$item->password))
+                if(Hash::check($value,$item->password) && false)
                     abort(400,trans('responses.password-already-used-by-you-try-another-one'));
 
         }
