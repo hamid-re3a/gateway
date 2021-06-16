@@ -31,3 +31,24 @@ function getEmailAndTextSetting($key){
 }
 
 
+
+
+function hyphenate($str,int $every = 3) {
+    return implode("-", str_split($str, $every));
+}
+
+function sumUp(array $intervals,int $key){
+    $all_numeric = true;
+    foreach ($intervals as $sub_keys) {
+        if (!(is_numeric($sub_keys))) {
+            $all_numeric = false;
+            break;
+        }
+    }
+    if(!$all_numeric)
+        return 0;
+
+    if($key == 0)
+        return 0;
+    return $intervals[$key-1] + sumUp($intervals,$key-1);
+}

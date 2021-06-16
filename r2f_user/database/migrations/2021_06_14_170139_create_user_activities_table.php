@@ -27,6 +27,7 @@ class CreateUserActivitiesTable extends Migration
 
             $table->string('route')->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace R2FUser\Mail\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class ForgetPasswordOtpEmail extends Mailable
 {
@@ -33,10 +34,10 @@ class ForgetPasswordOtpEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('OTP_FORGET_PASSWORD_EMAIL');
+        $setting = getEmailAndTextSetting('FORGOT_PASSWORD_OTP_EMAIL');
 
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
-        $setting['body'] = str_replace('{{otp}}',$this->token,$setting['body']);
+        $setting['body'] = str_replace('{{otp}}',hyphenate($this->token),$setting['body']);
 
         return $this
             ->from($setting['from'], $setting['from_name'])

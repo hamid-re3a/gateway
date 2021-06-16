@@ -28,6 +28,7 @@ class CreateOtpsTable extends Migration
             $table->string('type')->default(OTP_EMAIL_VERIFICATION);
             $table->string('otp')->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

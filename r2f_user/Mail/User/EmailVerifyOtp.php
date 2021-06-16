@@ -34,10 +34,10 @@ class EmailVerifyOtp extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('EMAIL_VERIFICATION_OTP_EMAIL');
+        $setting = getEmailAndTextSetting('VERIFICATION_EMAIL_OTP_EMAIL');
 
-        $setting['body'] = str_replace('{{otp}}',$this->token,$setting['body']);
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
+        $setting['body'] = str_replace('{{otp}}',hyphenate($this->token),$setting['body']);
 
         return $this
             ->from($setting['from'], $setting['from_name'])

@@ -23,17 +23,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereUserId($value)
  * @property int|null $agent_id
- * @property int $is_success
+ * @property int $login_status
  * @property int $is_from_new_device
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIsFromNewDevice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIsSuccess($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereUserAgentId($value)
  * @property int|null $ip_id
  * @property-read \R2FUser\Models\Agent|null $agent
- * @property-read string $login_status
  * @property-read \R2FUser\Models\Ip|null $ip
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereAgentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereLoginStatus($value)
  */
 class LoginAttempt extends Model
 {
@@ -41,19 +41,19 @@ class LoginAttempt extends Model
     protected $guarded = [];
 
 
-    public function getLoginStatusAttribute(): string
+    public function getLoginStatusStringAttribute(): string
     {
-        switch ($this->is_success) {
-            case 2:
+        switch ($this->login_status) {
+            case LOGIN_ATTEMPT_STATUS_FAILED:
                 $status = 'failed';
                 break;
-            case 1:
-                $status = 'succeed';
+            case LOGIN_ATTEMPT_STATUS_SUCCESS:
+                $status = 'successful';
                 break;
-            case 3:
+            case LOGIN_ATTEMPT_STATUS_BLOCKED:
                 $status = 'blocked';
                 break;
-            case 0:
+            case LOGIN_ATTEMPT_STATUS_ON_GOING:
             default:
                 $status = 'on going';
         }

@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::sQmGp2sZ5odEzZc1',
+            '_route' => 'generated::nO30Axao79CvOAS2',
           ),
           1 => NULL,
           2 => 
@@ -174,13 +174,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/forget_password' => 
+      '/api/forgot_password' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'authforget-password',
+            '_route' => 'authforgot-password',
           ),
           1 => NULL,
           2 => 
@@ -193,13 +193,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/reset_forget_password' => 
+      '/api/reset_forgot_password' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'authreset-forget-password',
+            '_route' => 'authreset-forgot-password',
           ),
           1 => NULL,
           2 => 
@@ -232,6 +232,26 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/ping' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'ping',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/user' => 
       array (
         0 => 
@@ -239,6 +259,46 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'current-user',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/user_block_history' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'user-block-history',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/user_password_history' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'password-history',
           ),
           1 => NULL,
           2 => 
@@ -444,7 +504,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::sQmGp2sZ5odEzZc1' => 
+    'generated::nO30Axao79CvOAS2' => 
     array (
       'methods' => 
       array (
@@ -465,7 +525,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::sQmGp2sZ5odEzZc1',
+        'as' => 'generated::nO30Axao79CvOAS2',
       ),
       'fallback' => false,
       'defaults' => 
@@ -529,7 +589,8 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'login_attempt',
+          2 => 'block_user',
+          3 => 'login_attempt',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
@@ -566,6 +627,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
+          2 => 'block_user',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
@@ -602,6 +664,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
+          2 => 'block_user',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
@@ -625,23 +688,24 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authforget-password' => 
+    'authforgot-password' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'api/forget_password',
+      'uri' => 'api/forgot_password',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'api',
           1 => 'user_activity',
+          2 => 'block_user',
         ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgetPassword',
-        'as' => 'authforget-password',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgotPassword',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgotPassword',
+        'as' => 'authforgot-password',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -661,23 +725,24 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authreset-forget-password' => 
+    'authreset-forgot-password' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'api/reset_forget_password',
+      'uri' => 'api/reset_forgot_password',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'api',
           1 => 'user_activity',
+          2 => 'block_user',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
-        'as' => 'authreset-forget-password',
+        'as' => 'authreset-forgot-password',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -711,7 +776,8 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'auth:sanctum',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
@@ -721,6 +787,45 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'logout',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'ping' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/ping',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@ping',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@ping',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'ping',
       ),
       'fallback' => false,
       'defaults' => 
@@ -749,8 +854,9 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'auth:sanctum',
-          3 => 'email_verified',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
@@ -760,6 +866,86 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'current-user',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'user-block-history' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/user_block_history',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@blockHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@blockHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'user-block-history',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'password-history' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/user_password_history',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@passwordHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@passwordHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'password-history',
       ),
       'fallback' => false,
       'defaults' => 
@@ -787,8 +973,9 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'auth:sanctum',
-          3 => 'email_verified',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
@@ -825,8 +1012,9 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'auth:sanctum',
-          3 => 'email_verified',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
@@ -863,9 +1051,10 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'auth:sanctum',
-          3 => 'email_verified',
-          4 => '2fa',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => '2fa',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
@@ -902,8 +1091,9 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
-          2 => 'auth:sanctum',
-          3 => 'email_verified',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',

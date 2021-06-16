@@ -18,7 +18,7 @@ class UserActivityMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $request->server->add(['REMOTE_ADDR' => '89.41.7.95']);
+//        $request->server->add(['REMOTE_ADDR' => '89.41.7.95']);
         $user = null;
         if (auth()->check()) {
             $user = auth()->user();

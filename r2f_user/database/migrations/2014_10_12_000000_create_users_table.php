@@ -25,8 +25,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('transaction_password')->nullable();
 
-            $table->string('avatar')->nullable();
+            $table->string('block_type')->nullable();
+            $table->string('block_reason')->nullable();
 
+            $table->string('avatar')->nullable();
             $table->string('passport_number')->nullable();
 
             $table->boolean('is_email_verified')->default(false);

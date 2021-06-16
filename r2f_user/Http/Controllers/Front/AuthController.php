@@ -8,6 +8,7 @@ use R2FUser\Http\Requests\Auth\VerifyEmailOtpRequest;
 use R2FUser\Jobs\EmailJob;
 use Illuminate\Support\Facades\Mail;
 use R2FUser\Mail\User\ForgetPasswordOtpEmail;
+use R2FUser\Mail\User\PasswordChangedEmail;
 use R2FUser\Mail\User\SuspiciousLoginAttemptEmail;
 use R2FUser\Models\Otp;
 use R2FUser\Models\LoginAttempt;
@@ -18,7 +19,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use R2FUser\Http\Requests\Auth\LoginRequest;
 use R2FUser\Http\Requests\Auth\RegisterUserRequest;
-use R2FUser\Http\Resources\Auth\ProfileResource;
+use R2FUser\Http\Resources\Auth\PasswordHistoryResource;
+use R2FUser\Support\UserActivityHelper;
 
 class AuthController extends Controller
 {
@@ -35,9 +37,9 @@ class AuthController extends Controller
         unset($data['password_confirmation']);
         $user = User::query()->create($data);
 
-        $user->makeEmailVerificationOtp();
+        $user->makeEmailVerificationOtp($request);
 
-        $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
+        $token = $this->getNewTokenAndDeleteOthers($user);
 
         return $this->respondWithToken($token);
     }
@@ -57,15 +59,14 @@ class AuthController extends Controller
 
         $login_attempt  = LoginAttempt::find($request->attributes->get('login_attempt'));
         if (!Hash::check($credentials['password'], $user->password)) {
-                $login_attempt->is_success = 2;
+                $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_FAILED;
                 $login_attempt->save();
-                EmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt),$user->email)->onQueue(QUEUES_EMAIL);
 
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
         }
-        $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
+        $token = $this->getNewTokenAndDeleteOthers($user);
 
-        $login_attempt->is_success = 1;
+        $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
         return $this->respondWithToken($token);
     }
@@ -77,7 +78,7 @@ class AuthController extends Controller
      */
     public function getAuthUser()
     {
-        return ResponseData::success(trans('responses.success'),ProfileResource::make(auth()->user()));
+        return ResponseData::success(trans('responses.success'),PasswordHistoryResource::make(auth()->user()));
     }
     /**
      * Ask Email Verification Otp
@@ -89,7 +90,7 @@ class AuthController extends Controller
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        list($token,$err) = $user->makeEmailVerificationOtp();
+        list($token,$err) = $user->makeEmailVerificationOtp($request,false);
         if(!is_null($err)){
             return ResponseData::error(trans('responses.otp-exceeded-amount'));
         }
@@ -122,9 +123,9 @@ class AuthController extends Controller
             $user->email_verified_at = now();
             $user->save();
 
-            $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
+            $token = $this->getNewTokenAndDeleteOthers($user);
 
-            return $this->respondWithToken($token);
+            return $this->respondWithToken($token,'responses.email-verified-successfully');
         }
         return ResponseData::error('responses.otp-is-wrong');
 
@@ -136,10 +137,10 @@ class AuthController extends Controller
      * @unauthenticated
      * @throws \Exception
      */
-    public function forgetPassword(ForgetPasswordRequest $request)
+    public function forgotPassword(ForgetPasswordRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        list($token,$err) = $user->makeForgetPasswordOtp();
+        list($token,$err) = $user->makeForgetPasswordOtp($request);
         if(!is_null($err)){
             return ResponseData::error();
         }
@@ -157,9 +158,9 @@ class AuthController extends Controller
     public function resetForgetPassword(ResetForgetPasswordRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        $duration = getSetting('USER_FORGET_PASSWORD_OTP_DURATION');
+        $duration = getSetting('USER_FORGOT_PASSWORD_OTP_DURATION');
         $fp_db = $user->otps()
-            ->where('type',OTP_EMAIL_FORGET_PASSWORD)
+            ->where('type',OTP_EMAIL_FORGOT_PASSWORD)
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();
@@ -170,6 +171,11 @@ class AuthController extends Controller
         if($fp_db->otp == $request->otp){
             $user->password = $request->password;
             $user->save();
+            list($ip_db,$agent_db)= UserActivityHelper::getInfo($request);
+            EmailJob::dispatch(new PasswordChangedEmail($user,$ip_db,$agent_db),$user->email);
+
+
+
             return ResponseData::success(trans('responses.password-successfully-changed'));
         }
         return ResponseData::error('responses.otp-is-wrong');
@@ -187,14 +193,36 @@ class AuthController extends Controller
         return ResponseData::success(trans('responses.logout-successful'));
     }
 
+    /**
+     * Ping
+     * @group
+     * Auth
+     */
+    public function ping()
+    {
+        return ResponseData::success(trans('responses.ok'));
+    }
 
-    protected function respondWithToken($token)
+
+    protected function respondWithToken($token,$message = 'responses.login-successful' )
     {
         $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
         ];
-        return ResponseData::success(trans('responses.login-successful'), $data);
+        return ResponseData::success(trans($message), $data);
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getNewTokenAndDeleteOthers($user)
+    {
+        $user->tokens()->delete();
+        $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
+        return $token;
     }
 
 

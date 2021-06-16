@@ -2,6 +2,11 @@
 
 namespace R2FUser\Models;
 
+use App\Http\Helpers\ResponseData;
+use Illuminate\Support\Facades\Hash;
+use R2FUser\Models\PasswordHistory;
+use R2FUser\Models\UserBlockHistory;
+use Illuminate\Http\Request;
 use R2FUser\Jobs\EmailJob;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -93,6 +98,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $otps_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsEmailVerified($value)
+ * @property string|null $block_type
+ * @property string|null $block_reason
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBlockReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBlockType($value)
  */
 class User extends Authenticatable
 {
@@ -112,6 +121,18 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
+
+        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD") ){
+            if(Hash::check($value,$this->attributes['password']))
+                abort(400,trans('responses.password-already-used-by-you-try-another-one'));
+
+            $passwords = $this->passwordHistories()->get();
+            foreach($passwords as $item)
+                if(Hash::check($value,$item->password))
+                    abort(400,trans('responses.password-already-used-by-you-try-another-one'));
+
+        }
+
         $this->attributes['password'] = bcrypt($value);
     }
 
@@ -139,47 +160,53 @@ class User extends Authenticatable
     }
 
 
+    public function blockHistories()
+    {
+        return $this->hasMany(UserBlockHistory::class);
+    }
+
+    public function passwordHistories()
+    {
+        return $this->hasMany(PasswordHistory::class);
+    }
+
     /**
      * methods
      */
 
-    public function isEmailVerified():bool
+    public function isEmailVerified(): bool
     {
-        return (bool) ($this->is_email_verified == true);
+        return (bool)($this->is_email_verified == true);
     }
 
     /**
      * @throws \Exception
      */
-    public function makeForgetPasswordOtp(): array
+    public function makeForgetPasswordOtp(Request $request): array
     {
         $token = null;
         $error = null;
 
-        $intervals = explode(',', getSetting('USER_FORGET_PASSWORD_OTP_INTERVALS'));
+        $intervals = explode(',', getSetting('USER_FORGOT_PASSWORD_OTP_INTERVALS'));
+        $reverse_intervals = array_reverse($intervals);
+        $tries = getSetting('USER_FORGOT_PASSWORD_OTP_TRIES');
 
-        $tries = getSetting('USER_FORGET_PASSWORD_OTP_TRIES');
+        foreach ($reverse_intervals as $key => $interval) {
 
-        foreach ($intervals as $key => $interval) {
-            if ($key == 0)
-                $sub_interval = 0;
-            else
-                $sub_interval = $intervals[$key - 1];
-
-
+            $sum_up_key = (count($intervals) - 1 - $key);
             if (Otp::query()
-                    ->type(OTP_EMAIL_FORGET_PASSWORD)
-                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), now()->subSeconds($sub_interval)->format('Y-m-d H:i:s')])
-                    ->count() <= $tries) {
-                $token = Str::random(4);
+                    ->type(OTP_EMAIL_FORGOT_PASSWORD)
+                    ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, $sum_up_key) + $interval)->format('Y-m-d H:i:s'), now()->subSeconds(sumUp($intervals, $key))->format('Y-m-d H:i:s')])
+                    ->count() <= $tries * ($sum_up_key + 1)) {
+                $token = $this->getRandomOtp();
 
-                list($ip_db, $agent_db) = UserActivityHelper::getInfo();
+                list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
                 Otp::query()->create([
                     "user_id" => $this->id,
                     "ip_id" => is_null($ip_db) ? null : $ip_db->id,
                     "agent_id" => is_null($agent_db) ? null : $agent_db->id,
                     "otp" => $token,
-                    "type" => OTP_EMAIL_FORGET_PASSWORD
+                    "type" => OTP_EMAIL_FORGOT_PASSWORD
                 ]);
                 EmailJob::dispatch(new ForgetPasswordOtpEmail($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
                 return [$token, $error];
@@ -197,29 +224,25 @@ class User extends Authenticatable
      * @return array
      * @throws \Exception
      */
-    public function makeEmailVerificationOtp($is_welcome = true): array
+    public function makeEmailVerificationOtp(Request $request, $is_welcome = true): array
     {
         $token = null;
         $error = null;
 
         $intervals = explode(',', getSetting('USER_EMAIL_VERIFICATION_OTP_INTERVALS'));
-
+        $reverse_intervals = array_reverse($intervals);
         $tries = getSetting('USER_EMAIL_VERIFICATION_OTP_TRIES');
 
-        foreach ($intervals as $key => $interval) {
-            if ($key == 0)
-                $sub_interval = 0;
-            else
-                $sub_interval = $intervals[$key - 1];
+        foreach ($reverse_intervals as $key => $interval) {
 
-
+            $sum_up_key = (count($intervals) - 1 - $key);
             if (Otp::query()
                     ->type(OTP_EMAIL_VERIFICATION)
-                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), now()->subSeconds($sub_interval)->format('Y-m-d H:i:s')])
-                    ->count() <= $tries) {
-                $token = Str::random(4);
+                    ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, $sum_up_key) + $interval)->format('Y-m-d H:i:s'), now()->subSeconds(sumUp($intervals, $key))->format('Y-m-d H:i:s')])
+                    ->count() <= $tries * ($sum_up_key + 1)) {
+                $token = $this->getRandomOtp();
 
-                list($ip_db, $agent_db) = UserActivityHelper::getInfo();
+                list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
                 Otp::query()->create([
                     "user_id" => $this->id,
                     "ip_id" => is_null($ip_db) ? null : $ip_db->id,
@@ -240,6 +263,15 @@ class User extends Authenticatable
         return [$token, $error];
 
 
+    }
+
+    /**
+     * @return int
+     * @throws \Exception
+     */
+    private function getRandomOtp(): int
+    {
+        return random_int(pow(10, 5), pow(10, 6) - 1);
     }
 
 }

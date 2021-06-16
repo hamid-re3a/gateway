@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SuspiciousLoginAttemptEmail extends Mailable
+class TooManyLoginAttemptPermanentBlockedEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -33,7 +33,7 @@ class SuspiciousLoginAttemptEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('SUSPICIOUS_LOGIN_ATTEMPT_EMAIL');
+        $setting = getEmailAndTextSetting('TOO_MANY_LOGIN_ATTEMPTS_PERMANENT_BLOCK_EMAIL');
 
         $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
         $setting['body'] = str_replace('{{country}}', $this->login_attempt->ip->country, $setting['body']);

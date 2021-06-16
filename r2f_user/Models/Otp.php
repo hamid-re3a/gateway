@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereUserId($value)
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|Otp type($type)
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Otp whereDeletedAt($value)
  */
 class Otp extends Model
 {

@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use R2FUser\Http\Middlewares\BlockUserMiddleware;
 use R2FUser\Http\Middlewares\EmailVerifiedMiddleware;
 use R2FUser\Http\Middlewares\LoginAttemptMiddleware;
 use R2FUser\Http\Middlewares\UserActivityMiddleware;
@@ -72,5 +73,6 @@ class Kernel extends HttpKernel
         'user_activity' => UserActivityMiddleware::class,
         'login_attempt' => LoginAttemptMiddleware::class,
         'email_verified' => EmailVerifiedMiddleware::class,
+        'block_user' => BlockUserMiddleware::class,
     ];
 }

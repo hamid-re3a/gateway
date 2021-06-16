@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserActivity whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserActivity whereUserId($value)
  * @mixin \Eloquent
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|UserActivity whereDeletedAt($value)
  */
 class UserActivity extends Model
 {

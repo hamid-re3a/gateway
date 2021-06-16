@@ -36,7 +36,7 @@ class WelcomeEmail extends Mailable
     {
         $setting = getEmailAndTextSetting('USER_REGISTRATION_WELCOME_EMAIL');
 
-        $setting['body'] = str_replace('{{otp}}',$this->token,$setting['body']);
+        $setting['body'] = str_replace('{{otp}}',hyphenate($this->token),$setting['body']);
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
 
         return $this

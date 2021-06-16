@@ -24,7 +24,7 @@ class CreateLoginAttemptsTable extends Migration
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->foreign('agent_id')->references('id')->on('agents')->onDelete('cascade');
 
-            $table->tinyInteger('is_success')->default(0);
+            $table->tinyInteger('login_status')->default(LOGIN_ATTEMPT_STATUS_ON_GOING);
             $table->boolean('is_from_new_device')->default(false);
 
 

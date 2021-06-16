@@ -3,6 +3,7 @@
 namespace R2FUser\Support;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Jenssegers\Agent\Agent;
 use R2FUser\Models\Agent as AgentModel;
 use R2FUser\Models\Ip;
@@ -13,20 +14,22 @@ class UserActivityHelper
      * @param Request $request
      * @return array
      */
-    public static function getInfo(?Request $request = null ): array
+    public static function getInfo(Request $request): array
     {
-
-        if(is_null($request))
-            $request = new Request();
         $ip_db = null;
         if (!is_null($request->ip())) {
-            $ip = GeoIp::getInfo($request->ip());
-            if(is_null($ip))
+            $ip = null;
+            try {
+                $ip = GeoIp::getInfo($request->ip());
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+            if (!is_null($ip))
                 $ip_db = Ip::query()->firstOrCreate($ip->toArray());
             else
-                $ip_db = Ip::query()->firstOrCreate(['ip'=>$request->ip()]);
-            if(!is_null($request)){
-                $ip_db->hit = $ip_db->hit+1 ;
+                $ip_db = Ip::query()->firstOrCreate(['ip' => $request->ip()]);
+            if (!is_null($request)) {
+                $ip_db->hit = $ip_db->hit + 1;
                 $ip_db->save();
             }
         }
@@ -48,7 +51,7 @@ class UserActivityHelper
                 "browser_version" => $agentJess->version($agentJess->browser()),
                 "user_agent" => $request->userAgent(),
             ]);
-            if(!is_null($request)) {
+            if (!is_null($request)) {
                 $agent_db->hit = $agent_db->hit + 1;
                 $agent_db->save();
             }

@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use R2FUser\Mail\User\SuspiciousLoginAttemptEmail;
+use R2FUser\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
+use R2FUser\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
 use R2FUser\Models\LoginAttempt as LoginAttemptModel;
 use R2FUser\Models\User;
 use R2FUser\Support\UserActivityHelper;
@@ -36,7 +38,7 @@ class LoginAttemptMiddleware
             "agent_id" => is_null($agent_db) ? null : $agent_db->id,
         ]);
 
-        $this->blockSuspiciousActivity($user, $login_attempt);
+        $this->blockTooManyLoginAttempts($user, $login_attempt);
 
         $this->sendMailForSuspiciousNewIpOrDevice($user, $ip_db, $agent_db, $login_attempt);
 
@@ -72,7 +74,7 @@ class LoginAttemptMiddleware
      */
     private function userHasAlreadyAtLeastOneLoginAttempt($user): bool
     {
-        return $user->loginAttempts->count() > 0;
+        return $user->loginAttempts->count() > 1;
     }
 
     /**
@@ -80,26 +82,36 @@ class LoginAttemptMiddleware
      * @param $login_attempt
      * @throws \Exception
      */
-    private function blockSuspiciousActivity($user, $login_attempt): void
+    private function blockTooManyLoginAttempts($user, $login_attempt): void
     {
         $intervals = explode(',', getSetting('MAX_LOGIN_ATTEMPTS_INTERVALS'));
-
+        $reverse_intervals = array_reverse($intervals);
         $tries = getSetting('MAX_LOGIN_ATTEMPTS_TRIES');
 
-        foreach ($intervals as $key => $interval) {
-            if ($key == 0)
-                $sub_interval = 0;
-            else
-                $sub_interval = $intervals[$key - 1];
-            if (LoginAttemptModel::query()->where('is_success', 2)
-                    ->whereBetween('created_at', [now()->subSeconds($interval)->format('Y-m-d H:i:s'), now()->subSeconds($sub_interval)->format('Y-m-d H:i:s')])
-                    ->count() >= $tries) {
-                //if($key == 0 ){
-                //TODO block user
-                //}
-                $login_attempt->is_success = 3;
+        foreach ($reverse_intervals as $key => $interval) {
+            $sum_up_key =(count($intervals)-1-$key);
+            $since_beginning_intervals = sumUp($intervals,$sum_up_key) + $interval;
+            $login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED,LOGIN_ATTEMPT_STATUS_BLOCKED])
+                ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->count();
+            if ($login_attempt_count >= $tries * ($sum_up_key+1) ) {
+                if($key == 0 ){
+                    $user->block_type = USER_BLOCK_TYPE_AUTOMATIC;
+                    $user->block_reason = 'responses.max-login-attempt-blocked';
+                    $user->save();
+                    $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
+                    $login_attempt->save();
+                    EmailJob::dispatch(new TooManyLoginAttemptPermanentBlockedEmail($user, $login_attempt),$user->email)->onQueue(QUEUES_EMAIL);
+                    abort(401, trans('responses.max-login-attempt-exceeded'));
+                }
+
+                $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
                 $login_attempt->save();
-                EmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt),$user->email)->onQueue(QUEUES_EMAIL);
+                $first_attempt = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED,LOGIN_ATTEMPT_STATUS_BLOCKED])
+                    ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                    ->get()->first();
+                $try_in = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->diffForHumans();
+                EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt,$login_attempt_count,$try_in),$user->email)->onQueue(QUEUES_EMAIL);
                 abort(401, trans('responses.max-login-attempt-exceeded'));
             }
         }
@@ -125,4 +137,7 @@ class LoginAttemptMiddleware
             EmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt),$user->email)->onQueue(QUEUES_EMAIL);
         }
     }
+
+
+
 }
