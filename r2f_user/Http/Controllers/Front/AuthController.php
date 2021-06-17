@@ -2,25 +2,24 @@
 
 namespace R2FUser\Http\Controllers\Front;
 
-use R2FUser\Http\Requests\Auth\EmailVerificationOtpRequest;
-use R2FUser\Http\Requests\Auth\ResetForgetPasswordRequest;
-use R2FUser\Http\Requests\Auth\VerifyEmailOtpRequest;
-use R2FUser\Jobs\EmailJob;
-use Illuminate\Support\Facades\Mail;
-use R2FUser\Mail\User\ForgetPasswordOtpEmail;
-use R2FUser\Mail\User\PasswordChangedEmail;
-use R2FUser\Mail\User\SuspiciousLoginAttemptEmail;
-use R2FUser\Models\Otp;
-use R2FUser\Models\LoginAttempt;
-use R2FUser\Models\User;;
-use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Http\Helpers\ResponseData;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use R2FUser\Http\Requests\Auth\EmailVerificationOtpRequest;
+use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use R2FUser\Http\Requests\Auth\LoginRequest;
 use R2FUser\Http\Requests\Auth\RegisterUserRequest;
-use R2FUser\Http\Resources\Auth\PasswordHistoryResource;
+use R2FUser\Http\Requests\Auth\ResetForgetPasswordRequest;
+use R2FUser\Http\Requests\Auth\VerifyEmailOtpRequest;
+use R2FUser\Http\Resources\Auth\ProfileResource;
+use R2FUser\Jobs\EmailJob;
+use R2FUser\Mail\User\PasswordChangedEmail;
+use R2FUser\Mail\User\SuccessfulEmailVerificationEmail;
+use R2FUser\Models\LoginAttempt;
+use R2FUser\Models\User;
 use R2FUser\Support\UserActivityHelper;
+
+;
 
 class AuthController extends Controller
 {
@@ -39,9 +38,7 @@ class AuthController extends Controller
 
         $user->makeEmailVerificationOtp($request);
 
-        $token = $this->getNewTokenAndDeleteOthers($user);
-
-        return $this->respondWithToken($token);
+        return ResponseData::success(trans('responses.successfully-registered-go-activate-your-email'));
     }
 
     /**
@@ -56,6 +53,9 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         $user = User::query()->where('email', $credentials['email'])->first();
+
+        if(!$user->is_email_verified)
+            return ResponseData::success(trans('responses.go-activate-your-email'));
 
         $login_attempt  = LoginAttempt::find($request->attributes->get('login_attempt'));
         if (!Hash::check($credentials['password'], $user->password)) {
@@ -78,7 +78,7 @@ class AuthController extends Controller
      */
     public function getAuthUser()
     {
-        return ResponseData::success(trans('responses.success'),PasswordHistoryResource::make(auth()->user()));
+        return ResponseData::success(trans('responses.success'),ProfileResource::make(auth()->user()));
     }
     /**
      * Ask Email Verification Otp
@@ -90,6 +90,9 @@ class AuthController extends Controller
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
+        if($user->is_email_verified)
+            return ResponseData::success(trans('responses.email-is-already-verified'));
+
         list($token,$err) = $user->makeEmailVerificationOtp($request,false);
         if(!is_null($err)){
             return ResponseData::error(trans('responses.otp-exceeded-amount'));
@@ -108,9 +111,12 @@ class AuthController extends Controller
     public function verifyEmailOtp(VerifyEmailOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
+        if($user->is_email_verified)
+            return ResponseData::success(trans('responses.email-is-already-verified'));
+
         $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
         $otp_db = $user->otps()
-            ->where('type',OTP_EMAIL_VERIFICATION)
+            ->where('type',OTP_TYPE_EMAIL_VERIFICATION)
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();
@@ -124,6 +130,9 @@ class AuthController extends Controller
             $user->save();
 
             $token = $this->getNewTokenAndDeleteOthers($user);
+
+            list($ip_db,$agent_db) = UserActivityHelper::getInfo($request);
+            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user,$ip_db,$agent_db),$user->email);
 
             return $this->respondWithToken($token,'responses.email-verified-successfully');
         }
@@ -160,7 +169,7 @@ class AuthController extends Controller
         $user = User::whereEmail($request->email)->first();
         $duration = getSetting('USER_FORGOT_PASSWORD_OTP_DURATION');
         $fp_db = $user->otps()
-            ->where('type',OTP_EMAIL_FORGOT_PASSWORD)
+            ->where('type',OTP_TYPE_EMAIL_FORGOT_PASSWORD)
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();

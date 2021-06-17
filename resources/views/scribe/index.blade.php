@@ -45,7 +45,7 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: June 16 2021</li>
+            <li>Last updated: June 17 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -68,7 +68,203 @@
 <pre><code class="language-yaml">http://localhost:3541</code></pre><h1>Authenticating requests</h1>
 <p>This API is authenticated by sending an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
 <p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
-<p>You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.</p><h1>Auth</h1>
+<p>You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.</p><h1>Admin &gt; User</h1>
+<h2>Activate Or Deactivate User Account</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/activate_or_deactivate_user"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com",
+    "deactivate": false
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://localhost:3541/api/activate_or_deactivate_user',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'email' =&gt; 'qkunze@example.com',
+            'deactivate' =&gt; false,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/activate_or_deactivate_user'
+payload = {
+    "email": "qkunze@example.com",
+    "deactivate": false
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost:3541/api/activate_or_deactivate_user" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com","deactivate":false}'
+</code></pre>
+<div id="execution-results-POSTapi-activate_or_deactivate_user" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-activate_or_deactivate_user"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-activate_or_deactivate_user"></code></pre>
+</div>
+<div id="execution-error-POSTapi-activate_or_deactivate_user" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-activate_or_deactivate_user"></code></pre>
+</div>
+<form id="form-POSTapi-activate_or_deactivate_user" data-method="POST" data-path="api/activate_or_deactivate_user" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-activate_or_deactivate_user', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-activate_or_deactivate_user" onclick="tryItOut('POSTapi-activate_or_deactivate_user');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-activate_or_deactivate_user" onclick="cancelTryOut('POSTapi-activate_or_deactivate_user');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-activate_or_deactivate_user" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/activate_or_deactivate_user</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-activate_or_deactivate_user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-activate_or_deactivate_user" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="POSTapi-activate_or_deactivate_user" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+<p>
+<b><code>deactivate</code></b>&nbsp;&nbsp;<small>boolean</small>     <i>optional</i> &nbsp;
+<label data-endpoint="POSTapi-activate_or_deactivate_user" hidden><input type="radio" name="deactivate" value="true" data-endpoint="POSTapi-activate_or_deactivate_user" data-component="body" ><code>true</code></label>
+<label data-endpoint="POSTapi-activate_or_deactivate_user" hidden><input type="radio" name="deactivate" value="false" data-endpoint="POSTapi-activate_or_deactivate_user" data-component="body" ><code>false</code></label>
+<br>
+
+</p>
+
+</form>
+<h2>Verify Email User Account</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/verify_email_user"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://localhost:3541/api/verify_email_user',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'email' =&gt; 'qkunze@example.com',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/verify_email_user'
+payload = {
+    "email": "qkunze@example.com"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost:3541/api/verify_email_user" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com"}'
+</code></pre>
+<div id="execution-results-POSTapi-verify_email_user" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-verify_email_user"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-verify_email_user"></code></pre>
+</div>
+<div id="execution-error-POSTapi-verify_email_user" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-verify_email_user"></code></pre>
+</div>
+<form id="form-POSTapi-verify_email_user" data-method="POST" data-path="api/verify_email_user" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-verify_email_user', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-verify_email_user" onclick="tryItOut('POSTapi-verify_email_user');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-verify_email_user" onclick="cancelTryOut('POSTapi-verify_email_user');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-verify_email_user" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/verify_email_user</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-verify_email_user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-verify_email_user" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="POSTapi-verify_email_user" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+
+</form><h1>Auth</h1>
 <h2>Register New User</h2>
 <blockquote>
 <p>Example request:</p>
@@ -1166,14 +1362,14 @@ response.json()</code></pre>
 
 </p>
 
-</form><h1>Endpoints</h1>
-<h2>Return an empty response simply to trigger the storage of the CSRF cookie in the browser.</h2>
+</form><h1>Public User &gt; History</h1>
+<h2>Email Verification History</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:3541/sanctum/csrf-cookie"
+    "http://localhost:3541/api/user_email_verification_history"
 );
 
 let headers = {
@@ -1189,7 +1385,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:3541/sanctum/csrf-cookie',
+    'http://localhost:3541/api/user_email_verification_history',
     [
         'headers' =&gt; [
             'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
@@ -1202,7 +1398,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost:3541/sanctum/csrf-cookie'
+url = 'http://localhost:3541/api/user_email_verification_history'
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
   'Content-Type': 'application/json',
@@ -1212,75 +1408,68 @@ headers = {
 response = requests.request('GET', url, headers=headers)
 response.json()</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:3541/sanctum/csrf-cookie" \
+    -G "http://localhost:3541/api/user_email_verification_history" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
-<div id="execution-results-GETsanctum-csrf-cookie" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETsanctum-csrf-cookie"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETsanctum-csrf-cookie"></code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-user_email_verification_history" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-user_email_verification_history"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-user_email_verification_history"></code></pre>
 </div>
-<div id="execution-error-GETsanctum-csrf-cookie" hidden>
+<div id="execution-error-GETapi-user_email_verification_history" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETsanctum-csrf-cookie"></code></pre>
+    <pre><code id="execution-error-message-GETapi-user_email_verification_history"></code></pre>
 </div>
-<form id="form-GETsanctum-csrf-cookie" data-method="GET" data-path="sanctum/csrf-cookie" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETsanctum-csrf-cookie', this);">
+<form id="form-GETapi-user_email_verification_history" data-method="GET" data-path="api/user_email_verification_history" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-user_email_verification_history', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETsanctum-csrf-cookie" onclick="tryItOut('GETsanctum-csrf-cookie');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETsanctum-csrf-cookie" onclick="cancelTryOut('GETsanctum-csrf-cookie');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETsanctum-csrf-cookie" hidden>Send Request 💥</button>
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-user_email_verification_history" onclick="tryItOut('GETapi-user_email_verification_history');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-user_email_verification_history" onclick="cancelTryOut('GETapi-user_email_verification_history');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-user_email_verification_history" hidden>Send Request 💥</button>
     </h3>
 <p>
 <small class="badge badge-green">GET</small>
- <b><code>sanctum/csrf-cookie</code></b>
+ <b><code>api/user_email_verification_history</code></b>
 </p>
 <p>
-<label id="auth-GETsanctum-csrf-cookie" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETsanctum-csrf-cookie" data-component="header"></label>
+<label id="auth-GETapi-user_email_verification_history" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user_email_verification_history" data-component="header"></label>
 </p>
-</form><h1>Public User &gt; KYC</h1>
-<h2>Upload New Document</h2>
+</form>
+<h2>Login History</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:3541/api/kyc/upload"
+    "http://localhost:3541/api/user_login_history"
 );
 
 let headers = {
     "Authorization": "Bearer {YOUR_AUTH_KEY}",
-    "Content-Type": "multipart/form-data",
+    "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
-const body = new FormData();
-body.append('document_type', 'driving_licence');
-body.append('file', document.querySelector('input[name="file"]').files[0]);
-
 fetch(url, {
-    method: "PUT",
+    method: "GET",
     headers,
-    body,
 }).then(response =&gt; response.json());</code></pre>
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
-$response = $client-&gt;put(
-    'http://localhost:3541/api/kyc/upload',
+$response = $client-&gt;get(
+    'http://localhost:3541/api/user_login_history',
     [
         'headers' =&gt; [
             'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
             'Accept' =&gt; 'application/json',
-        ],
-        'multipart' =&gt; [
-            [
-                'name' =&gt; 'document_type',
-                'contents' =&gt; 'driving_licence'
-            ],
-            [
-                'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phpSJWMvh', 'r')
-            ],
         ],
     ]
 );
@@ -1289,65 +1478,51 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost:3541/api/kyc/upload'
-files = {
-  'file': open('/tmp/phpSJWMvh', 'rb')
-}
-payload = {
-    "document_type": "driving_licence"
-}
+url = 'http://localhost:3541/api/user_login_history'
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
-  'Content-Type': 'multipart/form-data',
+  'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
-response = requests.request('PUT', url, headers=headers, files=files, data=payload)
+response = requests.request('GET', url, headers=headers)
 response.json()</code></pre>
-<pre><code class="language-bash">curl -X PUT \
-    "http://localhost:3541/api/kyc/upload" \
+<pre><code class="language-bash">curl -X GET \
+    -G "http://localhost:3541/api/user_login_history" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
-    -H "Content-Type: multipart/form-data" \
-    -H "Accept: application/json" \
-    -F "document_type=driving_licence" \
-    -F "file=@/tmp/phpSJWMvh" </code></pre>
-<div id="execution-results-PUTapi-kyc-upload" hidden>
-    <blockquote>Received response<span id="execution-response-status-PUTapi-kyc-upload"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-PUTapi-kyc-upload"></code></pre>
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (400):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "data": [],
+    "message": "Unauthenticated.",
+    "status": 400
+}</code></pre>
+<div id="execution-results-GETapi-user_login_history" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-user_login_history"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-user_login_history"></code></pre>
 </div>
-<div id="execution-error-PUTapi-kyc-upload" hidden>
+<div id="execution-error-GETapi-user_login_history" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTapi-kyc-upload"></code></pre>
+    <pre><code id="execution-error-message-GETapi-user_login_history"></code></pre>
 </div>
-<form id="form-PUTapi-kyc-upload" data-method="PUT" data-path="api/kyc/upload" data-authed="1" data-hasfiles="1" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"multipart\/form-data","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('PUTapi-kyc-upload', this);">
+<form id="form-GETapi-user_login_history" data-method="GET" data-path="api/user_login_history" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-user_login_history', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-PUTapi-kyc-upload" onclick="tryItOut('PUTapi-kyc-upload');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-PUTapi-kyc-upload" onclick="cancelTryOut('PUTapi-kyc-upload');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-PUTapi-kyc-upload" hidden>Send Request 💥</button>
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-user_login_history" onclick="tryItOut('GETapi-user_login_history');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-user_login_history" onclick="cancelTryOut('GETapi-user_login_history');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-user_login_history" hidden>Send Request 💥</button>
     </h3>
 <p>
-<small class="badge badge-darkblue">PUT</small>
- <b><code>api/kyc/upload</code></b>
+<small class="badge badge-green">GET</small>
+ <b><code>api/user_login_history</code></b>
 </p>
 <p>
-<label id="auth-PUTapi-kyc-upload" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="PUTapi-kyc-upload" data-component="header"></label>
+<label id="auth-GETapi-user_login_history" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user_login_history" data-component="header"></label>
 </p>
-<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-<p>
-<b><code>document_type</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="document_type" data-endpoint="PUTapi-kyc-upload" data-component="body" required  hidden>
-<br>
-The value must be one of <code>driving_licence</code>, <code>passport</code>, or <code>national_id</code>.
-</p>
-<p>
-<b><code>file</code></b>&nbsp;&nbsp;<small>file</small>  &nbsp;
-<input type="file" name="file" data-endpoint="PUTapi-kyc-upload" data-component="body" required  hidden>
-<br>
-The value must be a file.
-</p>
-
-</form><h1>User</h1>
+</form>
 <h2>Block History</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <blockquote>
@@ -1507,6 +1682,115 @@ response.json()</code></pre>
 <p>
 <label id="auth-GETapi-user_password_history" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user_password_history" data-component="header"></label>
 </p>
+</form><h1>Public User &gt; KYC</h1>
+<h2>Upload New Document</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost:3541/api/kyc/upload"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('document_type', 'driving_licence');
+body.append('file', document.querySelector('input[name="file"]').files[0]);
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;put(
+    'http://localhost:3541/api/kyc/upload',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'document_type',
+                'contents' =&gt; 'driving_licence'
+            ],
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phprAvr48', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-python">import requests
+import json
+
+url = 'http://localhost:3541/api/kyc/upload'
+files = {
+  'file': open('/tmp/phprAvr48', 'rb')
+}
+payload = {
+    "document_type": "driving_licence"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'multipart/form-data',
+  'Accept': 'application/json'
+}
+
+response = requests.request('PUT', url, headers=headers, files=files, data=payload)
+response.json()</code></pre>
+<pre><code class="language-bash">curl -X PUT \
+    "http://localhost:3541/api/kyc/upload" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: multipart/form-data" \
+    -H "Accept: application/json" \
+    -F "document_type=driving_licence" \
+    -F "file=@/tmp/phprAvr48" </code></pre>
+<div id="execution-results-PUTapi-kyc-upload" hidden>
+    <blockquote>Received response<span id="execution-response-status-PUTapi-kyc-upload"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-kyc-upload"></code></pre>
+</div>
+<div id="execution-error-PUTapi-kyc-upload" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-kyc-upload"></code></pre>
+</div>
+<form id="form-PUTapi-kyc-upload" data-method="PUT" data-path="api/kyc/upload" data-authed="1" data-hasfiles="1" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"multipart\/form-data","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('PUTapi-kyc-upload', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-PUTapi-kyc-upload" onclick="tryItOut('PUTapi-kyc-upload');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-PUTapi-kyc-upload" onclick="cancelTryOut('PUTapi-kyc-upload');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-PUTapi-kyc-upload" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-darkblue">PUT</small>
+ <b><code>api/kyc/upload</code></b>
+</p>
+<p>
+<label id="auth-PUTapi-kyc-upload" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="PUTapi-kyc-upload" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>document_type</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="document_type" data-endpoint="PUTapi-kyc-upload" data-component="body" required  hidden>
+<br>
+The value must be one of <code>driving_licence</code>, <code>passport</code>, or <code>national_id</code>.
+</p>
+<p>
+<b><code>file</code></b>&nbsp;&nbsp;<small>file</small>  &nbsp;
+<input type="file" name="file" data-endpoint="PUTapi-kyc-upload" data-component="body" required  hidden>
+<br>
+The value must be a file.
+</p>
+
 </form>
     </div>
     <div class="dark-box">

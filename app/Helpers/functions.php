@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\EmailSetting;
+use App\Models\EmailContentSetting;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 
@@ -18,14 +18,14 @@ function getSetting($key){
 }
 
 function getEmailAndTextSetting($key){
-    if(DB::table('email_settings')->exists()){
-        $setting = EmailSetting::query()->where('key',$key)->first();
+    if(DB::table('email_content_settings')->exists()){
+        $setting = EmailContentSetting::query()->where('key',$key)->first();
         if($setting && !empty($setting->value))
             return $setting->toArray();
     }
 
-    if(isset(EMAIL_SETTINGS[$key]))
-        return EMAIL_SETTINGS[$key];
+    if(isset(EMAIL_CONTENT_SETTINGS[$key]))
+        return EMAIL_CONTENT_SETTINGS[$key];
 
     throw new Exception(trans('responses.main-key-settings-is-missing'));
 }

@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::nO30Axao79CvOAS2',
+            '_route' => 'generated::Dtm6tgpaFWNZezPR',
           ),
           1 => NULL,
           2 => 
@@ -252,6 +252,44 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/activate_or_deactivate_user' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'activate-or-deactivate-user-account',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/verify_email_user' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'verify-email-user-account',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/user' => 
       array (
         0 => 
@@ -259,6 +297,46 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'current-user',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/user_email_verification_history' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'user-email-verification-history',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/user_login_history' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'user-login-history',
           ),
           1 => NULL,
           2 => 
@@ -504,7 +582,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::nO30Axao79CvOAS2' => 
+    'generated::Dtm6tgpaFWNZezPR' => 
     array (
       'methods' => 
       array (
@@ -525,7 +603,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::nO30Axao79CvOAS2',
+        'as' => 'generated::Dtm6tgpaFWNZezPR',
       ),
       'fallback' => false,
       'defaults' => 
@@ -840,6 +918,86 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
+    'activate-or-deactivate-user-account' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/activate_or_deactivate_user',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => 'role:admin',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@activateOrDeactivateUserAccount',
+        'controller' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@activateOrDeactivateUserAccount',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'activate-or-deactivate-user-account',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'verify-email-user-account' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/verify_email_user',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => 'role:admin',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@verifyUserEmailAccount',
+        'controller' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@verifyUserEmailAccount',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'verify-email-user-account',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
     'current-user' => 
     array (
       'methods' => 
@@ -866,6 +1024,86 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'current-user',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'user-email-verification-history' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/user_email_verification_history',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@emailVerificationHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@emailVerificationHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'user-email-verification-history',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'user-login-history' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/user_login_history',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@loginHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@loginHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'user-login-history',
       ),
       'fallback' => false,
       'defaults' => 

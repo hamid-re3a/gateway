@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmailSettingsTable extends Migration
+class CreateEmailContentSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEmailSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('email_settings', function (Blueprint $table) {
+        Schema::create('email_content_settings', function (Blueprint $table) {
             $table->id();
             $table->string('key');
             $table->string('subject');
@@ -34,6 +34,6 @@ class CreateEmailSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('email_settings');
+        Schema::dropIfExists('email_content_settings');
     }
 }

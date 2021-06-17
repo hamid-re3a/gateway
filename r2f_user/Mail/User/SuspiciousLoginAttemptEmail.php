@@ -42,7 +42,7 @@ class SuspiciousLoginAttemptEmail extends Mailable
         $setting['body'] = str_replace('{{browser}}', $this->login_attempt->agent->browser, $setting['body']);
         $setting['body'] = str_replace('{{platform}}', $this->login_attempt->agent->platform, $setting['body']);
         $setting['body'] = str_replace('{{status}}', $this->login_attempt->login_status_string, $setting['body']);
-
+        sleep(10);
         return $this
             ->from($setting['from'], $setting['from_name'])
             ->subject($setting['subject'])

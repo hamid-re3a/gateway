@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereAgentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereIpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginAttempt whereLoginStatus($value)
+ * @property-read string $login_status_string
  */
 class LoginAttempt extends Model
 {

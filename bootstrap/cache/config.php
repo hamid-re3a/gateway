@@ -821,7 +821,7 @@
   ),
   'queue' => 
   array (
-    'default' => 'sync',
+    'default' => 'redis',
     'connections' => 
     array (
       'sync' => 
@@ -915,6 +915,7 @@
         ),
         'exclude' => 
         array (
+          0 => '*sanctum/csrf-cookie*',
         ),
         'apply' => 
         array (

@@ -28,7 +28,9 @@ class AuthTableSeeder extends Seeder
                 'first_name' => 'admin',
                 'username' => 'admin',
                 'last_name' => 'admin',
-                'password' => 'password'
+                'password' => 'password',
+                'is_email_verified' => true,
+                'email_verified_at' => now(),
             ]);
             $admin->assignRole(USER_ROLE_ADMIN);
         }

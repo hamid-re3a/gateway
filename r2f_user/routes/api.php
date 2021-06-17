@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use R2FUser\Http\Controllers\Admin\UserController as AdminUserController;
 use R2FUser\Http\Controllers\Front\AuthController;
 use R2FUser\Http\Controllers\Front\KYCController as FrontKYCControllerAlias;
 use R2FUser\Http\Controllers\Front\LoginSecurityController;
@@ -23,8 +24,15 @@ Route::middleware(['user_activity'])->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::get('/ping', [AuthController::class, 'ping'])->name('ping');
         });
+        Route::middleware(['auth:sanctum', 'email_verified','role:admin'])->group(function () {
+            Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
+            Route::post('/verify_email_user', [AdminUserController::class, 'verifyUserEmailAccount'])->name('verify-email-user-account');
+        });
         Route::middleware(['auth:sanctum', 'email_verified'])->group(function () {
             Route::get('/user', [AuthController::class, 'getAuthUser'])->name('current-user');
+
+            Route::get('/user_email_verification_history', [UserController::class, 'emailVerificationHistory'])->name('user-email-verification-history');
+            Route::get('/user_login_history', [UserController::class, 'loginHistory'])->name('user-login-history');
             Route::get('/user_block_history', [UserController::class, 'blockHistory'])->name('user-block-history');
             Route::get('/user_password_history', [UserController::class, 'passwordHistory'])->name('password-history');
 

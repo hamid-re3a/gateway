@@ -102,6 +102,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $block_reason
  * @method static \Illuminate\Database\Eloquent\Builder|User whereBlockReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereBlockType($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|UserBlockHistory[] $blockHistories
+ * @property-read int|null $block_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|PasswordHistory[] $passwordHistories
+ * @property-read int|null $password_histories_count
  */
 class User extends Authenticatable
 {
@@ -121,14 +125,14 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")){
-            if(!is_null($this->password) && Hash::check($value,$this->password) )
-                abort(400,trans('responses.password-already-used-by-you-try-another-one'));
+        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")) {
+            if (!is_null($this->password) && Hash::check($value, $this->password))
+                abort(400, trans('responses.password-already-used-by-you-try-another-one'));
 
             $passwords = $this->passwordHistories()->get();
-            foreach($passwords as $item)
-                if(Hash::check($value,$item->password) && false)
-                    abort(400,trans('responses.password-already-used-by-you-try-another-one'));
+            foreach ($passwords as $item)
+                if (Hash::check($value, $item->password) && false)
+                    abort(400, trans('responses.password-already-used-by-you-try-another-one'));
 
         }
 
@@ -194,7 +198,7 @@ class User extends Authenticatable
 
             $sum_up_key = (count($intervals) - 1 - $key);
             if (Otp::query()
-                    ->type(OTP_EMAIL_FORGOT_PASSWORD)
+                    ->type(OTP_TYPE_EMAIL_FORGOT_PASSWORD)
                     ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, $sum_up_key) + $interval)->format('Y-m-d H:i:s'), now()->subSeconds(sumUp($intervals, $key))->format('Y-m-d H:i:s')])
                     ->count() <= $tries * ($sum_up_key + 1)) {
                 $token = $this->getRandomOtp();
@@ -205,7 +209,7 @@ class User extends Authenticatable
                     "ip_id" => is_null($ip_db) ? null : $ip_db->id,
                     "agent_id" => is_null($agent_db) ? null : $agent_db->id,
                     "otp" => $token,
-                    "type" => OTP_EMAIL_FORGOT_PASSWORD
+                    "type" => OTP_TYPE_EMAIL_FORGOT_PASSWORD
                 ]);
                 EmailJob::dispatch(new ForgetPasswordOtpEmail($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
                 return [$token, $error];
@@ -236,7 +240,7 @@ class User extends Authenticatable
 
             $sum_up_key = (count($intervals) - 1 - $key);
             if (Otp::query()
-                    ->type(OTP_EMAIL_VERIFICATION)
+                    ->type(OTP_TYPE_EMAIL_VERIFICATION)
                     ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, $sum_up_key) + $interval)->format('Y-m-d H:i:s'), now()->subSeconds(sumUp($intervals, $key))->format('Y-m-d H:i:s')])
                     ->count() <= $tries * ($sum_up_key + 1)) {
                 $token = $this->getRandomOtp();
@@ -247,7 +251,7 @@ class User extends Authenticatable
                     "ip_id" => is_null($ip_db) ? null : $ip_db->id,
                     "agent_id" => is_null($agent_db) ? null : $agent_db->id,
                     "otp" => $token,
-                    "type" => OTP_EMAIL_VERIFICATION
+                    "type" => OTP_TYPE_EMAIL_VERIFICATION
                 ]);
 
                 if ($is_welcome)
@@ -265,12 +269,17 @@ class User extends Authenticatable
     }
 
     /**
-     * @return int
      * @throws \Exception
      */
-    private function getRandomOtp(): int
+    private function getRandomOtp()
     {
-        return random_int(pow(10, 5), pow(10, 6) - 1);
+        $length = getSetting("OTP_LENGTH");
+        if (getSetting("OTP_CONTAIN_ALPHABET") && getSetting("OTP_CONTAIN_ALPHABET_LOWER_CASE"))
+            return strtolower(Str::random($length));
+        else if(getSetting("OTP_CONTAIN_ALPHABET") && !getSetting("OTP_CONTAIN_ALPHABET_LOWER_CASE"))
+            return Str::random($length);
+        else
+            return random_int(pow(10, $length - 1), pow(10, $length) - 1);
     }
 
 }

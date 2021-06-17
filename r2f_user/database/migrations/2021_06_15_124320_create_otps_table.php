@@ -25,7 +25,7 @@ class CreateOtpsTable extends Migration
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->foreign('agent_id')->references('id')->on('agents')->onDelete('cascade');
 
-            $table->string('type')->default(OTP_EMAIL_VERIFICATION);
+            $table->string('type')->default(OTP_TYPE_EMAIL_VERIFICATION);
             $table->string('otp')->nullable();
 
             $table->softDeletes();

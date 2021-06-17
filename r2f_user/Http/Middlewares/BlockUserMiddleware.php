@@ -12,12 +12,14 @@ class BlockUserMiddleware
 
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && !in_array(auth()->user()->block_type,[USER_BLOCK_TYPE_AUTOMATIC])) {
-            return $next($request);
-        }
-        $user = User::whereEmail($request->email)->first();
-        if($user  && !in_array($user->block_type,[USER_BLOCK_TYPE_AUTOMATIC]))
-            return $next($request);
-        return ResponseData::error(trans('responses.user-is-blocked'),[],401);
+        $user = null;
+        if (auth()->check())
+            $user = auth()->user();
+        else
+            $user = User::whereEmail($request->email)->first();
+        if($user)
+            if(in_array($user->block_type,[USER_BLOCK_TYPE_AUTOMATIC]))
+                return ResponseData::error(trans('responses.user-is-blocked'),[],401);
+        return $next($request);
     }
 }

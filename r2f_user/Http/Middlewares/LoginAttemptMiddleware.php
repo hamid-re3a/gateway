@@ -26,9 +26,10 @@ class LoginAttemptMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+
         $user = User::whereEmail($request->email)->first();
         if (!$user)
-            abort(401);
+            abort(401,trans('responses.invalid-input'));
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
 
