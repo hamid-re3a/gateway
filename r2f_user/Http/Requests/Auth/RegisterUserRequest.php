@@ -27,4 +27,5 @@ class RegisterUserRequest extends FormRequest
             'password_confirmation' => 'required|string',
         ];
     }
+
 }

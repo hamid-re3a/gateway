@@ -187,7 +187,9 @@ class User extends Authenticatable
      */
     public function makeForgetPasswordOtp(Request $request): array
     {
-        $token = null;
+        $data = [];
+        $data['try_in'] =  null;
+        $data['try_in_timestamp'] = null;
         $error = null;
 
         $intervals = explode(',', getSetting('USER_FORGOT_PASSWORD_OTP_INTERVALS'));
@@ -198,9 +200,10 @@ class User extends Authenticatable
 
             $sum_up_key = (count($intervals) - 1 - $key);
             if (Otp::query()
+                    ->where('user_id',$this->id)
                     ->type(OTP_TYPE_EMAIL_FORGOT_PASSWORD)
                     ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, $sum_up_key) + $interval)->format('Y-m-d H:i:s'), now()->subSeconds(sumUp($intervals, $key))->format('Y-m-d H:i:s')])
-                    ->count() <= $tries * ($sum_up_key + 1)) {
+                    ->count() < $tries * ($sum_up_key + 1)) {
                 $token = $this->getRandomOtp();
 
                 list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
@@ -215,9 +218,24 @@ class User extends Authenticatable
                 return [$token, $error];
 
             }
+
+            $since_beginning_intervals = sumUp($intervals, $sum_up_key) + $interval;
+
+            $first_attempt = Otp::query()
+                ->type(OTP_TYPE_EMAIL_FORGOT_PASSWORD)
+                ->where('user_id',$this->id)
+                ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->get()->first();
+
+            $try_in = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->diffForHumans();
+            $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->timestamp;
+
+
+            $data['try_in'] =  $try_in;
+            $data['try_in_timestamp'] = $try_in_sec;
         }
         $error = true;
-        return [$token, $error];
+        return [$data, $error];
 
 
     }
@@ -229,7 +247,9 @@ class User extends Authenticatable
      */
     public function makeEmailVerificationOtp(Request $request, $is_welcome = true): array
     {
-        $token = null;
+        $data = [];
+        $data['try_in'] =  null;
+        $data['try_in_timestamp'] = null;
         $error = null;
 
         $intervals = explode(',', getSetting('USER_EMAIL_VERIFICATION_OTP_INTERVALS'));
@@ -241,8 +261,9 @@ class User extends Authenticatable
             $sum_up_key = (count($intervals) - 1 - $key);
             if (Otp::query()
                     ->type(OTP_TYPE_EMAIL_VERIFICATION)
+                    ->where('user_id',$this->id)
                     ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, $sum_up_key) + $interval)->format('Y-m-d H:i:s'), now()->subSeconds(sumUp($intervals, $key))->format('Y-m-d H:i:s')])
-                    ->count() <= $tries * ($sum_up_key + 1)) {
+                    ->count() < $tries * ($sum_up_key + 1)) {
                 $token = $this->getRandomOtp();
 
                 list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
@@ -258,12 +279,25 @@ class User extends Authenticatable
                     EmailJob::dispatch(new WelcomeEmail($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
                 else
                     EmailJob::dispatch(new EmailVerifyOtp($this, $token), $this->email)->onQueue(QUEUES_EMAIL);
-                return [$token, $error];
+                return [$data, $error];
 
             }
+
+
+            $since_beginning_intervals = sumUp($intervals, $sum_up_key) + $interval;
+            $first_attempt = Otp::query()
+                ->type(OTP_TYPE_EMAIL_VERIFICATION)
+                ->where('user_id',$this->id)
+                ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->get()->first();
+            $try_in = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->diffForHumans();
+            $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->timestamp;
+            $data['try_in'] =  $try_in;
+            $data['try_in_timestamp'] = $try_in_sec;
         }
         $error = true;
-        return [$token, $error];
+
+        return [$data, $error];
 
 
     }

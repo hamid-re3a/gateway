@@ -54,21 +54,21 @@ class AuthController extends Controller
 
         $user = User::query()->where('email', $credentials['email'])->first();
 
-        if(!$user->is_email_verified)
+        if (!$user->is_email_verified)
             return ResponseData::success(trans('responses.go-activate-your-email'));
 
-        $login_attempt  = LoginAttempt::find($request->attributes->get('login_attempt'));
+        $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
         $data = [];
         $data['left_attempts'] = $request->get('left_attempts');
-        if($login_attempt && $login_attempt->login_status == LOGIN_ATTEMPT_STATUS_BLOCKED){
+        if ($login_attempt && $login_attempt->login_status == LOGIN_ATTEMPT_STATUS_BLOCKED) {
             $data['try_in'] = $request->get('try_in');
             $data['try_in_timestamp'] = $request->get('try_in_timestamp');
             return ResponseData::error(trans('responses.max-attempts-exceeded'), $data, 429);
         }
         if (!Hash::check($credentials['password'], $user->password)) {
-                $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_FAILED;
-                $login_attempt->save();
+            $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_FAILED;
+            $login_attempt->save();
 
             return ResponseData::error(trans('responses.invalid-inputs-from-user'), $data, 400);
         }
@@ -86,8 +86,9 @@ class AuthController extends Controller
      */
     public function getAuthUser()
     {
-        return ResponseData::success(trans('responses.success'),ProfileResource::make(auth()->user()));
+        return ResponseData::success(trans('responses.success'), ProfileResource::make(auth()->user()));
     }
+
     /**
      * Ask Email Verification Otp
      * @group
@@ -98,12 +99,12 @@ class AuthController extends Controller
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        if($user->is_email_verified)
+        if ($user->is_email_verified)
             return ResponseData::success(trans('responses.email-is-already-verified'));
 
-        list($token,$err) = $user->makeEmailVerificationOtp($request,false);
-        if(!is_null($err)){
-            return ResponseData::error(trans('responses.otp-exceeded-amount'));
+        list($data, $err) = $user->makeEmailVerificationOtp($request, false);
+        if ($err) {
+            return ResponseData::error(trans('responses.otp-exceeded-amount'), $data, 429);
         }
         return ResponseData::success(trans('responses.otp-successfully-sent'));
     }
@@ -119,34 +120,35 @@ class AuthController extends Controller
     public function verifyEmailOtp(VerifyEmailOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        if($user->is_email_verified)
+        if ($user->is_email_verified)
             return ResponseData::success(trans('responses.email-is-already-verified'));
 
         $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
         $otp_db = $user->otps()
-            ->where('type',OTP_TYPE_EMAIL_VERIFICATION)
+            ->where('type', OTP_TYPE_EMAIL_VERIFICATION)
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();
-        if(is_null($otp_db))
+        if (is_null($otp_db))
             return ResponseData::error('responses.otp-is-not-valid-any-more');
 
 
-        if($otp_db->otp == $request->otp){
+        if ($otp_db->otp == $request->otp) {
             $user->is_email_verified = true;
             $user->email_verified_at = now();
             $user->save();
 
             $token = $this->getNewTokenAndDeleteOthers($user);
 
-            list($ip_db,$agent_db) = UserActivityHelper::getInfo($request);
-            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user,$ip_db,$agent_db),$user->email);
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
 
-            return $this->respondWithToken($token,'responses.email-verified-successfully');
+            return $this->respondWithToken($token, 'responses.email-verified-successfully');
         }
         return ResponseData::error('responses.otp-is-wrong');
 
     }
+
     /**
      * Forget Password
      * @group
@@ -157,9 +159,9 @@ class AuthController extends Controller
     public function forgotPassword(ForgetPasswordRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        list($token,$err) = $user->makeForgetPasswordOtp($request);
-        if(!is_null($err)){
-            return ResponseData::error();
+        list($data, $err) = $user->makeForgetPasswordOtp($request);
+        if ($err) {
+            return ResponseData::error(trans('responses.forgot-password-otp-exceeded-amount'), $data, 429);
         }
         return ResponseData::success(trans('responses.otp-successfully-sent'));
     }
@@ -177,20 +179,19 @@ class AuthController extends Controller
         $user = User::whereEmail($request->email)->first();
         $duration = getSetting('USER_FORGOT_PASSWORD_OTP_DURATION');
         $fp_db = $user->otps()
-            ->where('type',OTP_TYPE_EMAIL_FORGOT_PASSWORD)
+            ->where('type', OTP_TYPE_EMAIL_FORGOT_PASSWORD)
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();
-        if(is_null($fp_db))
+        if (is_null($fp_db))
             return ResponseData::error('responses.otp-is-not-valid-any-more');
 
 
-        if($fp_db->otp == $request->otp){
+        if ($fp_db->otp == $request->otp) {
             $user->password = $request->password;
             $user->save();
-            list($ip_db,$agent_db)= UserActivityHelper::getInfo($request);
-            EmailJob::dispatch(new PasswordChangedEmail($user,$ip_db,$agent_db),$user->email);
-
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
 
 
             return ResponseData::success(trans('responses.password-successfully-changed'));
@@ -221,7 +222,7 @@ class AuthController extends Controller
     }
 
 
-    protected function respondWithToken($token,$message = 'responses.login-successful' )
+    protected function respondWithToken($token, $message = 'responses.login-successful')
     {
         $data = [
             'access_token' => $token,

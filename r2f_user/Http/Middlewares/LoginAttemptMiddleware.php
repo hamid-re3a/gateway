@@ -90,18 +90,30 @@ class LoginAttemptMiddleware
         list($intervals, $tries) = getLoginAttemptSetting();
         $reverse_intervals = array_reverse($intervals);
 
-        $thresholds =[];
+        $thresholds = [];
         foreach ($tries as $key => $count) {
-            $thresholds[] = sumUp($tries,$key);
+            $thresholds[] = sumUp($tries, $key) - 1;
         }
         foreach ($reverse_intervals as $key => $interval) {
             $sum_up_key = (count($intervals) - 1 - $key);
             $since_beginning_intervals = sumUp($intervals, $sum_up_key) + $interval;
-            $login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED, LOGIN_ATTEMPT_STATUS_BLOCKED])
+            $login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
+                ->where('user_id', $user->id)
                 ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
                 ->count();
+            $first_attempt = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
+                ->where('user_id', $user->id)
+                ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->get()->first();
+            if (!is_null($first_attempt)) {
+                $try_in = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->diffForHumans();
+                $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->timestamp;
+                $request->attributes->add(['try_in' => $try_in]);
+                $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
+                $last_login = LoginAttemptModel::query()->where('user_id', $user->id)->latest()->take(2)->get()->last();
 
-            if ($login_attempt_count >= sumUp($tries, $sum_up_key + 1)) {
+            }
+            if ($login_attempt_count + 1 >= sumUp($tries, $sum_up_key + 1)) {
 
                 if ($key == 0) {
                     $user->block_type = USER_BLOCK_TYPE_AUTOMATIC;
@@ -112,20 +124,11 @@ class LoginAttemptMiddleware
                     EmailJob::dispatch(new TooManyLoginAttemptPermanentBlockedEmail($user, $login_attempt), $user->email)->onQueue(QUEUES_EMAIL);
                     break;
                 }
-
                 $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
                 $login_attempt->save();
-                $first_attempt = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED, LOGIN_ATTEMPT_STATUS_BLOCKED])
-                    ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
-                    ->get()->first();
-                if (!is_null($first_attempt)) {
-                    $try_in = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->diffForHumans();
-                    $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->timestamp;
-                    $request->attributes->add(['try_in' => $try_in]);
-                    $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
-                    if (in_array($login_attempt_count,$thresholds))
-                        EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $login_attempt_count, $try_in), $user->email)->onQueue(QUEUES_EMAIL);
-                }
+                if (in_array($login_attempt_count, $thresholds) && isset($last_login) && isset($try_in) && $last_login->login_status != LOGIN_ATTEMPT_STATUS_BLOCKED)
+                    EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $login_attempt_count, $try_in), $user->email)->onQueue(QUEUES_EMAIL);
+
                 break;
             }
 
