@@ -91,7 +91,24 @@ const SETTINGS = [
         'category' => 'User > Login'
     ]
 ];
-
+const LOGIN_ATTEMPT_SETTINGS = [
+    [
+        'priority' => 0,
+        'times' => 3,
+        'duration' =>90,
+        'blocking_duration' => 5*60,
+    ],[
+        'priority' => 0,
+        'times' => 5,
+        'duration' =>90,
+        'blocking_duration' => 10*60,
+    ],[
+        'priority' => 0,
+        'times' => 3,
+        'duration' =>90,
+        'blocking_duration' => 20*60,
+    ],
+];
 const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
         'subject' => 'Forget Password Otp',

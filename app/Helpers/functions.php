@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\EmailContentSetting;
+use App\Models\LoginAttemptSetting;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,30 @@ function getEmailAndTextSetting($key){
 
     if(isset(EMAIL_CONTENT_SETTINGS[$key]))
         return EMAIL_CONTENT_SETTINGS[$key];
+
+    throw new Exception(trans('responses.main-key-settings-is-missing'));
+}
+
+function getLoginAttemptSetting(){
+    $intervals = [];
+    $tries = [];
+    if(DB::table('login_attempt_settings')->exists() && LoginAttemptSetting::query()->get()->count() > 0){
+        $intervals_db = LoginAttemptSetting::query()->orderBy('priority','ASC')->get();
+        foreach ($intervals_db as $ri){
+            $intervals [] = $ri->blocking_duration + $ri->duration;
+            $tries [] = $ri->times;
+        }
+        return array($intervals,$tries);
+    }
+
+
+    if(isset(LOGIN_ATTEMPT_SETTINGS[0])){
+        foreach (LOGIN_ATTEMPT_SETTINGS as $ri){
+            $intervals[] = $ri['blocking_duration'] + $ri['duration'];
+            $tries[] = $ri['times'];
+        }
+        return array($intervals,$tries);
+    }
 
     throw new Exception(trans('responses.main-key-settings-is-missing'));
 }

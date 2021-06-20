@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Dtm6tgpaFWNZezPR',
+            '_route' => 'generated::tPKpLHGHWhqbERvc',
           ),
           1 => NULL,
           2 => 
@@ -582,7 +582,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::Dtm6tgpaFWNZezPR' => 
+    'generated::tPKpLHGHWhqbERvc' => 
     array (
       'methods' => 
       array (
@@ -603,7 +603,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::Dtm6tgpaFWNZezPR',
+        'as' => 'generated::tPKpLHGHWhqbERvc',
       ),
       'fallback' => false,
       'defaults' => 

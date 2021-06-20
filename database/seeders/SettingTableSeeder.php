@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\EmailContentSetting;
+use App\Models\LoginAttemptSetting;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
+use R2FUser\Models\LoginAttempt;
 
 /**
  * Class AuthTableSeeder.
@@ -45,5 +47,16 @@ class SettingTableSeeder extends Seeder
             }
         }
 
+        if (LoginAttemptSetting::query()->get()->count() == 0) {
+            foreach (LOGIN_ATTEMPT_SETTINGS as $key => $setting) {
+
+                LoginAttemptSetting::query()->create([
+                    'times' => $setting['times'],
+                    'duration' => $setting['duration'],
+                    'priority' => $setting['priority'],
+                    'blocking_duration' => $setting['blocking_duration'],
+                ]);
+            }
+        }
     }
 }

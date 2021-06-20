@@ -45,7 +45,7 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: June 17 2021</li>
+            <li>Last updated: June 20 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -1723,7 +1723,7 @@ $response = $client-&gt;put(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phprAvr48', 'r')
+                'contents' =&gt; fopen('/tmp/phpMxC4tl', 'r')
             ],
         ],
     ]
@@ -1735,7 +1735,7 @@ import json
 
 url = 'http://localhost:3541/api/kyc/upload'
 files = {
-  'file': open('/tmp/phprAvr48', 'rb')
+  'file': open('/tmp/phpMxC4tl', 'rb')
 }
 payload = {
     "document_type": "driving_licence"
@@ -1754,7 +1754,7 @@ response.json()</code></pre>
     -H "Content-Type: multipart/form-data" \
     -H "Accept: application/json" \
     -F "document_type=driving_licence" \
-    -F "file=@/tmp/phprAvr48" </code></pre>
+    -F "file=@/tmp/phpMxC4tl" </code></pre>
 <div id="execution-results-PUTapi-kyc-upload" hidden>
     <blockquote>Received response<span id="execution-response-status-PUTapi-kyc-upload"></span>:</blockquote>
     <pre class="json"><code id="execution-response-content-PUTapi-kyc-upload"></code></pre>

@@ -1,11 +1,11 @@
 # GENERATED. YOU SHOULDN'T MODIFY OR DELETE THIS FILE.
 # Scribe uses this file to know when you change something manually in your docs.
-resources/docs/groups/auth.md=1623942804
-resources/docs/index.md=1623942804
-resources/docs/authentication.md=1623942804
-resources/docs/groups/public-user-kyc.md=1623942804
+resources/docs/groups/auth.md=1624179319
+resources/docs/index.md=1624179320
+resources/docs/authentication.md=1624179320
+resources/docs/groups/public-user-kyc.md=1624179320
 resources/docs/groups/endpoints.md=1623942604
 resources/docs/groups/user.md=1623924311
-resources/docs/groups/admin-user.md=1623942804
+resources/docs/groups/admin-user.md=1624179319
 resources/docs/groups/user-history.md=1623942690
-resources/docs/groups/public-user-history.md=1623942804
+resources/docs/groups/public-user-history.md=1624179319

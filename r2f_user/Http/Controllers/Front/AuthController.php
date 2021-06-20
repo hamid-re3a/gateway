@@ -58,11 +58,19 @@ class AuthController extends Controller
             return ResponseData::success(trans('responses.go-activate-your-email'));
 
         $login_attempt  = LoginAttempt::find($request->attributes->get('login_attempt'));
+
+        $data = [];
+        $data['left_attempts'] = $request->get('left_attempts');
+        if($login_attempt && $login_attempt->login_status == LOGIN_ATTEMPT_STATUS_BLOCKED){
+            $data['try_in'] = $request->get('try_in');
+            $data['try_in_timestamp'] = $request->get('try_in_timestamp');
+            return ResponseData::error(trans('responses.max-attempts-exceeded'), $data, 429);
+        }
         if (!Hash::check($credentials['password'], $user->password)) {
                 $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_FAILED;
                 $login_attempt->save();
 
-            return ResponseData::error(trans('responses.invalid-inputs-from-user'), null, 400);
+            return ResponseData::error(trans('responses.invalid-inputs-from-user'), $data, 400);
         }
         $token = $this->getNewTokenAndDeleteOthers($user);
 
