@@ -2,19 +2,15 @@
 
 namespace R2FUser\Models;
 
-use App\Http\Helpers\ResponseData;
-use Illuminate\Support\Facades\Hash;
-use R2FUser\Models\PasswordHistory;
-use R2FUser\Models\UserBlockHistory;
-use Illuminate\Http\Request;
-use R2FUser\Jobs\EmailJob;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use R2FUser\Jobs\EmailJob;
 use R2FUser\Mail\User\EmailVerifyOtp;
 use R2FUser\Mail\User\ForgetPasswordOtpEmail;
 use R2FUser\Mail\User\WelcomeEmail;

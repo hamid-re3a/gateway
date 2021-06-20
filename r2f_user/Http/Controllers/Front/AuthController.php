@@ -13,6 +13,7 @@ use R2FUser\Http\Requests\Auth\ResetForgetPasswordRequest;
 use R2FUser\Http\Requests\Auth\VerifyEmailOtpRequest;
 use R2FUser\Http\Resources\Auth\ProfileResource;
 use R2FUser\Jobs\EmailJob;
+use R2FUser\Mail\User\NormalLoginEmail;
 use R2FUser\Mail\User\PasswordChangedEmail;
 use R2FUser\Mail\User\SuccessfulEmailVerificationEmail;
 use R2FUser\Models\LoginAttempt;
@@ -76,6 +77,8 @@ class AuthController extends Controller
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
+        if(getSetting("USER_NORMAL_LOGIN_WARNING_EMAIL"))
+            EmailJob::dispatch(new NormalLoginEmail($user,$login_attempt),$user->email);
         return $this->respondWithToken($token);
     }
 

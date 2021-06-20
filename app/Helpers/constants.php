@@ -18,6 +18,7 @@ const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
+const USER_NORMAL_LOGIN_WARNING_EMAIL = true;
 
 const SETTINGS = [
     'APP_NAME' => [
@@ -74,6 +75,11 @@ const SETTINGS = [
         'value' => USER_EMAIL_VERIFICATION_OTP_TRIES,
         'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
         'category' => 'User > Email Verification'
+    ],
+    'USER_NORMAL_LOGIN_WARNING_EMAIL' => [
+        'value' => USER_NORMAL_LOGIN_WARNING_EMAIL,
+        'description' => 'Send email warning after successful login',
+        'category' => 'User > Login'
     ],
     'USER_REGISTRATION_PASSWORD_CRITERIA' => [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
@@ -142,6 +148,15 @@ const EMAIL_CONTENT_SETTINGS = [
         'from' => 'info@r2f.com',
         'from_name' => 'Ride To Future',
         'body' => '<p>Hello, {{full_name}}</p><p>Someone tries to Login from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}} and login is {{status}} </p>',
+        'variables' => 'full_name,country,city,ip,platform,browser,status',
+        'variables_description' => 'full_name user full name',
+        'type' => 'email'
+    ],
+    'NORMAL_LOGIN_EMAIL' => [
+        'subject' => 'Successful Login',
+        'from' => 'info@r2f.com',
+        'from_name' => 'Ride To Future',
+        'body' => '<p>Hello, {{full_name}}</p><p>Successful login from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}} and login is {{status}} </p>',
         'variables' => 'full_name,country,city,ip,platform,browser,status',
         'variables_description' => 'full_name user full name',
         'type' => 'email'
