@@ -26,7 +26,7 @@ class ResetForgetPasswordRequest extends FormRequest
     {
         return [
             'email' => 'required|email|exists:users,email',
-            'otp' => 'required|string',
+            'otp' => 'required|string|exists:otps,otp',
             'password' => ['required', 'confirmed','regex:/'.getSetting('USER_REGISTRATION_PASSWORD_CRITERIA').'/'],
             'password_confirmation' => 'required|string',
         ];

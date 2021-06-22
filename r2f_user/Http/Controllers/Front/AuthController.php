@@ -5,11 +5,13 @@ namespace R2FUser\Http\Controllers\Front;
 use App\Http\Helpers\ResponseData;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use R2FUser\Http\Requests\Auth\EmailExistenceRequest;
 use R2FUser\Http\Requests\Auth\EmailVerificationOtpRequest;
 use R2FUser\Http\Requests\Auth\ForgetPasswordRequest;
 use R2FUser\Http\Requests\Auth\LoginRequest;
 use R2FUser\Http\Requests\Auth\RegisterUserRequest;
 use R2FUser\Http\Requests\Auth\ResetForgetPasswordRequest;
+use R2FUser\Http\Requests\Auth\UsernameExistenceRequest;
 use R2FUser\Http\Requests\Auth\VerifyEmailOtpRequest;
 use R2FUser\Http\Resources\Auth\ProfileResource;
 use R2FUser\Jobs\EmailJob;
@@ -55,7 +57,7 @@ class AuthController extends Controller
 
         $user = User::query()->where('email', $credentials['email'])->first();
 
-        if (!$user->is_email_verified)
+        if (!$user->isEmailVerified())
             return ResponseData::success(trans('responses.go-activate-your-email'));
 
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
@@ -91,7 +93,30 @@ class AuthController extends Controller
     {
         return ResponseData::success(trans('responses.success'), ProfileResource::make(auth()->user()));
     }
+    /**
+     * Check email existence
+     * @group
+     * Auth
+     */
+    public function isEmailExists(EmailExistenceRequest $request)
+    {
+        if(User::whereEmail($this->email)->exists())
+            return ResponseData::success(trans('responses.email-already-exists'),true);
 
+        return ResponseData::success(trans('responses.email-already-does-not-exist'),false);
+    }
+    /**
+     * Username existence
+     * @group
+     * Auth
+     */
+    public function isUsernameExists(UsernameExistenceRequest $request)
+    {
+        if(User::whereUsername($this->username)->exists())
+            return ResponseData::success(trans('responses.email-already-exists'),true);
+
+        return ResponseData::success(trans('responses.email-already-does-not-exist'),false);
+    }
     /**
      * Ask Email Verification Otp
      * @group
@@ -102,7 +127,7 @@ class AuthController extends Controller
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        if ($user->is_email_verified)
+        if ($user->isEmailVerified())
             return ResponseData::success(trans('responses.email-is-already-verified'));
 
         list($data, $err) = $user->makeEmailVerificationOtp($request, false);
@@ -123,7 +148,7 @@ class AuthController extends Controller
     public function verifyEmailOtp(VerifyEmailOtpRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        if ($user->is_email_verified)
+        if ($user->isEmailVerified())
             return ResponseData::success(trans('responses.email-is-already-verified'));
 
         $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
@@ -137,7 +162,6 @@ class AuthController extends Controller
 
 
         if ($otp_db->otp == $request->otp) {
-            $user->is_email_verified = true;
             $user->email_verified_at = now();
             $user->save();
 

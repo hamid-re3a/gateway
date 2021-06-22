@@ -172,10 +172,9 @@ class User extends Authenticatable
     /**
      * methods
      */
-
     public function isEmailVerified(): bool
     {
-        return (bool)($this->is_email_verified == true);
+        return  ! is_null($this->email_verified_at);
     }
 
     /**

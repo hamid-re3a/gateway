@@ -1,10 +1,10 @@
 <?php
 
-namespace R2FUser\Http\Requests\Auth;
+namespace R2FUser\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerifyEmailOtpRequest extends FormRequest
+class HistoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class VerifyEmailOtpRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email',
-            'otp' => 'required|string|exists:otps,otp',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 }

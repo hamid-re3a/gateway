@@ -22,6 +22,7 @@ class RegisterUserRequest extends FormRequest
             'first_name' => ['required', 'string', 'min:4', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
             'last_name' => ['required', 'string', 'min:4', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
             'email' => 'required|string|email|max:255|unique:users',
+            /** username can contain alphabet, underline and digits */
             'username' => ['required', 'unique:users', 'regex:/^[a-z][a-z0-9_]{2,}$/'],
             'password' => ['required', 'confirmed', 'regex:/'.getSetting('USER_REGISTRATION_PASSWORD_CRITERIA').'/'],
             'password_confirmation' => 'required|string',
