@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\Models\User;
+use R2FUser\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Spatie\Permission\Models\Role;

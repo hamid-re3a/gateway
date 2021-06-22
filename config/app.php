@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Ticketing'),
+    'name' => env('APP_NAME', 'R2F'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost:2222/'),
+    'url' => env('APP_URL', 'http://localhost:3541/'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -174,7 +174,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        PragmaRX\Google2FALaravel\ServiceProvider::class,
+        \R2FUser\UserServiceProvider::class,
+        \Torann\GeoIP\GeoIPServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
     ],
 
     /*
@@ -226,8 +229,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'Payment' => Shetabit\Payment\Facade\Payment::class,
+        'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
+        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];

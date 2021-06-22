@@ -78,6 +78,26 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/sanctum/csrf-cookie' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::tPKpLHGHWhqbERvc',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/register' => 
       array (
         0 => 
@@ -116,19 +136,153 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/get_email_verify_token' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authask-for-email-otp',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/verify_email_token' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authverify-email-otp',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/forgot_password' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authforgot-password',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/reset_forgot_password' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'authreset-forgot-password',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/logout' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'authlogout',
+            '_route' => 'logout',
           ),
           1 => NULL,
           2 => 
           array (
             'GET' => 0,
             'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/ping' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'ping',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/activate_or_deactivate_user' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'activate-or-deactivate-user-account',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/verify_email_user' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'verify-email-user-account',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -142,7 +296,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'auth',
+            '_route' => 'current-user',
           ),
           1 => NULL,
           2 => 
@@ -156,68 +310,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/tickets' => 
+      '/api/user_email_verification_history' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'tickets.index',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-        1 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'tickets.store',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/ticket/comment' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'comment',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/admin/tickets' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'admin.tickets',
+            '_route' => 'user-email-verification-history',
           ),
           1 => NULL,
           2 => 
@@ -231,13 +330,73 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/admin/tickets/comment' => 
+      '/api/user_login_history' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'admin.reply.comment',
+            '_route' => 'user-login-history',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/user_block_history' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'user-block-history',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/user_password_history' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'password-history',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_secret' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-secret',
           ),
           1 => NULL,
           2 => 
@@ -250,18 +409,56 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/admin/tickets/change_status' => 
+      '/api/generate2fa_enable' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'admin.ticket.status',
+            '_route' => '2fa-enable',
           ),
           1 => NULL,
           2 => 
           array (
             'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_disable' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-disable',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/kyc/upload' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'kyc-upload-file',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'PUT' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -272,66 +469,9 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/api/(?|tickets/([^/]++)(*:31)|admin/tickets/([^/]++)(*:60)))/?$}sDu',
     ),
     3 => 
     array (
-      31 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'tickets.show',
-          ),
-          1 => 
-          array (
-            0 => 'ticket',
-          ),
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => true,
-          6 => NULL,
-        ),
-      ),
-      60 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'admin.show.ticket',
-          ),
-          1 => 
-          array (
-            0 => 'id',
-          ),
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => true,
-          6 => NULL,
-        ),
-        1 => 
-        array (
-          0 => NULL,
-          1 => NULL,
-          2 => NULL,
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => 0,
-        ),
-      ),
     ),
     4 => NULL,
   ),
@@ -442,6 +582,42 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
+    'generated::tPKpLHGHWhqbERvc' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'sanctum/csrf-cookie',
+      'action' => 
+      array (
+        'uses' => 'Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show',
+        'controller' => 'Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show',
+        'namespace' => NULL,
+        'prefix' => 'sanctum',
+        'where' => 
+        array (
+        ),
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'as' => 'generated::tPKpLHGHWhqbERvc',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
     'authregister' => 
     array (
       'methods' => 
@@ -454,11 +630,12 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@register',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@register',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
         'as' => 'authregister',
-        'namespace' => NULL,
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
@@ -489,11 +666,14 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'login_attempt',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@login',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@login',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
         'as' => 'authlogin',
-        'namespace' => NULL,
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
@@ -512,7 +692,155 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authlogout' => 
+    'authask-for-email-otp' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/get_email_verify_token',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
+        'as' => 'authask-for-email-otp',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'authverify-email-otp' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/verify_email_token',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
+        'as' => 'authverify-email-otp',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'authforgot-password' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/forgot_password',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgotPassword',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgotPassword',
+        'as' => 'authforgot-password',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'authreset-forgot-password' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/reset_forgot_password',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
+        'as' => 'authreset-forgot-password',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'logout' => 
     array (
       'methods' => 
       array (
@@ -525,15 +853,18 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@logout',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@logout',
-        'as' => 'authlogout',
-        'namespace' => NULL,
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
         ),
+        'as' => 'logout',
       ),
       'fallback' => false,
       'defaults' => 
@@ -548,7 +879,126 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'auth' => 
+    'ping' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/ping',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@ping',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@ping',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'ping',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'activate-or-deactivate-user-account' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/activate_or_deactivate_user',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => 'role:admin',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@activateOrDeactivateUserAccount',
+        'controller' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@activateOrDeactivateUserAccount',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'activate-or-deactivate-user-account',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'verify-email-user-account' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/verify_email_user',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => 'role:admin',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@verifyUserEmailAccount',
+        'controller' => 'R2FUser\\Http\\Controllers\\Admin\\UserController@verifyUserEmailAccount',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'verify-email-user-account',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'current-user' => 
     array (
       'methods' => 
       array (
@@ -561,15 +1011,19 @@ app('router')->setCompiledRoutes(
         'middleware' => 
         array (
           0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
-        'uses' => 'App\\Http\\Controllers\\Auth\\AuthController@getAuthUser',
-        'controller' => 'App\\Http\\Controllers\\Auth\\AuthController@getAuthUser',
-        'as' => 'auth',
-        'namespace' => NULL,
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
         ),
+        'as' => 'current-user',
       ),
       'fallback' => false,
       'defaults' => 
@@ -584,29 +1038,32 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'tickets.index' => 
+    'user-email-verification-history' => 
     array (
       'methods' => 
       array (
         0 => 'GET',
         1 => 'HEAD',
       ),
-      'uri' => 'api/tickets',
+      'uri' => 'api/user_email_verification_history',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
-        'as' => 'tickets.index',
-        'uses' => 'App\\Http\\Controllers\\Front\\TicketController@index',
-        'controller' => 'App\\Http\\Controllers\\Front\\TicketController@index',
-        'namespace' => NULL,
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@emailVerificationHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@emailVerificationHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
         ),
+        'as' => 'user-email-verification-history',
       ),
       'fallback' => false,
       'defaults' => 
@@ -621,65 +1078,32 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'tickets.store' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/tickets',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'auth',
-        ),
-        'as' => 'tickets.store',
-        'uses' => 'App\\Http\\Controllers\\Front\\TicketController@store',
-        'controller' => 'App\\Http\\Controllers\\Front\\TicketController@store',
-        'namespace' => NULL,
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'tickets.show' => 
+    'user-login-history' => 
     array (
       'methods' => 
       array (
         0 => 'GET',
         1 => 'HEAD',
       ),
-      'uri' => 'api/tickets/{ticket}',
+      'uri' => 'api/user_login_history',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'auth',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
-        'as' => 'tickets.show',
-        'uses' => 'App\\Http\\Controllers\\Front\\TicketController@show',
-        'controller' => 'App\\Http\\Controllers\\Front\\TicketController@show',
-        'namespace' => NULL,
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@loginHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@loginHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
         ),
+        'as' => 'user-login-history',
       ),
       'fallback' => false,
       'defaults' => 
@@ -694,67 +1118,32 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'comment' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/ticket/comment',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'auth',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Front\\CommentController@sendCommentTicket',
-        'controller' => 'App\\Http\\Controllers\\Front\\CommentController@sendCommentTicket',
-        'namespace' => NULL,
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => 'comment',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.tickets' => 
+    'user-block-history' => 
     array (
       'methods' => 
       array (
         0 => 'GET',
         1 => 'HEAD',
       ),
-      'uri' => 'api/admin/tickets',
+      'uri' => 'api/user_block_history',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@index',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@index',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@blockHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@blockHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'admin.tickets',
+        'as' => 'user-block-history',
       ),
       'fallback' => false,
       'defaults' => 
@@ -769,107 +1158,189 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'admin.reply.comment' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/admin/tickets/comment',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@replyComment',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@replyComment',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.reply.comment',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.ticket.status' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/admin/tickets/change_status',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
-        ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@changeTicketStatus',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@changeTicketStatus',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.ticket.status',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'admin.show.ticket' => 
+    'password-history' => 
     array (
       'methods' => 
       array (
         0 => 'GET',
         1 => 'HEAD',
       ),
-      'uri' => 'api/admin/tickets/{id}',
+      'uri' => 'api/user_password_history',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'api',
-          1 => 'api',
-          2 => 'auth',
-          3 => 'role:admin|help-desk',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
-        'uses' => 'App\\Http\\Controllers\\Admin\\TicketController@show',
-        'controller' => 'App\\Http\\Controllers\\Admin\\TicketController@show',
-        'namespace' => NULL,
-        'prefix' => 'api/admin',
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@passwordHistory',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@passwordHistory',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'admin.show.ticket',
+        'as' => 'password-history',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-secret' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/generate2fa_secret',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-secret',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-enable' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/generate2fa_enable',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-enable',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-disable' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/generate2fa_disable',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => '2fa',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-disable',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'kyc-upload-file' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'PUT',
+      ),
+      'uri' => 'api/kyc/upload',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'kyc-upload-file',
       ),
       'fallback' => false,
       'defaults' => 

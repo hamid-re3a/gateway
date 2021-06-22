@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'jwt',
+            'driver' => 'sanctum',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => R2FUser\Models\User::class,
         ],
 
         // 'users' => [

@@ -35,6 +35,13 @@
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
     ),
   ),
+  'imanghafoori/laravel-microscope' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Imanghafoori\\LaravelMicroscope\\LaravelMicroscopeServiceProvider',
+    ),
+  ),
   'jenssegers/agent' => 
   array (
     'providers' => 
@@ -67,6 +74,13 @@
       0 => 'Laravel\\Sail\\SailServiceProvider',
     ),
   ),
+  'laravel/sanctum' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
+    ),
+  ),
   'laravel/tinker' => 
   array (
     'providers' => 
@@ -95,6 +109,17 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'pragmarx/google2fa-laravel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Google2FA' => 'PragmaRX\\Google2FALaravel\\Facade',
+    ),
+  ),
   'spatie/laravel-permission' => 
   array (
     'providers' => 
@@ -102,16 +127,15 @@
       0 => 'Spatie\\Permission\\PermissionServiceProvider',
     ),
   ),
-  'tymon/jwt-auth' => 
+  'torann/geoip' => 
   array (
-    'aliases' => 
-    array (
-      'JWTAuth' => 'Tymon\\JWTAuth\\Facades\\JWTAuth',
-      'JWTFactory' => 'Tymon\\JWTAuth\\Facades\\JWTFactory',
-    ),
     'providers' => 
     array (
-      0 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
+      0 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'GeoIP' => 'Torann\\GeoIP\\Facades\\GeoIP',
     ),
   ),
 );

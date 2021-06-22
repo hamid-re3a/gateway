@@ -2,12 +2,11 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\Admin;
-use App\Http\Middleware\AllBlockMiddleware;
-use App\Http\Middleware\Client;
-use App\Http\Middleware\Network;
-use App\Http\Middleware\TemporaryBlockMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use R2FUser\Http\Middlewares\BlockUserMiddleware;
+use R2FUser\Http\Middlewares\EmailVerifiedMiddleware;
+use R2FUser\Http\Middlewares\LoginAttemptMiddleware;
+use R2FUser\Http\Middlewares\UserActivityMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -43,9 +42,9 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
         'api' => [
-            'throttle:api',
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+//            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -70,10 +69,10 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-        'admin' => Admin::class,
-        'network' => Network::class,
-        'client' => Client::class,
-        'all_block' => AllBlockMiddleware::class,
-        'temporary_block' => TemporaryBlockMiddleware::class,
+        '2fa' => \R2FUser\Http\Middlewares\Login2FAMiddleware::class,
+        'user_activity' => UserActivityMiddleware::class,
+        'login_attempt' => LoginAttemptMiddleware::class,
+        'email_verified' => EmailVerifiedMiddleware::class,
+        'block_user' => BlockUserMiddleware::class,
     ];
 }

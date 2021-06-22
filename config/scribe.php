@@ -54,7 +54,7 @@ return [
              * The route can be referenced by name or path here. Wildcards are supported.
              */
             'exclude' => [
-                // '/health', 'admin.*'
+                 '*sanctum/csrf-cookie*'
             ],
 
             /*
@@ -221,7 +221,7 @@ return [
      * Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
      */
     'intro_text' => <<<INTRO
-<h2> Ticketing documentation. </h2>
+<h2> R2F documentation. </h2>
 *************************************************
 <h5> Author Info </h5>
 <ul> Name : Hamidreza Noruzinejad</ul>
@@ -246,7 +246,7 @@ INTRO
     /*
      * The base URL to be used in examples. If this is empty, Scribe will use the value of config('app.url').
      */
-    'base_url' => "http://localhost:2222",
+    'base_url' => 'http://localhost:3541',
 
     /*
      * Generate a Postman collection (v2.1.0) in addition to HTML docs.

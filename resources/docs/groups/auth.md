@@ -10,7 +10,7 @@
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/register"
+    "http://localhost:3541/api/register"
 );
 
 let headers = {
@@ -19,10 +19,12 @@ let headers = {
 };
 
 let body = {
-    "name": "consequatur",
-    "family": "consequatur",
+    "first_name": "consequatur",
+    "last_name": "consequatur",
     "email": "qkunze@example.com",
-    "password": "consequatur"
+    "username": "consequatur",
+    "password": "consequatur",
+    "password_confirmation": "consequatur"
 }
 
 fetch(url, {
@@ -36,16 +38,18 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost:2222/api/register',
+    'http://localhost:3541/api/register',
     [
         'headers' => [
             'Accept' => 'application/json',
         ],
         'json' => [
-            'name' => 'consequatur',
-            'family' => 'consequatur',
+            'first_name' => 'consequatur',
+            'last_name' => 'consequatur',
             'email' => 'qkunze@example.com',
+            'username' => 'consequatur',
             'password' => 'consequatur',
+            'password_confirmation' => 'consequatur',
         ],
     ]
 );
@@ -57,12 +61,14 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/register'
+url = 'http://localhost:3541/api/register'
 payload = {
-    "name": "consequatur",
-    "family": "consequatur",
+    "first_name": "consequatur",
+    "last_name": "consequatur",
     "email": "qkunze@example.com",
-    "password": "consequatur"
+    "username": "consequatur",
+    "password": "consequatur",
+    "password_confirmation": "consequatur"
 }
 headers = {
   'Content-Type': 'application/json',
@@ -75,10 +81,10 @@ response.json()
 
 ```bash
 curl -X POST \
-    "http://localhost:2222/api/register" \
+    "http://localhost:3541/api/register" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"name":"consequatur","family":"consequatur","email":"qkunze@example.com","password":"consequatur"}'
+    -d '{"first_name":"consequatur","last_name":"consequatur","email":"qkunze@example.com","username":"consequatur","password":"consequatur","password_confirmation":"consequatur"}'
 
 ```
 
@@ -104,24 +110,40 @@ curl -X POST \
 </p>
 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
 <p>
-<b><code>name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="name" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<b><code>first_name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="first_name" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
+
 </p>
 <p>
-<b><code>family</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="family" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<b><code>last_name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="last_name" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
+
 </p>
 <p>
 <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
 <input type="text" name="email" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
-The value must be a valid email address.</p>
+The value must be a valid email address.
+</p>
+<p>
+<b><code>username</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="username" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<br>
+
+</p>
 <p>
 <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="password" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<input type="password" name="password" data-endpoint="POSTapi-register" data-component="body" required  hidden>
 <br>
+
+</p>
+<p>
+<b><code>password_confirmation</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="password_confirmation" data-endpoint="POSTapi-register" data-component="body" required  hidden>
+<br>
+
 </p>
 
 </form>
@@ -136,7 +158,7 @@ The value must be a valid email address.</p>
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/login"
+    "http://localhost:3541/api/login"
 );
 
 let headers = {
@@ -160,7 +182,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost:2222/api/login',
+    'http://localhost:3541/api/login',
     [
         'headers' => [
             'Accept' => 'application/json',
@@ -179,7 +201,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/login'
+url = 'http://localhost:3541/api/login'
 payload = {
     "email": "qkunze@example.com",
     "password": "consequatur"
@@ -195,7 +217,7 @@ response.json()
 
 ```bash
 curl -X POST \
-    "http://localhost:2222/api/login" \
+    "http://localhost:3541/api/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"email":"qkunze@example.com","password":"consequatur"}'
@@ -227,11 +249,461 @@ curl -X POST \
 <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
 <input type="text" name="email" data-endpoint="POSTapi-login" data-component="body" required  hidden>
 <br>
-The value must be a valid email address.</p>
+The value must be a valid email address.
+</p>
 <p>
 <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="password" data-endpoint="POSTapi-login" data-component="body" required  hidden>
+<input type="password" name="password" data-endpoint="POSTapi-login" data-component="body" required  hidden>
 <br>
+
+</p>
+
+</form>
+
+
+## Ask Email Verification Otp
+
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/get_email_verify_token"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/get_email_verify_token',
+    [
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'email' => 'qkunze@example.com',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/get_email_verify_token'
+payload = {
+    "email": "qkunze@example.com"
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/get_email_verify_token" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com"}'
+
+```
+
+
+<div id="execution-results-POSTapi-get_email_verify_token" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-get_email_verify_token"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-get_email_verify_token"></code></pre>
+</div>
+<div id="execution-error-POSTapi-get_email_verify_token" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-get_email_verify_token"></code></pre>
+</div>
+<form id="form-POSTapi-get_email_verify_token" data-method="POST" data-path="api/get_email_verify_token" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-get_email_verify_token', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-get_email_verify_token" onclick="tryItOut('POSTapi-get_email_verify_token');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-get_email_verify_token" onclick="cancelTryOut('POSTapi-get_email_verify_token');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-get_email_verify_token" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/get_email_verify_token</code></b>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="POSTapi-get_email_verify_token" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+
+</form>
+
+
+## Activate Email
+
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/verify_email_token"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com",
+    "otp": "consequatur"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/verify_email_token',
+    [
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'email' => 'qkunze@example.com',
+            'otp' => 'consequatur',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/verify_email_token'
+payload = {
+    "email": "qkunze@example.com",
+    "otp": "consequatur"
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/verify_email_token" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com","otp":"consequatur"}'
+
+```
+
+
+<div id="execution-results-POSTapi-verify_email_token" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-verify_email_token"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-verify_email_token"></code></pre>
+</div>
+<div id="execution-error-POSTapi-verify_email_token" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-verify_email_token"></code></pre>
+</div>
+<form id="form-POSTapi-verify_email_token" data-method="POST" data-path="api/verify_email_token" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-verify_email_token', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-verify_email_token" onclick="tryItOut('POSTapi-verify_email_token');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-verify_email_token" onclick="cancelTryOut('POSTapi-verify_email_token');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-verify_email_token" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/verify_email_token</code></b>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="POSTapi-verify_email_token" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+<p>
+<b><code>otp</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="otp" data-endpoint="POSTapi-verify_email_token" data-component="body" required  hidden>
+<br>
+
+</p>
+
+</form>
+
+
+## Forget Password
+
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/forgot_password"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/forgot_password',
+    [
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'email' => 'qkunze@example.com',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/forgot_password'
+payload = {
+    "email": "qkunze@example.com"
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/forgot_password" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com"}'
+
+```
+
+
+<div id="execution-results-POSTapi-forgot_password" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-forgot_password"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-forgot_password"></code></pre>
+</div>
+<div id="execution-error-POSTapi-forgot_password" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-forgot_password"></code></pre>
+</div>
+<form id="form-POSTapi-forgot_password" data-method="POST" data-path="api/forgot_password" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-forgot_password', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-forgot_password" onclick="tryItOut('POSTapi-forgot_password');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-forgot_password" onclick="cancelTryOut('POSTapi-forgot_password');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-forgot_password" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/forgot_password</code></b>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="POSTapi-forgot_password" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+
+</form>
+
+
+## Reset Forget Password
+
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/reset_forgot_password"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "qkunze@example.com",
+    "otp": "consequatur",
+    "password": "consequatur",
+    "password_confirmation": "consequatur"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/reset_forgot_password',
+    [
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'email' => 'qkunze@example.com',
+            'otp' => 'consequatur',
+            'password' => 'consequatur',
+            'password_confirmation' => 'consequatur',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/reset_forgot_password'
+payload = {
+    "email": "qkunze@example.com",
+    "otp": "consequatur",
+    "password": "consequatur",
+    "password_confirmation": "consequatur"
+}
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/reset_forgot_password" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email":"qkunze@example.com","otp":"consequatur","password":"consequatur","password_confirmation":"consequatur"}'
+
+```
+
+
+<div id="execution-results-POSTapi-reset_forgot_password" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-reset_forgot_password"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-reset_forgot_password"></code></pre>
+</div>
+<div id="execution-error-POSTapi-reset_forgot_password" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-reset_forgot_password"></code></pre>
+</div>
+<form id="form-POSTapi-reset_forgot_password" data-method="POST" data-path="api/reset_forgot_password" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-reset_forgot_password', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-reset_forgot_password" onclick="tryItOut('POSTapi-reset_forgot_password');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-reset_forgot_password" onclick="cancelTryOut('POSTapi-reset_forgot_password');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-reset_forgot_password" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/reset_forgot_password</code></b>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="email" data-endpoint="POSTapi-reset_forgot_password" data-component="body" required  hidden>
+<br>
+The value must be a valid email address.
+</p>
+<p>
+<b><code>otp</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="otp" data-endpoint="POSTapi-reset_forgot_password" data-component="body" required  hidden>
+<br>
+
+</p>
+<p>
+<b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="password" data-endpoint="POSTapi-reset_forgot_password" data-component="body" required  hidden>
+<br>
+
+</p>
+<p>
+<b><code>password_confirmation</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="password_confirmation" data-endpoint="POSTapi-reset_forgot_password" data-component="body" required  hidden>
+<br>
+
 </p>
 
 </form>
@@ -247,7 +719,7 @@ The value must be a valid email address.</p>
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/logout"
+    "http://localhost:3541/api/logout"
 );
 
 let headers = {
@@ -267,7 +739,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost:2222/api/logout',
+    'http://localhost:3541/api/logout',
     [
         'headers' => [
             'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
@@ -283,7 +755,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/logout'
+url = 'http://localhost:3541/api/logout'
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
   'Content-Type': 'application/json',
@@ -296,7 +768,7 @@ response.json()
 
 ```bash
 curl -X GET \
-    -G "http://localhost:2222/api/logout" \
+    -G "http://localhost:3541/api/logout" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
@@ -308,7 +780,7 @@ curl -X GET \
 ```json
 {
     "data": [],
-    "message": "Token could not be parsed from the request.",
+    "message": "Unauthenticated.",
     "status": 400
 }
 ```
@@ -337,7 +809,7 @@ curl -X GET \
 </form>
 
 
-## Get Current User
+## Ping
 
 <small class="badge badge-darkred">requires authentication</small>
 
@@ -347,7 +819,7 @@ curl -X GET \
 
 ```javascript
 const url = new URL(
-    "http://localhost:2222/api/user"
+    "http://localhost:3541/api/ping"
 );
 
 let headers = {
@@ -367,7 +839,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost:2222/api/user',
+    'http://localhost:3541/api/ping',
     [
         'headers' => [
             'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
@@ -383,7 +855,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost:2222/api/user'
+url = 'http://localhost:3541/api/ping'
 headers = {
   'Authorization': 'Bearer {YOUR_AUTH_KEY}',
   'Content-Type': 'application/json',
@@ -396,7 +868,7 @@ response.json()
 
 ```bash
 curl -X GET \
-    -G "http://localhost:2222/api/user" \
+    -G "http://localhost:3541/api/ping" \
     -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
@@ -408,7 +880,107 @@ curl -X GET \
 ```json
 {
     "data": [],
-    "message": "Trying to get property 'id' of non-object",
+    "message": "Unauthenticated.",
+    "status": 400
+}
+```
+<div id="execution-results-GETapi-ping" hidden>
+    <blockquote>Received response<span id="execution-response-status-GETapi-ping"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-ping"></code></pre>
+</div>
+<div id="execution-error-GETapi-ping" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-ping"></code></pre>
+</div>
+<form id="form-GETapi-ping" data-method="GET" data-path="api/ping" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-ping', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-ping" onclick="tryItOut('GETapi-ping');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-ping" onclick="cancelTryOut('GETapi-ping');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-ping" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-green">GET</small>
+ <b><code>api/ping</code></b>
+</p>
+<p>
+<label id="auth-GETapi-ping" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-ping" data-component="header"></label>
+</p>
+</form>
+
+
+## Get Current User
+
+<small class="badge badge-darkred">requires authentication</small>
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/user"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'http://localhost:3541/api/user',
+    [
+        'headers' => [
+            'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' => 'application/json',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/user'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()
+```
+
+```bash
+curl -X GET \
+    -G "http://localhost:3541/api/user" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"
+```
+
+
+> Example response (400):
+
+```json
+{
+    "data": [],
+    "message": "Unauthenticated.",
     "status": 400
 }
 ```
@@ -434,6 +1006,319 @@ curl -X GET \
 <p>
 <label id="auth-GETapi-user" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="GETapi-user" data-component="header"></label>
 </p>
+</form>
+
+
+## Generate 2FA secret key
+
+<small class="badge badge-darkred">requires authentication</small>
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/generate2fa_secret"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/generate2fa_secret',
+    [
+        'headers' => [
+            'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' => 'application/json',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/generate2fa_secret'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/generate2fa_secret" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"
+```
+
+
+<div id="execution-results-POSTapi-generate2fa_secret" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-generate2fa_secret"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-generate2fa_secret"></code></pre>
+</div>
+<div id="execution-error-POSTapi-generate2fa_secret" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-generate2fa_secret"></code></pre>
+</div>
+<form id="form-POSTapi-generate2fa_secret" data-method="POST" data-path="api/generate2fa_secret" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-generate2fa_secret', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-generate2fa_secret" onclick="tryItOut('POSTapi-generate2fa_secret');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-generate2fa_secret" onclick="cancelTryOut('POSTapi-generate2fa_secret');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-generate2fa_secret" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/generate2fa_secret</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-generate2fa_secret" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-generate2fa_secret" data-component="header"></label>
+</p>
+</form>
+
+
+## Enable 2FA
+
+<small class="badge badge-darkred">requires authentication</small>
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/generate2fa_enable"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "one_time_password": "consequatur"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/generate2fa_enable',
+    [
+        'headers' => [
+            'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'one_time_password' => 'consequatur',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/generate2fa_enable'
+payload = {
+    "one_time_password": "consequatur"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/generate2fa_enable" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"one_time_password":"consequatur"}'
+
+```
+
+
+<div id="execution-results-POSTapi-generate2fa_enable" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-generate2fa_enable"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-generate2fa_enable"></code></pre>
+</div>
+<div id="execution-error-POSTapi-generate2fa_enable" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-generate2fa_enable"></code></pre>
+</div>
+<form id="form-POSTapi-generate2fa_enable" data-method="POST" data-path="api/generate2fa_enable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-generate2fa_enable', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-generate2fa_enable" onclick="tryItOut('POSTapi-generate2fa_enable');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-generate2fa_enable" onclick="cancelTryOut('POSTapi-generate2fa_enable');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-generate2fa_enable" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/generate2fa_enable</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-generate2fa_enable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-generate2fa_enable" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>one_time_password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="one_time_password" data-endpoint="POSTapi-generate2fa_enable" data-component="body" required  hidden>
+<br>
+
+</p>
+
+</form>
+
+
+## Disable 2FA
+
+<small class="badge badge-darkred">requires authentication</small>
+
+
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://localhost:3541/api/generate2fa_disable"
+);
+
+let headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "one_time_password": "consequatur"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response => response.json());
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://localhost:3541/api/generate2fa_disable',
+    [
+        'headers' => [
+            'Authorization' => 'Bearer {YOUR_AUTH_KEY}',
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'one_time_password' => 'consequatur',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```python
+import requests
+import json
+
+url = 'http://localhost:3541/api/generate2fa_disable'
+payload = {
+    "one_time_password": "consequatur"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()
+```
+
+```bash
+curl -X POST \
+    "http://localhost:3541/api/generate2fa_disable" \
+    -H "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"one_time_password":"consequatur"}'
+
+```
+
+
+<div id="execution-results-POSTapi-generate2fa_disable" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-generate2fa_disable"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-generate2fa_disable"></code></pre>
+</div>
+<div id="execution-error-POSTapi-generate2fa_disable" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-generate2fa_disable"></code></pre>
+</div>
+<form id="form-POSTapi-generate2fa_disable" data-method="POST" data-path="api/generate2fa_disable" data-authed="1" data-hasfiles="0" data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-generate2fa_disable', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-generate2fa_disable" onclick="tryItOut('POSTapi-generate2fa_disable');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-generate2fa_disable" onclick="cancelTryOut('POSTapi-generate2fa_disable');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-generate2fa_disable" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/generate2fa_disable</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-generate2fa_disable" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-generate2fa_disable" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>one_time_password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="password" name="one_time_password" data-endpoint="POSTapi-generate2fa_disable" data-component="body" required  hidden>
+<br>
+
+</p>
+
 </form>
 
 

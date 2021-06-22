@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use R2FUser\database\seeders\AuthTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,5 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AuthTableSeeder::class);
+        $this->call(SettingTableSeeder::class);
     }
 }
