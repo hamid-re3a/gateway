@@ -97,25 +97,27 @@ class AuthController extends Controller
      * Check email existence
      * @group
      * Auth
+     * @unauthenticated
      */
     public function isEmailExists(EmailExistenceRequest $request)
     {
-        if(User::whereEmail($this->email)->exists())
+        if(User::whereEmail($request->email)->exists())
             return ResponseData::success(trans('responses.email-already-exists'),true);
 
-        return ResponseData::success(trans('responses.email-already-does-not-exist'),false);
+        return ResponseData::success(trans('responses.email-does-not-exist'),false);
     }
     /**
      * Username existence
      * @group
      * Auth
+     * @unauthenticated
      */
     public function isUsernameExists(UsernameExistenceRequest $request)
     {
-        if(User::whereUsername($this->username)->exists())
-            return ResponseData::success(trans('responses.email-already-exists'),true);
+        if(User::whereUsername($request->username)->exists())
+            return ResponseData::success(trans('responses.username-already-exists'),true);
 
-        return ResponseData::success(trans('responses.email-already-does-not-exist'),false);
+        return ResponseData::success(trans('responses.username-does-not-exist'),false);
     }
     /**
      * Ask Email Verification Otp
