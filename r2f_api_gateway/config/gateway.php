@@ -5,14 +5,37 @@ return [
         'default' => [
             'prefix' => '/default',
             'doc_point' => '/docs',
+            /** Can client calls the routes that are not defined here on this service */
             'routes' => true,
             'domain' => 'local',
-            /** Can client calls the routes that are not defined here on this service */
-            'out_of_actions_available' => true,
+        ],
+        'fake' => [
+            'prefix' => '/fake',
+            'doc_point' => 'https://jsonplaceholder.typicode.com/',
+            'routes' => false,
+            'domain' => 'https://jsonplaceholder.typicode.com/'
         ]
-    ],
 
+    ],
     'routes' => [
+        [
+            'services' => [
+                'fake'
+            ],
+            'matches' => [
+                [
+                    'method' => 'GET',
+                    'paths' => [
+                        'posts',
+                        'comments'
+                    ]
+                ]
+            ],
+            'middlewares' => [
+                'auth:sanctum'
+            ]
+        ],
+
         [
             'services' => [
                 'default'

@@ -429,16 +429,44 @@
     array (
       'default' => 
       array (
-        'prefix' => '/default',
         'doc_point' => '/docs',
-        'routes' => true,
+        'just_current_routes' => true,
         'domain' => 'local',
-        'out_of_actions_available' => true,
+      ),
+      'fake' => 
+      array (
+        'doc_point' => 'https://jsonplaceholder.typicode.com/',
+        'just_current_routes' => true,
+        'domain' => 'https://jsonplaceholder.typicode.com/',
       ),
     ),
     'routes' => 
     array (
       0 => 
+      array (
+        'services' => 
+        array (
+          0 => 'fake',
+        ),
+        'matches' => 
+        array (
+          0 => 
+          array (
+            'method' => 'GET',
+            'paths' => 
+            array (
+              0 => 'posts',
+              1 => 'comments',
+            ),
+          ),
+        ),
+        'middlewares' => 
+        array (
+          0 => 'auth:sanctum',
+          1 => 'role:admin',
+        ),
+      ),
+      1 => 
       array (
         'services' => 
         array (
@@ -483,7 +511,7 @@
           0 => 'auth:sanctum',
         ),
       ),
-      1 => 
+      2 => 
       array (
         'services' => 
         array (

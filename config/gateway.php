@@ -3,16 +3,41 @@ return [
     // List of microservices behind the gateway
     'services' => [
         'default' => [
-            'prefix' => '/default',
             'doc_point' => '/docs',
-            'routes' => true,
-            'domain' => 'local',
             /** Can client calls the routes that are not defined here on this service */
-            'out_of_actions_available' => true,
-        ]
-    ],
+            'just_current_routes' => true,
+            'domain' => 'local',
+        ],
+        'fake' => [
+            'doc_point' => 'https://jsonplaceholder.typicode.com/',
+            'just_current_routes' => true,
+            'domain' => 'https://jsonplaceholder.typicode.com/'
+        ],
 
+    ],
     'routes' => [
+        [
+            'services' => [
+                'fake'
+            ],
+            'matches' => [
+                [
+                    'method' => 'GET',
+                    'paths' => [
+                        'posts',
+                        'comments'
+                    ],
+                    'middlewares'=>[
+                        'role:client'
+                    ]
+                ],
+            ],
+            'middlewares' => [
+                'auth:sanctum',
+                'role:admin'
+            ]
+        ],
+
         [
             'services' => [
                 'default'
