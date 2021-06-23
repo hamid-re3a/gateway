@@ -1,16 +1,18 @@
 <?php
 
-namespace R2FUser\Http\Controllers\Front;
+namespace R2FGateway\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-;
-
-class UserController extends Controller
+class GatewayController extends Controller
 {
+
+    /**
+     * @hideFromAPIDocumentation
+     */
     public function aggregate(Request $request)
     {
         $method = strtolower($request->method());
@@ -18,14 +20,18 @@ class UserController extends Controller
         $headers = $request->headers->keys();
         $user_agent = $request->userAgent();
         $contents = $request->getContent();
+        foreach(config('gateway.routes') as $key =>$route)
+            echo $route['services'];
 
 
         if (\Str::startsWith($route, 'default/')) {
-
             $route = str_replace('default/', '', $route);
             $request = Request::create('http://localhost:3541/api/' . $route, $method);
             return Route::dispatch($request);
         }
+
+
+
 
         return Http::withHeaders($headers)
             ->withBody($contents,$request->getContentType())

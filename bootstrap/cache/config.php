@@ -73,8 +73,9 @@
       26 => 'App\\Providers\\RouteServiceProvider',
       27 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
       28 => 'R2FUser\\UserServiceProvider',
-      29 => 'Torann\\GeoIP\\GeoIPServiceProvider',
-      30 => 'Jenssegers\\Agent\\AgentServiceProvider',
+      29 => 'R2FGateway\\GatewayServiceProvider',
+      30 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+      31 => 'Jenssegers\\Agent\\AgentServiceProvider',
     ),
     'aliases' => 
     array (
@@ -420,6 +421,104 @@
     'links' => 
     array (
       '/var/www/public/storage' => '/var/www/storage/app/public',
+    ),
+  ),
+  'gateway' => 
+  array (
+    'services' => 
+    array (
+      'default' => 
+      array (
+        'prefix' => '/default',
+        'doc_point' => '/docs',
+        'routes' => true,
+        'domain' => 'local',
+        'out_of_actions_available' => true,
+      ),
+    ),
+    'routes' => 
+    array (
+      0 => 
+      array (
+        'services' => 
+        array (
+          0 => 'default',
+        ),
+        'matches' => 
+        array (
+          0 => 
+          array (
+            'method' => 'GET',
+            'paths' => 
+            array (
+              0 => 'logout',
+              1 => 'ping',
+              2 => 'user',
+            ),
+          ),
+          1 => 
+          array (
+            'method' => 'POST',
+            'paths' => 
+            array (
+              0 => 'generate2fa_disable',
+            ),
+            'middlewares' => 
+            array (
+              0 => '2fa',
+            ),
+          ),
+          2 => 
+          array (
+            'method' => 'POST',
+            'paths' => 
+            array (
+              0 => 'generate2fa_secret',
+              1 => 'generate2fa_enable',
+            ),
+          ),
+        ),
+        'middlewares' => 
+        array (
+          0 => 'auth:sanctum',
+        ),
+      ),
+      1 => 
+      array (
+        'services' => 
+        array (
+          0 => 'default',
+        ),
+        'matches' => 
+        array (
+          0 => 
+          array (
+            'method' => 'GET',
+            'paths' => 
+            array (
+              0 => 'user_email_verification_history',
+              1 => 'user_login_history',
+              2 => 'user_block_history',
+              3 => 'user_password_history',
+            ),
+          ),
+          1 => 
+          array (
+            'method' => 'POST',
+            'paths' => 
+            array (
+              0 => 'activate_or_deactivate_user',
+              1 => 'verify_email_user',
+            ),
+          ),
+        ),
+        'prefix' => 'admin',
+        'middlewares' => 
+        array (
+          0 => 'auth:sanctum',
+          1 => 'role:admin',
+        ),
+      ),
     ),
   ),
   'geoip' => 
@@ -1020,6 +1119,10 @@ We use the following status codes for errors:
 <tr>
 <td>406</td>
 <td>Not Acceptable -- An unsupported format was requested.</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Invalid Input -- You have entered invalid inputs.</td>
 </tr>
 <tr>
 <td>429</td>

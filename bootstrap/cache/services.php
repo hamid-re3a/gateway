@@ -47,8 +47,9 @@
     43 => 'App\\Providers\\RouteServiceProvider',
     44 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
     45 => 'R2FUser\\UserServiceProvider',
-    46 => 'Torann\\GeoIP\\GeoIPServiceProvider',
-    47 => 'Jenssegers\\Agent\\AgentServiceProvider',
+    46 => 'R2FGateway\\GatewayServiceProvider',
+    47 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+    48 => 'Jenssegers\\Agent\\AgentServiceProvider',
   ),
   'eager' => 
   array (
@@ -83,8 +84,9 @@
     28 => 'App\\Providers\\RouteServiceProvider',
     29 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
     30 => 'R2FUser\\UserServiceProvider',
-    31 => 'Torann\\GeoIP\\GeoIPServiceProvider',
-    32 => 'Jenssegers\\Agent\\AgentServiceProvider',
+    31 => 'R2FGateway\\GatewayServiceProvider',
+    32 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+    33 => 'Jenssegers\\Agent\\AgentServiceProvider',
   ),
   'deferred' => 
   array (

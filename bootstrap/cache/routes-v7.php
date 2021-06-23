@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::M9TYqZYzebgdgzlI',
+            '_route' => 'generated::mn4tFdnf0v4zOa0Y',
           ),
           1 => NULL,
           2 => 
@@ -290,6 +290,102 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/user' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'current-user',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_secret' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-secret',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_enable' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-enable',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/generate2fa_disable' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => '2fa-disable',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/kyc/upload' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'kyc-upload-file',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/admin/activate_or_deactivate_user' => 
       array (
         0 => 
@@ -408,102 +504,6 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/user' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'current-user',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/generate2fa_secret' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => '2fa-secret',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/generate2fa_enable' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => '2fa-enable',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/generate2fa_disable' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => '2fa-disable',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/kyc/upload' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'kyc-upload-file',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'PUT' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
     ),
     2 => 
     array (
@@ -517,7 +517,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Meh3hSjgpBPLazJE',
+            '_route' => 'generated::12VKDNiiVfsvcclZ',
             'any' => NULL,
           ),
           1 => 
@@ -660,7 +660,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::M9TYqZYzebgdgzlI' => 
+    'generated::mn4tFdnf0v4zOa0Y' => 
     array (
       'methods' => 
       array (
@@ -681,7 +681,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::M9TYqZYzebgdgzlI',
+        'as' => 'generated::mn4tFdnf0v4zOa0Y',
       ),
       'fallback' => false,
       'defaults' => 
@@ -689,48 +689,6 @@ app('router')->setCompiledRoutes(
       ),
       'wheres' => 
       array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'generated::Meh3hSjgpBPLazJE' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-        2 => 'POST',
-        3 => 'PUT',
-        4 => 'PATCH',
-        5 => 'DELETE',
-        6 => 'OPTIONS',
-      ),
-      'uri' => 'api/gateway/{any?}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\UserController@aggregate',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\UserController@aggregate',
-        'namespace' => NULL,
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => 'generated::Meh3hSjgpBPLazJE',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-        'any' => '.*',
       ),
       'bindingFields' => 
       array (
@@ -751,6 +709,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
           1 => 'user_activity',
+          2 => 'block_user',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
@@ -1050,6 +1009,7 @@ app('router')->setCompiledRoutes(
           1 => 'user_activity',
           2 => 'block_user',
           3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@logout',
@@ -1089,6 +1049,7 @@ app('router')->setCompiledRoutes(
           1 => 'user_activity',
           2 => 'block_user',
           3 => 'auth:sanctum',
+          4 => 'email_verified',
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@ping',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@ping',
@@ -1098,6 +1059,203 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'ping',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'current-user' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/user',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'current-user',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-secret' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/generate2fa_secret',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-secret',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-enable' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/generate2fa_enable',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-enable',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    '2fa-disable' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/generate2fa_disable',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+          5 => '2fa',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => '2fa-disable',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'kyc-upload-file' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/kyc/upload',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+          3 => 'auth:sanctum',
+          4 => 'email_verified',
+        ),
+        'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
+        'namespace' => 'R2FUser\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'kyc-upload-file',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1356,14 +1514,19 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'current-user' => 
+    'generated::12VKDNiiVfsvcclZ' => 
     array (
       'methods' => 
       array (
         0 => 'GET',
         1 => 'HEAD',
+        2 => 'POST',
+        3 => 'PUT',
+        4 => 'PATCH',
+        5 => 'DELETE',
+        6 => 'OPTIONS',
       ),
-      'uri' => 'api/user',
+      'uri' => 'api/gateway/{any?}',
       'action' => 
       array (
         'middleware' => 
@@ -1371,17 +1534,15 @@ app('router')->setCompiledRoutes(
           0 => 'api',
           1 => 'user_activity',
           2 => 'block_user',
-          3 => 'auth:sanctum',
-          4 => 'email_verified',
         ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@getAuthUser',
-        'namespace' => 'R2FUser\\Http\\Controllers',
+        'uses' => 'R2FGateway\\Http\\Controllers\\GatewayController@aggregate',
+        'controller' => 'R2FGateway\\Http\\Controllers\\GatewayController@aggregate',
+        'namespace' => 'R2FGateway\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'current-user',
+        'as' => 'generated::12VKDNiiVfsvcclZ',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1389,163 +1550,7 @@ app('router')->setCompiledRoutes(
       ),
       'wheres' => 
       array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    '2fa-secret' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/generate2fa_secret',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'user_activity',
-          2 => 'block_user',
-          3 => 'auth:sanctum',
-          4 => 'email_verified',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@generate2faSecret',
-        'namespace' => 'R2FUser\\Http\\Controllers',
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => '2fa-secret',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    '2fa-enable' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/generate2fa_enable',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'user_activity',
-          2 => 'block_user',
-          3 => 'auth:sanctum',
-          4 => 'email_verified',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@enable2fa',
-        'namespace' => 'R2FUser\\Http\\Controllers',
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => '2fa-enable',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    '2fa-disable' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/generate2fa_disable',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'user_activity',
-          2 => 'block_user',
-          3 => 'auth:sanctum',
-          4 => 'email_verified',
-          5 => '2fa',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\LoginSecurityController@disable2fa',
-        'namespace' => 'R2FUser\\Http\\Controllers',
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => '2fa-disable',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-    ),
-    'kyc-upload-file' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'PUT',
-      ),
-      'uri' => 'api/kyc/upload',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-          1 => 'user_activity',
-          2 => 'block_user',
-          3 => 'auth:sanctum',
-          4 => 'email_verified',
-        ),
-        'uses' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
-        'controller' => 'R2FUser\\Http\\Controllers\\Front\\KYCController@uploadDocuments',
-        'namespace' => 'R2FUser\\Http\\Controllers',
-        'prefix' => 'api',
-        'where' => 
-        array (
-        ),
-        'as' => 'kyc-upload-file',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
+        'any' => '.*',
       ),
       'bindingFields' => 
       array (

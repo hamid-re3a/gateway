@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         PragmaRX\Google2FALaravel\ServiceProvider::class,
         \R2FUser\UserServiceProvider::class,
+        \R2FGateway\GatewayServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
     ],
