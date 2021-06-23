@@ -58,7 +58,7 @@ class AuthController extends Controller
         $user = User::query()->where('email', $credentials['email'])->first();
 
         if (!$user->isEmailVerified())
-            return ResponseData::success(trans('responses.go-activate-your-email'));
+            return ResponseData::error(trans('responses.go-activate-your-email'),null,403);
 
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 

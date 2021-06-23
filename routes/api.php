@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+Route::any('/gateway/{any?}', [\R2FUser\Http\Controllers\Front\UserController::class,'aggregate'])->where('any', '.*');;
 ////Admin
 //Route::prefix('admin')->middleware(['api', 'auth', 'role:admin|help-desk'])->group(function () {
 //

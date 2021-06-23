@@ -12,8 +12,6 @@ const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
 
 
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
-const MAX_LOGIN_ATTEMPTS_INTERVALS = '30,60,90';
-const MAX_LOGIN_ATTEMPTS_TRIES = 3;
 const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
@@ -86,16 +84,6 @@ const SETTINGS = [
         'description' => 'Password pattern for user registration',
         'category' => 'User > Password'
     ],
-    'MAX_LOGIN_ATTEMPTS_INTERVALS' => [
-        'value' => MAX_LOGIN_ATTEMPTS_INTERVALS,
-        'description' => 'Max login attempt intervals separated with , ',
-        'category' => 'User > Login'
-    ],
-    'MAX_LOGIN_ATTEMPTS_TRIES' => [
-        'value' => MAX_LOGIN_ATTEMPTS_TRIES,
-        'description' => 'Max login attempt per interval ',
-        'category' => 'User > Login'
-    ]
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
     [

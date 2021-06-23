@@ -821,7 +821,7 @@
   ),
   'queue' => 
   array (
-    'default' => 'redis',
+    'default' => 'sync',
     'connections' => 
     array (
       'sync' => 
@@ -974,12 +974,66 @@
       'placeholder' => '{YOUR_AUTH_KEY}',
       'extra_info' => 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.',
     ),
-    'intro_text' => '<h2> R2F documentation. </h2>
+    'intro_text' => '
+<h2> R2F documentation. </h2>
 *************************************************
 <h5> Author Info </h5>
 <ul> Name : Hamidreza Noruzinejad</ul>
 <ul> Email : hamire3a@gmail.com</ul>
-',
+<h1 id="errors">Errors</h1>
+<p>
+When an error is encountered you will receive an HTTP status code along with a message and error code in the body of the response.
+</p>
+<p>
+We use the following status codes for errors:
+</p>
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Ok -- The request was successful.</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request -- Your request was not valid.</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized -- No valid API key was provided</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden -- Access to this resource is restricted for the given caller.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found -- The requested resource does not exist.</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed -- An invalid method was used to access a resource.</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable -- An unsupported format was requested.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests -- You have exceeded the allowed number of calls per minute. Lower call frequency or upgrade your plan for a higher rate limit.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error -- There was a problem with the API host server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable -- API is temporarily offline for maintenance. Try again later.</td>
+</tr>
+</tbody></table>',
     'example_languages' => 
     array (
       0 => 'javascript',
