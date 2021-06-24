@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::k79m7Y0rNCgHnRPn',
+            '_route' => 'generated::kqPWffwAuvkpWSUQ',
           ),
           1 => NULL,
           2 => 
@@ -507,17 +507,46 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/api/gateway(?:/(.*))?(*:29))/?$}sDu',
+      0 => '{^(?|/api/gateway(?|/multi(?:/(.*))?(*:38)|(?:/(.*))?(*:55)))/?$}sDu',
     ),
     3 => 
     array (
-      29 => 
+      38 => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'generated::ZG1AJX78TElra2iP',
+            '_route' => 'generated::hdJDgclzhb5lHZMf',
+            'any' => NULL,
+          ),
+          1 => 
+          array (
+            0 => 'any',
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+            'POST' => 2,
+            'PUT' => 3,
+            'PATCH' => 4,
+            'DELETE' => 5,
+            'OPTIONS' => 6,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      55 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::kUPykxgWcPZadBCK',
             'any' => NULL,
           ),
           1 => 
@@ -660,7 +689,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::k79m7Y0rNCgHnRPn' => 
+    'generated::kqPWffwAuvkpWSUQ' => 
     array (
       'methods' => 
       array (
@@ -681,7 +710,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::k79m7Y0rNCgHnRPn',
+        'as' => 'generated::kqPWffwAuvkpWSUQ',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1514,7 +1543,51 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::ZG1AJX78TElra2iP' => 
+    'generated::hdJDgclzhb5lHZMf' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+        2 => 'POST',
+        3 => 'PUT',
+        4 => 'PATCH',
+        5 => 'DELETE',
+        6 => 'OPTIONS',
+      ),
+      'uri' => 'api/gateway/multi/{any?}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'user_activity',
+          2 => 'block_user',
+        ),
+        'uses' => 'R2FGateway\\Http\\Controllers\\GatewayController@multiAggregate',
+        'controller' => 'R2FGateway\\Http\\Controllers\\GatewayController@multiAggregate',
+        'namespace' => 'R2FGateway\\Http\\Controllers',
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'generated::hdJDgclzhb5lHZMf',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'any' => '.*',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+    ),
+    'generated::kUPykxgWcPZadBCK' => 
     array (
       'methods' => 
       array (
@@ -1542,7 +1615,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::ZG1AJX78TElra2iP',
+        'as' => 'generated::kUPykxgWcPZadBCK',
       ),
       'fallback' => false,
       'defaults' => 

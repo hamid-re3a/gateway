@@ -5,13 +5,12 @@ namespace R2FGateway\Http\Controllers;
 use App\Http\Helpers\ResponseData;
 use App\Http\Kernel;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class GatewayController extends Controller
 {
@@ -21,70 +20,122 @@ class GatewayController extends Controller
      */
     public function aggregate(Request $request)
     {
-        $method = strtolower($request->method());
         $route = str_replace('api/gateway/', '', $request->path());
-        $headers = $request->headers->keys();
-        $user_agent = $request->userAgent();
-        $contents = $request->getContent();
-        $content_type = $request->getContentType() ?? "application/json";
-        $routes = config('gateway.routes');
-        $services = config('gateway.services');
-        $service_keys = collect(config('gateway.services'))->keys()->toArray();
+        list($status, $final_route, $middlewares) = $this->getValidRoute($route, $request);
 
-        if (preg_match('/^(?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*)$/', $route, $match)) {
+        $response = $this->checkMiddlewares($middlewares, $request);
 
-            $service = (is_null($match['service']) || empty($match['service'])) ? $match['second_service'] : $match['service'];
-            $sub_route = $match['route'] ?? '';
-
-            if ($service == 'default') {
-                $request = Request::create(URL::to('/') . '/api/' . $sub_route, $method);
-                return Route::dispatch($request);
-            }
-            if (in_array($service, $service_keys)) {
-                $domain = $services[$service]['domain'];
-
-
-                list($can_pass, $middlewares) = $this->checkRoute($routes, $service, $route, $method, $sub_route);
-
-                if (is_array($middlewares) && count($middlewares) > 0) {
-                    $response = $this->checkMiddlewares($middlewares, $request);
-                    if (!is_null($response))
-                        return $response;
-                }
-
-                set_time_limit(0);
-                if ($can_pass || !$services[$service]['just_current_routes']) {
-                    $res = Http::withHeaders($headers)
-                        ->withBody($contents, $content_type)
-                        ->withUserAgent($user_agent)->
-                        $method($domain . $sub_route);
-
-                    if(in_array($res->header('Content-type'),ALL_MIME_TYPES)){
-                        foreach ($res->headers() as $key => $value)
-                            header("$key: $value");
-                        echo $res->body();
-                        return null;
-                    }
-                    $final = response($res->body());
-                    foreach ($res->headers() as $key => $value)
-                        $final->header($key, $value);
-
-                    return $final;
-                }
-
-
-            }
-            return ResponseData::error('gw_responses.not-found', null, 404);
-
-
+        if (!is_null($response)) {
+            return $response;
         }
+
+        if ($status == true) {
+            return $this->getResponse($final_route, $request);
+        }
+        return ResponseData::error('gw_responses.not-found', null, 404);
 
 
     }
 
 
+    /**
+     * @hideFromAPIDocumentation
+     */
+    public function multiAggregate(Request $request)
+    {
+        $rules = [
+            'routes' => 'required|array',
+            'routes.*.route' => 'required',
+            'routes.*.method' => 'required',
+        ];
+        $validated = Validator::validate($request->all(), $rules);
+
+
+        $middlewares = [];
+
+        $concurrent_requests = [];
+        $concurrent_responses = [];
+        foreach ($validated['routes'] as $route) {
+            $route_method = strtolower($route['method']);
+            list($status, $final_route, $route_middlewares) = $this->getValidRoute($route['route'], $request, $route_method);
+            if (!is_null($route_middlewares))
+                $middlewares = array_merge($middlewares, $route_middlewares);
+
+            if ($status)
+                if (Str::startsWith($final_route, URL::to('/'))) {
+                    $concurrent_responses[$route['route']] = $this->getResponse($final_route, $request, $route_method, true);
+                } else {
+                    $concurrent_requests[] = ['route' => $final_route, 'method' => $route_method, 'name' => $route['route']];
+                }
+        }
+        $response = $this->checkMiddlewares($middlewares, $request);
+
+        if (!is_null($response)) {
+            return $response;
+        }
+        $responses = Http::pool(function (\Illuminate\Http\Client\Pool $pool) use ($concurrent_requests, $request) {
+            $array = [];
+            foreach ($concurrent_requests as $route) {
+                $array[] = $pool->as($route['name'])->get($route['route']);
+            }
+
+            return $array;
+        });
+
+
+        foreach ($concurrent_requests as $route) {
+            $concurrent_responses[$route['name']] = json_decode($responses[$route['name']]->body(), true);
+        }
+
+        header('Content-type: application/json');
+        return ResponseData::success('success', $concurrent_responses);
+
+    }
+
+
+    private function getValidRoute($route, $request, $method = null)
+    {
+        if (is_null($method))
+            $method = strtolower($request->method());
+
+        $routes = config('gateway.routes');
+        $services = config('gateway.services');
+        $service_keys = collect(config('gateway.services'))->keys()->toArray();
+
+        if (Str::startsWith($route, '/'))
+            return [false, null, null];
+        if (preg_match('/^^(?!\W)((?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*))$/', $route, $match)) {
+
+            $service = (is_null($match['service']) || empty($match['service'])) ? $match['second_service'] : $match['service'];
+            $sub_route = $match['route'] ?? '';
+
+            if ($service == 'default')
+                return [true, URL::to('/api') . '/' . $sub_route, null];
+
+
+            if (in_array($service, $service_keys)) {
+                $domain = $services[$service]['domain'];
+                $final_route = $domain . $sub_route;
+
+
+                list($can_pass, $middlewares) = $this->checkRoute($routes, $service, $route, $method, $sub_route);
+
+                if ($can_pass || !$services[$service]['just_current_routes']) {
+                    return [true, $final_route, $middlewares];
+                }
+            }
+            return [false, null, null];
+
+
+        }
+    }
+
     private function checkMiddlewares($middlewares, $request)
     {
+
+        if (!is_array($middlewares) || count($middlewares) <= 0)
+            return null;
+
         $kernel = app()->make(Kernel::class);
         foreach ($middlewares as $middleware) {
             $mid = explode(':', $middleware);
@@ -129,5 +180,41 @@ class GatewayController extends Controller
                                 return [true, $middlewares];
                             }
         return [false, null];
+    }
+
+
+    private function getResponse($final_route, Request $request, $method = null, $multi = false)
+    {
+        if (is_null($method))
+            $method = strtolower($request->method());
+
+
+        if (Str::startsWith($final_route, URL::to('/'))) {
+            $request = Request::create($final_route, $method);
+            return Route::dispatch($request);
+        }
+        $headers = $request->headers->keys();
+        $user_agent = $request->userAgent();
+        $contents = $request->getContent();
+        $content_type = $request->getContentType() ?? "application/json";
+
+        $res = Http::withHeaders($headers)
+            ->withBody($contents, $content_type)
+            ->withUserAgent($user_agent)->
+            $method($final_route);
+
+        if (in_array($res->header('Content-type'), ALL_MIME_TYPES)) {
+            if (!$multi)
+                foreach ($res->headers() as $key => $value)
+                    header("$key: $value");
+            echo $res->body();
+            return null;
+        }
+        $final = response($res->body());
+        if (!$multi)
+            foreach ($res->headers() as $key => $value)
+                $final->header($key, $value);
+
+        return $final;
     }
 }
