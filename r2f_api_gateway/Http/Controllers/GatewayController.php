@@ -5,10 +5,13 @@ namespace R2FGateway\Http\Controllers;
 use App\Http\Helpers\ResponseData;
 use App\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GatewayController extends Controller
 {
@@ -30,8 +33,8 @@ class GatewayController extends Controller
 
         if (preg_match('/^(?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*)$/', $route, $match)) {
 
-            $service = (is_null($match['service']) || empty($match['service'])) ? $match['second_service']:$match['service'];
-            $sub_route = $match['route']??'';
+            $service = (is_null($match['service']) || empty($match['service'])) ? $match['second_service'] : $match['service'];
+            $sub_route = $match['route'] ?? '';
 
             if ($service == 'default') {
                 $request = Request::create(URL::to('/') . '/api/' . $sub_route, $method);
@@ -48,11 +51,27 @@ class GatewayController extends Controller
                     if (!is_null($response))
                         return $response;
                 }
-                if ($can_pass || !$services[$service]['just_current_routes'] )
-                    return Http::withHeaders($headers)
+
+                set_time_limit(0);
+                if ($can_pass || !$services[$service]['just_current_routes']) {
+                    $res = Http::withHeaders($headers)
                         ->withBody($contents, $content_type)
                         ->withUserAgent($user_agent)->
                         $method($domain . $sub_route);
+
+                    if(in_array($res->header('Content-type'),ALL_MIME_TYPES)){
+                        foreach ($res->headers() as $key => $value)
+                            header("$key: $value");
+                        echo $res->body();
+                        return null;
+                    }
+                    $final = response($res->body());
+                    foreach ($res->headers() as $key => $value)
+                        $final->header($key, $value);
+
+                    return $final;
+                }
+
 
             }
             return ResponseData::error('gw_responses.not-found', null, 404);
