@@ -5,7 +5,12 @@ namespace R2FUser\Http\Controllers\Admin;
 use App\Http\Helpers\ResponseData;
 use Illuminate\Routing\Controller;
 use R2FUser\Http\Requests\Admin\ActivateOrDeactivateUserAccountRequest;
+use R2FUser\Http\Requests\Admin\HistoryRequest;
 use R2FUser\Http\Requests\Admin\VerifyUserEmailRequest;
+use R2FUser\Http\Resources\OtpResource;
+use R2FUser\Http\Resources\User\LoginHistoryResource;
+use R2FUser\Http\Resources\User\PasswordHistoryResource;
+use R2FUser\Http\Resources\User\UserBlockHistoryResource;
 use R2FUser\Jobs\EmailJob;
 use R2FUser\Mail\User\SuccessfulEmailVerificationEmail;
 use R2FUser\Models\User;
@@ -46,8 +51,7 @@ class UserController extends Controller
     {
 
         $user = User::whereEmail($request->email)->first();
-        if (!$user->is_email_verified) {
-            $user->is_email_verified = true;
+        if (!$user->isEmailVerified()) {
             $user->email_verified_at = now();
             $user->save();
 
@@ -55,5 +59,46 @@ class UserController extends Controller
             EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
         }
         return ResponseData::success(trans('responses.ok'));
+    }
+
+
+
+    /**
+     * User Password History
+     * @group
+     * Admin > User History
+     */
+    public function passwordHistory(HistoryRequest $request)
+    {
+        return ResponseData::success(trans('responses.ok'), PasswordHistoryResource::collection(User::find($request->user_id)->passwordHistories));
+    }
+
+    /**
+     * User Block History
+     * @group
+     * Admin > User History
+     */
+    public function blockHistory(HistoryRequest $request)
+    {
+        return ResponseData::success(trans('responses.ok'), UserBlockHistoryResource::collection(User::find($request->user_id)->blockHistories));
+    }
+    /**
+     * User Login History
+     * @group
+     * Admin > User History
+     */
+    public function loginHistory(HistoryRequest $request)
+    {
+        return ResponseData::success(trans('responses.ok'), LoginHistoryResource::collection(User::find($request->user_id)->loginAttempts));
+    }
+
+    /**
+     * User Email Verification History
+     * @group
+     * Admin > User History
+     */
+    public function emailVerificationHistory(HistoryRequest $request)
+    {
+        return ResponseData::success(trans('responses.ok'), OtpResource::collection(User::find($request->user_id)->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 }

@@ -15,7 +15,6 @@ class Login2FAMiddleware
         if ($authenticator->isAuthenticated()) {
             return $next($request);
         }
-
         return ResponseData::error(trans('responses.unauthorized'),[],401);
     }
 }

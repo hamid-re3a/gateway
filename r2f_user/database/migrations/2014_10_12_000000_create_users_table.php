@@ -31,7 +31,6 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->string('passport_number')->nullable();
 
-            $table->boolean('is_email_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
 
             $table->boolean('google2fa_enable')->default(false);

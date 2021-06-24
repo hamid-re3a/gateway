@@ -73,8 +73,9 @@
       26 => 'App\\Providers\\RouteServiceProvider',
       27 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
       28 => 'R2FUser\\UserServiceProvider',
-      29 => 'Torann\\GeoIP\\GeoIPServiceProvider',
-      30 => 'Jenssegers\\Agent\\AgentServiceProvider',
+      29 => 'R2FGateway\\GatewayServiceProvider',
+      30 => 'Torann\\GeoIP\\GeoIPServiceProvider',
+      31 => 'Jenssegers\\Agent\\AgentServiceProvider',
     ),
     'aliases' => 
     array (
@@ -420,6 +421,136 @@
     'links' => 
     array (
       '/var/www/public/storage' => '/var/www/storage/app/public',
+    ),
+  ),
+  'gateway' => 
+  array (
+    'services' => 
+    array (
+      'default' => 
+      array (
+        'doc_point' => '/docs',
+        'just_current_routes' => true,
+        'domain' => 'local',
+      ),
+      'fake' => 
+      array (
+        'doc_point' => 'https://jsonplaceholder.typicode.com/',
+        'just_current_routes' => true,
+        'domain' => 'https://jsonplaceholder.typicode.com/',
+      ),
+      'google' => 
+      array (
+        'doc_point' => 'https://jsonplaceholder.typicode.com/',
+        'just_current_routes' => false,
+        'domain' => 'https://google.com',
+      ),
+    ),
+    'routes' => 
+    array (
+      0 => 
+      array (
+        'services' => 
+        array (
+          0 => 'fake',
+        ),
+        'matches' => 
+        array (
+          0 => 
+          array (
+            'method' => 'GET',
+            'paths' => 
+            array (
+              0 => 'posts',
+              1 => 'comments',
+            ),
+          ),
+        ),
+        'middlewares' => 
+        array (
+        ),
+      ),
+      1 => 
+      array (
+        'services' => 
+        array (
+          0 => 'default',
+        ),
+        'matches' => 
+        array (
+          0 => 
+          array (
+            'method' => 'GET',
+            'paths' => 
+            array (
+              0 => 'logout',
+              1 => 'ping',
+              2 => 'user',
+            ),
+          ),
+          1 => 
+          array (
+            'method' => 'POST',
+            'paths' => 
+            array (
+              0 => 'generate2fa_disable',
+            ),
+            'middlewares' => 
+            array (
+              0 => '2fa',
+            ),
+          ),
+          2 => 
+          array (
+            'method' => 'POST',
+            'paths' => 
+            array (
+              0 => 'generate2fa_secret',
+              1 => 'generate2fa_enable',
+            ),
+          ),
+        ),
+        'middlewares' => 
+        array (
+          0 => 'auth:sanctum',
+        ),
+      ),
+      2 => 
+      array (
+        'services' => 
+        array (
+          0 => 'default',
+        ),
+        'matches' => 
+        array (
+          0 => 
+          array (
+            'method' => 'GET',
+            'paths' => 
+            array (
+              0 => 'user_email_verification_history',
+              1 => 'user_login_history',
+              2 => 'user_block_history',
+              3 => 'user_password_history',
+            ),
+          ),
+          1 => 
+          array (
+            'method' => 'POST',
+            'paths' => 
+            array (
+              0 => 'activate_or_deactivate_user',
+              1 => 'verify_email_user',
+            ),
+          ),
+        ),
+        'prefix' => 'admin',
+        'middlewares' => 
+        array (
+          0 => 'auth:sanctum',
+          1 => 'role:admin',
+        ),
+      ),
     ),
   ),
   'geoip' => 
@@ -821,7 +952,7 @@
   ),
   'queue' => 
   array (
-    'default' => 'redis',
+    'default' => 'sync',
     'connections' => 
     array (
       'sync' => 
@@ -974,12 +1105,70 @@
       'placeholder' => '{YOUR_AUTH_KEY}',
       'extra_info' => 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.',
     ),
-    'intro_text' => '<h2> R2F documentation. </h2>
+    'intro_text' => '
+<h2> R2F documentation. </h2>
 *************************************************
 <h5> Author Info </h5>
 <ul> Name : Hamidreza Noruzinejad</ul>
 <ul> Email : hamire3a@gmail.com</ul>
-',
+<h1 id="errors">Errors</h1>
+<p>
+When an error is encountered you will receive an HTTP status code along with a message and error code in the body of the response.
+</p>
+<p>
+We use the following status codes for errors:
+</p>
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Ok -- The request was successful.</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request -- Your request was not valid.</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized -- No valid API key was provided</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden -- Access to this resource is restricted for the given caller.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found -- The requested resource does not exist.</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed -- An invalid method was used to access a resource.</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable -- An unsupported format was requested.</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Invalid Input -- You have entered invalid inputs.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests -- You have exceeded the allowed number of calls per minute. Lower call frequency or upgrade your plan for a higher rate limit.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error -- There was a problem with the API host server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable -- API is temporarily offline for maintenance. Try again later.</td>
+</tr>
+</tbody></table>',
     'example_languages' => 
     array (
       0 => 'javascript',
