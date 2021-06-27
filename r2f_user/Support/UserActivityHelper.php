@@ -39,7 +39,7 @@ class UserActivityHelper
             $agentJess->setUserAgent($request->userAgent());
             $agentJess->setHttpHeaders($request->headers);
             $agent_db = AgentModel::query()->firstOrCreate([
-                "language" => is_null($agentJess->languages()) ? null : $agentJess->languages()[0],
+                "language" => is_null($agentJess->languages())|| !isset($agentJess->languages()[0]) ? null : $agentJess->languages()[0],
                 "device_type" => $agentJess->device(),
                 "platform" => $agentJess->platform(),
                 "browser" => $agentJess->browser(),

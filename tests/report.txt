@@ -1,3 +1,4 @@
-User (Tests\Unit\User\User)
- [x] It should have national code
+User (R2FUser\tests\User)
+ [x] Register new user green
+ [x] Register new user not enough strong password
 

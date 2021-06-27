@@ -35,6 +35,8 @@ return [
                 ]
             ],
             'middlewares' => [
+                'auth',
+                'role:admin'
             ]
         ],
 
