@@ -1,4 +1,3 @@
-User (R2FUser\tests\User)
- [x] Register new user green
- [x] Register new user not enough strong password
+Admin (R2FUser\tests\Admin)
+ [x] User deactivate activate
 

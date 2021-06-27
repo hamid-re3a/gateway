@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use R2FUser\database\factories\UserFactory;
 use R2FUser\Jobs\EmailJob;
 use R2FUser\Mail\User\EmailVerifyOtp;
 use R2FUser\Mail\User\ForgetPasswordOtpEmail;
@@ -105,6 +106,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable
 {
+
     use HasFactory;
     use Notifiable;
     use HasRoles;
@@ -112,6 +114,10 @@ class User extends Authenticatable
 
     protected $guard_name = 'api';
 
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
     /**
      * The attributes that are mass assignable.
      *

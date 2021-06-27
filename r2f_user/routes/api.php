@@ -20,7 +20,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/reset_forgot_password', [AuthController::class, 'resetForgetPassword'])->name('reset-forgot-password');
         });
 
-        Route::middleware(['auth:sanctum', 'email_verified'])->group(function () {
+        Route::middleware(['auth', 'email_verified'])->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::get('/ping', [AuthController::class, 'ping'])->name('ping');
 
@@ -38,7 +38,7 @@ Route::middleware(['user_activity'])->group(function () {
 
 
 
-            Route::middleware(['role:admin'])->prefix('admin')->group(function () {
+            Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
                 Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
 
                 Route::post('/verify_email_user', [AdminUserController::class, 'verifyUserEmailAccount'])->name('verify-email-user-account');
