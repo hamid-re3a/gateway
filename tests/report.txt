@@ -1,3 +1,3 @@
-User (Tests\Unit\User\User)
- [x] It should have national code
+Admin (R2FUser\tests\Admin)
+ [x] User deactivate activate
 

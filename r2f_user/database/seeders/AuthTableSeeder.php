@@ -31,6 +31,7 @@ class AuthTableSeeder extends Seeder
                 'password' => 'password',
                 'email_verified_at' => now(),
             ]);
+
             $admin->assignRole(USER_ROLE_ADMIN);
         }
     }
