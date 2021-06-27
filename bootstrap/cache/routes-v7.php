@@ -84,7 +84,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::kqPWffwAuvkpWSUQ',
+            '_route' => 'generated::7ZXIubG7izfwWH06',
           ),
           1 => NULL,
           2 => 
@@ -104,7 +104,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authregister',
+            '_route' => 'auth.register',
           ),
           1 => NULL,
           2 => 
@@ -123,7 +123,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authis-username-exists',
+            '_route' => 'auth.is-username-exists',
           ),
           1 => NULL,
           2 => 
@@ -142,7 +142,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authis-email-exists',
+            '_route' => 'auth.is-email-exists',
           ),
           1 => NULL,
           2 => 
@@ -161,7 +161,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authlogin',
+            '_route' => 'auth.login',
           ),
           1 => NULL,
           2 => 
@@ -180,7 +180,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authask-for-email-otp',
+            '_route' => 'auth.ask-for-email-otp',
           ),
           1 => NULL,
           2 => 
@@ -199,7 +199,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authverify-email-otp',
+            '_route' => 'auth.verify-email-otp',
           ),
           1 => NULL,
           2 => 
@@ -218,7 +218,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authforgot-password',
+            '_route' => 'auth.forgot-password',
           ),
           1 => NULL,
           2 => 
@@ -237,7 +237,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'authreset-forgot-password',
+            '_route' => 'auth.reset-forgot-password',
           ),
           1 => NULL,
           2 => 
@@ -517,7 +517,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::hdJDgclzhb5lHZMf',
+            '_route' => 'generated::R0STdSaZZmV9KbOK',
             'any' => NULL,
           ),
           1 => 
@@ -546,7 +546,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::kUPykxgWcPZadBCK',
+            '_route' => 'generated::7O0CQIExeDkZdbku',
             'any' => NULL,
           ),
           1 => 
@@ -689,7 +689,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::kqPWffwAuvkpWSUQ' => 
+    'generated::7ZXIubG7izfwWH06' => 
     array (
       'methods' => 
       array (
@@ -710,7 +710,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::kqPWffwAuvkpWSUQ',
+        'as' => 'generated::7ZXIubG7izfwWH06',
       ),
       'fallback' => false,
       'defaults' => 
@@ -725,7 +725,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authregister' => 
+    'auth.register' => 
     array (
       'methods' => 
       array (
@@ -742,7 +742,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@register',
-        'as' => 'authregister',
+        'as' => 'auth.register',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -762,7 +762,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authis-username-exists' => 
+    'auth.is-username-exists' => 
     array (
       'methods' => 
       array (
@@ -779,7 +779,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@isUsernameExists',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@isUsernameExists',
-        'as' => 'authis-username-exists',
+        'as' => 'auth.is-username-exists',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -799,7 +799,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authis-email-exists' => 
+    'auth.is-email-exists' => 
     array (
       'methods' => 
       array (
@@ -816,7 +816,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@isEmailExists',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@isEmailExists',
-        'as' => 'authis-email-exists',
+        'as' => 'auth.is-email-exists',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -836,7 +836,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authlogin' => 
+    'auth.login' => 
     array (
       'methods' => 
       array (
@@ -854,7 +854,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@login',
-        'as' => 'authlogin',
+        'as' => 'auth.login',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -874,7 +874,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authask-for-email-otp' => 
+    'auth.ask-for-email-otp' => 
     array (
       'methods' => 
       array (
@@ -891,7 +891,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@askForEmailVerificationOtp',
-        'as' => 'authask-for-email-otp',
+        'as' => 'auth.ask-for-email-otp',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -911,7 +911,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authverify-email-otp' => 
+    'auth.verify-email-otp' => 
     array (
       'methods' => 
       array (
@@ -928,7 +928,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@verifyEmailOtp',
-        'as' => 'authverify-email-otp',
+        'as' => 'auth.verify-email-otp',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -948,7 +948,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authforgot-password' => 
+    'auth.forgot-password' => 
     array (
       'methods' => 
       array (
@@ -965,7 +965,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgotPassword',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@forgotPassword',
-        'as' => 'authforgot-password',
+        'as' => 'auth.forgot-password',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -985,7 +985,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'authreset-forgot-password' => 
+    'auth.reset-forgot-password' => 
     array (
       'methods' => 
       array (
@@ -1002,7 +1002,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
         'controller' => 'R2FUser\\Http\\Controllers\\Front\\AuthController@resetForgetPassword',
-        'as' => 'authreset-forgot-password',
+        'as' => 'auth.reset-forgot-password',
         'namespace' => 'R2FUser\\Http\\Controllers',
         'prefix' => 'api',
         'where' => 
@@ -1543,7 +1543,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::hdJDgclzhb5lHZMf' => 
+    'generated::R0STdSaZZmV9KbOK' => 
     array (
       'methods' => 
       array (
@@ -1571,7 +1571,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::hdJDgclzhb5lHZMf',
+        'as' => 'generated::R0STdSaZZmV9KbOK',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1587,7 +1587,7 @@ app('router')->setCompiledRoutes(
       'lockSeconds' => NULL,
       'waitSeconds' => NULL,
     ),
-    'generated::kUPykxgWcPZadBCK' => 
+    'generated::7O0CQIExeDkZdbku' => 
     array (
       'methods' => 
       array (
@@ -1615,7 +1615,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::kUPykxgWcPZadBCK',
+        'as' => 'generated::7O0CQIExeDkZdbku',
       ),
       'fallback' => false,
       'defaults' => 

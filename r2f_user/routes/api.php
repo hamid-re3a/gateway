@@ -9,7 +9,7 @@ use R2FUser\Http\Controllers\Front\LoginSecurityController;
 Route::middleware(['user_activity'])->group(function () {
 
     Route::middleware(['block_user'])->group(function () {
-        Route::name('auth')->group(function () {
+        Route::name('auth.')->group(function () {
             Route::post('/register', [AuthController::class, 'register'])->name('register');
             Route::post('/is_username_exists', [AuthController::class, 'isUsernameExists'])->name('is-username-exists');
             Route::post('/is_email_exists', [AuthController::class, 'isEmailExists'])->name('is-email-exists');
