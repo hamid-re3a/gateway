@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use R2FUser\Http\Controllers\Admin\UserController as AdminUserController;
 use R2FUser\Http\Controllers\Front\AuthController;
-use R2FUser\Http\Controllers\Front\KYCController as FrontKYCControllerAlias;
 use R2FUser\Http\Controllers\Front\LoginSecurityController;
 
 Route::middleware(['user_activity'])->group(function () {
