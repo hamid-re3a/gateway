@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use R2FUser\database\factories\UserFactory;
 use R2FUser\Jobs\EmailJob;
 use R2FUser\Mail\User\EmailVerifyOtp;
 use R2FUser\Mail\User\ForgetPasswordOtpEmail;
@@ -53,8 +54,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\KYC[] $kycs
- * @property-read int|null $kycs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
@@ -105,6 +104,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable
 {
+
     use HasFactory;
     use Notifiable;
     use HasRoles;
@@ -112,6 +112,10 @@ class User extends Authenticatable
 
     protected $guard_name = 'api';
 
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -143,11 +147,6 @@ class User extends Authenticatable
     /**
      * relations
      */
-    public function kycs()
-    {
-        return $this->hasMany(KYC::class);
-    }
-
     public function loginAttempts()
     {
         return $this->hasMany(LoginAttempt::class);
