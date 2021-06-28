@@ -6,8 +6,6 @@ namespace R2FUser\tests;
 
 use Illuminate\Support\Facades\Mail;
 use R2FUser\Mail\User\EmailVerifyOtp;
-use R2FUser\Mail\User\ForgetPasswordOtpEmail;
-use R2FUser\Mail\User\SuccessfulEmailVerificationEmail;
 use R2FUser\Mail\User\WelcomeEmail;
 use R2FUser\Models\User;
 use Tests\TestCase;

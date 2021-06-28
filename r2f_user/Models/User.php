@@ -54,8 +54,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\KYC[] $kycs
- * @property-read int|null $kycs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
@@ -149,11 +147,6 @@ class User extends Authenticatable
     /**
      * relations
      */
-    public function kycs()
-    {
-        return $this->hasMany(KYC::class);
-    }
-
     public function loginAttempts()
     {
         return $this->hasMany(LoginAttempt::class);
