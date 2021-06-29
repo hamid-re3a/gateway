@@ -39,7 +39,7 @@ class AuthController extends Controller
         unset($data['password_confirmation']);
         $user = User::query()->create($data);
 
-        $user->makeEmailVerificationOtp($request);
+        UserActivityHelper::makeEmailVerificationOtp($user,$request);
 
         return ResponseData::success(trans('responses.successfully-registered-go-activate-your-email'));
     }
@@ -132,7 +132,7 @@ class AuthController extends Controller
         if ($user->isEmailVerified())
             return ResponseData::success(trans('responses.email-is-already-verified'));
 
-        list($data, $err) = $user->makeEmailVerificationOtp($request, false);
+        list($data, $err) = UserActivityHelper::makeEmailVerificationOtp($user,$request, false);
         if ($err) {
             return ResponseData::error(trans('responses.otp-exceeded-amount'), $data, 429);
         }
@@ -188,7 +188,7 @@ class AuthController extends Controller
     public function forgotPassword(ForgetPasswordRequest $request)
     {
         $user = User::whereEmail($request->email)->first();
-        list($data, $err) = $user->makeForgetPasswordOtp($request);
+        list($data, $err) = UserActivityHelper::makeForgetPasswordOtp($user,$request);
         if ($err) {
             return ResponseData::error(trans('responses.forgot-password-otp-exceeded-amount'), $data, 429);
         }

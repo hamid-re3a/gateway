@@ -4,9 +4,14 @@
 namespace R2FUser\tests;
 
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use R2FUser\Mail\User\EmailVerifyOtp;
+use R2FUser\Mail\User\ForgetPasswordOtpEmail;
+use R2FUser\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
+use R2FUser\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
 use R2FUser\Mail\User\WelcomeEmail;
+use R2FUser\Models\LoginAttempt;
 use R2FUser\Models\User;
 use Tests\TestCase;
 
@@ -82,6 +87,85 @@ class UserTest extends TestCase
             "password" => 'password',
         ]);
         $response->assertOk();
+    }
+
+    /**
+     * @test
+     */
+    public function login_user_block()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+        $user->email_verified_at = now();
+        $user->save();
+        list($intervals, $tries) = getLoginAttemptSetting();
+        foreach ($intervals as $key => $interval) {
+            for ($i = 0; $i <= $tries[$key]; $i++) {
+
+                $response = $this->post(route('auth.login'), [
+                    "email" => 'hamidrezanoruzinejad@gmail.com',
+                    "password" => 'incorrect password',
+                ]);
+            }
+            Carbon::setTestNow(now()->addSeconds($interval));
+            Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
+
+        }
+        Mail::assertSent(TooManyLoginAttemptPermanentBlockedEmail::class);
+        $user->refresh();
+        $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
+    }
+
+    /**
+     * @test
+     */
+    public function user_forgot_password_green()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+        $user->email_verified_at = now();
+        $user->save();
+        $response = $this->post(route('auth.forgot-password'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+        Mail::assertSent(ForgetPasswordOtpEmail::class);
+    }
+
+    /**
+     * @test
+     */
+    public function login_user_block_failed()
+    {
+        Mail::fake();
+
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+
+        $user->email_verified_at = now();
+        $user->save();
+
+        list($intervals, $tries) = getLoginAttemptSetting();
+        for ($i = 0; $i <= $tries[0] + 3; $i++) {
+            $response = $this->post(route('auth.login'), [
+                "email" => 'hamidrezanoruzinejad@gmail.com',
+                "password" => 'incorrect password',
+            ]);
+        }
+
+        Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
+        $this->assertEquals(trans('responses.max-attempts-exceeded'), $response->json()['message']);
+
+        $user->refresh();
+        $this->assertNotEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
+        $this->assertEquals(null, $user->block_type);
     }
 
     /**

@@ -7,5 +7,8 @@ User (R2FUser\tests\User)
  [x] Register new user not enough strong password
  [x] Login when user has not activate its account
  [x] Login user green
+ [x] Login user block
+ [x] User forgot password green
+ [x] Login user block failed
  [x] Ask for email otp green
 
