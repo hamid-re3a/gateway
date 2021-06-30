@@ -1,11 +1,3 @@
-Admin (R2FUser\tests\Admin)
- [x] Verify email user account green
- [x] User deactivate activate
-
 User (R2FUser\tests\User)
- [x] Register new user green
- [x] Register new user not enough strong password
- [x] Login when user has not activate its account
- [x] Login user green
- [x] Ask for email otp green
+ [x] User email verify failed
 
