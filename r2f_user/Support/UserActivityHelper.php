@@ -147,8 +147,7 @@ class UserActivityHelper
         }
 
         $data = self::firstAttemptOtp($user, OTP_TYPE_EMAIL_VERIFICATION, $duration, $data);
-
-
+        $error = true;
         return [$data, $error];
 
 

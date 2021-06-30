@@ -2,10 +2,8 @@
 
 namespace Tests;
 
-use R2FUser\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Spatie\Permission\Models\Role;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -20,6 +18,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->app->setLocale('en');
         $this->artisan('db:seed');
+        $this->artisan('db:seed', ['--class' => "R2FUser\database\seeders\AuthTableSeeder"]);
     }
 
     public function hasMethod($class, $method): void

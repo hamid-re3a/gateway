@@ -140,6 +140,61 @@ class UserTest extends TestCase
     /**
      * @test
      */
+    public function user_forgot_password_failed()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+        $user->email_verified_at = now();
+        $user->save();
+        $response = $this->post(route('auth.forgot-password'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+        $response = $this->post(route('auth.forgot-password'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+        $this->assertEquals(429,$response->status());
+    }
+    /**
+     * @test
+     */
+    public function user_email_verify_green()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password',
+            "email_verified_at" => null
+        ]);
+        $response = $this->post(route('auth.ask-for-email-otp'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+        Mail::assertSent(EmailVerifyOtp::class);
+    }
+
+    /**
+     * @test
+     */
+    public function user_email_verify_failed()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+        $response = $this->post(route('auth.ask-for-email-otp'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+        $response = $this->post(route('auth.ask-for-email-otp'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+        $this->assertEquals(429,$response->status());
+    }
+    /**
+     * @test
+     */
     public function login_user_block_failed()
     {
         Mail::fake();
