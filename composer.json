@@ -19,7 +19,6 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "mtownsend/read-time": "^1.1",
         "pragmarx/google2fa-laravel": "^1.4",
         "spatie/laravel-permission": "^3.17",
         "torann/geoip": "^3.0"
