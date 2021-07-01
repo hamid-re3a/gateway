@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('all_settings',[\App\Http\Controllers\SettingController::class,'index'])->name('all-settings');
 ////Admin
 //Route::prefix('admin')->middleware(['api', 'auth', 'role:admin|help-desk'])->group(function () {
 //
