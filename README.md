@@ -61,7 +61,7 @@ They don't need to configure anything extra in the frontend codebase. They shoul
  - **Run Development Server**
 	 - Run `php artisan serve --port=3531` to start the development server.
 
-> **Pro Tip!** If you want to use different port, then make sure you also use the same port for scribe([API documentation composer package](https://github.com/knuckleswtf/scribe)).
+> **Pro Tip!** If you want to use different port, then make sure you also use the same port for scribe([API documentation package](https://github.com/knuckleswtf/scribe)).
 >
 
  - **Access APIs Documentation**
