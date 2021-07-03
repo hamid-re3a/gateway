@@ -3,11 +3,9 @@
 
 const APP_NAME = 'Ride To Future';
 const USER_FORGOT_PASSWORD_OTP_DURATION = 60;
-const USER_FORGOT_PASSWORD_OTP_INTERVALS = 60;
 const USER_FORGOT_PASSWORD_OTP_TRIES = 1;
 
 const USER_EMAIL_VERIFICATION_OTP_DURATION = 60;
-const USER_EMAIL_VERIFICATION_OTP_INTERVALS = 60;
 const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
 
 
@@ -44,11 +42,7 @@ const SETTINGS = [
         'description' => 'When user wants to reset password, should we check history and not allow shim to use previous ones.',
         'category' => 'User > Password'
     ],
-    'USER_FORGOT_PASSWORD_OTP_INTERVALS' => [
-        'value' => USER_FORGOT_PASSWORD_OTP_INTERVALS,
-        'description' => '(in seconds) This is used with max user tries to stop user requesting a lot for forgot password otp.',
-        'category' => 'User > Password'
-    ],
+
     'USER_FORGOT_PASSWORD_OTP_DURATION' => [
         'value' => USER_FORGOT_PASSWORD_OTP_DURATION,
         'description' => '(in seconds) Forget otp is valid for 90 seconds as default.',
@@ -58,11 +52,6 @@ const SETTINGS = [
         'value' => USER_FORGOT_PASSWORD_OTP_TRIES,
         'description' => 'This is used with max user duration to stop user requesting a lot for forgot password otp',
         'category' => 'User > Password'
-    ],
-    'USER_EMAIL_VERIFICATION_OTP_INTERVALS' => [
-        'value' => USER_EMAIL_VERIFICATION_OTP_INTERVALS,
-        'description' => '(in seconds) This is used with max user tries to stop user requesting a lot for email verification  otp.',
-        'category' => 'User > Email Verification'
     ],
     'USER_EMAIL_VERIFICATION_OTP_DURATION' => [
         'value' => USER_EMAIL_VERIFICATION_OTP_DURATION,
@@ -93,12 +82,12 @@ const LOGIN_ATTEMPT_SETTINGS = [
         'blocking_duration' => 5*60,
     ],[
         'priority' => 0,
-        'times' => 5,
+        'times' => 2,
         'duration' =>90,
         'blocking_duration' => 10*60,
     ],[
         'priority' => 0,
-        'times' => 3,
+        'times' => 6,
         'duration' =>90,
         'blocking_duration' => 20*60,
     ],

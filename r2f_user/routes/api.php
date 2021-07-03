@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use R2FUser\Http\Controllers\Admin\UserController as AdminUserController;
 use R2FUser\Http\Controllers\Front\AuthController;
-use R2FUser\Http\Controllers\Front\KYCController as FrontKYCControllerAlias;
 use R2FUser\Http\Controllers\Front\LoginSecurityController;
 
 Route::middleware(['user_activity'])->group(function () {
@@ -31,7 +30,6 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/generate2fa_enable', [LoginSecurityController::class, 'enable2fa'])->name('2fa-enable');
             Route::post('/generate2fa_disable', [LoginSecurityController::class, 'disable2fa'])->name('2fa-disable')->middleware(['2fa']);
 
-            Route::post('kyc/upload', [FrontKYCControllerAlias::class, 'uploadDocuments'])->name('kyc-upload-file');
 
 
 

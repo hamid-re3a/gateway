@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKycsTable extends Migration
+class CreatePasswordHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateKycsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kycs', function (Blueprint $table) {
+        Schema::create('password_histories', function (Blueprint $table) {
             $table->id();
+            $table->string('password');
+
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('document_type');
 
-            $table->softDeletes();
+            $table->unsignedBigInteger('actor_id')->nullable();
+            $table->foreign('actor_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -31,6 +34,6 @@ class CreateKycsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kycs');
+        Schema::dropIfExists('password_histories');
     }
 }
