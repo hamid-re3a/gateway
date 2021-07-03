@@ -51,7 +51,7 @@ They don't need to configure anything extra in the frontend codebase. They shoul
  - **Basic Configuration**
 	 - Edit the .env file which is located in the root of the project
 	 - Update database credentials
-	 - Update Mail Server credentials
+	 - Update mailing server credentials
  
  > **Pro Tip!** Also make sure you run, `php artisan optimize` command again
  > 
