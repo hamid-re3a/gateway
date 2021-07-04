@@ -92,28 +92,50 @@ const LOGIN_ATTEMPT_SETTINGS = [
 ];
 const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
-        'subject' => 'Forget Password Otp',
-        'from' => 'info@r2f.com',
-        'from_name' => 'Ride To Future',
-        'body' => '<p>Hello, {{full_name}}</p><p>Your otp token is {{otp}}</p>',
-        'variables' => 'full_name,otp',
-        'variables_description' => 'full_name user full name, otp otp token',
-        'type' => 'email',
-    ],
-    'VERIFICATION_EMAIL_OTP_EMAIL' => [
-        'subject' => 'Email Verification Otp',
-        'from' => 'info@r2f.com',
-        'from_name' => 'Ride To Future',
-        'body' => '<p>Hello, {{full_name}}</p><p>Your otp token to verify email is {{otp}}</p>',
-        'variables' => 'full_name,otp',
-        'variables_description' => 'full_name user full name, otp otp token',
-        'type' => 'email',
-    ],
-    'USER_REGISTRATION_WELCOME_EMAIL' => [
-        'subject' => 'Welcome to Janex',
+        'subject' => 'Forgot Password Code',
         'from' => 'support@janex.com',
         'from_name' => 'Janex Support Team',
         'body' => <<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <p>We received a request to reset your password. Please use the below code to set up a new password for your account.&nbsp;</p>
+                <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}</span><span style="background-color: #ffff00;"></span><span style="background-color: #ffff00;"></span></h2>
+                <p>This code code is valid only for 1 minute and can be used only once. You will need to request for another code if it expires.</p>
+                <p>If you didn't request to reset your password, ignore this email and the code will expire on its own.</p>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,otp',
+        'variables_description'=>'full_name user full name, otp otp token',
+        'type'=>'email',
+    ],
+    'VERIFICATION_EMAIL_OTP_EMAIL'=>[
+        'subject'=>'Email Verification Code',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <p>To continue with your email verification, please use the below code</p>
+                <p></p>
+                <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}</span></h2>
+                <p><span style="background-color: #ffff00;"></span></p>
+                <p>This code code is valid only for 1 minute and can be used only once. You will need to request for another code if it expires.</p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,otp',
+        'variables_description'=>'full_name user full name, otp otp token',
+        'type'=>'email',
+    ],
+    'USER_REGISTRATION_WELCOME_EMAIL'=>[
+        'subject'=>'Welcome to Janex',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
                 <div>
                 <div>Hello,&nbsp;{{full_name}}!</div>
                 <div>&nbsp;</div>
@@ -131,54 +153,155 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'SUSPICIOUS_LOGIN_ATTEMPT_EMAIL'=>[
         'subject'=>'Suspicious Login Attempt',
-        'from'=>'info@r2f.com',
-        'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>Someone tries to Login from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}} and login is {{status}} </p>',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>We detected an unusual login attempt.</div>
+                <div></div>
+                <div><strong>Login Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <div>Status: {{status}}</div>
+                <div></div>
+                <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name,country,city,ip,platform,browser,status',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'NORMAL_LOGIN_EMAIL'=>[
-        'subject'=>'Successful Login',
-        'from'=>'info@r2f.com',
-        'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>Successful login from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}} and login is {{status}} </p>',
+        'subject'=>'Someone Logged-In',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>Someone has logged-in to your account.</div>
+                <div></div>
+                <div><strong>Login Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <div>Status: {{status}}</div>
+                <div></div>
+                <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name,country,city,ip,platform,browser,status',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'TOO_MANY_LOGIN_ATTEMPTS_TEMPORARY_BLOCK_EMAIL'=>[
-        'subject'=>'Too Many Login Attempt - Temporary Blocked',
-        'from'=>'info@r2f.com',
-        'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>Too many tries {{login_attempt_times}} times, You can try again in {{next_try_time}}</p>',
+        'subject'=>'Too Many Attempts',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>You have exceeded the limit of login attempts. Your account is temporary blocked and will be unblocked automatically after
+                <div>
+                <div><span>{{next_try_time}}.</span></div>
+                </div>
+                </div>
+                <div></div>
+                <div><strong>Login Attempts Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <div>Status: {{status}}</div>
+                <div></div>
+                <div>If this was you, you should wait <span>{{next_try_time}}</span>. Otherwise you should change your password or reach the support team immediately.</div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name,country,city,ip,platform,browser,status,next_try_time,login_attempt_times',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'TOO_MANY_LOGIN_ATTEMPTS_PERMANENT_BLOCK_EMAIL'=>[
-        'subject'=>'Too Many Login Attempt - Blocked',
-        'from'=>'info@r2f.com',
-        'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>You tried too many times, your account is blocked</p><p>Please reach the support team.</p>',
+        'subject'=>'Too Many Attempts - Account Blocked',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>Again you have exceeded the limit of login attempts. Your account is temporary blocked.<span></span></div>
+                <div></div>
+                <div><strong>Login Attempts Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <div>Status: {{status}}</div>
+                <div></div>
+                <div>Please reach reach the support team to unblock your account.</div>
+                <div></div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name,country,city,ip,platform,browser,status,next_try_time,login_attempt_times',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'subject'=>'Password Changed Warning',
-        'from'=>'info@r2f.com',
-        'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>Password changed from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}}. if it is not you please reach the support team  </p>',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that the password for your account has just been changed.<span></span></div>
+                <div></div>
+                <div><strong>Login Attempts Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <div>Status: {{status}}</div>
+                <div></div>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <div></div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name,country,city,ip,platform,browser,status',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'EMAIL_VERIFICATION_SUCCESS_EMAIL'=>[
         'subject'=>'Email Verified Successfully',
-        'from'=>'info@r2f.com',
-        'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>Your email is verified successfully from {{country}}-{{city}} / {{ip}} ip, {{platform}} - {{browser}}. if it is not you please reach the support team  </p>',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>You have successfully verified your email address. Please login to your account, purchase a package and start earning.<span></span></div>
+                <div></div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name,country,city,ip,platform,browser,status',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
