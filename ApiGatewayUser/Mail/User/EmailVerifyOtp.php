@@ -2,11 +2,12 @@
 
 namespace ApiGatewayUser\Mail\User;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class EmailVerifyOtp extends Mailable
+class EmailVerifyOtp extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
@@ -34,7 +35,7 @@ class EmailVerifyOtp extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('VERIFICATION_EMAIL_OTP_EMAIL');
+        $setting = $this->getSetting();
 
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
         $setting['body'] = str_replace('{{otp}}',hyphenate($this->token),$setting['body']);
@@ -43,5 +44,10 @@ class EmailVerifyOtp extends Mailable
             ->from($setting['from'], $setting['from_name'])
             ->subject($setting['subject'])
             ->html( $setting['body']);
+    }
+
+    public function getSetting() : array
+    {
+        return getEmailAndTextSetting('VERIFICATION_EMAIL_OTP_EMAIL');
     }
 }

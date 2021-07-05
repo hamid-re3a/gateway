@@ -12,7 +12,6 @@ const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
-const USER_NORMAL_LOGIN_WARNING_EMAIL = true;
 
 const SETTINGS = [
     'APP_NAME' => [
@@ -61,11 +60,6 @@ const SETTINGS = [
         'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
         'category' => 'User > Email Verification',
     ],
-    'USER_NORMAL_LOGIN_WARNING_EMAIL' => [
-        'value' => USER_NORMAL_LOGIN_WARNING_EMAIL,
-        'description' => 'Send email warning after successful login',
-        'category' => 'User > Login',
-    ],
     'USER_REGISTRATION_PASSWORD_CRITERIA' => [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
         'description' => 'Password pattern for user registration',
@@ -92,6 +86,7 @@ const LOGIN_ATTEMPT_SETTINGS = [
 ];
 const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
+        'is_active' => true,
         'subject' => 'Forgot Password Code',
         'from' => 'support@janex.com',
         'from_name' => 'Janex Support Team',
@@ -112,6 +107,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'VERIFICATION_EMAIL_OTP_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Email Verification Code',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -132,6 +129,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'USER_REGISTRATION_WELCOME_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Welcome to Janex',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -152,6 +151,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'SUSPICIOUS_LOGIN_ATTEMPT_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Suspicious Login Attempt',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -179,6 +180,7 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'NORMAL_LOGIN_EMAIL'=>[
+        'is_active' => true,
         'subject'=>'Someone Logged-In',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -206,6 +208,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'TOO_MANY_LOGIN_ATTEMPTS_TEMPORARY_BLOCK_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Too Many Attempts',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -236,6 +240,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'TOO_MANY_LOGIN_ATTEMPTS_PERMANENT_BLOCK_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Too Many Attempts - Account Blocked',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -263,6 +269,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'PASSWORD_CHANGED_WARNING_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Password Changed Warning',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -290,6 +298,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'EMAIL_VERIFICATION_SUCCESS_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Email Verified Successfully',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
@@ -307,6 +317,7 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'USER_ACCOUNT_ACTIVATED_EMAIL'=>[
+        'is_active' => true,
         'subject'=>'Account Activated',
         'from'=>'info@r2f.com',
         'from_name'=>'Ride To Future',
@@ -316,6 +327,8 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'USER_ACCOUNT_DEACTIVATED_EMAIL'=>[
+
+        'is_active' => true,
         'subject'=>'Account Deactivated',
         'from'=>'info@r2f.com',
         'from_name'=>'Ride To Future',

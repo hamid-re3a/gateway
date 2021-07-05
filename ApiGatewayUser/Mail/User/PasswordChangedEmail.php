@@ -2,11 +2,12 @@
 
 namespace ApiGatewayUser\Mail\User;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordChangedEmail extends Mailable
+class PasswordChangedEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
@@ -36,7 +37,7 @@ class PasswordChangedEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('PASSWORD_CHANGED_WARNING_EMAIL');
+        $setting = $this->getSetting();
 
         $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
         $setting['body'] = str_replace('{{country}}', $this->ip_db->country, $setting['body']);
@@ -52,4 +53,8 @@ class PasswordChangedEmail extends Mailable
     }
 
 
+    public function getSetting(): array
+    {
+        return getEmailAndTextSetting('PASSWORD_CHANGED_WARNING_EMAIL');
+    }
 }

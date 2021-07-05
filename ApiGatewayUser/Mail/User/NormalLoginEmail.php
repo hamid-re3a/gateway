@@ -2,11 +2,12 @@
 
 namespace ApiGatewayUser\Mail\User;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NormalLoginEmail extends Mailable
+class NormalLoginEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
@@ -33,7 +34,7 @@ class NormalLoginEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('NORMAL_LOGIN_EMAIL');
+        $setting = $this->getSetting();
 
         $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
         $setting['body'] = str_replace('{{country}}', $this->login_attempt->ip->country, $setting['body']);
@@ -50,4 +51,8 @@ class NormalLoginEmail extends Mailable
     }
 
 
+    public function getSetting(): array
+    {
+        return getEmailAndTextSetting('NORMAL_LOGIN_EMAIL');
+    }
 }
