@@ -14,7 +14,7 @@ class AddIsActiveEmailContentSettingsTable extends Migration
     public function up()
     {
         Schema::table('email_content_settings', function (Blueprint $table) {
-            $table->boolean('is_active')->nullable()->default(true)->after('key');
+            $table->boolean('is_active')->default(true)->after('key');
         });
     }
 

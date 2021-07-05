@@ -95,14 +95,14 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Hello {{full_name}},</p>
                 <p>We received a request to reset your password. Please use the below code to set up a new password for your account.&nbsp;</p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}</span><span style="background-color: #ffff00;"></span><span style="background-color: #ffff00;"></span></h2>
-                <p>This code is valid only for 1 minute and can be used only once. You will need to request for another code if it expires.</p>
+                <p>This code is valid only for {{otp_expire_duration}} seconds and can be used only once. You will need to request for another code if it expires.</p>
                 <p>If you didn't request to reset your password, ignore this email and the code will expire on its own.</p>
                 <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,otp',
+        'variables'=>'full_name,otp,otp_expire_duration',
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
@@ -119,12 +119,12 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p></p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span></h2>
                 <p><span style="background-color: #ffff00;"></span></p>
-                <p>This code is valid only for 1 minute and can be used only once. You will need to request for another code if it expires.</p>
+                <p>This code is valid only for {{otp_expire_duration}} seconds and can be used only once. You will need to request for another code if it expires.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,otp',
+        'variables'=>'full_name,otp,otp_expire_duration',
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
