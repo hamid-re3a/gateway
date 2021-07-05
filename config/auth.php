@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => R2FUser\Models\User::class,
+            'model' => ApiGatewayUser\Models\User::class,
         ],
 
         // 'users' => [
