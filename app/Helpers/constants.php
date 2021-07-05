@@ -94,8 +94,8 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>
                 <p>Hello {{full_name}},</p>
                 <p>We received a request to reset your password. Please use the below code to set up a new password for your account.&nbsp;</p>
-                <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}</span><span style="background-color: #ffff00;"></span><span style="background-color: #ffff00;"></span></h2>
-                <p>This code is valid only for 1 minute and can be used only once. You will need to request for another code if it expires.</p>
+                <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span><span style="background-color: #ffff00;"></span><span style="background-color: #ffff00;"></span></h2>
+                <p>This code is valid only for 1 minute and can be used only once. You will need to request for another code if it expired.</p>
                 <p>If you didn't request to reset your password, ignore this email and the code will expire on its own.</p>
                 <p></p>
                 <p>Cheers,</p>
@@ -119,7 +119,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p></p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span></h2>
                 <p><span style="background-color: #ffff00;"></span></p>
-                <p>This code is valid only for 1 minute and can be used only once. You will need to request for another code if it expires.</p>
+                <p>This code is valid only for 1 minute and can be used only once. You will need to request for another code if it expired.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -141,7 +141,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
                 <div>&nbsp;</div>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
-                <p>This code is valid only for 1 minute. You will need to request for another code if it expires.</p>
+                <p>This code is valid only for 1 minute. You will need to request for another code if it expired.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -160,7 +160,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>
                 <p>Hello {{full_name}},</p>
                 <div>We detected an unusual login attempt.</div>
-                <div></div>
+                <p></p>
                 <div><strong>Login Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
@@ -168,7 +168,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <div>Status: {{status}}</div>
-                <div></div>
+                <p></p>
                 <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
                 <p></p>
                 <p>Cheers,</p>
@@ -188,7 +188,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>
                 <p>Hello {{full_name}},</p>
                 <div>Someone has logged-in to your account.</div>
-                <div></div>
+                <p></p>
                 <div><strong>Login Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
@@ -196,7 +196,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <div>Status: {{status}}</div>
-                <div></div>
+                <p></p>
                 <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
                 <p></p>
                 <p>Cheers,</p>
@@ -221,7 +221,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div><span>{{next_try_time}}.</span></div>
                 </div>
                 </div>
-                <div></div>
+                <p></p>
                 <div><strong>Login Attempts Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
@@ -229,7 +229,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <div>Status: {{status}}</div>
-                <div></div>
+                <p></p>
                 <div>If this was you, you should wait <span>{{next_try_time}}</span>. Otherwise you should change your password or reach the support team immediately.</div>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
@@ -249,7 +249,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>
                 <p>Hello {{full_name}},</p>
                 <div>Again you have exceeded the limit of login attempts. Your account is temporary blocked.<span></span></div>
-                <div></div>
+                <p></p>
                 <div><strong>Login Attempts Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
@@ -257,9 +257,9 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <div>Status: {{status}}</div>
-                <div></div>
+                <p></p>
                 <div>Please reach reach the support team to unblock your account.</div>
-                <div></div>
+                <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -278,7 +278,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>
                 <p>Hello {{full_name}},</p>
                 <div>This is a confirmation that the password for your account has just been changed.<span></span></div>
-                <div></div>
+                <p></p>
                 <div><strong>Login Attempts Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
@@ -286,9 +286,9 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <div>Status: {{status}}</div>
-                <div></div>
+                <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
-                <div></div>
+                <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -307,7 +307,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>
                 <p>Hello {{full_name}},</p>
                 <div>You have successfully verified your email address. Please login to your account, purchase a package and start earning.<span></span></div>
-                <div></div>
+                <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
