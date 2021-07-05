@@ -185,8 +185,33 @@ class UserTest extends TestCase
             "password"=> "123456789!Q",
             "password_confirmation"=> "123456789!Q"
         ]);
-        dd($response->json());
-        $this->assertEquals(429,$response->status());
+        $this->assertEquals(422,$response->status());
+    }
+
+
+    /**
+     * @test
+     */
+    public function user_reset_forget_password_green()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+        $user->email_verified_at = now();
+        $user->save();
+        $response = $this->post(route('auth.forgot-password'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+        ]);
+
+        $response = $this->post(route('auth.reset-forgot-password'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "otp" => Otp::query()->first()->otp,
+            "password"=> "123456789!Q",
+            "password_confirmation"=> "123456789!Q"
+        ]);
+        $this->assertEquals(200,$response->status());
     }
     /**
      * @test
