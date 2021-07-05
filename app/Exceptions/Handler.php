@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Http\Helpers\ResponseData;
+
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -49,22 +49,22 @@ class Handler extends ExceptionHandler
         if ($this->isHttpException($e)) {
             switch ($e->getStatusCode()) {
                 case '401':
-                    return ResponseData::error($e->getMessage() ?? trans('responses.login-again'), [], 401);
+                    return api()->error($e->getMessage() ?? trans('responses.login-again'), [], 401);
                     break;
                 case '404':
-                    return ResponseData::error(trans('responses.not-found'), [], 404);
+                    return api()->error(trans('responses.not-found'), [], 404);
                     break;
                 case '500':
-                    return ResponseData::error(trans('responses.something-went-wrong'), [], 500);
+                    return api()->error(trans('responses.something-went-wrong'), [], 500);
                     break;
 
                 default:
-                    return ResponseData::error($e->getMessage(), [], $e->getStatusCode());
+                    return api()->error($e->getMessage(), [], $e->getStatusCode());
                     break;
 
             }
         }
-        return ResponseData::error($e->getMessage(), [], 400);
+        return api()->error($e->getMessage(), [], 400);
 
     }
 }

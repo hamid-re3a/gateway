@@ -51,8 +51,9 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "R2FUser\\": "r2f_user",
-            "R2FGateway\\": "r2f_api_gateway"
+            "ApiGatewayUser\\": "ApiGatewayUser",
+            "ApiGatewayCore\\": "ApiGatewayCore",
+            "ApiResponse\\": "ApiResponse"
         },
         "files": ["app/Helpers/functions.php","app/Helpers/constants.php"]
     },

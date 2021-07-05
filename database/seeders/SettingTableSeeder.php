@@ -6,7 +6,7 @@ use App\Models\EmailContentSetting;
 use App\Models\LoginAttemptSetting;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
-use R2FUser\Models\LoginAttempt;
+use ApiGatewayUser\Models\LoginAttempt;
 
 /**
  * Class AuthTableSeeder.

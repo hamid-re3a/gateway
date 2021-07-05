@@ -6,7 +6,7 @@
 >
     <testsuites>
         <testsuite name="User">
-            <directory suffix="Test.php">./r2f_user/tests/</directory>
+            <directory suffix="Test.php">./ApiGatewayUser/tests/</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
