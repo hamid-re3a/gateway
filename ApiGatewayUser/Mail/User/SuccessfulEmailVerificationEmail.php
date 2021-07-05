@@ -2,11 +2,12 @@
 
 namespace ApiGatewayUser\Mail\User;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SuccessfulEmailVerificationEmail extends Mailable
+class SuccessfulEmailVerificationEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
@@ -36,7 +37,7 @@ class SuccessfulEmailVerificationEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('EMAIL_VERIFICATION_SUCCESS_EMAIL');
+        $setting = $this->getSetting();
 
         $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
         $setting['body'] = str_replace('{{country}}', $this->ip_db->country, $setting['body']);
@@ -52,4 +53,8 @@ class SuccessfulEmailVerificationEmail extends Mailable
     }
 
 
+    public function getSetting(): array
+    {
+        return getEmailAndTextSetting('EMAIL_VERIFICATION_SUCCESS_EMAIL');
+    }
 }

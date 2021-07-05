@@ -36,6 +36,7 @@ class SettingTableSeeder extends Seeder
             if (!EmailContentSetting::query()->whereKey($key)->exists()) {
                 EmailContentSetting::query()->create([
                     'key' => $key,
+                    'is_active' => $setting['is_active'],
                     'subject' => $setting['subject'],
                     'from' => $setting['from'],
                     'from_name' => $setting['from_name'],

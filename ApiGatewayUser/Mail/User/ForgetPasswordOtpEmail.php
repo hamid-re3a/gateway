@@ -2,12 +2,12 @@
 
 namespace ApiGatewayUser\Mail\User;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
-class ForgetPasswordOtpEmail extends Mailable
+class ForgetPasswordOtpEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
@@ -34,7 +34,7 @@ class ForgetPasswordOtpEmail extends Mailable
      */
     public function build()
     {
-        $setting = getEmailAndTextSetting('FORGOT_PASSWORD_OTP_EMAIL');
+        $setting = $this->getSetting();
 
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
         $setting['body'] = str_replace('{{otp}}',hyphenate($this->token),$setting['body']);
@@ -43,5 +43,10 @@ class ForgetPasswordOtpEmail extends Mailable
             ->from($setting['from'], $setting['from_name'])
             ->subject($setting['subject'])
             ->html($setting['body']);
+    }
+
+    public function getSetting(): array
+    {
+        return getEmailAndTextSetting('FORGOT_PASSWORD_OTP_EMAIL');
     }
 }

@@ -2,12 +2,13 @@
 
 namespace ApiGatewayUser\Mail\User;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use ApiGatewayUser\Models\UserBlockHistory;
 
-class UserAccountActivatedEmail extends Mailable
+class UserAccountActivatedEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
@@ -38,11 +39,7 @@ class UserAccountActivatedEmail extends Mailable
      */
     public function build()
     {
-        if (is_null($this->user_block_history->block_type))
-            $setting = getEmailAndTextSetting('USER_ACCOUNT_ACTIVATED_EMAIL');
-        else
-            $setting = getEmailAndTextSetting('USER_ACCOUNT_DEACTIVATED_EMAIL');
-
+        $setting = $this->getSetting();
         $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
         $setting['body'] = str_replace('{{block_type}}', $this->user_block_history->block_type, $setting['body']);
         $setting['body'] = str_replace('{{block_reason}}', $this->user_block_history->block_reason, $setting['body']);
@@ -59,4 +56,13 @@ class UserAccountActivatedEmail extends Mailable
     }
 
 
+    public function getSetting(): array
+    {
+        if (is_null($this->user_block_history->block_type))
+            $setting = getEmailAndTextSetting('USER_ACCOUNT_ACTIVATED_EMAIL');
+        else
+            $setting = getEmailAndTextSetting('USER_ACCOUNT_DEACTIVATED_EMAIL');
+
+        return $setting;
+    }
 }

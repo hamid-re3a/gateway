@@ -79,8 +79,8 @@ class AuthController extends Controller
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
-        if (getSetting("USER_NORMAL_LOGIN_WARNING_EMAIL"))
-            EmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
+
+        EmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
         return $this->respondWithToken($token);
     }
 

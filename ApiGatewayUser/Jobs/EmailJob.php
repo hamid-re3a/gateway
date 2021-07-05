@@ -2,6 +2,7 @@
 
 namespace ApiGatewayUser\Jobs;
 
+use ApiGatewayUser\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,10 +23,10 @@ class EmailJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Mailable $email
+     * @param SettingableMail $email
      * @param string $email_address
      */
-    public function __construct(Mailable $email, $email_address)
+    public function __construct(SettingableMail $email, $email_address)
     {
         $this->email = $email;
         $this->email_address = $email_address;
@@ -38,6 +39,7 @@ class EmailJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email_address)->send($this->email);
+        if ($this->email->getSetting()['is_active'])
+            Mail::to($this->email_address)->send($this->email);
     }
 }
