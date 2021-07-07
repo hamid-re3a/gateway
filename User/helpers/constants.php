@@ -269,7 +269,6 @@ const EMAIL_CONTENT_SETTINGS = [
         'type'=>'email',
     ],
     'PASSWORD_CHANGED_WARNING_EMAIL'=>[
-
         'is_active' => true,
         'subject'=>'Password Changed Warning',
         'from'=>'support@janex.com',
@@ -319,7 +318,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_ACTIVATED_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Account Activated',
-        'from'=>'info@r2f.com',
+        'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is activated by {{actor_full_name}}</p>',
         'variables'=>'full_name,actor_full_name',
@@ -330,7 +329,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Account Deactivated',
-        'from'=>'info@r2f.com',
+        'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is deactivated by {{actor_full_name}}</p>',
         'variables'=>'full_name,actor_full_name',
@@ -341,7 +340,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Account Activated',
-        'from'=>'info@r2f.com',
+        'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is activated again</p>',
         'variables'=>'full_name',

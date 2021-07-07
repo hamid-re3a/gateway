@@ -22,16 +22,20 @@ class AuthTableSeeder extends Seeder
             Role::query()->firstOrCreate(['name' => $role]);
         }
 
-        if (!User::query()->where('email', 'admin@r2f.com')->exists()) {
-            $admin = User::query()->firstOrCreate([
-                'email' => 'admin@r2f.com',
-                'first_name' => 'admin',
-                'username' => 'admin',
-                'last_name' => 'admin',
-                'password' => 'password',
-                'email_verified_at' => now(),
-            ]);
+        if (!User::query()->where('email', 'admin@site.com')->exists()) {
+            $admin = User::whereUsername('admin')->first();
+            if(!$admin){
+                $admin = User::query()->create([
+                    'username' => 'admin',
+                ]);
+                $admin->password = 'password';
+                $admin->first_name = 'admin';
+                $admin->last_name = 'admin';
+                $admin->email_verified_at = now();
+            }
 
+            $admin->email = 'admin@site.com';
+            $admin->save();
             $admin->assignRole(USER_ROLE_ADMIN);
         }
     }

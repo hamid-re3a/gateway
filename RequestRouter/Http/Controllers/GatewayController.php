@@ -32,7 +32,7 @@ class GatewayController extends Controller
         if ($status == true) {
             return $this->getResponse($final_route, $request);
         }
-            return api()->error('gw_responses.not-found', null, 404);
+            return api()->error('request_router.responses.not-found', null, 404);
 
 
     }

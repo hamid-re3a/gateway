@@ -26,10 +26,13 @@ class UserServiceProvider extends ServiceProvider
         }
         $this->publishes([
             __DIR__ . '/database/migrations' => database_path('migrations'),
-        ], 'r2f-user-migrations');
+        ], 'user-migrations');
         $this->publishes([
             __DIR__ . '/database/seeders/' => database_path('seeders'),
-        ], 'r2f-user-seeds');
+        ], 'user-seeds');
+        $this->publishes([
+            __DIR__ . '/resources/lang' => resource_path('lang'),
+        ], 'user-resources');
     }
 
     public function boot()

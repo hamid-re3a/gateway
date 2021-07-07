@@ -31,7 +31,7 @@ class LoginAttemptMiddleware
 
         $user = User::whereEmail($request->email)->first();
         if (!$user)
-            abort(422, trans('user.responses.invalid-input'));
+            abort(422, trans('user.responses.invalid-inputs-from-user'));
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
 

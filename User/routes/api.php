@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
 use User\Http\Controllers\Front\AuthController;
 use User\Http\Controllers\Front\LoginSecurityController;
+use User\Http\Controllers\Front\SettingController;
 
 Route::middleware(['user_activity'])->group(function () {
 
@@ -18,6 +19,8 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
             Route::post('/reset_forgot_password', [AuthController::class, 'resetForgetPassword'])->name('reset-forgot-password');
         });
+
+        Route::get('all_settings',[SettingController::class,'index'])->name('all-settings');
 
         Route::middleware(['auth', 'email_verified'])->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
