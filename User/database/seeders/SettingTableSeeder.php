@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace User\database\seeders;
 
-use App\Models\EmailContentSetting;
-use App\Models\LoginAttemptSetting;
-use App\Models\Setting;
+use User\Models\EmailContentSetting;
+use User\Models\LoginAttemptSetting;
+use User\Models\Setting;
 use Illuminate\Database\Seeder;
 use User\Models\LoginAttempt;
 

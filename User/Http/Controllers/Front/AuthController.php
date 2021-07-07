@@ -41,7 +41,7 @@ class AuthController extends Controller
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);
 
-        return api()->success(trans('responses.successfully-registered-go-activate-your-email'));
+        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'));
     }
 
     /**
@@ -58,7 +58,7 @@ class AuthController extends Controller
         $user = User::query()->where('email', $credentials['email'])->first();
 
         if (!$user->isEmailVerified())
-            return api()->error(trans('responses.go-activate-your-email'), null, 403);
+            return api()->error(trans('user.responses.go-activate-your-email'), null, 403);
 
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
@@ -67,13 +67,13 @@ class AuthController extends Controller
         if ($login_attempt && $login_attempt->login_status == LOGIN_ATTEMPT_STATUS_BLOCKED) {
             $data['try_in'] = $request->get('try_in');
             $data['try_in_timestamp'] = $request->get('try_in_timestamp');
-            return api()->error(trans('responses.max-attempts-exceeded'), $data, 429);
+            return api()->error(trans('user.responses.max-attempts-exceeded'), $data, 429);
         }
         if (!Hash::check($credentials['password'], $user->password)) {
             $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_FAILED;
             $login_attempt->save();
 
-            return api()->error(trans('responses.invalid-inputs-from-user'), $data, 400);
+            return api()->error(trans('user.responses.invalid-inputs-from-user'), $data, 400);
         }
         $token = $this->getNewTokenAndDeleteOthers($user);
 
@@ -91,7 +91,7 @@ class AuthController extends Controller
      */
     public function getAuthUser()
     {
-        return api()->success(trans('responses.success'), ProfileResource::make(auth()->user()));
+        return api()->success(trans('user.responses.success'), ProfileResource::make(auth()->user()));
     }
 
     /**
@@ -103,9 +103,9 @@ class AuthController extends Controller
     public function isEmailExists(EmailExistenceRequest $request)
     {
         if (User::whereEmail($request->email)->exists())
-            return api()->success(trans('responses.email-already-exists'), true);
+            return api()->success(trans('user.responses.email-already-exists'), true);
 
-        return api()->success(trans('responses.email-does-not-exist'), false);
+        return api()->success(trans('user.responses.email-does-not-exist'), false);
     }
 
     /**
@@ -117,9 +117,9 @@ class AuthController extends Controller
     public function isUsernameExists(UsernameExistenceRequest $request)
     {
         if (User::whereUsername($request->username)->exists())
-            return api()->success(trans('responses.username-already-exists'), true);
+            return api()->success(trans('user.responses.username-already-exists'), true);
 
-        return api()->success(trans('responses.username-does-not-exist'), false);
+        return api()->success(trans('user.responses.username-does-not-exist'), false);
     }
 
     /**
@@ -133,16 +133,16 @@ class AuthController extends Controller
     {
         $user = User::whereEmail($request->email)->first();
         if ($user->isEmailVerified())
-            return api()->success(trans('responses.email-is-already-verified'));
+            return api()->success(trans('user.responses.email-is-already-verified'));
 
         list($data, $err) = UserActivityHelper::makeEmailVerificationOtp($user, $request, false);
         if ($err) {
             $errors = [
-                'otp' => trans('responses.otp-exceeded-amount')
+                'otp' => trans('user.responses.otp-exceeded-amount')
             ];
-            return api()->error(trans('responses.otp-exceeded-amount'), $data, 429, $errors);
+            return api()->error(trans('user.responses.otp-exceeded-amount'), $data, 429, $errors);
         }
-        return api()->success(trans('responses.otp-successfully-sent'));
+        return api()->success(trans('user.responses.otp-successfully-sent'));
     }
 
 
@@ -157,7 +157,7 @@ class AuthController extends Controller
     {
         $user = User::whereEmail($request->email)->first();
         if ($user->isEmailVerified())
-            return api()->success(trans('responses.email-is-already-verified'));
+            return api()->success(trans('user.responses.email-is-already-verified'));
 
         $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
         $otp_db = $user->otps()
@@ -167,9 +167,9 @@ class AuthController extends Controller
             ->last();
         if (is_null($otp_db)){
             $errors = [
-                'otp' => trans('responses.otp-exceeded-amount')
+                'otp' => trans('user.responses.otp-exceeded-amount')
             ];
-            return api()->error('responses.otp-is-not-valid-any-more','',422,$errors);
+            return api()->error('user.responses.otp-is-not-valid-any-more','',422,$errors);
         }
 
 
@@ -182,9 +182,9 @@ class AuthController extends Controller
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
 
-            return $this->respondWithToken($token, 'responses.email-verified-successfully');
+            return $this->respondWithToken($token, 'user.responses.email-verified-successfully');
         }
-        return api()->error('responses.otp-is-wrong');
+        return api()->error('user.responses.otp-is-wrong');
 
     }
 
@@ -200,9 +200,9 @@ class AuthController extends Controller
         $user = User::whereEmail($request->email)->first();
         list($data, $err) = UserActivityHelper::makeForgetPasswordOtp($user, $request);
         if ($err) {
-            return api()->error(trans('responses.forgot-password-otp-exceeded-amount'), $data, 429);
+            return api()->error(trans('user.responses.forgot-password-otp-exceeded-amount'), $data, 429);
         }
-        return api()->success(trans('responses.otp-successfully-sent'));
+        return api()->success(trans('user.responses.otp-successfully-sent'));
     }
 
 
@@ -224,9 +224,9 @@ class AuthController extends Controller
             ->last();
         if (is_null($fp_db)){
             $errors = [
-                'otp' => trans('responses.otp-is-not-valid-any-more')
+                'otp' => trans('user.responses.otp-is-not-valid-any-more')
             ];
-            return api()->error(trans('responses.otp-is-not-valid-any-more'),'',422,$errors);
+            return api()->error(trans('user.responses.otp-is-not-valid-any-more'),'',422,$errors);
         }
 
 
@@ -237,13 +237,13 @@ class AuthController extends Controller
             EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
 
 
-            return api()->success(trans('responses.password-successfully-changed'));
+            return api()->success(trans('user.responses.password-successfully-changed'));
         }
 
         $errors = [
-            'otp' => trans('responses.otp-is-wrong')
+            'otp' => trans('user.responses.otp-is-wrong')
         ];
-        return api()->error('responses.otp-is-wrong','',422,$errors);
+        return api()->error('user.responses.otp-is-wrong','',422,$errors);
 
     }
 
@@ -255,7 +255,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->tokens()->delete();
-        return api()->success(trans('responses.logout-successful'));
+        return api()->success(trans('user.responses.logout-successful'));
     }
 
     /**
@@ -265,11 +265,11 @@ class AuthController extends Controller
      */
     public function ping()
     {
-        return api()->success(trans('responses.ok'));
+        return api()->success(trans('user.responses.ok'));
     }
 
 
-    protected function respondWithToken($token, $message = 'responses.login-successful')
+    protected function respondWithToken($token, $message = 'user.responses.login-successful')
     {
         $data = [
             'access_token' => $token,

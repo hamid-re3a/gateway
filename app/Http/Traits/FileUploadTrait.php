@@ -2,7 +2,7 @@
 
 namespace App\Http\Traits;
 
-use App\Models\Media;
+use User\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;

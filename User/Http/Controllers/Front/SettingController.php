@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace User\Http\Controllers\Front;
 
 
-use App\Models\Setting;
+use User\Models\Setting;
+use Illuminate\Routing\Controller;
 
 class SettingController extends Controller
 {

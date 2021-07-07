@@ -38,16 +38,36 @@ class UserServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(__DIR__ . '/routes/api.php');
-
+        $this->registerHelpers();
         if ($this->app->runningInConsole()) {
             if (isset($_SERVER['argv']))
                 if (array_search('db:seed', $_SERVER['argv']))
                     Artisan::call('db:seed', ['--class' => "User\database\seeders\AuthTableSeeder"]);
         }
+
+
+        if ($this->app->runningInConsole()) {
+            $this->seed();
+        }
+
+
         User::observe(UserObserver::class);
 
     }
 
+    /**
+     * Register helpers.
+     */
+    protected function registerHelpers()
+    {
+        if (file_exists($helperFile = __DIR__ . '/helpers/constants.php')) {
+            require_once $helperFile;
+        }
+
+        if (file_exists($helperFile = __DIR__ . '/helpers/functions.php')) {
+            require_once $helperFile;
+        }
+    }
 
     /**
      * Determine if we should register the migrations.
@@ -59,5 +79,12 @@ class UserServiceProvider extends ServiceProvider
         return UserConfigure::$runsMigrations;
     }
 
+    private function seed()
+    {
+        if (isset($_SERVER['argv']))
+            if (array_search('db:seed', $_SERVER['argv'])) {
+                UserConfigure::seed();
+            }
+    }
 
 }

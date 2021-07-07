@@ -3,7 +3,7 @@
 
 namespace User\Mail;
 
-use App\Models\EmailContentSetting;
+use User\Models\EmailContentSetting;
 
 interface SettingableMail
 {

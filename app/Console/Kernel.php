@@ -25,12 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            DB::table('tickets')
-                ->where('updated_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())
-                ->whereNotIn('status',[TICKET_SPAM])
-                ->update(['status' => TICKET_ANSWERED]);
-        })->everyMinute();
+
     }
 
     /**

@@ -19,7 +19,7 @@ class BlockUserMiddleware
             $user = User::whereEmail($request->email)->first();
         if($user)
             if(in_array($user->block_type,USER_BLOCK_TYPES))
-                return api()->error(trans('responses.user-is-blocked'),[],403);
+                return api()->error(trans('user.responses.user-is-blocked'),[],403);
         return $next($request);
     }
 }

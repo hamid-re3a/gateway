@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace User\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Setting
+ * User\Models\Setting
  *
  * @property int $id
  * @property string $key

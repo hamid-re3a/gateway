@@ -31,15 +31,15 @@ class UserController extends Controller
         $user = User::whereEmail($request->email)->first();
         if ($request->deactivate) {
             $user->block_type = USER_BLOCK_TYPE_BY_ADMIN;
-            $user->block_reason = 'responses.user-account-deactivated-by-admin';
+            $user->block_reason = 'user.responses.user-account-deactivated-by-admin';
         } else {
             $user->block_type = null;
-            $user->block_reason = 'responses.user-account-activated-by-admin';
+            $user->block_reason = 'user.responses.user-account-activated-by-admin';
 
         }
         $user->save();
 
-        return api()->success(trans('responses.ok'));
+        return api()->success(trans('user.responses.ok'));
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController extends Controller
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
         }
-        return api()->success(trans('responses.ok'));
+        return api()->success(trans('user.responses.ok'));
     }
 
 
@@ -70,7 +70,7 @@ class UserController extends Controller
      */
     public function passwordHistory(HistoryRequest $request)
     {
-        return api()->success(trans('responses.ok'), PasswordHistoryResource::collection(User::find($request->user_id)->passwordHistories));
+        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::find($request->user_id)->passwordHistories));
     }
 
     /**
@@ -80,7 +80,7 @@ class UserController extends Controller
      */
     public function blockHistory(HistoryRequest $request)
     {
-        return api()->success(trans('responses.ok'), UserBlockHistoryResource::collection(User::find($request->user_id)->blockHistories));
+        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::find($request->user_id)->blockHistories));
     }
     /**
      * User Login History
@@ -89,7 +89,7 @@ class UserController extends Controller
      */
     public function loginHistory(HistoryRequest $request)
     {
-        return api()->success(trans('responses.ok'), LoginHistoryResource::collection(User::find($request->user_id)->loginAttempts));
+        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::find($request->user_id)->loginAttempts));
     }
 
     /**
@@ -99,6 +99,6 @@ class UserController extends Controller
      */
     public function emailVerificationHistory(HistoryRequest $request)
     {
-        return api()->success(trans('responses.ok'), OtpResource::collection(User::find($request->user_id)->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
+        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->user_id)->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 }

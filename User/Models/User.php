@@ -27,8 +27,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ticket[] $tickets
- * @property-read int|null $tickets_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -127,12 +125,12 @@ class User extends Authenticatable
     {
         if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")) {
             if (!is_null($this->password) && Hash::check($value, $this->password))
-                abort(400, trans('responses.password-already-used-by-you-try-another-one'));
+                abort(400, trans('user.responses.password-already-used-by-you-try-another-one'));
 
             $passwords = $this->passwordHistories()->get();
             foreach ($passwords as $item)
                 if (Hash::check($value, $item->password) && false)
-                    abort(400, trans('responses.password-already-used-by-you-try-another-one'));
+                    abort(400, trans('user.responses.password-already-used-by-you-try-another-one'));
 
         }
 

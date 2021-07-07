@@ -58,8 +58,7 @@
             "Database\\Seeders\\": "database/seeders/",
             "RequestRouter\\": "RequestRouter/",
             "User\\": "User/"
-        },
-        "files": ["app/Helpers/functions.php","app/Helpers/constants.php"]
+        }
     },
     "autoload-dev": {
         "psr-4": {

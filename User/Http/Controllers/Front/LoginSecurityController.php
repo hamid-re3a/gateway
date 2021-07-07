@@ -39,7 +39,7 @@ class LoginSecurityController extends Controller
             'google2fa_url' => $google2fa_url
         );
 
-        return api()->success(trans('responses.success'), $data);
+        return api()->success(trans('user.responses.success'), $data);
 
     }
 
@@ -59,9 +59,9 @@ class LoginSecurityController extends Controller
         if ($valid) {
             $user->google2fa_enable = true;
             $user->save();
-            return api()->success(trans('responses.2FA-is-enabled-successfully'));
+            return api()->success(trans('user.responses.2FA-is-enabled-successfully'));
         } else {
-            return api()->error(trans('responses.Invalid-verification-Code-Please-try-again'));
+            return api()->error(trans('user.responses.Invalid-verification-Code-Please-try-again'));
         }
     }
 
@@ -75,6 +75,6 @@ class LoginSecurityController extends Controller
         $user = auth()->user();
         $user->google2fa_enable = false;
         $user->save();
-        return api()->success(trans('responses.2FA-is-now-disabled'));
+        return api()->success(trans('user.responses.2FA-is-now-disabled'));
     }
 }

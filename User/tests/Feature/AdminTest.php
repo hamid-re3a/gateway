@@ -1,16 +1,16 @@
 <?php
 
 
-namespace User\tests;
+namespace User\tests\Feature;
 
 
 use Illuminate\Support\Facades\Mail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
 use User\Mail\User\UserAccountActivatedEmail;
 use User\Models\User;
-use Tests\TestCase;
+use User\tests\UserTest;
 
-class AdminTest extends TestCase
+class AdminTest extends UserTest
 {
     /**
      * @test

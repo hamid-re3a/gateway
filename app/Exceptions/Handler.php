@@ -49,13 +49,13 @@ class Handler extends ExceptionHandler
         if ($this->isHttpException($e)) {
             switch ($e->getStatusCode()) {
                 case '401':
-                    return api()->error($e->getMessage() ?? trans('responses.login-again'), [], 401);
+                    return api()->error($e->getMessage() ?? trans('user.responses.login-again'), [], 401);
                     break;
                 case '404':
-                    return api()->error(trans('responses.not-found'), [], 404);
+                    return api()->error(trans('user.responses.not-found'), [], 404);
                     break;
                 case '500':
-                    return api()->error(trans('responses.something-went-wrong'), [], 500);
+                    return api()->error(trans('user.responses.something-went-wrong'), [], 500);
                     break;
 
                 default:

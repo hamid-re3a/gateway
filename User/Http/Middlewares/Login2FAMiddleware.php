@@ -15,6 +15,6 @@ class Login2FAMiddleware
         if ($authenticator->isAuthenticated()) {
             return $next($request);
         }
-        return api()->error(trans('responses.unauthorized'),[],401);
+        return api()->error(trans('user.responses.unauthorized'),[],401);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace User\Http\Middlewares;
 
-use App\Models\LoginAttemptSetting;
+use User\Models\LoginAttemptSetting;
 use User\Jobs\EmailJob;
 use Carbon\Carbon;
 use Closure;
@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use User\Mail\User\SuspiciousLoginAttemptEmail;
 use User\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
 use User\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
+use User\Mail\User\UserAccountAutomaticActivatedEmail;
 use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\User;
 use User\Support\UserActivityHelper;
@@ -30,7 +31,7 @@ class LoginAttemptMiddleware
 
         $user = User::whereEmail($request->email)->first();
         if (!$user)
-            abort(422, trans('responses.invalid-input'));
+            abort(422, trans('user.responses.invalid-input'));
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
 
@@ -116,7 +117,7 @@ class LoginAttemptMiddleware
             if (!$blocked_already_for_this_layer && $failed_login_attempt_count >= sumUp($tries, $key +1)) {
                 if ($key == count($intervals) - 1) {
                     $user->block_type = USER_BLOCK_TYPE_AUTOMATIC;
-                    $user->block_reason = 'responses.max-login-attempt-blocked';
+                    $user->block_reason = 'user.responses.max-login-attempt-blocked';
                     $user->save();
                     $login_attempt->blocked_tier = $key;
                     $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
@@ -129,10 +130,10 @@ class LoginAttemptMiddleware
                 $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
                 $login_attempt->save();
 
-                if ( isset($last_login) && isset($try_in))
-                    EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $failed_login_attempt_count, $try_in), $user->email)->onQueue(QUEUES_EMAIL);
-
-
+                if ( isset($last_login) && isset($try_in)){
+                     EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $failed_login_attempt_count, $try_in), $user->email)->onQueue(QUEUES_EMAIL);
+                     EmailJob::dispatch(new UserAccountAutomaticActivatedEmail($user),$user->email)->onQueue(QUEUES_EMAIL)->delay($since_beginning_intervals);
+                }
 
                 break;
             }

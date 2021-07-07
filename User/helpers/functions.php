@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\EmailContentSetting;
-use App\Models\LoginAttemptSetting;
-use App\Models\Setting;
+use User\Models\EmailContentSetting;
+use User\Models\LoginAttemptSetting;
+use User\Models\Setting;
 use Illuminate\Support\Facades\DB;
 
 function getSetting($key){
@@ -15,7 +15,7 @@ function getSetting($key){
     if(isset(SETTINGS[$key]) && isset(SETTINGS[$key]['value']))
         return SETTINGS[$key]['value'];
 
-    throw new Exception(trans('responses.main-key-settings-is-missing'));
+    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 }
 
 function getEmailAndTextSetting($key){
@@ -28,7 +28,7 @@ function getEmailAndTextSetting($key){
     if(isset(EMAIL_CONTENT_SETTINGS[$key]))
         return EMAIL_CONTENT_SETTINGS[$key];
 
-    throw new Exception(trans('responses.main-key-settings-is-missing'));
+    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 }
 
 function getLoginAttemptSetting(){
@@ -52,7 +52,7 @@ function getLoginAttemptSetting(){
         return array($intervals,$tries);
     }
 
-    throw new Exception(trans('responses.main-key-settings-is-missing'));
+    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 }
 
 

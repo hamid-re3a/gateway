@@ -337,6 +337,17 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
+    'USER_ACCOUNT_ACTIVATED_AUTOMATICALLY_EMAIL'=>[
+
+        'is_active' => true,
+        'subject'=>'Account Activated',
+        'from'=>'info@r2f.com',
+        'from_name'=>'Ride To Future',
+        'body'=>'<p>Hello, {{full_name}}</p><p>Your account is activated again</p>',
+        'variables'=>'full_name',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
 ];
 
 const QUEUES_EMAIL = 'emails';
