@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->app->setLocale('en');
         $this->artisan('db:seed');
-        $this->artisan('db:seed', ['--class' => "ApiGatewayUser\database\seeders\AuthTableSeeder"]);
+        $this->artisan('db:seed', ['--class' => "User\database\seeders\AuthTableSeeder"]);
     }
 
     public function hasMethod($class, $method): void

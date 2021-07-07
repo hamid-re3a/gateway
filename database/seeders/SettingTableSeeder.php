@@ -6,7 +6,7 @@ use App\Models\EmailContentSetting;
 use App\Models\LoginAttemptSetting;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
-use ApiGatewayUser\Models\LoginAttempt;
+use User\Models\LoginAttempt;
 
 /**
  * Class AuthTableSeeder.

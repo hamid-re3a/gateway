@@ -3,10 +3,10 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use ApiGatewayUser\Http\Middlewares\BlockUserMiddleware;
-use ApiGatewayUser\Http\Middlewares\EmailVerifiedMiddleware;
-use ApiGatewayUser\Http\Middlewares\LoginAttemptMiddleware;
-use ApiGatewayUser\Http\Middlewares\UserActivityMiddleware;
+use User\Http\Middlewares\BlockUserMiddleware;
+use User\Http\Middlewares\EmailVerifiedMiddleware;
+use User\Http\Middlewares\LoginAttemptMiddleware;
+use User\Http\Middlewares\UserActivityMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -69,7 +69,7 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-        '2fa' => \ApiGatewayUser\Http\Middlewares\Login2FAMiddleware::class,
+        '2fa' => \User\Http\Middlewares\Login2FAMiddleware::class,
         'user_activity' => UserActivityMiddleware::class,
         'login_attempt' => LoginAttemptMiddleware::class,
         'email_verified' => EmailVerifiedMiddleware::class,

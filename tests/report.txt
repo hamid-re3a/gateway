@@ -1,8 +1,8 @@
-Admin (ApiGatewayUser\tests\Admin)
+Admin (User\tests\Admin)
  [x] Verify email user account green
  [x] User deactivate activate
 
-User (ApiGatewayUser\tests\User)
+User (User\tests\User)
  [x] Register new user green
  [x] Register new user not enough strong password
  [x] Login when user has not activate its account

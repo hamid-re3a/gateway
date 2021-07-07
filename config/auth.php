@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => ApiGatewayUser\Models\User::class,
+            'model' => User\Models\User::class,
         ],
 
         // 'users' => [
