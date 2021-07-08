@@ -175,11 +175,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         PragmaRX\Google2FALaravel\ServiceProvider::class,
-        \ApiGatewayUser\UserServiceProvider::class,
-        \ApiGatewayCore\GatewayServiceProvider::class,
-        \ApiResponse\ApiResponseServiceProvider::class,
+        \User\UserServiceProvider::class,
+        \RequestRouter\GatewayServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
+        \ResponseTransformer\ResponseTransformerServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class
 
     ],
 
