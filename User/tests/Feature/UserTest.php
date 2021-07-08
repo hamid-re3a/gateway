@@ -154,7 +154,7 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-        $this->assertEquals(429,$response->status());
+        $this->assertEquals(429, $response->status());
     }
 
 
@@ -173,17 +173,17 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-
+        dd($response->json());
         Carbon::setTestNow(now()->addSeconds(USER_FORGOT_PASSWORD_OTP_DURATION));
         Carbon::setTestNow(now()->addSeconds(USER_FORGOT_PASSWORD_OTP_DURATION));
 
         $response = $this->post(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
-            "password"=> "123456789!Q",
-            "password_confirmation"=> "123456789!Q"
+            "password" => "123456789!Q",
+            "password_confirmation" => "123456789!Q"
         ]);
-        $this->assertEquals(422,$response->status());
+        $this->assertEquals(422, $response->status());
     }
 
 
@@ -206,11 +206,12 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
-            "password"=> "123456789!Q",
-            "password_confirmation"=> "123456789!Q"
+            "password" => "123456789!Q",
+            "password_confirmation" => "123456789!Q"
         ]);
-        $this->assertEquals(200,$response->status());
+        $this->assertEquals(200, $response->status());
     }
+
     /**
      * @test
      */
@@ -244,8 +245,9 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.ask-for-email-otp'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-        $this->assertEquals(429,$response->status());
+        $this->assertEquals(429, $response->status());
     }
+
     /**
      * @test
      */

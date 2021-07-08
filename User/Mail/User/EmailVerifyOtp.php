@@ -39,7 +39,7 @@ class EmailVerifyOtp extends Mailable implements SettingableMail
 
         $setting['body'] = str_replace('{{full_name}}',$this->user->full_name,$setting['body']);
         $setting['body'] = str_replace('{{otp}}',hyphenate($this->token),$setting['body']);
-        $setting['body'] = str_replace('{{otp_expire_duration}}',$this->getSetting("USER_EMAIL_VERIFICATION_OTP_DURATION"),$setting['body']);
+        $setting['body'] = str_replace('{{otp_expire_duration}}',getSetting("USER_EMAIL_VERIFICATION_OTP_DURATION"),$setting['body']);
 
         return $this
             ->from($setting['from'], $setting['from_name'])
