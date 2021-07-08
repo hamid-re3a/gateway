@@ -25,7 +25,7 @@ class AuthTableSeeder extends Seeder
         if (!User::query()->where('email', 'admin@site.com')->exists()) {
             $admin = User::whereUsername('admin')->first();
             if(!$admin){
-                $admin = User::query()->create([
+                $admin = User::factory()->create([
                     'username' => 'admin',
                 ]);
                 $admin->password = 'password';
