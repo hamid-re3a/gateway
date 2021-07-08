@@ -173,7 +173,6 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-        dd($response->json());
         Carbon::setTestNow(now()->addSeconds(USER_FORGOT_PASSWORD_OTP_DURATION));
         Carbon::setTestNow(now()->addSeconds(USER_FORGOT_PASSWORD_OTP_DURATION));
 
