@@ -8,10 +8,10 @@ return [
             'just_current_routes' => true,
             'domain' => 'local',
         ],
-        'fake' => [
-            'doc_point' => 'https://jsonplaceholder.typicode.com/',
+        'subscription' => [
+            'doc_point' => 'http://staging-subscription.janex.org/docs',
             'just_current_routes' => true,
-            'domain' => 'https://jsonplaceholder.typicode.com/'
+            'domain' => 'http://staging-subscription.janex.org/'
         ],
         'google' =>  [
             'doc_point' => 'https://jsonplaceholder.typicode.com/',
