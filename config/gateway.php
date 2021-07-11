@@ -10,7 +10,7 @@ return [
         ],
         'subscription' => [
             'doc_point' => 'http://staging-subscription.janex.org/docs',
-            'just_current_routes' => true,
+            'just_current_routes' => false,
             'domain' => 'http://staging-subscription.janex.org/'
         ],
         'google' =>  [
