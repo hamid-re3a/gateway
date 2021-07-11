@@ -57,9 +57,6 @@ class AuthController extends Controller
 
         $user = User::query()->where('email', $credentials['email'])->first();
 
-        if (!$user->isEmailVerified())
-            return api()->error(trans('user.responses.go-activate-your-email'), null, 403);
-
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
         $data = [];
@@ -75,6 +72,11 @@ class AuthController extends Controller
 
             return api()->error(trans('user.responses.invalid-inputs-from-user'), $data, 400);
         }
+
+
+        if (!$user->isEmailVerified())
+            return api()->error(trans('user.responses.go-activate-your-email'), null, 403);
+
         $token = $this->getNewTokenAndDeleteOthers($user);
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
@@ -137,10 +139,7 @@ class AuthController extends Controller
 
         list($data, $err) = UserActivityHelper::makeEmailVerificationOtp($user, $request, false);
         if ($err) {
-            $errors = [
-                'otp' => trans('user.responses.otp-exceeded-amount')
-            ];
-            return api()->error(trans('user.responses.otp-exceeded-amount'), $data, 429, $errors);
+            return api()->error(trans('user.responses.wait-limit'), $data, 429);
         }
         return api()->success(trans('user.responses.otp-successfully-sent'));
     }
@@ -167,9 +166,9 @@ class AuthController extends Controller
             ->last();
         if (is_null($otp_db)){
             $errors = [
-                'otp' => trans('user.responses.otp-exceeded-amount')
+                'otp' => trans('user.responses.email-verification-code-is-expired')
             ];
-            return api()->error('user.responses.otp-is-not-valid-any-more','',422,$errors);
+            return api()->error('user.responses.email-verification-code-is-expired','',422,$errors);
         }
 
 
@@ -184,7 +183,7 @@ class AuthController extends Controller
 
             return $this->respondWithToken($token, 'user.responses.email-verified-successfully');
         }
-        return api()->error('user.responses.otp-is-wrong');
+        return api()->error('user.responses.email-verification-code-is-incorrect');
 
     }
 
@@ -200,7 +199,7 @@ class AuthController extends Controller
         $user = User::whereEmail($request->email)->first();
         list($data, $err) = UserActivityHelper::makeForgetPasswordOtp($user, $request);
         if ($err) {
-            return api()->error(trans('user.responses.forgot-password-otp-exceeded-amount'), $data, 429);
+            return api()->error(trans('user.responses.wait-limit'), $data, 429);
         }
         return api()->success(trans('user.responses.otp-successfully-sent'));
     }
@@ -224,9 +223,9 @@ class AuthController extends Controller
             ->last();
         if (is_null($fp_db)){
             $errors = [
-                'otp' => trans('user.responses.otp-is-not-valid-any-more')
+                'otp' => trans('user.responses.password-reset-code-is-expired')
             ];
-            return api()->error(trans('user.responses.otp-is-not-valid-any-more'),'',422,$errors);
+            return api()->error(trans('user.responses.password-reset-code-is-expired'),'',422,$errors);
         }
 
 
@@ -241,9 +240,9 @@ class AuthController extends Controller
         }
 
         $errors = [
-            'otp' => trans('user.responses.otp-is-wrong')
+            'otp' => trans('user.responses.password-reset-code-is-invalid')
         ];
-        return api()->error('user.responses.otp-is-wrong','',422,$errors);
+        return api()->error('user.responses.password-reset-code-is-invalid','',422,$errors);
 
     }
 

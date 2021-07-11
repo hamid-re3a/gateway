@@ -28,4 +28,13 @@ class LoginRequest extends FormRequest
             'password' => 'required|string',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.required' => trans('user.validation.email-required'),
+            'password.required' => trans('user.validation.first-name-required'),
+            'email.email' => trans('user.validation.email-is-incorrect'),
+        ];
+    }
 }
