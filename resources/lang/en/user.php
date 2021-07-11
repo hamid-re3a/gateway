@@ -22,14 +22,38 @@ return [
         'otp-successfully-sent' => 'Otp is successfully sent',
         'email-is-already-verified' => 'Email is already verified',
         'otp-exceeded-amount' => 'You\'ve reached the otp limitation please wait',
+
+        'email-verification-code-is-incorrect' => 'The email verification code is incorrect',
+        'email-verification-code-is-expired' => 'The email verification code is expired',
+        'wait-limit' => 'Please wait for a while. You\'ve reached the limit',
+        'password-reset-code-is-invalid' => 'Enter a valid password reset code',
+        'password-reset-code-is-expired' => 'The password reset code is expired',
+
+
         'email-does-not-exist' => 'Email does\'nt exist',
-        'email-already-exists' => 'Email already exists',
+        'email-already-exists' => 'The email address already exists',
         'password-already-used-by-you-try-another-one' => 'This password is old, use another one',
         'max-login-attempt-blocked' => 'You\'ve reached max login attempt, you are blocked',
         'invalid-input' => 'Inputs are not correct',
         'unauthorized' => 'You are not authorized to visit this',
-        'unauthorized-email-is-not-verified' => '',
+        'unauthorized-email-is-not-verified' => 'You should verify your email first',
         'user-is-blocked' => 'You are blocked',
+        'username-already-exists' => 'The username already exists',
+        'username-does-not-exist' => 'The user name does not exists' ,
+    ],
+    'validation' => [
+        'password-same' => 'The passwords are not matching',
+        'email-unique' => 'The email address already exists',
+        'username-unique' => 'The username already exists',
+        'username-regex' => 'The username may have alpha-numeric characters or underscores',
+        'password-regex' => 'The password is not complex enough',
+        'username-required' => 'Enter your username',
+        'first-name-required' => 'Enter your first name',
+        'last-name-required' => 'Enter your last name',
+        'email-address-required' => 'Enter your email address',
+        'password-is-required' => 'Enter your password',
+        'confirm-password' => 'Confirm your password',
+        'email-is-incorrect' => 'The email address is incorrect',
     ]
 ];
 

@@ -46,6 +46,7 @@ return [
         'email-unique' => 'The email address already exists',
         'username-unique' => 'The username already exists',
         'username-regex' => 'The username may have alpha-numeric characters or underscores',
+        'password-regex' => 'The password is not complex enough',
         'username-required' => 'Enter your username',
         'first-name-required' => 'Enter your first name',
         'last-name-required' => 'Enter your last name',
