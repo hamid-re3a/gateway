@@ -29,4 +29,19 @@ class RegisterUserRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+          'password_confirmation.same:password' => trans('user.validation.password-same'),
+          'first_name.required' => trans('user.validation.first-name-required'),
+          'last_name.required' => trans('user.validation.last-name-required'),
+          'email.required' => trans('user.validation.email-required'),
+          'email.unique:users' => trans('user.validation.email-unique'),
+          'username.unique:users' => trans('user.validation.username-unique'),
+          'username.required' => trans('user.validation.username-required'),
+          'username.regex' => trans('user.validation.username-regex'),
+          'password.required' => trans('user.validation.first-name-required'),
+          'email.email' => trans('user.validation.email-is-incorrect'),
+        ];
+    }
 }
