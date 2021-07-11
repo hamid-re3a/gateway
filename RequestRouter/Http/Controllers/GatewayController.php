@@ -193,11 +193,30 @@ class GatewayController extends Controller
             $request = Request::create($final_route, $method);
             return Route::dispatch($request);
         }
-        $headers = $request->headers->keys();
         $user_agent = $request->userAgent();
         $contents = $request->getContent();
         $content_type = $request->getContentType() ?? "application/json";
+        $headers = collect($request->header())->transform(function ($item) {
+            return $item[0];
+        })->toArray();
 
+        unset($headers['accept-language']);
+        unset($headers['accept-encoding']);
+        unset($headers['sec-fetch-dest']);
+        unset($headers['sec-fetch-user']);
+        unset($headers['sec-fetch-mode']);
+        unset($headers['sec-fetch-site']);
+//        unset($headers['accept']);
+        unset($headers['user-agent']);
+        unset($headers['upgrade-insecure-requests']);
+        unset($headers['sec-ch-ua-mobile']);
+        unset($headers['sec-ch-ua']);
+        unset($headers['cache-control']);
+        unset($headers['connection']);
+        unset($headers['host']);
+        unset($headers['content-length']);
+//        unset($headers['content-type']);
+        unset($headers['cookie']);
         $res = Http::withHeaders($headers)
             ->withBody($contents, $content_type)
             ->withUserAgent($user_agent)->
