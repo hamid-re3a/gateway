@@ -16,6 +16,7 @@ class CreateEmailContentSettingsTable extends Migration
         Schema::create('email_content_settings', function (Blueprint $table) {
             $table->id();
             $table->string('key');
+            $table->boolean('is_active')->default(true);
             $table->string('subject');
             $table->string('from');
             $table->string('from_name');
