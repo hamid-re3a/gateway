@@ -25,9 +25,11 @@ return [
 
         'email-verification-code-is-incorrect' => 'The email verification code is incorrect',
         'email-verification-code-is-expired' => 'The email verification code is expired',
+        'email-verification-code-is-used' => 'The email verification code is used',
         'wait-limit' => 'Please wait for a while. You\'ve reached the limit',
         'password-reset-code-is-invalid' => 'Enter a valid password reset code',
         'password-reset-code-is-expired' => 'The password reset code is expired',
+        'password-reset-code-is-used' => 'The password reset code is used',
 
 
         'email-does-not-exist' => 'Email does\'nt exist',
