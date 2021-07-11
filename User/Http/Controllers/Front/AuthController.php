@@ -164,17 +164,26 @@ class AuthController extends Controller
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();
-        if (is_null($otp_db)){
+        if (is_null($otp_db)) {
             $errors = [
                 'otp' => trans('user.responses.email-verification-code-is-expired')
             ];
-            return api()->error('user.responses.email-verification-code-is-expired','',422,$errors);
+            return api()->error('user.responses.email-verification-code-is-expired', '', 422, $errors);
+        }
+
+        if ($otp_db->is_used) {
+            $errors = [
+                'otp' => trans('user.responses.email-verification-code-is-used')
+            ];
+            return api()->error('user.responses.email-verification-code-is-used', '', 422, $errors);
         }
 
 
         if ($otp_db->otp == $request->otp) {
             $user->email_verified_at = now();
             $user->save();
+            $otp_db->is_used = true;
+            $otp_db->save();
 
             $token = $this->getNewTokenAndDeleteOthers($user);
 
@@ -221,11 +230,18 @@ class AuthController extends Controller
             ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()
             ->last();
-        if (is_null($fp_db)){
+        if (is_null($fp_db)) {
             $errors = [
                 'otp' => trans('user.responses.password-reset-code-is-expired')
             ];
-            return api()->error(trans('user.responses.password-reset-code-is-expired'),'',422,$errors);
+            return api()->error(trans('user.responses.password-reset-code-is-expired'), '', 422, $errors);
+        }
+
+        if ($fp_db->is_used) {
+            $errors = [
+                'otp' => trans('user.responses.password-reset-code-is-used')
+            ];
+            return api()->error(trans('user.responses.password-reset-code-is-used'), '', 422, $errors);
         }
 
 
@@ -235,6 +251,8 @@ class AuthController extends Controller
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
 
+            $fp_db->is_used = true;
+            $fp_db->save();
 
             return api()->success(trans('user.responses.password-successfully-changed'));
         }
@@ -242,7 +260,7 @@ class AuthController extends Controller
         $errors = [
             'otp' => trans('user.responses.password-reset-code-is-invalid')
         ];
-        return api()->error('user.responses.password-reset-code-is-invalid','',422,$errors);
+        return api()->error('user.responses.password-reset-code-is-invalid', '', 422, $errors);
 
     }
 
