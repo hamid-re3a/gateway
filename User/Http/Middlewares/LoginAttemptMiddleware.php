@@ -99,6 +99,12 @@ class LoginAttemptMiddleware
             ->get()
             ->max('blocked_tier');
         $layer = 0;
+
+
+        $failed_login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
+            ->where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->subSeconds($intervals[$layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+            ->count();
         if (!is_null($blocked_layer)) {
             $layer = $blocked_layer + 1;
             $already_blocked = LoginAttemptModel::query()
@@ -114,18 +120,15 @@ class LoginAttemptMiddleware
             }
         }
 
-        $failed_login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
-            ->where('user_id', $user->id)
-            ->whereBetween('created_at', [now()->subSeconds($intervals[$layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
-            ->count();
 
         $first_attempt = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
             ->where('user_id', $user->id)
             ->whereBetween('created_at', [now()->subSeconds($intervals[$layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
             ->get()->first();
         if (!is_null($first_attempt)) {
-            $try_in = Carbon::make($first_attempt->created_at)->addSeconds($intervals[$blocked_layer])->diffForHumans();
-            $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($intervals[$blocked_layer])->timestamp;
+            $try_in = Carbon::make($first_attempt->created_at)->addSeconds($intervals[$layer])->diffForHumans();
+
+            $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($intervals[$layer])->timestamp;
             $request->attributes->add(['try_in' => $try_in]);
             $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
             $last_login = LoginAttemptModel::query()->where('user_id', $user->id)->latest()->take(2)->get()->last();
