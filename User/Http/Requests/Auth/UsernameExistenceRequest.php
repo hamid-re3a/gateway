@@ -24,4 +24,12 @@ class UsernameExistenceRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'username.required' => trans('user.validation.username-required'),
+            'username.regex' => trans('user.validation.username-regex'),
+        ];
+    }
+
 }

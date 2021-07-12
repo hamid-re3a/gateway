@@ -27,4 +27,12 @@ class EmailVerificationOtpRequest extends FormRequest
             'email' => 'required|email|exists:users,email',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.required' => trans('user.validation.email-required'),
+            'email.email' => trans('user.validation.email-is-incorrect'),
+        ];
+    }
 }

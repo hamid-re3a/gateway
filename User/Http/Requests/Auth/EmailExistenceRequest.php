@@ -22,5 +22,11 @@ class EmailExistenceRequest extends FormRequest
             'email' => 'required|string|email|max:255',
         ];
     }
-
+    public function messages()
+    {
+        return [
+            'email.required' => trans('user.validation.email-required'),
+            'email.email' => trans('user.validation.email-is-incorrect'),
+        ];
+    }
 }

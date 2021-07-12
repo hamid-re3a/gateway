@@ -24,6 +24,7 @@ class GatewayController extends Controller
         list($status, $final_route, $middlewares) = $this->getValidRoute($route, $request);
 
         $response = $this->checkMiddlewares($middlewares, $request);
+        $this->setUserHeadersIfAuthenticated($request);
 
         if (!is_null($response)) {
             return $response;
@@ -32,7 +33,7 @@ class GatewayController extends Controller
         if ($status == true) {
             return $this->getResponse($final_route, $request);
         }
-            return api()->error('request_router.responses.not-found', null, 404);
+        return api()->error('request_router.responses.not-found', null, 404);
 
 
     }
@@ -69,11 +70,19 @@ class GatewayController extends Controller
                 }
         }
         $response = $this->checkMiddlewares($middlewares, $request);
+        $this->setUserHeadersIfAuthenticated($request);
 
         if (!is_null($response)) {
             return $response;
         }
-        $responses = Http::pool(function (\Illuminate\Http\Client\Pool $pool) use ($concurrent_requests, $request) {
+        $headers = $this->getNecessaryHeaders($request);
+        $user_agent = $request->userAgent();
+        $contents = $request->getContent();
+        $content_type = $request->getContentType() ?? "application/json";
+
+        $responses = Http::withHeaders($headers)
+            ->withBody($contents, $content_type)
+            ->withUserAgent($user_agent)->pool(function (\Illuminate\Http\Client\Pool $pool) use ($concurrent_requests, $request) {
             $array = [];
             foreach ($concurrent_requests as $route) {
                 $array[] = $pool->as($route['name'])->get($route['route']);
@@ -130,9 +139,8 @@ class GatewayController extends Controller
         }
     }
 
-    private function checkMiddlewares($middlewares, $request)
+    private function checkMiddlewares($middlewares, Request $request)
     {
-
         if (!is_array($middlewares) || count($middlewares) <= 0)
             return null;
 
@@ -147,6 +155,7 @@ class GatewayController extends Controller
             $res = app()->make($kernel->getRouteMiddleware()[$name])->handle($request, function () {
                 return null;
             }, $arg);
+
             if (!is_null($res))
                 return $res;
         }
@@ -196,27 +205,9 @@ class GatewayController extends Controller
         $user_agent = $request->userAgent();
         $contents = $request->getContent();
         $content_type = $request->getContentType() ?? "application/json";
-        $headers = collect($request->header())->transform(function ($item) {
-            return $item[0];
-        })->toArray();
 
-        unset($headers['accept-language']);
-        unset($headers['accept-encoding']);
-        unset($headers['sec-fetch-dest']);
-        unset($headers['sec-fetch-user']);
-        unset($headers['sec-fetch-mode']);
-        unset($headers['sec-fetch-site']);
-//        unset($headers['accept']);
-        unset($headers['user-agent']);
-        unset($headers['upgrade-insecure-requests']);
-        unset($headers['sec-ch-ua-mobile']);
-        unset($headers['sec-ch-ua']);
-        unset($headers['cache-control']);
-        unset($headers['connection']);
-        unset($headers['host']);
-        unset($headers['content-length']);
-//        unset($headers['content-type']);
-        unset($headers['cookie']);
+
+        $headers = $this->getNecessaryHeaders($request);
         $res = Http::withHeaders($headers)
             ->withBody($contents, $content_type)
             ->withUserAgent($user_agent)->
@@ -235,5 +226,46 @@ class GatewayController extends Controller
                 $final->header($key, $value);
 
         return $final;
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function setUserHeadersIfAuthenticated(Request $request): void
+    {
+        if (auth()->check()) {
+
+            $request->headers->set('X-user-id', auth()->user()->id);
+            $request->headers->set('X-user-first-name', auth()->user()->first_name);
+            $request->headers->set('X-user-last-name', auth()->user()->last_name);
+            $request->headers->set('X-user-email', auth()->user()->email);
+            $request->headers->set('X-user-username', auth()->user()->username);
+        }
+    }
+
+
+    private function getNecessaryHeaders(Request $request): array
+    {
+        $headers = collect($request->header())->transform(function ($item) {
+            return $item[0];
+        })->toArray();
+        unset($headers['accept-language']);
+        unset($headers['accept-encoding']);
+        unset($headers['sec-fetch-dest']);
+        unset($headers['sec-fetch-user']);
+        unset($headers['sec-fetch-mode']);
+        unset($headers['sec-fetch-site']);
+//        unset($headers['accept']);
+        unset($headers['user-agent']);
+        unset($headers['upgrade-insecure-requests']);
+        unset($headers['sec-ch-ua-mobile']);
+        unset($headers['sec-ch-ua']);
+        unset($headers['cache-control']);
+        unset($headers['connection']);
+        unset($headers['host']);
+        unset($headers['content-length']);
+//        unset($headers['content-type']);
+        unset($headers['cookie']);
+        return $headers;
     }
 }
