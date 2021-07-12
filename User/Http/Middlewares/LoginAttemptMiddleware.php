@@ -107,7 +107,7 @@ class LoginAttemptMiddleware
                 ->where('blocked_tier','=', $blocked_layer)
                 ->exists();
             if ($already_blocked) {
-                $login_attempt->blocked_tier = $blocked_layer ;
+//                $login_attempt->blocked_tier = $blocked_layer ;
                 $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
                 $login_attempt->save();
                 return;
