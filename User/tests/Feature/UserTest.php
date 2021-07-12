@@ -11,6 +11,7 @@ use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
 use User\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
 use User\Mail\User\WelcomeEmail;
+use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
 
@@ -109,30 +110,16 @@ class UserTest extends \User\tests\UserTest
                     "password" => 'incorrect password',
                 ]);
             }
-            Carbon::setTestNow(now()->addSeconds($interval));
+            $blocked_layer = LoginAttemptModel::query()
+                ->where('user_id', $user->id)
+                ->whereBetween('created_at', [now()->subDays(1)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->get()
+                ->max('blocked_tier');
+            $this->assertEquals($key,$blocked_layer);
+            Carbon::setTestNow(now()->addSeconds($interval+2));
             Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
 
         }
-        $response = $this->post(route('auth.login'), [
-            "email" => 'hamidrezanoruzinejad@gmail.com',
-            "password" => 'incorrect password',
-        ]);
-        $response = $this->post(route('auth.login'), [
-            "email" => 'hamidrezanoruzinejad@gmail.com',
-            "password" => 'incorrect password',
-        ]);
-        $response = $this->post(route('auth.login'), [
-            "email" => 'hamidrezanoruzinejad@gmail.com',
-            "password" => 'incorrect password',
-        ]);
-        $response = $this->post(route('auth.login'), [
-            "email" => 'hamidrezanoruzinejad@gmail.com',
-            "password" => 'incorrect password',
-        ]);
-        $response = $this->post(route('auth.login'), [
-            "email" => 'hamidrezanoruzinejad@gmail.com',
-            "password" => 'incorrect password',
-        ]);
         Mail::assertSent(TooManyLoginAttemptPermanentBlockedEmail::class);
         $user->refresh();
         $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
