@@ -39,7 +39,7 @@ class ResetForgetPasswordRequest extends FormRequest
             'email.required' => trans('user.validation.email-required'),
             'password.required' => trans('user.validation.first-name-required'),
             'email.email' => trans('user.validation.email-is-incorrect'),
-            'otp.exists:otps' => trans('user.password-reset-code-is-invalid'),
+            'otp.exists' => trans('user.password-reset-code-is-invalid'),
         ];
     }
 }
