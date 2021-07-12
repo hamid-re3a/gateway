@@ -113,9 +113,62 @@ class UserTest extends \User\tests\UserTest
             Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
 
         }
+        $response = $this->post(route('auth.login'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'incorrect password',
+        ]);
+        $response = $this->post(route('auth.login'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'incorrect password',
+        ]);
+        $response = $this->post(route('auth.login'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'incorrect password',
+        ]);
+        $response = $this->post(route('auth.login'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'incorrect password',
+        ]);
+        $response = $this->post(route('auth.login'), [
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'incorrect password',
+        ]);
         Mail::assertSent(TooManyLoginAttemptPermanentBlockedEmail::class);
         $user->refresh();
         $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
+    }
+
+    /**
+     * @test
+     */
+    public function login_user_block_temporary_scenario()
+    {
+        Mail::fake();
+        $user = User::factory()->create([
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "password" => 'password'
+        ]);
+        $user->email_verified_at = now();
+        $user->save();
+        list($intervals, $tries) = getLoginAttemptSetting();
+        foreach ($intervals as $key => $interval) {
+            for ($i = 0; $i <= $tries[$key]; $i++) {
+
+                $response = $this->post(route('auth.login'), [
+                    "email" => 'hamidrezanoruzinejad@gmail.com',
+                    "password" => 'incorrect password',
+                ]);
+            }
+
+
+            Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
+            $response = $this->post(route('auth.login'), [
+                "email" => 'hamidrezanoruzinejad@gmail.com',
+                "password" => 'incorrect password',
+            ]);
+            $this->assertEquals(429, $response->status());
+            break;
+        }
     }
 
     /**
@@ -210,6 +263,7 @@ class UserTest extends \User\tests\UserTest
         ]);
         $this->assertEquals(200, $response->status());
     }
+
     /**
      * @test
      */
@@ -241,7 +295,7 @@ class UserTest extends \User\tests\UserTest
             "password" => "123456789!Q",
             "password_confirmation" => "123456789!Q"
         ]);
-        $this->assertEquals(422,$response->status());
+        $this->assertEquals(422, $response->status());
     }
 
     /**
@@ -296,13 +350,13 @@ class UserTest extends \User\tests\UserTest
         $user->save();
 
         list($intervals, $tries) = getLoginAttemptSetting();
+
         for ($i = 0; $i <= $tries[0] + 3; $i++) {
             $response = $this->post(route('auth.login'), [
                 "email" => 'hamidrezanoruzinejad@gmail.com',
                 "password" => 'incorrect password',
             ]);
         }
-
         Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
         $this->assertEquals(trans('user.responses.max-attempts-exceeded'), $response->json()['message']);
 

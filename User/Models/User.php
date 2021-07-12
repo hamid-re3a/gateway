@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use User\database\factories\UserFactory;
+use User\Exceptions\OldPasswordException;
 use User\Jobs\EmailJob;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
@@ -125,12 +126,12 @@ class User extends Authenticatable
     {
         if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")) {
             if (!is_null($this->password) && Hash::check($value, $this->password))
-                abort(400, trans('user.responses.password-already-used-by-you-try-another-one'));
+                throw new OldPasswordException(trans('user.responses.password-already-used-by-you-try-another-one'),400);
 
             $passwords = $this->passwordHistories()->get();
             foreach ($passwords as $item)
                 if (Hash::check($value, $item->password) && false)
-                    abort(400, trans('user.responses.password-already-used-by-you-try-another-one'));
+                throw new OldPasswordException( trans('user.responses.password-already-used-by-you-try-another-one'),400);
 
         }
 

@@ -5,6 +5,7 @@ namespace User\Http\Controllers\Front;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use User\Exceptions\OldPasswordException;
 use User\Http\Requests\Auth\EmailExistenceRequest;
 use User\Http\Requests\Auth\EmailVerificationOtpRequest;
 use User\Http\Requests\Auth\ForgetPasswordRequest;
@@ -246,8 +247,16 @@ class AuthController extends Controller
 
 
         if ($fp_db->otp == $request->otp) {
-            $user->password = $request->password;
-            $user->save();
+            try {
+                $user->password = $request->password;
+                $user->save();
+            } catch (OldPasswordException $exception) {
+                $errors = [
+                    'password' => trans('user.responses.password-already-used-by-you-try-another-one')
+                ];
+                return api()->error(trans('user.responses.password-already-used-by-you-try-another-one'), '', 422, $errors);
+            }
+
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
 

@@ -222,7 +222,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 </div>
                 </div>
                 <p></p>
-                <div><strong>Login Attempts Information:</strong><strong></strong></div>
+                <div><strong>Device Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
                 <div>IP: {{ip}}</div>
@@ -250,7 +250,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Hello {{full_name}},</p>
                 <div>Again you have exceeded the limit of login attempts. Your account is temporary blocked.<span></span></div>
                 <p></p>
-                <div><strong>Login Attempts Information:</strong><strong></strong></div>
+                <div><strong>Device Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
                 <div>IP: {{ip}}</div>
@@ -278,13 +278,12 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Hello {{full_name}},</p>
                 <div>This is a confirmation that the password for your account has just been changed.<span></span></div>
                 <p></p>
-                <div><strong>Login Attempts Information:</strong><strong></strong></div>
+                <div><strong>Device Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
                 <div>City: {{city}}</div>
                 <div>IP: {{ip}}</div>
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
-                <div>Status: {{status}}</div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -292,7 +291,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser,status',
+        'variables'=>'full_name,country,city,ip,platform,browser',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
