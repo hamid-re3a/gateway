@@ -34,7 +34,7 @@ return [
 
         'email-does-not-exist' => 'Email does\'nt exist',
         'email-already-exists' => 'The email address already exists',
-        'password-already-used-by-you-try-another-one' => 'This password is old, use another one',
+        'password-already-used-by-you-try-another-one' => 'Your new password cannot be same as old password',
         'max-login-attempt-blocked' => 'You\'ve reached max login attempt, you are blocked',
         'invalid-input' => 'Inputs are not correct',
         'unauthorized' => 'You are not authorized to visit this',
