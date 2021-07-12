@@ -38,7 +38,7 @@ class TooManyLoginAttemptPermanentBlockedEmail extends Mailable implements Setti
 
         $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
         $setting['body'] = str_replace('{{country}}', $this->login_attempt->ip->country, $setting['body']);
-        $setting['body'] = str_replace('{{city}}', $this->login_attempt->ip->city, $setting['body']);
+        $setting['body'] = str_replace('{{city}}', $this->login_attempt->ip->state_name, $setting['body']);
         $setting['body'] = str_replace('{{ip}}', $this->login_attempt->ip->ip, $setting['body']);
         $setting['body'] = str_replace('{{browser}}', $this->login_attempt->agent->browser, $setting['body']);
         $setting['body'] = str_replace('{{platform}}', $this->login_attempt->agent->platform, $setting['body']);
