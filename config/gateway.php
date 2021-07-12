@@ -18,6 +18,11 @@ return [
             'just_current_routes' => false,
             'domain' => 'http://staging-subscription.janex.org/'
         ],
+        'local_subscription' => [
+            'doc_point' => 'http://192.168.43.121:3561/docs',
+            'just_current_routes' => false,
+            'domain' => 'http://192.168.43.121:3561/'
+        ],
         'google' =>  [
             'doc_point' => 'https://jsonplaceholder.typicode.com/',
             'just_current_routes' => false,

@@ -31,4 +31,15 @@ class ResetForgetPasswordRequest extends FormRequest
             'password_confirmation' => 'required|string|same:password',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'password_confirmation.same' => trans('user.validation.password-same'),
+            'email.required' => trans('user.validation.email-required'),
+            'password.required' => trans('user.validation.first-name-required'),
+            'email.email' => trans('user.validation.email-is-incorrect'),
+            'otp.exists:otps,otp' => trans('user.password-reset-code-is-invalid'),
+        ];
+    }
 }
