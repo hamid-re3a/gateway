@@ -32,7 +32,7 @@ class VerifyEmailOtpRequest extends FormRequest
     public function messages()
     {
         return [
-            'otp.exists:otps,otp' => trans('user.email-verification-code-is-incorrect'),
+            'otp.exists:otps' => trans('user.email-verification-code-is-incorrect'),
             'email.required' => trans('user.validation.email-required'),
             'email.email' => trans('user.validation.email-is-incorrect'),
         ];

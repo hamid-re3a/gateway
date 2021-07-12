@@ -3,7 +3,7 @@
 return [
 
     'responses' => [
-        'max-attempts-exceeded' => 'You logged in more than expected ',
+        'max-attempts-exceeded' => 'Too many invalid attempts. Try again after a while',
         'user-account-deactivated-by-admin' => 'Your account is deactivated by admin',
         'user-account-activated-by-admin' => 'Your account is activated by admin',
         'successfully-registered-go-activate-your-email' => 'You\'ve successfully registered, please activate your email. ',
