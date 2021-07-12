@@ -89,57 +89,78 @@ class LoginAttemptMiddleware
     private function blockTooManyLoginAttempts($user, $login_attempt, $request): void
     {
         list($intervals, $tries) = getLoginAttemptSetting();
-        foreach ($intervals as $key => $interval) {
-            $since_beginning_intervals = sumUp($intervals, $key +1);
-            $failed_login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
-                ->where('user_id', $user->id)
-                ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
-                ->count();
-            $first_attempt = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
-                ->where('user_id', $user->id)
-                ->whereBetween('created_at', [now()->subSeconds($since_beginning_intervals)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
-                ->get()->first();
-            if (!is_null($first_attempt)) {
-                $try_in = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->diffForHumans();
-                $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($since_beginning_intervals)->timestamp;
-                $request->attributes->add(['try_in' => $try_in]);
-                $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
-                $last_login = LoginAttemptModel::query()->where('user_id', $user->id)->latest()->take(2)->get()->last();
-            }
+        $type_block = 'free';
+        $blocked_tier = 0;
 
 
-            $blocked_already_for_this_layer = LoginAttemptModel::query()->where('blocked_tier', $key)
+        $blocked_layer = LoginAttemptModel::query()
+            ->where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->subDays(1)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+            ->get()
+            ->max('blocked_tier');
+        $layer = 0;
+        if (!is_null($blocked_layer)) {
+            $layer = $blocked_layer + 1;
+            $already_blocked = LoginAttemptModel::query()
                 ->where('user_id', $user->id)
-                ->whereBetween('created_at', [now()->subSeconds(sumUp($intervals, count($intervals)))->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->whereBetween('created_at', [now()->subSeconds($intervals[$blocked_layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->where('blocked_tier','=', $blocked_layer)
                 ->exists();
-
-
-            if (!$blocked_already_for_this_layer && $failed_login_attempt_count >= sumUp($tries, $key +1)) {
-                if ($key == count($intervals) - 1) {
-                    $user->block_type = USER_BLOCK_TYPE_AUTOMATIC;
-                    $user->block_reason = 'user.responses.max-login-attempt-blocked';
-                    $user->save();
-                    $login_attempt->blocked_tier = $key;
-                    $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
-                    $login_attempt->save();
-                    EmailJob::dispatch(new TooManyLoginAttemptPermanentBlockedEmail($user, $login_attempt), $user->email)->onQueue(QUEUES_EMAIL);
-                    break;
-                }
-
-                $login_attempt->blocked_tier = $key;
+            if ($already_blocked) {
+                $login_attempt->blocked_tier = $blocked_layer ;
                 $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
                 $login_attempt->save();
-
-                if ( isset($last_login) && isset($try_in)){
-                     EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $failed_login_attempt_count, $try_in), $user->email)->onQueue(QUEUES_EMAIL);
-                     EmailJob::dispatch(new UserAccountAutomaticActivatedEmail($user),$user->email)->onQueue(QUEUES_EMAIL)->delay($since_beginning_intervals);
-                }
-
-                break;
+                return;
             }
+        }
 
-            $request->attributes->add(['left_attempts' => sumUp($tries, $key +1) - $failed_login_attempt_count ]);
+        $failed_login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
+            ->where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->subSeconds($intervals[$layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+            ->count();
 
+        $first_attempt = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
+            ->where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->subSeconds($intervals[$layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+            ->get()->first();
+        if (!is_null($first_attempt)) {
+            $try_in = Carbon::make($first_attempt->created_at)->addSeconds($intervals[$layer])->diffForHumans();
+            $try_in_sec = Carbon::make($first_attempt->created_at)->addSeconds($intervals[$layer])->timestamp;
+            $request->attributes->add(['try_in' => $try_in]);
+            $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
+            $last_login = LoginAttemptModel::query()->where('user_id', $user->id)->latest()->take(2)->get()->last();
+        }
+
+
+        $request->attributes->add(['left_attempts' => $tries[$layer] - $failed_login_attempt_count]);
+
+
+        if ($failed_login_attempt_count >= $tries[$layer]) {
+            if ($layer == count($intervals) - 1) {
+                $type_block = 'always';
+                $blocked_tier = $layer;
+            } else {
+                $type_block = 'temp';
+                $blocked_tier = $layer;
+            }
+        }
+
+        if ($type_block != 'free') {
+            $login_attempt->blocked_tier = $blocked_tier;
+            $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_BLOCKED;
+            $login_attempt->save();
+        }
+
+        if ($type_block == 'temp') {
+            if (isset($last_login) && isset($try_in)) {
+                EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $failed_login_attempt_count, $try_in), $user->email)->onQueue(QUEUES_EMAIL);
+                EmailJob::dispatch(new UserAccountAutomaticActivatedEmail($user), $user->email)->onQueue(QUEUES_EMAIL)->delay($intervals[$layer]);
+            }
+        } else if ($type_block == 'always') {
+            $user->block_type = USER_BLOCK_TYPE_AUTOMATIC;
+            $user->block_reason = 'user.responses.max-login-attempt-blocked';
+            $user->save();
+            EmailJob::dispatch(new TooManyLoginAttemptPermanentBlockedEmail($user, $login_attempt), $user->email)->onQueue(QUEUES_EMAIL);
         }
 
 
