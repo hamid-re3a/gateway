@@ -104,7 +104,7 @@ class LoginAttemptMiddleware
             ->where('user_id', $user->id)->latest()->get()->first();
         if (!is_null($last_failed_login)) {
 
-            if (!is_null($blocked_layer)) 
+            if (!is_null($blocked_layer))
                 $layer = $blocked_layer + 1;
             $try_in = Carbon::make($last_failed_login->created_at)->addSeconds($intervals[$layer])->diffForHumans();
 
