@@ -3,6 +3,7 @@
 namespace User\Observers;
 
 use User\Mail\User\UserAccountActivatedEmail;
+use User\Models\PasswordHistory;
 use User\Models\UserBlockHistory;
 use User\Jobs\EmailJob;
 use User\Mail\User\WelcomeEmail;
@@ -25,6 +26,7 @@ class UserObserver
                 'actor_id'  => $actor,
                 'password' => $data['password'],
             ]);
+
         }
         if($user->isDirty('block_type')){
 

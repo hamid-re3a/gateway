@@ -130,7 +130,7 @@ class User extends Authenticatable
 
             $passwords = $this->passwordHistories()->get();
             foreach ($passwords as $item)
-                if (Hash::check($value, $item->password) && false)
+                if (Hash::check($value, $item->password))
                 throw new OldPasswordException( trans('user.responses.password-already-used-by-you-try-another-one'),400);
 
         }

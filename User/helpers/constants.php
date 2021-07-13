@@ -141,7 +141,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
                 <div>&nbsp;</div>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
-                <p>This code is valid only for 1 minute. You will need to request for another code if it expired.</p>
+                <p>This code is valid only for {{otp_expire_duration}} . You will need to request for another code if it expired.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -228,7 +228,6 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>IP: {{ip}}</div>
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
-                <div>Status: {{status}}</div>
                 <p></p>
                 <div>If this was you, you should wait <span>{{next_try_time}}</span>. Otherwise you should change your password or reach the support team immediately.</div>
                 <p>Cheers,</p>
@@ -256,7 +255,6 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>IP: {{ip}}</div>
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
-                <div>Status: {{status}}</div>
                 <p></p>
                 <div>Please reach the support team to unblock your account.</div>
                 <p></p>
