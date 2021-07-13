@@ -100,7 +100,19 @@ class LoginAttemptMiddleware
             ->max('blocked_tier');
         $layer = 0;
 
+        $last_failed_login = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
+            ->where('user_id', $user->id)->latest()->get()->first();
+        if (!is_null($last_failed_login)) {
 
+            if (!is_null($blocked_layer)) 
+                $layer = $blocked_layer + 1;
+            $try_in = Carbon::make($last_failed_login->created_at)->addSeconds($intervals[$layer])->diffForHumans();
+
+            $try_in_sec = Carbon::make($last_failed_login->created_at)->addSeconds($intervals[$layer])->timestamp;
+            $request->attributes->add(['try_in' => $try_in]);
+            $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
+            $last_login = LoginAttemptModel::query()->where('user_id', $user->id)->latest()->take(2)->get()->last();
+        }
 
 
         $failed_login_attempt_count = LoginAttemptModel::query()->whereIn('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
@@ -109,22 +121,6 @@ class LoginAttemptMiddleware
             ->count();
         if (!is_null($blocked_layer)) {
             $layer = $blocked_layer + 1;
-
-
-            $last_failed_login = LoginAttemptModel::query()->where('login_status', [LOGIN_ATTEMPT_STATUS_FAILED])
-                ->where('user_id', $user->id)->latest()->get()->first();
-            if (!is_null($last_failed_login)) {
-                $try_in = Carbon::make($last_failed_login->created_at)->addSeconds($intervals[$layer])->diffForHumans();
-
-                $try_in_sec = Carbon::make($last_failed_login->created_at)->addSeconds($intervals[$layer])->timestamp;
-                $request->attributes->add(['try_in' => $try_in]);
-                $request->attributes->add(['try_in_timestamp' => $try_in_sec]);
-                $last_login = LoginAttemptModel::query()->where('user_id', $user->id)->latest()->take(2)->get()->last();
-            }
-
-
-
-
             $already_blocked = LoginAttemptModel::query()
                 ->where('user_id', $user->id)
                 ->whereBetween('created_at', [now()->subSeconds($intervals[$blocked_layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
