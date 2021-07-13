@@ -8,9 +8,9 @@ use User\Http\Controllers\Front\SettingController;
 
 Route::middleware(['user_activity'])->group(function () {
 
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::middleware(['block_user'])->group(function () {
         Route::name('auth.')->group(function () {
-            Route::post('/register', [AuthController::class, 'register'])->name('register');
             Route::post('/is_username_exists', [AuthController::class, 'isUsernameExists'])->name('is-username-exists');
             Route::post('/is_email_exists', [AuthController::class, 'isEmailExists'])->name('is-email-exists');
             Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware(['login_attempt']);

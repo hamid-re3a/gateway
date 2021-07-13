@@ -39,7 +39,7 @@ return [
         'invalid-input' => 'Inputs are not correct',
         'unauthorized' => 'You are not authorized to visit this',
         'unauthorized-email-is-not-verified' => 'You should verify your email first',
-        'user-is-blocked' => 'Your account is blocked, please reach the support team',
+        'user-is-blocked' => 'Your account is blocked. Please reach support team',
         'username-already-exists' => 'The username already exists',
         'username-does-not-exist' => 'The user name does not exists' ,
     ],
