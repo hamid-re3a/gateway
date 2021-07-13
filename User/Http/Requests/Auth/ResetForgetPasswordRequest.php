@@ -35,6 +35,8 @@ class ResetForgetPasswordRequest extends FormRequest
     public function messages()
     {
         return [
+
+            'email.exists' => trans('user.validation.email-not-exists'),
             'password_confirmation.same' => trans('user.validation.password-same'),
             'email.required' => trans('user.validation.email-required'),
             'password.required' => trans('user.validation.first-name-required'),

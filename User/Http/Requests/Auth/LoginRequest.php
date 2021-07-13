@@ -32,6 +32,8 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
+
+            'email.exists' => trans('user.validation.email-not-exists'),
             'email.required' => trans('user.validation.email-required'),
             'password.required' => trans('user.validation.first-name-required'),
             'email.email' => trans('user.validation.email-is-incorrect'),
