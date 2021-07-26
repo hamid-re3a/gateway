@@ -14,6 +14,7 @@ use User\Mail\User\WelcomeEmail;
 use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
+use User\Models\UserBlockHistory;
 
 class UserTest extends \User\tests\UserTest
 {
@@ -121,6 +122,8 @@ class UserTest extends \User\tests\UserTest
 
         }
         Mail::assertSent(TooManyLoginAttemptPermanentBlockedEmail::class);
+
+        $this->assertCount(1,UserBlockHistory::all());
         $user->refresh();
         $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
     }

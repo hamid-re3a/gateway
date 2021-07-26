@@ -38,6 +38,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         unset($data['password_confirmation']);
+        unset($data['sponsor_username']);
         $user = User::query()->create($data);
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);

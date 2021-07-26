@@ -339,7 +339,15 @@ const EMAIL_CONTENT_SETTINGS = [
         'subject'=>'Account Activated',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
-        'body'=>'<p>Hello, {{full_name}}</p><p>Your account is activated again</p>',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>Your account is activated, Now you can try again to login.<span></span></div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
         'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
