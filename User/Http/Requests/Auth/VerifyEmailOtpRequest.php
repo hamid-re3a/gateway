@@ -34,6 +34,7 @@ class VerifyEmailOtpRequest extends FormRequest
         return [
             'otp.exists' => trans('user.responses.email-verification-code-is-incorrect'),
             'email.required' => trans('user.validation.email-required'),
+            'email.exists' => trans('user.validation.email-not-exists'),
             'email.email' => trans('user.validation.email-is-incorrect'),
         ];
     }

@@ -46,6 +46,7 @@ return [
     'validation' => [
         'password-same' => 'The passwords are not matching',
         'email-unique' => 'The email address already exists',
+        'email-not-exists' => 'The email address does not exist',
         'username-unique' => 'The username already exists',
         'username-regex' => 'The username may have alpha-numeric characters or underscores',
         'password-regex' => 'The password is not complex enough',

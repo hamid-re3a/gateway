@@ -42,15 +42,15 @@ class TooManyLoginAttemptTemporaryBlockedEmail extends Mailable implements Setti
     {
         $setting = $this->getSetting();
 
-        $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
-        $setting['body'] = str_replace('{{country}}', $this->login_attempt->ip->country, $setting['body']);
-        $setting['body'] = str_replace('{{city}}', $this->login_attempt->ip->state_name, $setting['body']);
-        $setting['body'] = str_replace('{{ip}}', $this->login_attempt->ip->ip, $setting['body']);
-        $setting['body'] = str_replace('{{browser}}', $this->login_attempt->agent->browser, $setting['body']);
-        $setting['body'] = str_replace('{{platform}}', $this->login_attempt->agent->platform, $setting['body']);
-        $setting['body'] = str_replace('{{status}}', $this->login_attempt->login_status_string, $setting['body']);
-        $setting['body'] = str_replace('{{login_attempt_times}}', $this->login_attempt_count, $setting['body']);
-        $setting['body'] = str_replace('{{next_try_time}}', $this->try_in, $setting['body']);
+        $setting['body'] = str_replace('{{full_name}}',(is_null( $this->user->full_name) || empty( $this->user->full_name)) ? 'Unknown':  $this->user->full_name, $setting['body']);
+        $setting['body'] = str_replace('{{country}}',(is_null( $this->login_attempt->ip->country) || empty( $this->login_attempt->ip->country)) ? 'Unknown':  $this->login_attempt->ip->country, $setting['body']);
+        $setting['body'] = str_replace('{{city}}',(is_null( $this->login_attempt->ip->state_name) || empty( $this->login_attempt->ip->state_name)) ? 'Unknown':  $this->login_attempt->ip->state_name, $setting['body']);
+        $setting['body'] = str_replace('{{ip}}',(is_null( $this->login_attempt->ip->ip) || empty( $this->login_attempt->ip->ip)) ? 'Unknown':  $this->login_attempt->ip->ip, $setting['body']);
+        $setting['body'] = str_replace('{{browser}}',(is_null( $this->login_attempt->agent->browser) || empty( $this->login_attempt->agent->browser)) ? 'Unknown':  $this->login_attempt->agent->browser, $setting['body']);
+        $setting['body'] = str_replace('{{platform}}',(is_null( $this->login_attempt->agent->platform) || empty( $this->login_attempt->agent->platform)) ? 'Unknown':  $this->login_attempt->agent->platform, $setting['body']);
+        $setting['body'] = str_replace('{{status}}',(is_null( $this->login_attempt->login_status_string) || empty( $this->login_attempt->login_status_string)) ? 'Unknown':  $this->login_attempt->login_status_string, $setting['body']);
+        $setting['body'] = str_replace('{{login_attempt_times}}',(is_null( $this->login_attempt_count) || empty( $this->login_attempt_count)) ? 'Unknown':  $this->login_attempt_count, $setting['body']);
+        $setting['body'] = str_replace('{{next_try_time}}',(is_null( $this->try_in) || empty( $this->try_in)) ? 'Unknown':  $this->try_in, $setting['body']);
 
         return $this
             ->from($setting['from'], $setting['from_name'])

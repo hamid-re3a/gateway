@@ -31,6 +31,7 @@ class ForgetPasswordRequest extends FormRequest
     public function messages()
     {
         return [
+            'email.exists' => trans('user.validation.email-not-exists'),
             'email.required' => trans('user.validation.email-required'),
             'email.email' => trans('user.validation.email-is-incorrect'),
         ];
