@@ -29,6 +29,7 @@ class UserTest extends \User\tests\UserTest
             "first_name" => 'hamid',
             "last_name" => 'noruzi',
             "email" => 'hamidrezanoruzinejad@gmail.com',
+            "sponsor_username" => 'admin',
             "username" => 'hamid',
             "password" => '123456789!Q',
             "password_confirmation" => '123456789!Q',
