@@ -35,7 +35,7 @@ class UserAccountAutomaticActivatedEmail extends Mailable implements Settingable
     public function build()
     {
         $setting = $this->getSetting();
-        $setting['body'] = str_replace('{{full_name}}', $this->user->full_name, $setting['body']);
+        $setting['body'] = str_replace('{{full_name}}',(is_null( $this->user->full_name) || empty( $this->user->full_name)) ? 'Unknown':  $this->user->full_name, $setting['body']);
 
         return $this
             ->from($setting['from'], $setting['from_name'])

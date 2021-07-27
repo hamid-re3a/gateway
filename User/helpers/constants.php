@@ -167,7 +167,6 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>IP: {{ip}}</div>
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
-                <div>Status: {{status}}</div>
                 <p></p>
                 <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
                 <p></p>
@@ -195,7 +194,6 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>IP: {{ip}}</div>
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
-                <div>Status: {{status}}</div>
                 <p></p>
                 <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
                 <p></p>
