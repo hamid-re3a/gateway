@@ -61,7 +61,11 @@ class LoginSecurityController extends Controller
             $user->save();
             return api()->success(trans('user.responses.2FA-is-enabled-successfully'));
         } else {
-            return api()->error(trans('user.responses.Invalid-verification-Code-Please-try-again'));
+            $message = trans('user.responses.Invalid-verification-Code-Please-try-again');
+            $errors = [
+                'one_time_password' => $message
+            ];
+            return api()->error($message,'',422,$errors);
         }
     }
 
