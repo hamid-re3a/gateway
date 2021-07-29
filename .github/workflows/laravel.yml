@@ -29,7 +29,7 @@ jobs:
     - name: Deploy to production
       uses: appleboy/ssh-action@master
       with:
-          username: "root"
+          username: "stagingapigateway"
           host: "207.244.231.120"
-          password: "WnFN3hU5aAMru"
+          password: "wxhUfQaZdVaZ1Qx"
           script: "cd /home/stagingapigateway/public_html/API-Gateway && ./server_deploy.sh"
