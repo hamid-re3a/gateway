@@ -307,7 +307,7 @@ INTRO
     /*
      * The base URL to be used in examples. If this is empty, Scribe will use the value of config('app.url').
      */
-    'base_url' => env('APP_ENV') == 'local' ?  'http://localhost:3541':  'http://vmi370585.contaboserver.net',
+    'base_url' => env('APP_ENV') == 'local' ?  'http://localhost:3541':  'https://staging-api-gateway.janex.org',
 
     /*
      * Generate a Postman collection (v2.1.0) in addition to HTML docs.
