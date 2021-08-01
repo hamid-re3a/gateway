@@ -29,12 +29,14 @@ jobs:
 
   laravel-deploy:
     runs-on: vmi627964
+    needs: laravel-tests
     steps:
+    - uses: actions/checkout@v2
     - name: Copy project to deployment directory
       run: |
-        sudo shopt -s dotglob 
+        shopt -s dotglob 
         sudo mkdir -p /home/stagingapigateway/public_html/API-Gateway/temp-project 
-        sudo cp -r * /home/stagingapigateway/public_html/API-Gateway/temp-project/
+        sudo cp -r . /home/stagingapigateway/public_html/API-Gateway/temp-project/
         sudo chown -R stagingapigateway:stagingapigateway /home/stagingapigateway/public_html/API-Gateway/temp-project
     - name: Run server_deploy.sh
       run: | 
