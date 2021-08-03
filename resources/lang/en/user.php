@@ -23,7 +23,7 @@ return [
         'email-is-already-verified' => 'Email is already verified',
         'otp-exceeded-amount' => 'You\'ve reached the otp limitation please wait',
 
-        'email-verification-code-is-incorrect' => 'The email verification code is incorrect',
+        'email-verification-code-is-incorrect' => 'The verification code is incorrect, Please check and refresh your email inbox',
         'email-verification-code-is-expired' => 'The email verification code is expired',
         'email-verification-code-is-used' => 'The email verification code is used',
         'wait-limit' => 'Please wait for a while. You\'ve reached the limit',
@@ -44,6 +44,7 @@ return [
         'username-does-not-exist' => 'The user name does not exists' ,
     ],
     'validation' => [
+        'email-not-exists'=>'The selected email address is not yet registered',
         'password-same' => 'The passwords are not matching',
         'email-unique' => 'The email address already exists',
         'username-unique' => 'The username already exists',

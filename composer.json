@@ -22,7 +22,7 @@
         "pragmarx/google2fa-laravel": "^1.4",
         "spatie/laravel-permission": "^3.17",
         "torann/geoip": "^3.0",
-        "ride-to-the-future/response-transformer": "^0.0.1"
+        "ride-to-the-future/response-transformer": "^0.0.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",
