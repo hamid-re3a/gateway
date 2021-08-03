@@ -95,8 +95,8 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Hello {{full_name}},</p>
                 <p>We received a request to reset your password. Please use the below code to set up a new password for your account.&nbsp;</p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span><span style="background-color: #ffff00;"></span><span style="background-color: #ffff00;"></span></h2>
-                <p>This code is valid only for {{otp_expire_duration}} and can be used only once. You will need to request for another code if it expired.</p>
-                <p>If you didn't request to reset your password, ignore this email and the code will expire on its own.</p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired</p>
+                <p>If you didn't request to reset your password, ignore this email.</p>
                 <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
@@ -119,7 +119,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p></p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span></h2>
                 <p><span style="background-color: #ffff00;"></span></p>
-                <p>This code is valid only for  {{otp_expire_duration}}  and can be used only once. You will need to request for another code if it expired.</p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -141,7 +141,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
                 <div>&nbsp;</div>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
-                <p>This code is valid only for {{otp_expire_duration}} . You will need to request for another code if it expired.</p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -168,7 +168,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <p></p>
-                <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
+                <div>If this was you, ignore this email. Otherwise, change your password immediately.</div>
                 <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
