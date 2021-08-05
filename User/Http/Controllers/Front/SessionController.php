@@ -41,7 +41,7 @@ class SessionController extends Controller
     }
 
     /**
-     * Logout a session
+     * Logout all other sessions
      * @group
      * Session
      * @return \Illuminate\Http\JsonResponse

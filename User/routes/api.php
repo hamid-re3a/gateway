@@ -35,9 +35,9 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/generate2fa_disable', [LoginSecurityController::class, 'disable2fa'])->name('2fa-disable')->middleware(['2fa']);
 
 
-            Route::get('/sessions', [SessionController::class, 'index'])->name('sessions-history');
-            Route::post('/sessions/signout-session', [SessionController::class, 'signout'])->name('session-logout');
-            Route::post('/sessions/signout-other-sessions', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
+            Route::get('/sessions/all', [SessionController::class, 'index'])->name('sessions-history');
+            Route::post('/sessions/signout', [SessionController::class, 'signout'])->name('session-logout');
+            Route::post('/sessions/signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
 
 
 
