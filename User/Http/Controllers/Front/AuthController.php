@@ -79,7 +79,7 @@ class AuthController extends Controller
         if (!$user->isEmailVerified())
             return api()->error(trans('user.responses.go-activate-your-email'), null, 403);
 
-        $token = $this->getNewTokenAndDeleteOthers($user);
+        $token = $this->getNewToken($user);
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
@@ -187,9 +187,9 @@ class AuthController extends Controller
             $otp_db->is_used = true;
             $otp_db->save();
 
-            $token = $this->getNewTokenAndDeleteOthers($user);
+            $token = $this->getNewToken($user);
 
-            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request,$token);
             EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
 
             return $this->respondWithToken($token, 'user.responses.email-verified-successfully');
@@ -299,7 +299,7 @@ class AuthController extends Controller
     protected function respondWithToken($token, $message = 'user.responses.login-successful')
     {
         $data = [
-            'access_token' => $token,
+            'access_token' => $token->plainTextToken,
             'token_type' => 'bearer',
         ];
         return api()->success(trans($message), $data);
@@ -310,11 +310,9 @@ class AuthController extends Controller
      * @return mixed
      * @throws \Exception
      */
-    private function getNewTokenAndDeleteOthers($user)
+    private function getNewToken($user)
     {
-        $user->tokens()->delete();
-        $token = $user->createToken(getSetting("APP_NAME"))->plainTextToken;
-        return $token;
+        return $user->createToken(getSetting("APP_NAME"));
     }
 
 

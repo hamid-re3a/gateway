@@ -2,21 +2,13 @@
 
 namespace User\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use User\database\factories\UserFactory;
 use User\Exceptions\OldPasswordException;
-use User\Jobs\EmailJob;
-use User\Mail\User\EmailVerifyOtp;
-use User\Mail\User\ForgetPasswordOtpEmail;
-use User\Mail\User\WelcomeEmail;
-use User\Support\UserActivityHelper;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -165,6 +157,16 @@ class User extends Authenticatable
     public function passwordHistories()
     {
         return $this->hasMany(PasswordHistory::class);
+    }
+
+    public function agents()
+    {
+        return $this->hasMany(Agent::class,'user_id','id');
+    }
+
+    public function ips()
+    {
+        return $this->hasMany(Ip::class,'user_id','id');
     }
 
     /**

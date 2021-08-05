@@ -24,6 +24,7 @@ class UserActivityHelper
      */
     public static function getInfo(Request $request): array
     {
+
         $ip_db = null;
         if (!is_null($request->ip())) {
             $ip = null;
@@ -41,12 +42,16 @@ class UserActivityHelper
                 $ip_db->save();
             }
         }
+        $token = !empty($request->user()) ? $request->user()->currentAccessToken() : null;
+
         $agent_db = null;
         if (!is_null($request->userAgent())) {
             $agentJess = new Agent();
             $agentJess->setUserAgent($request->userAgent());
             $agentJess->setHttpHeaders($request->headers);
             $agent_db = AgentModel::query()->firstOrCreate([
+                'user_id' => !empty($token) ? $token->tokenable_id : null,
+                'token_id' => !empty($token->id) ? $token->id : null,
                 "language" => is_null($agentJess->languages()) || !isset($agentJess->languages()[0]) ? null : $agentJess->languages()[0],
                 "device_type" => $agentJess->device(),
                 "platform" => $agentJess->platform(),
@@ -59,6 +64,7 @@ class UserActivityHelper
                 "browser_version" => $agentJess->version($agentJess->browser()),
                 "user_agent" => $request->userAgent(),
             ]);
+            $agent_db->ips()->syncWithoutDetaching($ip_db);
             if (!is_null($request)) {
                 $agent_db->hit = $agent_db->hit + 1;
                 $agent_db->save();
