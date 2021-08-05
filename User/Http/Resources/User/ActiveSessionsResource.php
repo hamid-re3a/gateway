@@ -26,7 +26,8 @@ class ActiveSessionsResource extends JsonResource
             'location' => [
                 'latitude' => (!empty($latestIp) AND !empty($latestIp->lat)) ? $latestIp->lat : 'Unknown',
                 'longitude' => (!empty($latestIp) AND !empty($latestIp->lon)) ? $latestIp->lon : 'Unknown',
-            ]
+            ],
+            'latest_activity' => $this->updated_at
         ];
     }
 }
