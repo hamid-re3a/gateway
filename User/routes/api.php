@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
 use User\Http\Controllers\Front\AuthController;
 use User\Http\Controllers\Front\LoginSecurityController;
+use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
 
 Route::middleware(['user_activity'])->group(function () {
@@ -34,6 +35,9 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/generate2fa_disable', [LoginSecurityController::class, 'disable2fa'])->name('2fa-disable')->middleware(['2fa']);
 
 
+            Route::get('/sessions/all', [SessionController::class, 'index'])->name('sessions-history');
+            Route::post('/sessions/signout', [SessionController::class, 'signout'])->name('session-logout');
+            Route::post('/sessions/signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
 
 
 
