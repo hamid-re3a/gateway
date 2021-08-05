@@ -23,8 +23,9 @@ class TerminateSessionRequest extends FormRequest
      */
     public function rules()
     {
+        $user_id = !empty(request()->user()) ? request()->user()->id : null;
         return [
-            'session_id' => 'required|exists:agents,id,token_id,!null,user_id,' . request()->user()->id ,
+            'session_id' => 'required|exists:agents,id,token_id,!null,user_id,' . $user_id ,
         ];
     }
 }

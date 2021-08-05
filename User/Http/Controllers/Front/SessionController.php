@@ -31,6 +31,8 @@ class SessionController extends Controller
     public function signout(TerminateSessionRequest $request)
     {
         $session = $request->user()->agents()->whereId($request->get('session_id'))->first();
+        if($session->token_id == $request->user()->currentAccessToken()->id)
+            return api()->error('Current session can\'t be invalidated .');
         $token = $request->user()->tokens()->whereId($session->token_id);
         $session->update([
             'token_id' => null
