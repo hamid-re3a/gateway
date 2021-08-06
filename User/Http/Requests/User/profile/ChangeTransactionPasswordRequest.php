@@ -27,7 +27,7 @@ class ChangeTransactionPasswordRequest extends FormRequest
     {
         return [
             'current_password' => 'required',
-            'password' => 'required|regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/|confirmed',
+            'password' => 'required|different:current_password|regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/|confirmed',
         ];
     }
 
@@ -40,7 +40,7 @@ class ChangeTransactionPasswordRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if ( !Hash::check($this->current_password, $this->user()->password) ) {
+            if ( !Hash::check($this->current_password, $this->user()->transaction_password) ) {
                 $validator->errors()->add('current_password', 'Your current password is incorrect.');
             }
         });

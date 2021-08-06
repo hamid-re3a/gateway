@@ -65,6 +65,16 @@ const SETTINGS = [
         'description' => 'Password pattern for user registration',
         'category' => 'User > Password',
     ],
+    'IS_LOGIN_PASSWORD_CHANGE_EMAIL_ENABLE' => [
+        'value' => 1,
+        'description' => null,
+        'category' => 'User > Profile Management'
+    ],
+    'IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE' => [
+        'value' => 1,
+        'description' => null,
+        'category' => 'User > Profile Management'
+    ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
     [

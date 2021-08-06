@@ -4,6 +4,7 @@ namespace User\Http\Controllers\Front;
 
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
 use User\Jobs\EmailJob;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
@@ -20,13 +21,21 @@ class UserController extends Controller
      */
     public function changeTransactionPassword(ChangeTransactionPasswordRequest $request)
     {
-        $request->user()->update([
-            'transaction_password' => bcrypt($request->get('password'))
-        ]);
+        try {
+            DB::beginTransaction();
+            $request->user()->update([
+                'transaction_password' => $request->get('password') //bcrypt in User model (Mutator)
+            ]);
 
-        list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-        EmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            if(getSetting('IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE'))
+                EmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
-        return api()->success();
+            DB::commit();
+            return api()->success(trans('user.responses.transaction-password-successfully-changed'));
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            return api()->error(trans('user.responses.global-error'));
+        }
     }
 }

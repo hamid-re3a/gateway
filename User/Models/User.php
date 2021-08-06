@@ -130,6 +130,11 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($value);
     }
 
+    public function setTransactionPasswordAttribute($value)
+    {
+        $this->attributes['transaction_password'] = bcrypt($value);
+    }
+
     public function getFullNameAttribute()
     {
         return ucwords(strtolower($this->first_name . ' ' . $this->last_name));

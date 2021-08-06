@@ -3,6 +3,7 @@
 return [
 
     'responses' => [
+        'global-error' => 'An error occurred, Try again please.',
         'max-attempts-exceeded' => 'Too many invalid attempts. Try again after a while',
         'user-account-deactivated-by-admin' => 'Your account is deactivated by admin',
         'user-account-activated-by-admin' => 'Your account is activated by admin',
@@ -44,6 +45,7 @@ return [
         'username-does-not-exist' => 'The user name does not exists' ,
 
         'current-transaction-password-is-invalid' => 'Current transaction password is not correct .',
+        'transaction-password-successfully-changed' => 'You\'ve successfully changed your transaction password ',
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',
