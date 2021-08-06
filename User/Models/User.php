@@ -116,17 +116,6 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")) {
-            if (!is_null($this->password) && Hash::check($value, $this->password))
-                throw new OldPasswordException(trans('user.responses.password-already-used-by-you-try-another-one'),400);
-
-            $passwords = $this->passwordHistories()->get();
-            foreach ($passwords as $item)
-                if (Hash::check($value, $item->password))
-                throw new OldPasswordException( trans('user.responses.password-already-used-by-you-try-another-one'),400);
-
-        }
-
         $this->attributes['password'] = bcrypt($value);
     }
 
@@ -180,6 +169,16 @@ class User extends Authenticatable
     public function isEmailVerified(): bool
     {
         return  ! is_null($this->email_verified_at);
+    }
+
+    public function passwordHistoriesCheck($value)
+    {
+        $passwords = $this->passwordHistories()->get();
+        foreach ($passwords as $item)
+            if(Hash::check($value, $item->password))
+                return true;
+
+        return false;
     }
 
 

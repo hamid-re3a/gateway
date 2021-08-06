@@ -3,6 +3,7 @@
 namespace User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class ResetForgetPasswordRequest extends FormRequest
 {
@@ -27,8 +28,7 @@ class ResetForgetPasswordRequest extends FormRequest
         return [
             'email' => 'required|email|exists:users,email',
             'otp' => 'required|string|exists:otps,otp',
-            'password' => ['required','regex:/'.getSetting('USER_REGISTRATION_PASSWORD_CRITERIA').'/'],
-            'password_confirmation' => 'required|string|same:password',
+            'password' => 'required|regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/|confirmed',
         ];
     }
 
@@ -37,11 +37,25 @@ class ResetForgetPasswordRequest extends FormRequest
         return [
 
             'email.exists' => trans('user.validation.email-not-exists'),
-            'password_confirmation.same' => trans('user.validation.password-same'),
             'email.required' => trans('user.validation.email-required'),
             'password.required' => trans('user.validation.first-name-required'),
             'email.email' => trans('user.validation.email-is-incorrect'),
             'otp.exists' => trans('user.responses.password-reset-code-is-invalid'),
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ( !Hash::check($this->password, $this->user()->password) ) {
+                $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
+            }
+
+            if(getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD"))
+                if(request()->user()->passwordHistoriesCheck($this->password))
+                    $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
+
+        });
+        return;
     }
 }
