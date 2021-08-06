@@ -4,7 +4,9 @@ namespace User\Http\Controllers\Front;
 
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use User\Exceptions\OldPasswordException;
 use User\Http\Requests\Auth\EmailExistenceRequest;
 use User\Http\Requests\Auth\EmailVerificationOtpRequest;
@@ -30,13 +32,13 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param RegisterUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function register(RegisterUserRequest $request)
     {
         $data = $request->validated();
-        unset($data['password_confirmation']);
-        unset($data['sponsor_username']);
         $user = User::query()->create($data);
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);
@@ -49,6 +51,9 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function login(LoginRequest $request)
     {
@@ -101,10 +106,12 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param EmailExistenceRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function isEmailExists(EmailExistenceRequest $request)
     {
-        if (User::whereEmail($request->email)->exists())
+        if (User::whereEmail($request->get('email'))->exists())
             return api()->success(trans('user.responses.email-already-exists'), true);
 
         return api()->success(trans('user.responses.email-does-not-exist'), false);
@@ -115,10 +122,12 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param UsernameExistenceRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function isUsernameExists(UsernameExistenceRequest $request)
     {
-        if (User::whereUsername($request->username)->exists())
+        if (User::whereUsername($request->get('username'))->exists())
             return api()->success(trans('user.responses.username-already-exists'), true);
 
         return api()->success(trans('user.responses.username-does-not-exist'), false);
@@ -129,11 +138,13 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param EmailVerificationOtpRequest $request
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
-        $user = User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->get('email'))->first();
         if ($user->isEmailVerified())
             return api()->success(trans('user.responses.email-is-already-verified'));
 
@@ -150,11 +161,13 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param VerifyEmailOtpRequest $request
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function verifyEmailOtp(VerifyEmailOtpRequest $request)
     {
-        $user = User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->get('email'))->first();
         if ($user->isEmailVerified())
             return api()->success(trans('user.responses.email-is-already-verified'));
 
@@ -201,11 +214,13 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param ForgetPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function forgotPassword(ForgetPasswordRequest $request)
     {
-        $user = User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->get('email'))->first();
         list($data, $err) = UserActivityHelper::makeForgetPasswordOtp($user, $request);
         if ($err) {
             return api()->error(trans('user.responses.wait-limit'), $data, 429);
@@ -219,56 +234,59 @@ class AuthController extends Controller
      * @group
      * Auth
      * @unauthenticated
+     * @param ResetForgetPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function resetForgetPassword(ResetForgetPasswordRequest $request)
     {
-        $user = User::whereEmail($request->email)->first();
-        $duration = getSetting('USER_FORGOT_PASSWORD_OTP_DURATION');
-        $fp_db = $user->otps()
-            ->where('type', OTP_TYPE_EMAIL_FORGOT_PASSWORD)
-            ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
-            ->get()
-            ->last();
-        if (is_null($fp_db)) {
-            $errors = [
-                'otp' => trans('user.responses.password-reset-code-is-expired')
-            ];
-            return api()->error(trans('user.responses.password-reset-code-is-expired'), '', 422, $errors);
-        }
-
-        if ($fp_db->is_used) {
-            $errors = [
-                'otp' => trans('user.responses.password-reset-code-is-used')
-            ];
-            return api()->error(trans('user.responses.password-reset-code-is-used'), '', 422, $errors);
-        }
-
-
-        if ($fp_db->otp == $request->otp) {
-            try {
-                $user->password = $request->password;
-                $user->save();
-            } catch (OldPasswordException $exception) {
+        try{
+            DB::beginTransaction();
+            $user = User::whereEmail($request->get('email'))->first();
+            $duration = getSetting('USER_FORGOT_PASSWORD_OTP_DURATION');
+            $fp_db = $user->otps()
+                ->where('type', OTP_TYPE_EMAIL_FORGOT_PASSWORD)
+                ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->get()
+                ->last();
+            if (is_null($fp_db)) {
                 $errors = [
-                    'password' => trans('user.responses.password-already-used-by-you-try-another-one')
+                    'otp' => trans('user.responses.password-reset-code-is-expired')
                 ];
-                return api()->error(trans('user.responses.password-already-used-by-you-try-another-one'), '', 422, $errors);
+                return api()->error(trans('user.responses.password-reset-code-is-expired'), '', 422, $errors);
             }
 
-            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
+            if ($fp_db->is_used) {
+                $errors = [
+                    'otp' => trans('user.responses.password-reset-code-is-used')
+                ];
+                return api()->error(trans('user.responses.password-reset-code-is-used'), '', 422, $errors);
+            }
 
-            $fp_db->is_used = true;
-            $fp_db->save();
 
-            return api()->success(trans('user.responses.password-successfully-changed'));
+            if ($fp_db->otp == $request->get('otp')) {
+                $user->update([
+                    'password' => $request->get('password')
+                ]);
+
+                list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+                EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
+
+                $fp_db->update([
+                    'is_used' => true
+                ]);
+                DB::commit();
+                return api()->success(trans('user.responses.password-successfully-changed'));
+            }
+
+        } catch(\Exception $exception) {
+            DB::rollBack();
+            return api()->error('user.responses.global-error', null, 500);
         }
-
         $errors = [
             'otp' => trans('user.responses.password-reset-code-is-invalid')
         ];
-        return api()->error('user.responses.password-reset-code-is-invalid', '', 422, $errors);
+        return api()->error(trans('user.responses.password-reset-code-is-invalid'), null, 422, $errors);
 
     }
 

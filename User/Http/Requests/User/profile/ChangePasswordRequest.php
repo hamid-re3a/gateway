@@ -45,7 +45,7 @@ class ChangePasswordRequest extends FormRequest
             }
 
             if(getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD"))
-                if(request()->user()->passwordHistoriesCheck($this->password))
+                if(request()->user()->historyCheck('password',$this->password))
                     $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
 
         });

@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use User\database\factories\UserFactory;
+use User\Exceptions\InvalidFieldException;
 use User\Exceptions\OldPasswordException;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -112,7 +113,22 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'username',
+        'phone_number',
+        'email',
+        'password',
+        'transaction_password',
+        'block_type',
+        'block_reason',
+        'avatar',
+        'passport_number',
+        'email_verified_at',
+        'google2fa_enable',
+        'google2fa_secret'
+    ];
 
     public function setPasswordAttribute($value)
     {
@@ -142,17 +158,6 @@ class User extends Authenticatable
         return $this->hasMany(Otp::class);
     }
 
-
-    public function blockHistories()
-    {
-        return $this->hasMany(UserBlockHistory::class);
-    }
-
-    public function passwordHistories()
-    {
-        return $this->hasMany(PasswordHistory::class);
-    }
-
     public function agents()
     {
         return $this->hasMany(Agent::class,'user_id','id');
@@ -163,24 +168,30 @@ class User extends Authenticatable
         return $this->hasMany(Ip::class,'user_id','id');
     }
 
+    public function userHistories()
+    {
+        return $this->hasMany(UserHistory::class,'user_id','id');
+    }
+
     /**
      * methods
      */
-    public function isEmailVerified(): bool
+    public function isEmailVerified()
     {
         return  ! is_null($this->email_verified_at);
     }
 
-    public function passwordHistoriesCheck($value)
+    public function historyCheck($field,$value)
     {
-        $passwords = $this->passwordHistories()->get();
+        //Check columns
+        if(!in_array($field,$this->getFillable()))
+            return new InvalidFieldException();
+        $passwords = $this->userHistories()->distinct($field)->pluck($field);
         foreach ($passwords as $item)
-            if(Hash::check($value, $item->password))
+            if(Hash::check($value, $item))
                 return true;
 
         return false;
     }
-
-
 
 }

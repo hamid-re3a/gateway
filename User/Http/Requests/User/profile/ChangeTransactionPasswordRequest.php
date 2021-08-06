@@ -43,6 +43,11 @@ class ChangeTransactionPasswordRequest extends FormRequest
             if ( !Hash::check($this->current_password, $this->user()->transaction_password) ) {
                 $validator->errors()->add('current_password', 'Your current password is incorrect.');
             }
+
+            if(getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD"))
+                if(request()->user()->historyCheck('transaction_password',$this->password))
+                    $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
+
         });
         return;
     }

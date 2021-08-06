@@ -9,6 +9,7 @@ const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
 
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
+const USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
@@ -36,7 +37,12 @@ const SETTINGS = [
     ],
     'USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD' => [
         'value' => USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD,
-        'description' => 'When user wants to reset password, should we check history and not allow shim to use previous ones.',
+        'description' => 'When user wants to reset/change password, should we check history and not allow shim to use previous ones.',
+        'category' => 'User > Password',
+    ],
+    'USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD' => [
+        'value' => USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD,
+        'description' => 'When user wants to change transaction password, should we check history and not allow shim to use previous ones.',
         'category' => 'User > Password',
     ],
 
