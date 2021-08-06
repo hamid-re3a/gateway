@@ -42,6 +42,8 @@ return [
         'user-is-blocked' => 'Your account is blocked. Please reach support team',
         'username-already-exists' => 'The username already exists',
         'username-does-not-exist' => 'The user name does not exists' ,
+
+        'current-transaction-password-is-invalid' => 'Current transaction password is not correct .',
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',

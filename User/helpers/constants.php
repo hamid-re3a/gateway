@@ -350,6 +350,33 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
+    'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
+        'is_active' => true,
+        'subject'=>'Transaction Password Changed Warning',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that the transaction password for your account has just been changed.<span></span></div>
+                <p></p>
+                <div><strong>Device Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
 ];
 
 const QUEUES_EMAIL = 'emails';

@@ -23,8 +23,6 @@ use User\Models\LoginAttempt;
 use User\Models\User;
 use User\Support\UserActivityHelper;
 
-;
-
 class AuthController extends Controller
 {
     /**
@@ -189,7 +187,7 @@ class AuthController extends Controller
 
             $token = $this->getNewToken($user);
 
-            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request,$token);
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
 
             return $this->respondWithToken($token, 'user.responses.email-verified-successfully');
