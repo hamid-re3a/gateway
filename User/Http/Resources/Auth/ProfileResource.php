@@ -7,7 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileResource extends JsonResource
 {
-      protected $withoutFields = [];
+      protected $withoutFields = [
+          'roles'
+      ];
 
     /**
      * Transform the resource into an array.

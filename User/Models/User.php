@@ -168,8 +168,11 @@ class User extends Authenticatable
         return $this->hasMany(Ip::class,'user_id','id');
     }
 
-    public function userHistories()
+    public function userHistories($field = null)
     {
+        if(!is_null($field) AND in_array($field, $this->getFillable()))
+            return $this->hasMany(UserHistory::class,'user_id','id')->distinct($field)->whereNotNull($field);
+
         return $this->hasMany(UserHistory::class,'user_id','id');
     }
 
@@ -186,8 +189,8 @@ class User extends Authenticatable
         //Check columns
         if(!in_array($field,$this->getFillable()))
             return new InvalidFieldException();
-        $passwords = $this->userHistories()->distinct($field)->pluck($field);
-        foreach ($passwords as $item)
+        $history = $this->userHistories()->distinct($field)->pluck($field);
+        foreach ($history as $item)
             if(Hash::check($value, $item))
                 return true;
 
