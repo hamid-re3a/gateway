@@ -119,6 +119,8 @@ class User extends Authenticatable
         'username',
         'phone_number',
         'email',
+        'gender',
+        'birthday',
         'password',
         'transaction_password',
         'block_type',

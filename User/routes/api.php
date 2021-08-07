@@ -44,6 +44,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::prefix('profile_management')->group(function(){
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
+                Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
             });
 
 

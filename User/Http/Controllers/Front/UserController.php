@@ -6,6 +6,7 @@ namespace User\Http\Controllers\Front;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
 use User\Jobs\EmailJob;
@@ -67,5 +68,19 @@ class UserController extends Controller
             DB::rollBack();
             return api()->error(trans('user.responses.global-error'));
         }
+    }
+
+    public function updatePersonalDetails(UpdatePersonalDetails $request)
+    {
+        try {
+            DB::beginTransaction();
+            $request->user()->update($request->validated());
+            DB::commit();
+        }  catch (\Throwable $exception) {
+            DB::rollBack();
+            return api()->error(trans('user.responses.global-error'),null,500,null);
+        }
+
+        return api()->success(trans('user.responses.profile-details-updated'));
     }
 }

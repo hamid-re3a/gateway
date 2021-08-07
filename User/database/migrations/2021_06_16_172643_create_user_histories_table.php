@@ -24,6 +24,8 @@ class CreateUserHistoriesTable extends Migration
             $table->string('username',100)->nullable();
             $table->string('phone_number',100)->nullable();
             $table->string('email',100)->nullable();
+            $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
+            $table->timestamp('birthday')->nullable();
             $table->string('password')->nullable();
             $table->string('transaction_password')->nullable();
 

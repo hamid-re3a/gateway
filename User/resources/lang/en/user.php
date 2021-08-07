@@ -46,6 +46,7 @@ return [
 
         'current-transaction-password-is-invalid' => 'Current transaction password is not correct .',
         'transaction-password-successfully-changed' => 'You\'ve successfully changed your transaction password ',
+        'profile-details-updated' => 'You\'ve successfully changed your profile ',
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',
