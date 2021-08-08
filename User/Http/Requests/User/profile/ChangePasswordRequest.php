@@ -28,7 +28,8 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'current_password' => 'required',
-            'password' => 'required|different:current_password|regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/|confirmed',
+            'password' => 'required|different:current_password|regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') ,
+            'password_confirmation' => 'required|same:password'
         ];
     }
 
