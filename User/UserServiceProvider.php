@@ -3,7 +3,9 @@
 namespace User;
 
 use Illuminate\Support\Facades\Artisan;
+use User\Models\CryptoWallet;
 use User\Models\User;
+use User\Observers\CryptoWalletObserver;
 use User\Observers\UserObserver;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -55,6 +57,7 @@ class UserServiceProvider extends ServiceProvider
 
 
         User::observe(UserObserver::class);
+        CryptoWallet::observe(CryptoWalletObserver::class);
 
     }
 

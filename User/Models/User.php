@@ -178,6 +178,11 @@ class User extends Authenticatable
         return $this->hasMany(UserHistory::class,'user_id','id');
     }
 
+    public function wallets()
+    {
+        return $this->hasMany(CryptoWallet::class,'user_id','id');
+    }
+
     /**
      * methods
      */
