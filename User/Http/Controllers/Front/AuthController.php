@@ -3,6 +3,8 @@
 namespace User\Http\Controllers\Front;
 
 
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -33,8 +35,8 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param RegisterUserRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse
+     * @throws Exception
      */
     public function register(RegisterUserRequest $request)
     {
@@ -52,8 +54,8 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param LoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse
+     * @throws Exception
      */
     public function login(LoginRequest $request)
     {
@@ -107,7 +109,7 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param EmailExistenceRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function isEmailExists(EmailExistenceRequest $request)
     {
@@ -123,7 +125,7 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param UsernameExistenceRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function isUsernameExists(UsernameExistenceRequest $request)
     {
@@ -139,8 +141,8 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param EmailVerificationOtpRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse
+     * @throws Exception
      */
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
@@ -162,8 +164,8 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param VerifyEmailOtpRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse
+     * @throws Exception
      */
     public function verifyEmailOtp(VerifyEmailOtpRequest $request)
     {
@@ -215,8 +217,8 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param ForgetPasswordRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse
+     * @throws Exception
      */
     public function forgotPassword(ForgetPasswordRequest $request)
     {
@@ -235,8 +237,8 @@ class AuthController extends Controller
      * Auth
      * @unauthenticated
      * @param ResetForgetPasswordRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse
+     * @throws Exception
      */
     public function resetForgetPassword(ResetForgetPasswordRequest $request)
     {
@@ -279,7 +281,7 @@ class AuthController extends Controller
                 return api()->success(trans('user.responses.password-successfully-changed'));
             }
 
-        } catch(\Exception $exception) {
+        } catch(Exception $exception) {
             DB::rollBack();
             return api()->error('user.responses.global-error', null, 500);
         }
@@ -324,7 +326,7 @@ class AuthController extends Controller
     /**
      * @param $user
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     private function getNewToken($user)
     {
