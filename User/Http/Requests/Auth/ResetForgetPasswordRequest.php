@@ -4,6 +4,7 @@ namespace User\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use User\Models\User;
 
 class ResetForgetPasswordRequest extends FormRequest
 {
@@ -46,16 +47,18 @@ class ResetForgetPasswordRequest extends FormRequest
 
     public function withValidator($validator)
     {
-        $validator->after(function ($validator) {
-            if ( !Hash::check($this->password, $this->user()->password) ) {
-                $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
-            }
+        $user = User::whereEmail($this->email)->first();
+        if($user) {
+            $validator->after(function ($validator) use($user){
+                    if ( Hash::check($this->password, $user->password) ) {
+                        $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
+                    }
 
-            if(getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD"))
-                if(request()->user()->passwordHistoriesCheck($this->password))
-                    $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
-
-        });
+                    if(getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD"))
+                        if($user->historyCheck('password',$this->password))
+                            $validator->errors()->add('password', trans('user.responses.password-already-used-by-you-try-another-one'));
+            });
+        }
         return;
     }
 }
