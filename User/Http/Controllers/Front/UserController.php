@@ -16,6 +16,7 @@ use User\Support\UserActivityHelper;
 
 class UserController extends Controller
 {
+
     /**
      * Change password
      * @group
@@ -43,6 +44,7 @@ class UserController extends Controller
             return api()->error(trans('user.responses.global-error'));
         }
     }
+
     /**
      * Change Transaction password
      * @group
@@ -70,6 +72,14 @@ class UserController extends Controller
         }
     }
 
+
+    /**
+     * Change personal details
+     * @group
+     * Profile Management
+     * @param UpdatePersonalDetails $request
+     * @return JsonResponse
+     */
     public function updatePersonalDetails(UpdatePersonalDetails $request)
     {
         try {
