@@ -48,7 +48,7 @@ return [
         'password-same' => 'Passwords are not matching',
         'email-unique' => 'Email address already exists',
         'username-unique' => 'Username already exists',
-        'username-regex' => 'Sponser username can have letters, numbers and underscore only',
+        'username-regex' => 'Username can have letters, numbers and underscore only',
         'username-required' => 'Enter username',
         'sponsor-username-not-exists' => 'Invalid sponsor username',
         'sponsor-username-regex' => 'Sponser username can have letters, numbers and underscore only',
