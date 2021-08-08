@@ -2,14 +2,7 @@
 
 namespace User\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
-use User\database\factories\UserFactory;
-use User\Exceptions\OldPasswordException;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * User\Models\User
