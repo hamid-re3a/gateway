@@ -6,6 +6,7 @@ use User\Http\Controllers\Front\AuthController;
 use User\Http\Controllers\Front\LoginSecurityController;
 use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
+use User\Http\Controllers\Front\UserController;
 
 Route::middleware(['user_activity'])->group(function () {
 
@@ -40,7 +41,11 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/sessions/signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
 
 
-
+            Route::prefix('profile_management')->group(function(){
+                Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
+                Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
+                Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
+            });
 
 
             Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {

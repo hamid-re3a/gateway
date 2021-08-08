@@ -70,7 +70,7 @@ class UserController extends Controller
      */
     public function passwordHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::find($request->user_id)->passwordHistories));
+        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::find($request->get('user_id'))->userHistories('password')->get()));
     }
 
     /**
@@ -80,7 +80,7 @@ class UserController extends Controller
      */
     public function blockHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::find($request->user_id)->blockHistories));
+        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::find($request->get('user_id'))->userHistories('block_type')->get()));
     }
     /**
      * User Login History
