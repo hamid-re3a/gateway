@@ -2,6 +2,7 @@ name: Laravel
 on:
   pull_request:
     branches: [ master ]
+    types: [ closed ]
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest

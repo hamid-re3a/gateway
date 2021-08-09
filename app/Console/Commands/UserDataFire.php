@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\User\UserDataJob;
 use Illuminate\Console\Command;
-use App\Jobs\UserDataJob;
 
 class UserDataFire extends Command
 {
@@ -42,6 +42,6 @@ class UserDataFire extends Command
           "name"=>"dariush" ,
           "email"=>"test@test.com"
         ];
-        UserDataJob::dispatch($data)->onConnection('kyc');
+        UserDataJob::dispatch($data)->onQueue('kyc');
     }
 }

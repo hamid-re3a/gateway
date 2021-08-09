@@ -28,7 +28,7 @@ class GeoIp
             $user_agent->timezone = $city->location->timeZone;
             $user_agent->continent = $city->continent->name;
             $user_agent->state_name = $city->mostSpecificSubdivision->name;
-            $user_agent->state = $city->mostSpecificSubdivision->isoCode;
+            $user_agent->state = $city->mostSpecificSubdivision->names['en'];
             return $user_agent;
         } catch (InvalidDatabaseException $e) {
             return null;

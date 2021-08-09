@@ -2,15 +2,7 @@
 
 namespace User\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
-use User\database\factories\UserFactory;
-use User\Exceptions\InvalidFieldException;
-use User\Exceptions\OldPasswordException;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * User\Models\User
@@ -94,26 +86,20 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection|PasswordHistory[] $passwordHistories
  * @property-read int|null $password_histories_count
  */
-class User extends Authenticatable
+class UserHistory extends Authenticatable
 {
 
-    use HasFactory;
-    use Notifiable;
-    use HasRoles;
-    use HasApiTokens;
-
     protected $guard_name = 'api';
+    protected $table = 'user_histories';
 
-    protected static function newFactory()
-    {
-        return UserFactory::new();
-    }
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'user_id',
+        'actor_id',
         'first_name',
         'last_name',
         'username',
@@ -132,76 +118,18 @@ class User extends Authenticatable
         'google2fa_secret'
     ];
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
-    public function setTransactionPasswordAttribute($value)
-    {
-        $this->attributes['transaction_password'] = bcrypt($value);
-    }
-
-    public function getFullNameAttribute()
-    {
-        return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
-    }
-
     /**
      * relations
      */
-    public function loginAttempts()
+
+    public function user()
     {
-        return $this->hasMany(LoginAttempt::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
 
-    public function otps()
+    public function actor()
     {
-        return $this->hasMany(Otp::class);
-    }
-
-    public function agents()
-    {
-        return $this->hasMany(Agent::class,'user_id','id');
-    }
-
-    public function ips()
-    {
-        return $this->hasMany(Ip::class,'user_id','id');
-    }
-
-    public function userHistories($field = null)
-    {
-        if(!is_null($field) AND in_array($field, $this->getFillable()))
-            return $this->hasMany(UserHistory::class,'user_id','id')->distinct($field)->whereNotNull($field);
-
-        return $this->hasMany(UserHistory::class,'user_id','id');
-    }
-
-    public function wallets()
-    {
-        return $this->hasMany(CryptoWallet::class,'user_id','id');
-    }
-
-    /**
-     * methods
-     */
-    public function isEmailVerified()
-    {
-        return  ! is_null($this->email_verified_at);
-    }
-
-    public function historyCheck($field,$value)
-    {
-        //Check columns
-        if(!in_array($field,$this->getFillable()))
-            return new InvalidFieldException();
-        $history = $this->userHistories()->distinct($field)->pluck($field);
-        foreach ($history as $item)
-            if(Hash::check($value, $item))
-                return true;
-
-        return false;
+        return $this->belongsTo(User::class,'user_id','id');
     }
 
 }
