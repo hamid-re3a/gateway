@@ -9,6 +9,7 @@ const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
 
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
+const USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
@@ -36,7 +37,12 @@ const SETTINGS = [
     ],
     'USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD' => [
         'value' => USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD,
-        'description' => 'When user wants to reset password, should we check history and not allow shim to use previous ones.',
+        'description' => 'When user wants to reset/change password, should we check history and not allow shim to use previous ones.',
+        'category' => 'User > Password',
+    ],
+    'USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD' => [
+        'value' => USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD,
+        'description' => 'When user wants to change transaction password, should we check history and not allow shim to use previous ones.',
         'category' => 'User > Password',
     ],
 
@@ -64,6 +70,16 @@ const SETTINGS = [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
         'description' => 'Password pattern for user registration',
         'category' => 'User > Password',
+    ],
+    'IS_LOGIN_PASSWORD_CHANGE_EMAIL_ENABLE' => [
+        'value' => 1,
+        'description' => null,
+        'category' => 'User > Profile Management'
+    ],
+    'IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE' => [
+        'value' => 1,
+        'description' => null,
+        'category' => 'User > Profile Management'
     ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
@@ -95,8 +111,8 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Hello {{full_name}},</p>
                 <p>We received a request to reset your password. Please use the below code to set up a new password for your account.&nbsp;</p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span><span style="background-color: #ffff00;"></span><span style="background-color: #ffff00;"></span></h2>
-                <p>This code is valid only for {{otp_expire_duration}} and can be used only once. You will need to request for another code if it expired.</p>
-                <p>If you didn't request to reset your password, ignore this email and the code will expire on its own.</p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired</p>
+                <p>If you didn't request to reset your password, ignore this email.</p>
                 <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
@@ -119,7 +135,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p></p>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span></h2>
                 <p><span style="background-color: #ffff00;"></span></p>
-                <p>This code is valid only for  {{otp_expire_duration}}  and can be used only once. You will need to request for another code if it expired.</p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -141,7 +157,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
                 <div>&nbsp;</div>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
-                <p>This code is valid only for {{otp_expire_duration}}. You will need to request for another code if it expired.</p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
@@ -168,7 +184,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Platform: {{platform}}</div>
                 <div>Browser: {{browser}}</div>
                 <p></p>
-                <div>If this was you, you can ignore this email. Otherwise you should change your password immediately.</div>
+                <div>If this was you, ignore this email. Otherwise, change your password immediately.</div>
                 <p></p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
@@ -347,6 +363,33 @@ const EMAIL_CONTENT_SETTINGS = [
                 </div>
             EOT,
         'variables'=>'full_name',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
+        'is_active' => true,
+        'subject'=>'Transaction Password Changed Warning',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that the transaction password for your account has just been changed.<span></span></div>
+                <p></p>
+                <div><strong>Device Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,country,city,ip,platform,browser',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],

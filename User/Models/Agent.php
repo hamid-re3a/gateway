@@ -81,4 +81,9 @@ class Agent extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function ips()
+    {
+        return $this->belongsToMany(Ip::class,'agent_ip');
+    }
 }

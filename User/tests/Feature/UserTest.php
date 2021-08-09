@@ -15,6 +15,7 @@ use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
 use User\Models\UserBlockHistory;
+use User\Models\UserHistory;
 
 class UserTest extends \User\tests\UserTest
 {
@@ -122,9 +123,9 @@ class UserTest extends \User\tests\UserTest
             Mail::assertSent(TooManyLoginAttemptTemporaryBlockedEmail::class);
 
         }
+
         Mail::assertSent(TooManyLoginAttemptPermanentBlockedEmail::class);
 
-        $this->assertCount(1,UserBlockHistory::all());
         $user->refresh();
         $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
     }
@@ -219,12 +220,14 @@ class UserTest extends \User\tests\UserTest
         ]);
         Carbon::setTestNow(now()->addSeconds(USER_FORGOT_PASSWORD_OTP_DURATION));
         Carbon::setTestNow(now()->addSeconds(USER_FORGOT_PASSWORD_OTP_DURATION));
-
         $response = $this->post(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
             "password" => "123456789!Q",
             "password_confirmation" => "123456789!Q"
+        ],[
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
         ]);
         $this->assertEquals(422, $response->status());
     }
@@ -245,12 +248,11 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-
-        $response = $this->post(route('auth.reset-forgot-password'), [
+        $response = $this->postJson(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
-            "password" => "123456789!Q",
-            "password_confirmation" => "123456789!Q"
+            "password" => "123456789!QaA",
+            "password_confirmation" => "123456789!QaA"
         ]);
         $this->assertEquals(200, $response->status());
     }
@@ -268,11 +270,11 @@ class UserTest extends \User\tests\UserTest
         ]);
         $user->email_verified_at = now();
         $user->save();
-        $response = $this->post(route('auth.forgot-password'), [
+        $response = $this->postJson(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
 
-        $response = $this->post(route('auth.reset-forgot-password'), [
+        $response = $this->postJson(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
             "password" => "123456789!Q",
@@ -280,18 +282,18 @@ class UserTest extends \User\tests\UserTest
         ]);
 
         Carbon::setTestNow(now()->addMinutes(2));
-        $response = $this->post(route('auth.forgot-password'), [
+        $response = $this->postJson(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
 
-        $response = $this->post(route('auth.reset-forgot-password'), [
+        $response = $this->postJson(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->latest()->first()->otp,
             "password" => "123456789!Q55",
             "password_confirmation" => "123456789!Q55"
         ]);
 
-        $this->assertEquals(422, $response->status());
+        $this->assertEquals(200, $response->status());
     }
 
     /**
@@ -306,11 +308,11 @@ class UserTest extends \User\tests\UserTest
         ]);
         $user->email_verified_at = now();
         $user->save();
-        $response = $this->post(route('auth.forgot-password'), [
+        $response = $this->postJson(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
 
-        $response = $this->post(route('auth.reset-forgot-password'), [
+        $response = $this->postJson(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
             "password" => "123456789!Q",
@@ -319,7 +321,7 @@ class UserTest extends \User\tests\UserTest
         $this->assertEquals(200, $response->status());
 
 
-        $response = $this->post(route('auth.reset-forgot-password'), [
+        $response = $this->postJson(route('auth.reset-forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "otp" => Otp::query()->first()->otp,
             "password" => "123456789!Q",

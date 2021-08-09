@@ -3,6 +3,7 @@
 return [
 
     'responses' => [
+        'global-error' => 'An error occurred, Try again please.',
         'max-attempts-exceeded' => 'Too many invalid attempts. Try again after a while',
         'user-account-deactivated-by-admin' => 'Your account is deactivated by admin',
         'user-account-activated-by-admin' => 'Your account is activated by admin',
@@ -42,6 +43,13 @@ return [
         'user-is-blocked' => 'Your account is blocked. Please reach support team',
         'username-already-exists' => 'The username already exists',
         'username-does-not-exist' => 'The user name does not exists' ,
+
+        'current-transaction-password-is-invalid' => 'Current transaction password is not correct .',
+        'transaction-password-successfully-changed' => 'You\'ve successfully changed your transaction password ',
+        'profile-details-updated' => 'You\'ve successfully changed your profile ',
+
+        'wrong-wallet-address' => 'Enter a valid wallet address',
+        'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',

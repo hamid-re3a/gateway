@@ -2,21 +2,14 @@
 
 namespace User\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use User\database\factories\UserFactory;
+use User\Exceptions\InvalidFieldException;
 use User\Exceptions\OldPasswordException;
-use User\Jobs\EmailJob;
-use User\Mail\User\EmailVerifyOtp;
-use User\Mail\User\ForgetPasswordOtpEmail;
-use User\Mail\User\WelcomeEmail;
-use User\Support\UserActivityHelper;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -120,22 +113,33 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'username',
+        'phone_number',
+        'email',
+        'gender',
+        'birthday',
+        'password',
+        'transaction_password',
+        'block_type',
+        'block_reason',
+        'avatar',
+        'passport_number',
+        'email_verified_at',
+        'google2fa_enable',
+        'google2fa_secret'
+    ];
 
     public function setPasswordAttribute($value)
     {
-        if (getSetting("USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD")) {
-            if (!is_null($this->password) && Hash::check($value, $this->password))
-                throw new OldPasswordException(trans('user.responses.password-already-used-by-you-try-another-one'),400);
-
-            $passwords = $this->passwordHistories()->get();
-            foreach ($passwords as $item)
-                if (Hash::check($value, $item->password))
-                throw new OldPasswordException( trans('user.responses.password-already-used-by-you-try-another-one'),400);
-
-        }
-
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function setTransactionPasswordAttribute($value)
+    {
+        $this->attributes['transaction_password'] = bcrypt($value);
     }
 
     public function getFullNameAttribute()
@@ -156,25 +160,48 @@ class User extends Authenticatable
         return $this->hasMany(Otp::class);
     }
 
-
-    public function blockHistories()
+    public function agents()
     {
-        return $this->hasMany(UserBlockHistory::class);
+        return $this->hasMany(Agent::class,'user_id','id');
     }
 
-    public function passwordHistories()
+    public function ips()
     {
-        return $this->hasMany(PasswordHistory::class);
+        return $this->hasMany(Ip::class,'user_id','id');
+    }
+
+    public function userHistories($field = null)
+    {
+        if(!is_null($field) AND in_array($field, $this->getFillable()))
+            return $this->hasMany(UserHistory::class,'user_id','id')->distinct($field)->whereNotNull($field);
+
+        return $this->hasMany(UserHistory::class,'user_id','id');
+    }
+
+    public function wallets()
+    {
+        return $this->hasMany(CryptoWallet::class,'user_id','id');
     }
 
     /**
      * methods
      */
-    public function isEmailVerified(): bool
+    public function isEmailVerified()
     {
         return  ! is_null($this->email_verified_at);
     }
 
+    public function historyCheck($field,$value)
+    {
+        //Check columns
+        if(!in_array($field,$this->getFillable()))
+            return new InvalidFieldException();
+        $history = $this->userHistories()->distinct($field)->pluck($field);
+        foreach ($history as $item)
+            if(Hash::check($value, $item))
+                return true;
 
+        return false;
+    }
 
 }
