@@ -6,6 +6,9 @@ namespace User\Http\Controllers\Front;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
+use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
@@ -92,5 +95,39 @@ class UserController extends Controller
         }
 
         return api()->success(trans('user.responses.profile-details-updated'));
+    }
+
+    /**
+     * Update avatar
+     * @group
+     * Profile Management
+     * @param UpdateAvatarRequest $request
+     * @return JsonResponse
+     */
+    public function updateAvatar(UpdateAvatarRequest $request)
+    {
+        $fileName = auth()->user()->id . '-' . Uuid::uuid4() . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $mimeType = $request->file('avatar')->getMimeType();
+        $request->file('avatar')->storeAs('/avatars/', $fileName);
+        auth()->user()->update([
+            'avatar' => [
+                'file_name' => $fileName,
+                'mime' => $mimeType
+            ]
+        ]);
+
+        return api()->success(trans('user.responses.avatar-updated'));
+    }
+
+    /**
+     * Get avatar
+     * @group
+     * Profile Management
+     * @return JsonResponse
+     */
+    public function getAvatar()
+    {
+        $avatar = auth()->user()->avatar;
+        return Storage::disk('local')->response('/avatars/' . auth()->user()->avatar['file_name']);
     }
 }

@@ -46,6 +46,8 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
                 Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
+                Route::post('update_avatar', [UserController::class, 'updateAvatar'])->name('update-avatar');
+                Route::get('avatar', [UserController::class, 'getAvatar'])->name('get-avatar');
             });
 
             Route::prefix('wallets')->group(function(){
