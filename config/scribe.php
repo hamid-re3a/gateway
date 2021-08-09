@@ -245,7 +245,7 @@ We use the following status codes for errors:
 <td>Ok -- The request was successful.</td>
 </tr>
 <tr>
-<td>302</td>
+<td>422</td>
 <td>Validation Error -- Your request was not valid.</td>
 </tr>
 <td>400</td>

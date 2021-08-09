@@ -53,7 +53,7 @@ class UserTest extends \User\tests\UserTest
             "password" => '123',
             "password_confirmation" => '123',
         ]);
-        $response->assertStatus(302);
+        $response->assertStatus(422);
         Mail::assertNotSent(WelcomeEmail::class);
     }
 
