@@ -116,7 +116,9 @@ class UserController extends Controller
             ]
         ]);
 
-        return api()->success(trans('user.responses.avatar-updated'));
+        return api()->success(trans('user.responses.avatar-updated'),[
+            'avatar' => route('get-avatar')
+        ]);
     }
 
     /**
@@ -127,7 +129,7 @@ class UserController extends Controller
      */
     public function getAvatar()
     {
-        $avatar = auth()->user()->avatar;
-        return Storage::disk('local')->response('/avatars/' . auth()->user()->avatar['file_name']);
+        $avatar = json_decode(auth()->user()->avatar,true);
+        return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
     }
 }

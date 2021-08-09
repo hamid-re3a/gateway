@@ -132,10 +132,6 @@ class User extends Authenticatable
         'google2fa_secret'
     ];
 
-    protected $casts = [
-        'avatar' => 'array'
-    ];
-
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
