@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('block_type')->nullable();
             $table->string('block_reason')->nullable();
 
-            $table->string('avatar')->nullable();
+            $table->json('avatar')->nullable();
             $table->string('passport_number')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();

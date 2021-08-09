@@ -47,6 +47,7 @@ return [
         'current-transaction-password-is-invalid' => 'Current transaction password is not correct .',
         'transaction-password-successfully-changed' => 'You\'ve successfully changed your transaction password ',
         'profile-details-updated' => 'You\'ve successfully changed your profile ',
+        'avatar-updated' => 'You\'ve successfully updated your avatar',
 
         'wrong-wallet-address' => 'Enter a valid wallet address',
         'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
