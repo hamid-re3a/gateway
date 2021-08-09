@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\User\UserDataJob;
 use Illuminate\Console\Command;
+use Orders\Services\User;
 
 class UserDataFire extends Command
 {
@@ -38,10 +39,13 @@ class UserDataFire extends Command
      */
     public function handle()
     {
-        $data = [
-          "name"=>"dariush" ,
-          "email"=>"test@test.com"
-        ];
-        UserDataJob::dispatch($data)->onQueue('kyc');
+        $user = new User();
+        $user->setId(1);
+        $user->setEmail("d@d.com");
+        $user->setFirstName("Dariush");
+        $user->setLastName("Molaie");
+        $serializeUser = serialize($user);
+
+        UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
     }
 }
