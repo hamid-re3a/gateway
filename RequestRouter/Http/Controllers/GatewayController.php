@@ -233,6 +233,11 @@ class GatewayController extends Controller
      */
     private function setUserHeadersIfAuthenticated(Request $request): void
     {
+        $request->headers->remove('X-user-id');
+        $request->headers->remove('X-user-first-name');
+        $request->headers->remove('X-user-last-name');
+        $request->headers->remove('X-user-email');
+        $request->headers->remove('X-user-username');
         if (auth()->check()) {
 
             $request->headers->set('X-user-id', auth()->user()->id);
