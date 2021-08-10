@@ -44,6 +44,7 @@ class UserDataFire extends Command
         $user->setEmail("d@d.com");
         $user->setFirstName("Dariush");
         $user->setLastName("Molaie");
+        $user->setRole('admin,client,dsafs');
         $serializeUser = serialize($user);
 
         UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
