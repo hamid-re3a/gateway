@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use User\Models\User;
 
 class GatewayController extends Controller
 {
@@ -239,12 +240,12 @@ class GatewayController extends Controller
         $request->headers->remove('X-user-email');
         $request->headers->remove('X-user-username');
         if (auth()->check()) {
-
-            $request->headers->set('X-user-id', auth()->user()->id);
-            $request->headers->set('X-user-first-name', auth()->user()->first_name);
-            $request->headers->set('X-user-last-name', auth()->user()->last_name);
-            $request->headers->set('X-user-email', auth()->user()->email);
-            $request->headers->set('X-user-username', auth()->user()->username);
+            $user = User::query()->find(auth()->user()->id);
+            $request->headers->set('X-user-id', $user->id);
+            $request->headers->set('X-user-first-name', $user->first_name);
+            $request->headers->set('X-user-last-name', $user->last_name);
+            $request->headers->set('X-user-email', $user->email);
+            $request->headers->set('X-user-username', $user->username);
         }
     }
 
