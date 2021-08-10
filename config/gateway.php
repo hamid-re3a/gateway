@@ -14,9 +14,14 @@ return [
             'domain' => 'https://jsonplaceholder.typicode.com/'
         ],
         'subscription' => [
-            'doc_point' => 'http://staging-subscription.janex.org/docs',
+            'doc_point' => 'https://staging-subscription.janex.org/docs',
             'just_current_routes' => false,
-            'domain' => 'http://staging-subscription.janex.org/'
+            'domain' => 'https://staging-subscription.janex.org/'
+        ],
+        'kyc' => [
+            'doc_point' => 'https://staging-kyc.janex.org/docs',
+            'just_current_routes' => false,
+            'domain' => 'https://staging-kyc.janex.org/'
         ],
         'local_subscription' => [
             'doc_point' => 'http://192.168.43.121:3561/docs',
