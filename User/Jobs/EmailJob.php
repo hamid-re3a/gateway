@@ -28,7 +28,7 @@ class EmailJob implements ShouldQueue
      */
     public function __construct(SettingableMail $email, $email_address)
     {
-        $this->queue = 'email';
+        $this->queue = 'emails';
         $this->email = $email;
         $this->email_address = $email_address;
     }
