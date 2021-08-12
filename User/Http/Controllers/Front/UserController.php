@@ -12,7 +12,7 @@ use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
-use User\Jobs\EmailJob;
+use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Support\UserActivityHelper;
@@ -38,7 +38,7 @@ class UserController extends Controller
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             if(getSetting('IS_LOGIN_PASSWORD_CHANGE_EMAIL_ENABLE'))
-                EmailJob::dispatch(new PasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
+                UrgentEmailJob::dispatch(new PasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
             DB::commit();
             return api()->success(trans('user.responses.password-successfully-changed'));
@@ -65,7 +65,7 @@ class UserController extends Controller
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             if(getSetting('IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE'))
-                EmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
+                UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
             DB::commit();
             return api()->success(trans('user.responses.transaction-password-successfully-changed'));

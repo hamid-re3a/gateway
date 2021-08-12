@@ -8,8 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use User\Exceptions\OldPasswordException;
 use User\Http\Requests\Auth\EmailExistenceRequest;
 use User\Http\Requests\Auth\EmailVerificationOtpRequest;
 use User\Http\Requests\Auth\ForgetPasswordRequest;
@@ -19,7 +17,7 @@ use User\Http\Requests\Auth\ResetForgetPasswordRequest;
 use User\Http\Requests\Auth\UsernameExistenceRequest;
 use User\Http\Requests\Auth\VerifyEmailOtpRequest;
 use User\Http\Resources\Auth\ProfileResource;
-use User\Jobs\EmailJob;
+use User\Jobs\UrgentEmailJob;
 use User\Mail\User\NormalLoginEmail;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
@@ -89,7 +87,7 @@ class AuthController extends Controller
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
 
-        EmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
+        UrgentEmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
         return $this->respondWithToken($token);
     }
 
@@ -203,7 +201,7 @@ class AuthController extends Controller
             $token = $this->getNewToken($user);
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
+            UrgentEmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
 
             return $this->respondWithToken($token, 'user.responses.email-verified-successfully');
         }
@@ -272,7 +270,7 @@ class AuthController extends Controller
                 ]);
 
                 list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-                EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
+                UrgentEmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
 
                 $fp_db->update([
                     'is_used' => true
