@@ -183,6 +183,11 @@ class User extends Authenticatable
         return $this->hasMany(CryptoWallet::class,'user_id','id');
     }
 
+    public function activities()
+    {
+        return $this->hasMany(UserActivity::class,'user_id','id');
+    }
+
     /**
      * methods
      */
