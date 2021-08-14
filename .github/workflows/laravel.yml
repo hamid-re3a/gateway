@@ -38,6 +38,9 @@ jobs:
         shopt -s dotglob 
         sudo mkdir -p /home/stagingapigateway/public_html/API-Gateway/temp-project 
         sudo cp -r . /home/stagingapigateway/public_html/API-Gateway/temp-project/
+        sudo rm -rf /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
+        sudo mv /home/stagingapigateway/public_html/API-Gateway/temp-project/server_deploy.sh /home/stagingapigateway/public_html/API-Gateway/
+        sudo chmod 700 /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
         sudo chown -R stagingapigateway:stagingapigateway /home/stagingapigateway/public_html/API-Gateway/temp-project
     - name: Run server_deploy.sh
       run: | 
