@@ -368,7 +368,7 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Transaction Password Changed Warning',
+        'subject'=>'Transaction Password Changed Successfully',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
