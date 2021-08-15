@@ -60,6 +60,10 @@ return [
 
         'your-account-unfrozen-successfully' => 'Your account unfrozen successfully',
         'your-account-already-unfreeze' => 'Your account is already unfreeze',
+
+        'your-account-deactivate-successfully' => 'Your account has been deactivated successfully',
+        'your-account-is-deactivate' => 'Your account is deactivate',
+
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',

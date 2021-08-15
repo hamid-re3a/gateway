@@ -198,6 +198,19 @@ class User extends Authenticatable
         return  ! is_null($this->email_verified_at);
     }
 
+    public function isDeactivate()
+    {
+        return $this->is_deactivate;
+    }
+
+    public function signOut()
+    {
+        $this->agents()->update([
+            'token_id' => null
+        ]);
+        $this->tokens()->delete();
+    }
+
     public function historyCheck($field,$value)
     {
         //Check columns

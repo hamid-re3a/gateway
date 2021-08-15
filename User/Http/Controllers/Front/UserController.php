@@ -236,4 +236,24 @@ class UserController extends Controller
 
         return api()->success(trans('user.responses.your-account-unfrozen-successfully'));
     }
+
+    /**
+     * Deactivate account
+     * @group
+     * Profile Management
+     */
+    public function deactivate()
+    {
+        auth()->user()->update([
+            'is_deactivate' => TRUE
+        ]);
+
+        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
+        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+        auth()->user()->signOut();
+        return api()->success(trans('user.responses.your-account-deactivate-successfully'));
+
+
+    }
 }
