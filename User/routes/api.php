@@ -47,6 +47,8 @@ Route::middleware(['user_activity'])->group(function () {
             Route::prefix('profile_management')->group(function(){
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
+                Route::get('transaction_password_otp', [UserController::class, 'askTransactionPasswordOtp'])->name('ask-transaction-password-otp');
+                Route::post('verify_transaction_otp', [UserController::class, 'verifyTransactionPasswordOtp'])->name('verify-transaction-password-otp');
                 Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
                 Route::post('update_avatar', [UserController::class, 'updateAvatar'])->name('update-avatar');
                 Route::get('avatar', [UserController::class, 'getAvatar'])->name('get-avatar');

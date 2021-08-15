@@ -44,6 +44,9 @@ return [
         'username-already-exists' => 'The username already exists',
         'username-does-not-exist' => 'The user name does not exists' ,
 
+        'transaction-password-otp-code-is-expired' => 'The otp code is expired',
+        'transaction-password-code-code-is-used' => 'The otp code is used',
+        'transaction-password-otp-code-is-incorrect' => 'The otp code is incorrect, Please check and refresh your email inbox',
         'current-transaction-password-is-invalid' => 'Current transaction password is not correct .',
         'transaction-password-successfully-changed' => 'You\'ve successfully changed your transaction password ',
         'profile-details-updated' => 'You\'ve successfully changed your profile ',
