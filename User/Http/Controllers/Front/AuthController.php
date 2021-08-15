@@ -62,6 +62,7 @@ class AuthController extends Controller
 
         $user = User::query()->where('email', $credentials['email'])->first();
 
+
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
         $data = [];
@@ -82,7 +83,10 @@ class AuthController extends Controller
         if (!$user->isEmailVerified())
             return api()->error(trans('user.responses.go-activate-your-email'), null, 403);
 
-        $token = $this->getNewToken($user);
+        if($user->isDeactivate())
+            return api()->error(trans('user.responses.your-account-is-deactivate'),null,403);
+
+            $token = $this->getNewToken($user);
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
@@ -170,6 +174,9 @@ class AuthController extends Controller
         $user = User::whereEmail($request->get('email'))->first();
         if ($user->isEmailVerified())
             return api()->success(trans('user.responses.email-is-already-verified'));
+
+        if($user->isDeactivate())
+            return api()->error(trans('user.responses.your-account-is-deactivate'),null,403);
 
         $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
         $otp_db = $user->otps()
@@ -297,7 +304,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->user()->tokens()->delete();
+        auth()->user()->signOut();
         return api()->success(trans('user.responses.logout-successful'));
     }
 

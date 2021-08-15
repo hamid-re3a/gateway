@@ -28,7 +28,7 @@ class TrivialEmailJob implements ShouldQueue
      */
     public function __construct(SettingableMail $email, $email_address)
     {
-        $this->queue = 'emails';
+        $this->queue = 'trivial_emails';
         $this->email = $email;
         $this->email_address = $email_address;
     }
