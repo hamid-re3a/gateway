@@ -16,6 +16,7 @@ use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
 use User\Jobs\TrivialEmailJob;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
+use User\Mail\User\ProfileManagement\DeactivatedAccountEmail;
 use User\Mail\User\ProfileManagement\FreezeAccountEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Support\UserActivityHelper;
@@ -249,7 +250,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        TrivialEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         auth()->user()->signOut();
         return api()->success(trans('user.responses.your-account-deactivate-successfully'));

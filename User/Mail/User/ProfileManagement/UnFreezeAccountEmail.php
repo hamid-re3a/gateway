@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class FreezeAccountEmail extends Mailable implements SettingableMail
+class UnFreezeAccountEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
