@@ -129,7 +129,9 @@ class User extends Authenticatable
         'passport_number',
         'email_verified_at',
         'google2fa_enable',
-        'google2fa_secret'
+        'google2fa_secret',
+        'is_freeze',
+        'is_deactivate'
     ];
 
     public function setPasswordAttribute($value)

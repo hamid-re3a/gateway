@@ -52,6 +52,8 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
                 Route::post('update_avatar', [UserController::class, 'updateAvatar'])->name('update-avatar');
                 Route::get('avatar', [UserController::class, 'getAvatar'])->name('get-avatar');
+                Route::post('freeze', [UserController::class, 'freeze'])->name('freeze-account');
+                Route::post('unfreeze', [UserController::class, 'unfreeze'])->name('unfreeze-account');
             });
 
             Route::prefix('wallets')->group(function(){

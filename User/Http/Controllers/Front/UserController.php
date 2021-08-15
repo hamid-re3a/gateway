@@ -16,9 +16,8 @@ use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
 use User\Jobs\TrivialEmailJob;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
+use User\Mail\User\ProfileManagement\FreezeAccountEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
-use User\Mail\User\SuccessfulEmailVerificationEmail;
-use User\Models\User;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
@@ -196,5 +195,45 @@ class UserController extends Controller
     {
         $avatar = json_decode(auth()->user()->avatar,true);
         return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
+    }
+
+    /**
+     * Freeze account
+     * @group
+     * Profile Management
+     */
+    public function freeze()
+    {
+        if(auth()->user()->is_freeze)
+            return api()->error(trans('user.responses.your-account-already-frozen'));
+
+        auth()->user()->update([
+            'is_freeze' => true
+        ]);
+
+        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
+        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+        return api()->success(trans('user.responses.your-account-frozen-successfully'));
+    }
+
+    /**
+     * UnFreeze account
+     * @group
+     * Profile Management
+     */
+    public function unfreeze()
+    {
+        if(!auth()->user()->is_freeze)
+            return api()->error(trans('user.responses.your-account-already-unfreeze'));
+
+        auth()->user()->update([
+            'is_freeze' => false
+        ]);
+
+        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
+        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+        return api()->success(trans('user.responses.your-account-unfrozen-successfully'));
     }
 }

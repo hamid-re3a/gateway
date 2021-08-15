@@ -38,6 +38,9 @@ class CreateUsersTable extends Migration
             $table->boolean('google2fa_enable')->default(false);
             $table->string('google2fa_secret')->nullable();
 
+            $table->boolean('is_freeze')->default(FALSE);
+            $table->boolean('is_deactivate')->default(FALSE);
+
             $table->timestamps();
             $table->softDeletes();
         });

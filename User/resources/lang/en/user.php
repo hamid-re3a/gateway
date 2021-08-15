@@ -54,6 +54,12 @@ return [
 
         'wrong-wallet-address' => 'Enter a valid wallet address',
         'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
+
+        'your-account-frozen-successfully' => 'Your account has been frozen successfully',
+        'your-account-already-frozen' => 'Your account is already frozen',
+
+        'your-account-unfrozen-successfully' => 'Your account unfrozen successfully',
+        'your-account-already-unfreeze' => 'Your account is already unfreeze',
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',
