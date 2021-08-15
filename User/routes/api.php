@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use User\Http\Controllers\Admin\TranslateController;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
+use User\Http\Controllers\Front\ActivityController;
 use User\Http\Controllers\Front\AuthController;
 use User\Http\Controllers\Front\LoginSecurityController;
 use User\Http\Controllers\Front\SessionController;
@@ -59,6 +61,18 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('inactive', [WalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
             });
 
+            Route::prefix('translates')->name('translates.')->group(function(){
+                Route::get('/', [TranslateController::class, 'index'])->name('list');
+                Route::get('/unfinished', [TranslateController::class, 'unfinished'])->name('unfinished');
+                Route::post('/show', [TranslateController::class, 'show'])->name('show');
+                Route::post('/store', [TranslateController::class, 'store'])->name('store');
+                Route::patch('/update', [TranslateController::class, 'update'])->name('update');
+                Route::delete('/delete', [TranslateController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::prefix('activities')->name('activities.')->group(function() {
+                Route::get('/', [ActivityController::class, 'index'])->name('full-list');
+            });
 
             Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
                 Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');

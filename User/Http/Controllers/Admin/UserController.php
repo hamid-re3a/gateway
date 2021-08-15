@@ -11,12 +11,11 @@ use User\Http\Resources\OtpResource;
 use User\Http\Resources\User\LoginHistoryResource;
 use User\Http\Resources\User\PasswordHistoryResource;
 use User\Http\Resources\User\UserBlockHistoryResource;
-use User\Jobs\EmailJob;
+use User\Jobs\UrgentEmailJob;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
 use User\Models\User;
 use User\Support\UserActivityHelper;
 
-;
 
 class UserController extends Controller
 {
@@ -46,6 +45,8 @@ class UserController extends Controller
      * Verify Email User Account
      * @group
      * Admin > User
+     * @param VerifyUserEmailRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function verifyUserEmailAccount(VerifyUserEmailRequest $request)
     {
@@ -56,7 +57,7 @@ class UserController extends Controller
             $user->save();
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
+            UrgentEmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
         }
         return api()->success(trans('user.responses.ok'));
     }

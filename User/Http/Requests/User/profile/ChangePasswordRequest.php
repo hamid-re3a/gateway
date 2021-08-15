@@ -57,4 +57,19 @@ class ChangePasswordRequest extends FormRequest
         }
         return;
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'current_password.required' => 'Enter current password.',
+            'password.required' => 'Enter new password.',
+            'password_confirmation.required' => 'Confirm new password.',
+            'password_confirmation.same' => 'Password does not match.',
+        ];
+    }
 }

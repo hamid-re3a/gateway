@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class EmailJob implements ShouldQueue
+class UrgentEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     /**
@@ -28,6 +28,7 @@ class EmailJob implements ShouldQueue
      */
     public function __construct(SettingableMail $email, $email_address)
     {
+        $this->queue = 'urgent_emails';
         $this->email = $email;
         $this->email_address = $email_address;
     }

@@ -90,3 +90,18 @@ function secondsToHumanReadable($seconds)
 
     return preg_replace('/(, )?(?<!\d)0 .*?(,| )/', '', $time);
 }
+
+function getDbTranslate($key,$defaultValue = null)
+{
+
+    $translate = cache()->get('dbTranslates')->where('key', $key)->first();
+    if($translate)
+        return $translate->value;
+
+    \User\Models\Translate::insertOrIgnore([
+        'key' => $key
+    ]);
+
+    return $defaultValue ? $defaultValue : $key;
+
+}

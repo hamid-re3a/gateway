@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
-use User\Jobs\EmailJob;
+use User\Jobs\TrivialEmailJob;
+use User\Jobs\UrgentEmailJob;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\WelcomeEmail;
@@ -102,7 +103,7 @@ class UserActivityHelper
                 "otp" => $token,
                 "type" => OTP_TYPE_EMAIL_FORGOT_PASSWORD
             ]);
-            EmailJob::dispatch(new ForgetPasswordOtpEmail($user, $token), $user->email)->onQueue(QUEUES_EMAIL);
+            UrgentEmailJob::dispatch(new ForgetPasswordOtpEmail($user, $token), $user->email);
             return [$token, $error];
 
         }
@@ -145,9 +146,9 @@ class UserActivityHelper
             ]);
 
             if ($is_welcome)
-                EmailJob::dispatch(new WelcomeEmail($user, $token), $user->email)->onQueue(QUEUES_EMAIL);
+                TrivialEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
-                EmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email)->onQueue(QUEUES_EMAIL);
+                UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
             return [$data, $error];
 
         }
