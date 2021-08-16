@@ -219,7 +219,11 @@ class UserController extends Controller
     public function getAvatarImage()
     {
         $avatar = json_decode(auth()->user()->avatar,true);
-        return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
+
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+            return api()->error('',null,404);
+
+        return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
     }
 
 }
