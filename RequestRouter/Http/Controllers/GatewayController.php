@@ -197,6 +197,7 @@ class GatewayController extends Controller
 
     private function getResponse($final_route, Request $request, $method = null, $multi = false)
     {
+
         if (is_null($method))
             $method = strtolower($request->method());
 
@@ -232,15 +233,11 @@ class GatewayController extends Controller
                     ['multipart' => $multipart]
                 );
             } catch (\GuzzleHttp\Exception\RequestException $exception){
-                http_response_code($exception->getResponse()->getStatusCode());
                 return new Response($exception->getResponse()->getBody(),$exception->getResponse()->getStatusCode(),$exception->getResponse()->getHeaders());
             }
-            http_response_code($res->->getStatusCode());
             return new Response($res->getBody()->getContents(),$res->getStatusCode(),$res->getHeaders());
         }
-
         $req->withBody($contents, $content_type);
-        $final_route = $this->injectParams($final_route,$request->all());
 
 
         $res = $req->$method($final_route);
@@ -251,11 +248,10 @@ class GatewayController extends Controller
             echo $res->body();
             return null;
         }
-        $final = response($res->body());
+        $final = response($res->body(),$res->status);
         if (!$multi)
             foreach ($res->headers() as $key => $value)
                 $final->header($key, $value);
-        http_response_code($final->getStatusCode());
         return $final;
     }
 
