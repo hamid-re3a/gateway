@@ -226,12 +226,17 @@ class GatewayController extends Controller
                 else
                     $this->attachContent($multipart, $key, $file);
             }
-            $res = (new \GuzzleHttp\Client(['headers' =>$headers]))->$method(
-                $final_route,
-                [
-                    'multipart' => $multipart
-                ]
-            );
+            try {
+                $res = (new \GuzzleHttp\Client(['headers' =>$headers]))->$method(
+                    $final_route,
+                    [
+                        'multipart' => $multipart
+                    ]
+                );
+            } catch (\GuzzleHttp\Exception\RequestException $exception){
+                return new Response($exception->getResponse()->getBody(),$exception->getResponse()->getStatusCode(),$exception->getResponse()->getHeaders());
+            }
+
             return new Response($res->getBody()->getContents(),$res->getStatusCode(),$res->getHeaders());
         }
 
