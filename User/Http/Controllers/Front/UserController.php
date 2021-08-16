@@ -12,13 +12,27 @@ use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
+use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
+use User\Http\Resources\User\ProfileDetailsResource;
+use User\Jobs\TrivialEmailJob;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
+use User\Mail\User\ProfileManagement\DeactivatedAccountEmail;
+use User\Mail\User\ProfileManagement\FreezeAccountEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
 {
+
+    /**
+     * Get user profile details
+     * @group Profile Management
+     */
+    public function getDetails()
+    {
+        return api()->success(null,ProfileDetailsResource::make(auth()->user()));
+    }
 
     /**
      * Change password
@@ -75,6 +89,67 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Ask Email transaction password OTP
+     * @group
+     * Profile Management
+     */
+    public function askTransactionPasswordOtp()
+    {
+        list($data, $err) = UserActivityHelper::makeEmailTransactionPasswordOtp(auth()->user(), request(), false);
+        if ($err) {
+            return api()->error(trans('user.responses.wait-limit'), $data, 429);
+        }
+        return api()->success(trans('user.responses.otp-successfully-sent'));
+    }
+
+    /**
+     * Verify Transaction password OTP
+     * @group
+     * Profile Management
+     * @param VerifyTransactionPasswordOtp $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function verifyTransactionPasswordOtp(VerifyTransactionPasswordOtp $request)
+    {
+
+        $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
+        $otp_db = auth()->user()->otps()
+            ->where('type', OTP_TYPE_CHANGE_TRANSACTION_PASSWORD)
+            ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+            ->get()
+            ->last();
+        if (is_null($otp_db)) {
+            $errors = [
+                'otp' => trans('user.responses.transaction-password-otp-code-is-expired')
+            ];
+            return api()->error('user.responses.transaction-password-otp-code-is-expired', '', 422, $errors);
+        }
+
+        if ($otp_db->is_used) {
+            $errors = [
+                'otp' => trans('user.responses.transaction-password-code-code-is-used')
+            ];
+            return api()->error('user.responses.transaction-password-code-code-is-used', '', 422, $errors);
+        }
+
+
+        if ($otp_db->otp == $request->otp) {
+            $otp_db->is_used = true;
+            $otp_db->save();
+
+
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            $request->user()->update([
+                'password' => $request->get('password') //bcrypt in User model (Mutator)
+            ]);
+            UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+            return api()->success(trans('user.responses.transaction-password-successfully-changed'));
+        }
+        return api()->error('user.responses.transaction-password-otp-code-is-incorrect');
+    }
 
     /**
      * Change personal details
@@ -117,19 +192,93 @@ class UserController extends Controller
         ]);
 
         return api()->success(trans('user.responses.avatar-updated'),[
-            'avatar' => route('get-avatar')
+            'mime' => $mimeType,
+            'link' => route('get-avatar-image')
         ]);
     }
 
     /**
-     * Get avatar
+     * Get avatar details
      * @group
      * Profile Management
-     * @return JsonResponse
      */
-    public function getAvatar()
+    public function getAvatarDetails()
+    {
+        $avatar = json_decode(auth()->user()->avatar,true);
+        return api()->success(null,[
+            'mime' => $avatar['mime'],
+            'link' => route('get-avatar-image')
+        ]);
+    }
+
+    /**
+     * Get avatar image
+     * @group
+     * Profile Management
+     */
+    public function getAvatarImage()
     {
         $avatar = json_decode(auth()->user()->avatar,true);
         return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
+    }
+
+    /**
+     * Freeze account
+     * @group
+     * Profile Management
+     */
+    public function freeze()
+    {
+        if(auth()->user()->is_freeze)
+            return api()->error(trans('user.responses.your-account-already-frozen'));
+
+        auth()->user()->update([
+            'is_freeze' => true
+        ]);
+
+        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
+        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+        return api()->success(trans('user.responses.your-account-frozen-successfully'));
+    }
+
+    /**
+     * UnFreeze account
+     * @group
+     * Profile Management
+     */
+    public function unfreeze()
+    {
+        if(!auth()->user()->is_freeze)
+            return api()->error(trans('user.responses.your-account-already-unfreeze'));
+
+        auth()->user()->update([
+            'is_freeze' => false
+        ]);
+
+        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
+        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+        return api()->success(trans('user.responses.your-account-unfrozen-successfully'));
+    }
+
+    /**
+     * Deactivate account
+     * @group
+     * Profile Management
+     */
+    public function deactivate()
+    {
+        auth()->user()->update([
+            'is_deactivate' => TRUE
+        ]);
+
+        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
+        UrgentEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+        auth()->user()->signOut();
+        return api()->success(trans('user.responses.your-account-deactivate-successfully'));
+
+
     }
 }

@@ -122,6 +122,28 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
+    'CHANGE_TRANSACTION_PASSWORD_EMAIL_OTP'=>[
+
+        'is_active' => true,
+        'subject'=>'Transaction Password OTP',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <p>To change your transaction password, please use the below code</p>
+                <p></p>
+                <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span></h2>
+                <p><span style="background-color: #ffff00;"></span></p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired</p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,otp,otp_expire_duration',
+        'variables_description'=>'full_name user full name, otp otp token',
+        'type'=>'email',
+    ],
     'VERIFICATION_EMAIL_OTP_EMAIL'=>[
 
         'is_active' => true,
@@ -368,13 +390,94 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Transaction Password Changed Warning',
+        'subject'=>'Transaction Password Changed Successfully',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
                 <div>This is a confirmation that the transaction password for your account has just been changed.<span></span></div>
+                <p></p>
+                <div><strong>Device Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'FREEZE_ACCOUNT_EMAIL'=>[
+        'is_active' => true,
+        'subject'=>'Your account frozen successfully',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that your account has been frozen successfully.<span></span></div>
+                <p></p>
+                <div><strong>Device Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'UNFREEZE_ACCOUNT_EMAIL'=>[
+        'is_active' => true,
+        'subject'=>'Your account unfroze successfully',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that your account unfroze successfully.<span></span></div>
+                <p></p>
+                <div><strong>Device Information:</strong><strong></strong></div>
+                <div>Country: {{country}}</div>
+                <div>City: {{city}}</div>
+                <div>IP: {{ip}}</div>
+                <div>Platform: {{platform}}</div>
+                <div>Browser: {{browser}}</div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'DEACTIVATE_ACCOUNT_EMAIL'=>[
+        'is_active' => true,
+        'subject'=>'Your account deactivated successfully',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that your account has been deactivated successfully.<span></span></div>
                 <p></p>
                 <div><strong>Device Information:</strong><strong></strong></div>
                 <div>Country: {{country}}</div>
@@ -432,10 +535,12 @@ const DOCUMENT_TYPES = [
  * otp types
  */
 const OTP_TYPE_EMAIL_VERIFICATION = 'OTP_EMAIL_VERIFICATION';
+const OTP_TYPE_CHANGE_TRANSACTION_PASSWORD = 'OTP_EMAIL_TRANSACTION_PASSWORD';
 const OTP_TYPE_EMAIL_FORGOT_PASSWORD = 'OTP_EMAIL_FORGOT_PASSWORD';
 const OTP_TYPES = [
     OTP_TYPE_EMAIL_VERIFICATION,
     OTP_TYPE_EMAIL_FORGOT_PASSWORD,
+    OTP_TYPE_CHANGE_TRANSACTION_PASSWORD
 ];
 
 /**
