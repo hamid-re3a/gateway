@@ -134,7 +134,7 @@ class UserController extends Controller
             $request->user()->update([
                 'password' => $request->get('password') //bcrypt in User model (Mutator)
             ]);
-            TrivialEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+            UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
             return api()->success(trans('user.responses.transaction-password-successfully-changed'));
         }
@@ -213,7 +213,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         return api()->success(trans('user.responses.your-account-frozen-successfully'));
     }
@@ -233,7 +233,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         return api()->success(trans('user.responses.your-account-unfrozen-successfully'));
     }
@@ -250,7 +250,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        UrgentEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         auth()->user()->signOut();
         return api()->success(trans('user.responses.your-account-deactivate-successfully'));
