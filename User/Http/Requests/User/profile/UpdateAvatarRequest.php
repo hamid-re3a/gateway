@@ -28,7 +28,7 @@ class UpdateAvatarRequest extends FormRequest
     {
 
         return [
-            'avatar' => 'required|file|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf|max:2048',
+            'avatar' => 'required|file|mimes:png,jpg,jpeg|max:2048',
         ];
     }
 
