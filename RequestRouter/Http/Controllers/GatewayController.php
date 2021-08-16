@@ -5,6 +5,8 @@ namespace RequestRouter\Http\Controllers;
 
 use App\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -84,13 +86,13 @@ class GatewayController extends Controller
         $responses = Http::withHeaders($headers)
             ->withBody($contents, $content_type)
             ->withUserAgent($user_agent)->pool(function (\Illuminate\Http\Client\Pool $pool) use ($concurrent_requests, $request) {
-            $array = [];
-            foreach ($concurrent_requests as $route) {
-                $array[] = $pool->as($route['name'])->get($route['route']);
-            }
+                $array = [];
+                foreach ($concurrent_requests as $route) {
+                    $array[] = $pool->as($route['name'])->get($route['route']);
+                }
 
-            return $array;
-        });
+                return $array;
+            });
 
 
         foreach ($concurrent_requests as $route) {
@@ -205,15 +207,39 @@ class GatewayController extends Controller
         }
         $user_agent = $request->userAgent();
         $contents = $request->getContent();
-        $content_type = $request->getContentType() ?? "application/json";
-
+        $content_type = $request->header('Content-type') ?? $request->getContentType() ?? "application/json";
 
         $headers = $this->getNecessaryHeaders($request);
-        $res = Http::withHeaders($headers)
-            ->withBody($contents, $content_type)
-            ->withUserAgent($user_agent)->
-            $method($final_route);
+        $req = Http::withHeaders($headers)->withUserAgent($user_agent);
 
+        if (Str::startsWith($content_type, 'multi')) {
+
+            $multipart = [];
+            foreach ($request->all() as $key => $file) {
+                if (is_array($file))
+                    foreach ($file as $subFile) {
+                         $this->attachFile($multipart, $key . '[]', $subFile);
+                    }
+                else if( $file instanceof  UploadedFile)
+                    $this->attachFile($multipart, $key, $file);
+
+                else
+                    $this->attachContent($multipart, $key, $file);
+            }
+            $res = (new \GuzzleHttp\Client(['headers' =>$headers]))->$method(
+                $final_route,
+                [
+                    'multipart' => $multipart
+                ]
+            );
+            return new Response($res->getBody()->getContents(),$res->getStatusCode(),$res->getHeaders());
+        }
+
+        $req->withBody($contents, $content_type);
+        $final_route = $this->injectParams($final_route,$request->all());
+
+
+        $res = $req->$method($final_route);
         if (in_array($res->header('Content-type'), ALL_MIME_TYPES)) {
             if (!$multi)
                 foreach ($res->headers() as $key => $value)
@@ -227,6 +253,20 @@ class GatewayController extends Controller
                 $final->header($key, $value);
 
         return $final;
+    }
+
+    private function injectParams($url, array $params, $prefix = '')
+    {
+        foreach ($params as $key => $value) {
+            if (is_string($value) || is_numeric($value)) {
+                if (Str::contains($url, '?'))
+                    $url = $url . "&$key=$value";
+                else
+                    $url = $url . "?$key=$value";
+            }
+        }
+
+        return $url;
     }
 
     /**
@@ -273,5 +313,19 @@ class GatewayController extends Controller
 //        unset($headers['content-type']);
         unset($headers['cookie']);
         return $headers;
+    }
+
+
+    private function attachFile( &$multipart, $key, $subFile)
+    {
+        $file = fopen($subFile->getRealPath(), 'r');
+        $multipart[] = ['name'=> $key,'contents'=>$file,'filename'=>$subFile->getClientOriginalName(), [
+            'Content-Type' => $subFile->getMimeType()
+        ]];
+    }
+
+    private function attachContent( &$multipart, $key, $conent)
+    {
+        $multipart[] = ['name'=> $key,'contents'=>$conent];
     }
 }
