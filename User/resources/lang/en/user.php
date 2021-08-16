@@ -55,14 +55,11 @@ return [
         'wrong-wallet-address' => 'Enter a valid wallet address',
         'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
 
-        'your-account-frozen-successfully' => 'Your account has been frozen successfully',
-        'your-account-already-frozen' => 'Your account is already frozen',
+        'user-account-frozen-successfully' => 'User account has been frozen successfully',
+        'user-account-unfreeze-successfully' => 'User account has been unfrozen successfully',
 
-        'your-account-unfrozen-successfully' => 'Your account unfrozen successfully',
-        'your-account-already-unfreeze' => 'Your account is already unfreeze',
-
-        'your-account-deactivate-successfully' => 'Your account has been deactivated successfully',
-        'your-account-is-deactivate' => 'Your account is deactivate',
+        'user-account-deactivate-successfully' => 'User account has been deactivated successfully',
+        'user-account-activate-successfully' => 'User account has been activated successfully',
 
     ],
     'validation' => [
