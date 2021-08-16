@@ -134,6 +134,12 @@ class User extends Authenticatable
         'is_deactivate'
     ];
 
+    protected $casts = [
+        'birthday' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);

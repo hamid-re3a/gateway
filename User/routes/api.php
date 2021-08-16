@@ -45,6 +45,7 @@ Route::middleware(['user_activity'])->group(function () {
 
 
             Route::prefix('profile_management')->group(function(){
+                Route::get('', [UserController::class, 'getDetails'])->name('user-profile-detail');
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
                 Route::get('transaction_password_otp', [UserController::class, 'askTransactionPasswordOtp'])->name('ask-transaction-password-otp');
