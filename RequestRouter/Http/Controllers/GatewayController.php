@@ -229,14 +229,13 @@ class GatewayController extends Controller
             try {
                 $res = (new \GuzzleHttp\Client(['headers' =>$headers]))->$method(
                     $final_route,
-                    [
-                        'multipart' => $multipart
-                    ]
+                    ['multipart' => $multipart]
                 );
             } catch (\GuzzleHttp\Exception\RequestException $exception){
+                http_response_code($exception->getResponse()->getStatusCode());
                 return new Response($exception->getResponse()->getBody(),$exception->getResponse()->getStatusCode(),$exception->getResponse()->getHeaders());
             }
-
+            http_response_code($res->->getStatusCode());
             return new Response($res->getBody()->getContents(),$res->getStatusCode(),$res->getHeaders());
         }
 
@@ -256,7 +255,7 @@ class GatewayController extends Controller
         if (!$multi)
             foreach ($res->headers() as $key => $value)
                 $final->header($key, $value);
-
+        http_response_code($final->getStatusCode());
         return $final;
     }
 
