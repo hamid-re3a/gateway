@@ -417,20 +417,13 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'FREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Your account frozen successfully',
+        'subject'=>'Your account has been frozen',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
-                <div>This is a confirmation that your account has been frozen successfully.<span></span></div>
-                <p></p>
-                <div><strong>Device Information:</strong><strong></strong></div>
-                <div>Country: {{country}}</div>
-                <div>City: {{city}}</div>
-                <div>IP: {{ip}}</div>
-                <div>Platform: {{platform}}</div>
-                <div>Browser: {{browser}}</div>
+                <div>This is a confirmation that your account has been frozen.<span></span></div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -438,26 +431,19 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'UNFREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Your account unfroze successfully',
+        'subject'=>'Your account has been unfrozen',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
-                <div>This is a confirmation that your account unfroze successfully.<span></span></div>
-                <p></p>
-                <div><strong>Device Information:</strong><strong></strong></div>
-                <div>Country: {{country}}</div>
-                <div>City: {{city}}</div>
-                <div>IP: {{ip}}</div>
-                <div>Platform: {{platform}}</div>
-                <div>Browser: {{browser}}</div>
+                <div>This is a confirmation that your account has been unfrozen .<span></span></div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -465,26 +451,19 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
-    'DEACTIVATE_ACCOUNT_EMAIL'=>[
+    'USER_ACCOUNT_HAS_BEEN_DEACTIVATED'=>[
         'is_active' => true,
-        'subject'=>'Your account deactivated successfully',
+        'subject'=>'Your account has been deactivated',
         'from'=>'support@janex.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
-                <div>This is a confirmation that your account has been deactivated successfully.<span></span></div>
-                <p></p>
-                <div><strong>Device Information:</strong><strong></strong></div>
-                <div>Country: {{country}}</div>
-                <div>City: {{city}}</div>
-                <div>IP: {{ip}}</div>
-                <div>Platform: {{platform}}</div>
-                <div>Browser: {{browser}}</div>
+                <div>This is a confirmation that your account has been deactivated .<span></span></div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -492,7 +471,27 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables'=>'full_name',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'USER_ACCOUNT_HAS_BEEN_ACTIVATED'=>[
+        'is_active' => true,
+        'subject'=>'Your account has been activated',
+        'from'=>'support@janex.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that your account has been activated .<span></span></div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],

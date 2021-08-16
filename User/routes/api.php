@@ -55,9 +55,6 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::post('update_avatar', [UserController::class, 'updateAvatar'])->name('update-avatar');
                 Route::get('avatar', [UserController::class, 'getAvatarDetails'])->name('get-avatar-detail');
                 Route::get('avatar/image', [UserController::class, 'getAvatarImage'])->name('get-avatar-image');
-                Route::post('freeze', [UserController::class, 'freeze'])->name('freeze-account');
-                Route::post('unfreeze', [UserController::class, 'unfreeze'])->name('unfreeze-account');
-                Route::post('deactivate', [UserController::class, 'deactivate'])->name('deactivate-account');
             });
 
             Route::prefix('wallets')->group(function(){
@@ -83,7 +80,9 @@ Route::middleware(['user_activity'])->group(function () {
             });
 
             Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
+                Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
                 Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
+                Route::post('/freeze_or_unfreeze_user', [AdminUserController::class, 'freezeOrUnfreezeUserAccount'])->name('freeze-or-unfreeze-user-account');
 
                 Route::post('/verify_email_user', [AdminUserController::class, 'verifyUserEmailAccount'])->name('verify-email-user-account');
                 Route::get('/user_email_verification_history', [AdminUserController::class, 'emailVerificationHistory'])->name('user-email-verification-history');
