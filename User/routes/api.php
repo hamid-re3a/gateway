@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use User\Http\Controllers\Admin\GatewayServicesController;
 use User\Http\Controllers\Admin\TranslateController;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
 use User\Http\Controllers\Front\ActivityController;
@@ -84,6 +85,13 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
 
             });
+
+            Route::middleware(['role:admin'])->prefix('gateway_service')->name("gateway-service")->group(function () {
+                Route::get('/list',[GatewayServicesController::class, 'gatewayServicesList'])->name('list');
+                Route::post('/edit',[GatewayServicesController::class, 'editServiceGateway'])->name('edit');
+            });
+
+
         });
     });
 });
