@@ -248,7 +248,7 @@ class GatewayController extends Controller
             echo $res->body();
             return null;
         }
-        $final = response($res->body(),$res->status);
+        $final = response($res->body(),$res->status());
         if (!$multi)
             foreach ($res->headers() as $key => $value)
                 $final->header($key, $value);
