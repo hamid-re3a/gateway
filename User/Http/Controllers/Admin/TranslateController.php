@@ -11,9 +11,16 @@ use User\Http\Requests\Admin\StoreTranslateRequest;
 use User\Http\Requests\Admin\UpdateTranslateRequest;
 use User\Http\Resources\TranslateResource;
 use User\Models\Translate;
+use User\Services\TranslateService;
 
 class TranslateController extends Controller
 {
+    private $translate_service;
+
+    public function __construct(TranslateService $translate_service)
+    {
+        $this->translate_service = $translate_service;
+    }
     /**
      * List translates
      * @group Admin > Translates
@@ -21,8 +28,7 @@ class TranslateController extends Controller
      */
     public function index()
     {
-
-        return api()->success(null,TranslateResource::collection(Translate::whereNotNull('value')->simplePaginate())->response()->getData());
+        return api()->success(null,TranslateResource::collection($this->translate_service->list())->response()->getData());
 
     }
 
