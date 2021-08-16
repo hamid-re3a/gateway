@@ -147,7 +147,7 @@ class UserActivityHelper
             ]);
 
             if ($is_welcome)
-                TrivialEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
+                UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
                 UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
             return [$data, $error];

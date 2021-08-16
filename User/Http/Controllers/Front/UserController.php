@@ -134,7 +134,7 @@ class UserController extends Controller
             $request->user()->update([
                 'password' => $request->get('password') //bcrypt in User model (Mutator)
             ]);
-            TrivialEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+            UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
             return api()->success(trans('user.responses.transaction-password-successfully-changed'));
         }
@@ -182,17 +182,31 @@ class UserController extends Controller
         ]);
 
         return api()->success(trans('user.responses.avatar-updated'),[
-            'avatar' => route('get-avatar')
+            'mime' => $mimeType,
+            'link' => route('get-avatar-image')
         ]);
     }
 
     /**
-     * Get avatar
+     * Get avatar details
      * @group
      * Profile Management
-     * @return JsonResponse
      */
-    public function getAvatar()
+    public function getAvatarDetails()
+    {
+        $avatar = json_decode(auth()->user()->avatar,true);
+        return api()->success(null,[
+            'mime' => $avatar['mime'],
+            'link' => route('get-avatar-image')
+        ]);
+    }
+
+    /**
+     * Get avatar image
+     * @group
+     * Profile Management
+     */
+    public function getAvatarImage()
     {
         $avatar = json_decode(auth()->user()->avatar,true);
         return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
@@ -213,7 +227,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         return api()->success(trans('user.responses.your-account-frozen-successfully'));
     }
@@ -233,7 +247,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         return api()->success(trans('user.responses.your-account-unfrozen-successfully'));
     }
@@ -250,7 +264,7 @@ class UserController extends Controller
         ]);
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        TrivialEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+        UrgentEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
         auth()->user()->signOut();
         return api()->success(trans('user.responses.your-account-deactivate-successfully'));
