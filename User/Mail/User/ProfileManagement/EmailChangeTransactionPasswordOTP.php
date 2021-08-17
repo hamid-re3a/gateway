@@ -49,6 +49,6 @@ class EmailChangeTransactionPasswordOTP extends Mailable implements SettingableM
 
     public function getSetting() : array
     {
-        return getEmailAndTextSetting('CHANGE_TRANSACTION_PASSWORD_EMAIL_OTP');
+        return getEmailAndTextSetting('TRANSACTION_PASSWORD_EMAIL_OTP');
     }
 }
