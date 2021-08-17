@@ -135,7 +135,7 @@ class UserController extends Controller
         }
 
 
-        if ($otp_db->otp == $request->otp) {
+        if ($otp_db->otp == $request->get('otp')) {
             $otp_db->is_used = true;
             $otp_db->save();
 

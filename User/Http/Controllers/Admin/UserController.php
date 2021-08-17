@@ -27,8 +27,8 @@ class UserController extends Controller
     public function activateOrDeactivateUserAccount(ActivateOrDeactivateUserAccountRequest $request)
     {
 
-        $user = User::whereEmail($request->email)->first();
-        if ($request->deactivate) {
+        $user = User::whereEmail($request->get('email'))->first();
+        if ($request->get('deactivate')) {
             $user->block_type = USER_BLOCK_TYPE_BY_ADMIN;
             $user->block_reason = 'user.responses.user-account-deactivated-by-admin';
         } else {
@@ -51,7 +51,7 @@ class UserController extends Controller
     public function verifyUserEmailAccount(VerifyUserEmailRequest $request)
     {
 
-        $user = User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->get('email'))->first();
         if (!$user->isEmailVerified()) {
             $user->email_verified_at = now();
             $user->save();
@@ -90,7 +90,7 @@ class UserController extends Controller
      */
     public function loginHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::find($request->user_id)->loginAttempts));
+        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::find($request->get('user_id'))->loginAttempts));
     }
 
     /**
@@ -100,6 +100,6 @@ class UserController extends Controller
      */
     public function emailVerificationHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->user_id)->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
+        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 }
