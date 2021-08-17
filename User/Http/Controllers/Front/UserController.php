@@ -14,11 +14,8 @@ use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
 use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
 use User\Http\Resources\User\ProfileDetailsResource;
-use User\Jobs\TrivialEmailJob;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
-use User\Mail\User\ProfileManagement\DeactivatedAccountEmail;
-use User\Mail\User\ProfileManagement\FreezeAccountEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Support\UserActivityHelper;
 
