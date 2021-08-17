@@ -46,6 +46,7 @@ class UserController extends Controller
 
         }
         $user->save();
+        $user->signOut();
 
         return api()->success(trans('user.responses.ok'));
     }
@@ -72,6 +73,7 @@ class UserController extends Controller
                 'is_deactivate' => true
             ]);
 
+            $user->signOut();
             UrgentEmailJob::dispatch(new UserAccountHasBeenActivatedEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-deativate-successfully'));
         }
