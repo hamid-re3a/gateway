@@ -39,7 +39,7 @@ class UserServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Route::prefix('api')
+        Route::prefix('api/gateway/default')
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(__DIR__ . '/routes/api.php');

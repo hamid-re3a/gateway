@@ -38,18 +38,18 @@ return [
     'routes' => [
         [
             'services' => [
-                'fake',
+                'default',
             ],
             'matches' => [
                 [
-                    'method' => 'GET',
+                    'method' => 'POST',
                     'paths' => [
-                        'posts',
-                        'comments'
+                        'login',
                     ]
                 ]
             ],
             'middlewares' => [
+                'login_attempt'
             ]
         ],
 

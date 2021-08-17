@@ -26,10 +26,8 @@ class GatewayController extends Controller
     {
         $route = str_replace('api/gateway/', '', $request->path());
         list($status, $final_route, $middlewares) = $this->getValidRoute($route, $request);
-
         $response = $this->checkMiddlewares($middlewares, $request);
         $this->setUserHeadersIfAuthenticated($request);
-
         if (!is_null($response)) {
             return $response;
         }
@@ -114,7 +112,6 @@ class GatewayController extends Controller
         $routes = config('gateway.routes');
         $services = config('gateway.services');
         $service_keys = collect(config('gateway.services'))->keys()->toArray();
-
         if (Str::startsWith($route, '/'))
             return [false, null, null];
         if (preg_match('/^^(?!\W)((?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*))$/', $route, $match)) {
@@ -202,12 +199,10 @@ class GatewayController extends Controller
         if (is_null($method))
             $method = strtolower($request->method());
 
-        if($request->getQueryString())
+        if ($request->getQueryString())
             $final_route .= '?' . $request->getQueryString();
         if (Str::startsWith($final_route, URL::to('/'))) {
-            $attributes = $request->attributes;
-            $request = Request::create($final_route, $method,$request->all() ,$request->cookie(),$request->allFiles(),$request->server->all(),$request->getContent());
-            $request->attributes->add([$attributes]);
+            $request = Request::create($final_route, $method, $request->all(), $request->cookie(), $request->allFiles(), $request->server->all(), $request->getContent());
             return Route::dispatch($request);
         }
         $user_agent = $request->userAgent();
@@ -223,23 +218,23 @@ class GatewayController extends Controller
             foreach ($request->all() as $key => $file) {
                 if (is_array($file))
                     foreach ($file as $subFile) {
-                         $this->attachFile($multipart, $key . '[]', $subFile);
+                        $this->attachFile($multipart, $key . '[]', $subFile);
                     }
-                else if( $file instanceof  UploadedFile)
+                else if ($file instanceof UploadedFile)
                     $this->attachFile($multipart, $key, $file);
 
                 else
                     $this->attachContent($multipart, $key, $file);
             }
             try {
-                $res = (new \GuzzleHttp\Client(['headers' =>$headers]))->$method(
+                $res = (new \GuzzleHttp\Client(['headers' => $headers]))->$method(
                     $final_route,
                     ['multipart' => $multipart]
                 );
-            } catch (\GuzzleHttp\Exception\RequestException $exception){
-                return new Response($exception->getResponse()->getBody(),$exception->getResponse()->getStatusCode(),$exception->getResponse()->getHeaders());
+            } catch (\GuzzleHttp\Exception\RequestException $exception) {
+                return new Response($exception->getResponse()->getBody(), $exception->getResponse()->getStatusCode(), $exception->getResponse()->getHeaders());
             }
-            return new Response($res->getBody()->getContents(),$res->getStatusCode(),$res->getHeaders());
+            return new Response($res->getBody()->getContents(), $res->getStatusCode(), $res->getHeaders());
         }
         $req->withBody($contents, $content_type);
 
@@ -252,7 +247,7 @@ class GatewayController extends Controller
             echo $res->body();
             return null;
         }
-        $final = response($res->body(),$res->status());
+        $final = response($res->body(), $res->status());
         if (!$multi)
             foreach ($res->headers() as $key => $value)
                 $final->header($key, $value);
@@ -320,16 +315,16 @@ class GatewayController extends Controller
     }
 
 
-    private function attachFile( &$multipart, $key, $subFile)
+    private function attachFile(&$multipart, $key, $subFile)
     {
         $file = fopen($subFile->getRealPath(), 'r');
-        $multipart[] = ['name'=> $key,'contents'=>$file,'filename'=>$subFile->getClientOriginalName(), [
+        $multipart[] = ['name' => $key, 'contents' => $file, 'filename' => $subFile->getClientOriginalName(), [
             'Content-Type' => $subFile->getMimeType()
         ]];
     }
 
-    private function attachContent( &$multipart, $key, $conent)
+    private function attachContent(&$multipart, $key, $conent)
     {
-        $multipart[] = ['name'=> $key,'contents'=>$conent];
+        $multipart[] = ['name' => $key, 'contents' => $conent];
     }
 }
