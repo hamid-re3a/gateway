@@ -50,7 +50,7 @@ class UserActivityHelper
         if (!is_null($request->userAgent())) {
             $agentJess = new Agent();
             $agentJess->setUserAgent($request->userAgent());
-            $agentJess->setHttpHeaders($request->headers);
+            $agentJess->setHttpHeaders($request->get('headers'));
             $agent_db = AgentModel::query()->firstOrCreate([
                 'user_id' => !empty($token) ? $token->tokenable_id : null,
                 'token_id' => !empty($token->id) ? $token->id : null,

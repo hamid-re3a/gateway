@@ -5,6 +5,7 @@ namespace RequestRouter\Http\Controllers;
 
 use App\Http\Kernel;
 use Illuminate\Http\Request;
+use \Symfony\Component\HttpFoundation\Request as SymRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
@@ -201,9 +202,12 @@ class GatewayController extends Controller
         if (is_null($method))
             $method = strtolower($request->method());
 
-
+        if($request->getQueryString())
+            $final_route .= '?' . $request->getQueryString();
         if (Str::startsWith($final_route, URL::to('/'))) {
-            $request = Request::create($final_route, $method);
+            $attributes = $request->attributes;
+            $request = Request::create($final_route, $method,$request->all() ,$request->cookie(),$request->allFiles(),$request->server->all(),$request->getContent());
+            $request->attributes->add([$attributes]);
             return Route::dispatch($request);
         }
         $user_agent = $request->userAgent();

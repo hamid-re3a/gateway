@@ -5,6 +5,7 @@ namespace User\Http\Controllers\Front;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -55,14 +56,10 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws Exception
      */
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-
         $credentials = $request->only(['email', 'password']);
-
         $user = User::query()->where('email', $credentials['email'])->first();
-
-
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
         $data = [];
@@ -199,7 +196,7 @@ class AuthController extends Controller
         }
 
 
-        if ($otp_db->otp == $request->otp) {
+        if ($otp_db->otp == $request->get('otp')) {
             $user->email_verified_at = now();
             $user->save();
             $otp_db->is_used = true;
