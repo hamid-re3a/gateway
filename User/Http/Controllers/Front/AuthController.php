@@ -56,7 +56,7 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws Exception
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only(['email', 'password']);
         $user = User::query()->where('email', $credentials['email'])->first();
