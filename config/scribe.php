@@ -19,7 +19,7 @@ return [
     /*
      * The base URL displayed in the docs. If this is empty, Scribe will use the value of config('app.url').
      */
-    'base_url' => null,
+    'base_url' => env('APP_ENV') == 'local' ?  'http://localhost:3541':  'https://staging-api-gateway.janex.org',
 
     /*
      * Tell Scribe what routes to generate documentation for.
@@ -35,7 +35,7 @@ return [
             /*
              * Match only routes whose paths match this pattern (use * as a wildcard to match any characters). Example: 'users/*'.
              */
-            'prefixes' => ['v1/*'],
+            'prefixes' => ['*'],
             /*
              * Match only routes whose domains match this pattern (use * as a wildcard to match any characters). Example: 'api.*'.
              */
@@ -65,11 +65,6 @@ return [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'X-user-id' => '1',
-                'X-user-first-name' => 'Nima',
-                'X-user-last-name' => 'Nouri',
-                'X-user-email' => 'nima.nouri.d@gmail.com',
-                'X-user-username' => 'NimaN2D'
             ],
             /*
              * If no @response or @transformer declarations are found for the route,
@@ -171,7 +166,7 @@ return [
         /*
          * Set this to true if any endpoints in your API use authentication.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * Set this to true if your API should be authenticated by default. If so, you must also set `enabled` (above) to true.
