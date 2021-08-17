@@ -40,31 +40,31 @@ class Handler extends ExceptionHandler
         });
     }
 
-//    public function render($request, Throwable $e)
-//    {
-//
-//
-//        if ($e instanceof ValidationException)
-//            return api()->error('responses.error', '', 422,$e->errors());
-//        if ($this->isHttpException($e)) {
-//            switch ($e->getStatusCode()) {
-//                case '401':
-//                    return api()->error($e->getMessage() ?? trans('responses.login-again'), [], 401);
-//                    break;
-//                case '404':
-//                    return api()->error(trans('responses.not-found'), [], 404);
-//                    break;
-//                case '500':
-//                    return api()->error(trans('responses.something-went-wrong'), [], 500);
-//                    break;
-//
-//                default:
-//                    return api()->error($e->getMessage(), [], $e->getStatusCode());
-//                    break;
-//
-//            }
-//        }
-//        return api()->error($e->getMessage(), [], 400);
-//
-//    }
+    public function render($request, Throwable $e)
+    {
+
+
+        if ($e instanceof ValidationException)
+            return api()->error('responses.error', '', 422,$e->errors());
+        if ($this->isHttpException($e)) {
+            switch ($e->getStatusCode()) {
+                case '401':
+                    return api()->error($e->getMessage() ?? trans('responses.login-again'), [], 401);
+                    break;
+                case '404':
+                    return api()->error(trans('responses.not-found'), [], 404);
+                    break;
+                case '500':
+                    return api()->error(trans('responses.something-went-wrong'), [], 500);
+                    break;
+
+                default:
+                    return api()->error($e->getMessage(), [], $e->getStatusCode());
+                    break;
+
+            }
+        }
+        return api()->error($e->getMessage(), [], 400);
+
+    }
 }
