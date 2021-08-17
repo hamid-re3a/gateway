@@ -100,7 +100,9 @@ class UserController extends Controller
         if ($err) {
             return api()->error(trans('user.responses.wait-limit'), $data, 429);
         }
-        return api()->success(trans('user.responses.otp-successfully-sent'));
+        return api()->success(trans('user.responses.otp-successfully-sent'),[
+            'otp' => $data['token']
+        ]);
     }
 
     /**
