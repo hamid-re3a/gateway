@@ -129,7 +129,15 @@ class User extends Authenticatable
         'passport_number',
         'email_verified_at',
         'google2fa_enable',
-        'google2fa_secret'
+        'google2fa_secret',
+        'is_freeze',
+        'is_deactivate'
+    ];
+
+    protected $casts = [
+        'birthday' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     public function setPasswordAttribute($value)
@@ -194,6 +202,19 @@ class User extends Authenticatable
     public function isEmailVerified()
     {
         return  ! is_null($this->email_verified_at);
+    }
+
+    public function isDeactivate()
+    {
+        return $this->is_deactivate;
+    }
+
+    public function signOut()
+    {
+        $this->agents()->update([
+            'token_id' => null
+        ]);
+        $this->tokens()->delete();
     }
 
     public function historyCheck($field,$value)

@@ -48,11 +48,15 @@ Route::middleware(['user_activity'])->group(function () {
 
 
             Route::prefix('profile_management')->group(function(){
+                Route::get('', [UserController::class, 'getDetails'])->name('user-profile-detail');
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
+                Route::post('transaction_password_otp', [UserController::class, 'askTransactionPasswordOtp'])->name('ask-transaction-password-otp');
+                Route::post('verify_transaction_otp', [UserController::class, 'verifyTransactionPasswordOtp'])->name('verify-transaction-password-otp');
                 Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
                 Route::post('update_avatar', [UserController::class, 'updateAvatar'])->name('update-avatar');
-                Route::get('avatar', [UserController::class, 'getAvatar'])->name('get-avatar');
+                Route::get('avatar', [UserController::class, 'getAvatarDetails'])->name('get-avatar-detail');
+                Route::get('avatar/image', [UserController::class, 'getAvatarImage'])->name('get-avatar-image');
             });
 
             Route::prefix('wallets')->group(function(){
@@ -77,8 +81,11 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('/', [ActivityController::class, 'index'])->name('full-list');
             });
 
-            Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
+            Route::middleware(['role:admin'])->name('admin.')->prefix('admin/users')->group(function () {
+                Route::get('', [AdminUserController::class, 'index'])->name('users-list');
+                Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
                 Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
+                Route::post('/freeze_or_unfreeze_user', [AdminUserController::class, 'freezeOrUnfreezeUserAccount'])->name('freeze-or-unfreeze-user-account');
 
                 Route::post('/verify_email_user', [AdminUserController::class, 'verifyUserEmailAccount'])->name('verify-email-user-account');
                 Route::get('/user_email_verification_history', [AdminUserController::class, 'emailVerificationHistory'])->name('user-email-verification-history');

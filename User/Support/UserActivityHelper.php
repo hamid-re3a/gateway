@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use User\Jobs\TrivialEmailJob;
 use User\Jobs\UrgentEmailJob;
+use User\Mail\User\ProfileManagement\EmailChangeTransactionPasswordOTP;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\WelcomeEmail;
@@ -49,7 +50,7 @@ class UserActivityHelper
         if (!is_null($request->userAgent())) {
             $agentJess = new Agent();
             $agentJess->setUserAgent($request->userAgent());
-            $agentJess->setHttpHeaders($request->headers);
+            $agentJess->setHttpHeaders($request->get('headers'));
             $agent_db = AgentModel::query()->firstOrCreate([
                 'user_id' => !empty($token) ? $token->tokenable_id : null,
                 'token_id' => !empty($token->id) ? $token->id : null,
@@ -146,7 +147,7 @@ class UserActivityHelper
             ]);
 
             if ($is_welcome)
-                TrivialEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
+                UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
                 UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
             return [$data, $error];
@@ -154,6 +155,49 @@ class UserActivityHelper
         }
 
         $data = self::firstAttemptOtp($user, OTP_TYPE_EMAIL_VERIFICATION, $duration, $data);
+        $error = true;
+        return [$data, $error];
+
+
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public static function makeEmailTransactionPasswordOtp($user, Request $request): array
+    {
+        $data = [];
+        $data['try_in'] = null;
+        $data['try_in_timestamp'] = null;
+        $error = null;
+
+        $tries = getSetting('USER_EMAIL_VERIFICATION_OTP_TRIES');
+        $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
+
+        if (Otp::query()
+                ->type(OTP_TYPE_CHANGE_TRANSACTION_PASSWORD)
+                ->where('user_id', $user->id)
+                ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+                ->count() < $tries) {
+            $token = self::getRandomOtp();
+
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            Otp::query()->create([
+                "user_id" => $user->id,
+                "ip_id" => is_null($ip_db) ? null : $ip_db->id,
+                "agent_id" => is_null($agent_db) ? null : $agent_db->id,
+                "otp" => $token,
+                "type" => OTP_TYPE_CHANGE_TRANSACTION_PASSWORD
+            ]);
+
+            UrgentEmailJob::dispatch(new EmailChangeTransactionPasswordOTP($user, $token), $user->email);
+            $data['token'] = $token;
+            return [$data, $error];
+
+        }
+
+        $data = self::firstAttemptOtp($user, OTP_TYPE_CHANGE_TRANSACTION_PASSWORD, $duration, $data);
         $error = true;
         return [$data, $error];
 

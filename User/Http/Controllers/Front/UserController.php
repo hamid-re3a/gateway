@@ -12,6 +12,8 @@ use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
+use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
+use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
@@ -19,6 +21,15 @@ use User\Support\UserActivityHelper;
 
 class UserController extends Controller
 {
+
+    /**
+     * Get user profile details
+     * @group Profile Management
+     */
+    public function getDetails()
+    {
+        return api()->success(null,ProfileDetailsResource::make(auth()->user()));
+    }
 
     /**
      * Change password
@@ -75,6 +86,69 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Ask Email transaction password OTP
+     * @group
+     * Profile Management
+     */
+    public function askTransactionPasswordOtp()
+    {
+        list($data, $err) = UserActivityHelper::makeEmailTransactionPasswordOtp(auth()->user(), request(), false);
+        if ($err) {
+            return api()->error(trans('user.responses.wait-limit'), $data, 429);
+        }
+        return api()->success(trans('user.responses.otp-successfully-sent'),[
+            'otp' => $data['token']
+        ]);
+    }
+
+    /**
+     * Verify Transaction password OTP
+     * @group
+     * Profile Management
+     * @param VerifyTransactionPasswordOtp $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function verifyTransactionPasswordOtp(VerifyTransactionPasswordOtp $request)
+    {
+
+        $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
+        $otp_db = auth()->user()->otps()
+            ->where('type', OTP_TYPE_CHANGE_TRANSACTION_PASSWORD)
+            ->whereBetween('created_at', [now()->subSeconds($duration)->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
+            ->get()
+            ->last();
+        if (is_null($otp_db)) {
+            $errors = [
+                'otp' => trans('user.responses.transaction-password-otp-code-is-expired')
+            ];
+            return api()->error('user.responses.transaction-password-otp-code-is-expired', '', 422, $errors);
+        }
+
+        if ($otp_db->is_used) {
+            $errors = [
+                'otp' => trans('user.responses.transaction-password-code-code-is-used')
+            ];
+            return api()->error('user.responses.transaction-password-code-code-is-used', '', 422, $errors);
+        }
+
+
+        if ($otp_db->otp == $request->get('otp')) {
+            $otp_db->is_used = true;
+            $otp_db->save();
+
+
+            list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
+            $request->user()->update([
+                'password' => $request->get('password') //bcrypt in User model (Mutator)
+            ]);
+            UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+
+            return api()->success(trans('user.responses.transaction-password-successfully-changed'));
+        }
+        return api()->error('user.responses.transaction-password-otp-code-is-incorrect');
+    }
 
     /**
      * Change personal details
@@ -117,19 +191,38 @@ class UserController extends Controller
         ]);
 
         return api()->success(trans('user.responses.avatar-updated'),[
-            'avatar' => route('get-avatar')
+            'mime' => $mimeType,
+            'link' => route('get-avatar-image')
         ]);
     }
 
     /**
-     * Get avatar
+     * Get avatar details
      * @group
      * Profile Management
-     * @return JsonResponse
      */
-    public function getAvatar()
+    public function getAvatarDetails()
     {
         $avatar = json_decode(auth()->user()->avatar,true);
-        return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
+        return api()->success(null,[
+            'mime' => $avatar['mime'],
+            'link' => route('get-avatar-image')
+        ]);
     }
+
+    /**
+     * Get avatar image
+     * @group
+     * Profile Management
+     */
+    public function getAvatarImage()
+    {
+        $avatar = json_decode(auth()->user()->avatar,true);
+
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+            return api()->error('',null,404);
+
+        return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
+    }
+
 }

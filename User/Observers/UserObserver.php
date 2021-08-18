@@ -13,9 +13,10 @@ class UserObserver
     public function updating(User $user)
     {
         if(auth()->check()) {
-            $data = $user->all()->find($user->id)->toArray();
+            $data = $user->getOriginal();
             $attributes = array_merge($data,[
-                'actor_id' => request()->user()->id
+                'actor_id' => request()->user()->id,
+                'user_id' => $data['id']
             ]);
             $history = $user->userHistories()->create($attributes);
 
