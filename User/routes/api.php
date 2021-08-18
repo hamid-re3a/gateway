@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\User\UserDataJob;
 use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\GatewayServicesController;
 use User\Http\Controllers\Admin\TranslateController;
@@ -11,6 +12,7 @@ use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
+use User\Services\User;
 
 Route::middleware(['user_activity'])->group(function () {
 
@@ -94,4 +96,16 @@ Route::middleware(['user_activity'])->group(function () {
 
         });
     });
+});
+
+Route::get('/testUserRabbit',function (){
+    $user = new User();
+    $user->setId(1);
+    $user->setEmail("d@d.com");
+    $user->setFirstName("Dariush1");
+    $user->setLastName("Molaie1");
+    $user->setUsername("ffffff");
+    $user->setRole('test2,test4,test7');
+    $serializeUser = serialize($user);
+    UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
 });
