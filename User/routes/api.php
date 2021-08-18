@@ -79,7 +79,8 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('/', [ActivityController::class, 'index'])->name('full-list');
             });
 
-            Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
+            Route::middleware(['role:admin'])->name('admin.')->prefix('admin/users')->group(function () {
+                Route::get('', [AdminUserController::class, 'index'])->name('users-list');
                 Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
                 Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
                 Route::post('/freeze_or_unfreeze_user', [AdminUserController::class, 'freezeOrUnfreezeUserAccount'])->name('freeze-or-unfreeze-user-account');
