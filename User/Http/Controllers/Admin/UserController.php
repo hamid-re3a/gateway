@@ -13,6 +13,7 @@ use User\Http\Requests\Admin\VerifyUserEmailRequest;
 use User\Http\Resources\OtpResource;
 use User\Http\Resources\User\LoginHistoryResource;
 use User\Http\Resources\User\PasswordHistoryResource;
+use User\Http\Resources\User\ProfileDetailsResource;
 use User\Http\Resources\User\UserBlockHistoryResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\UserAccountHasBeenActivatedEmail;
@@ -26,6 +27,17 @@ use User\Support\UserActivityHelper;
 
 class UserController extends Controller
 {
+
+    /**
+     * Get user's list
+     * @group Admin > user
+     */
+    public function index()
+    {
+        $users = User::query()->simplePaginate();
+        return api()->success(null,ProfileDetailsResource::collection($users)->response()->getData());
+    }
+
     /**
      * Block Or Unblock User Account
      * @group
