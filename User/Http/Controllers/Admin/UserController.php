@@ -30,7 +30,8 @@ class UserController extends Controller
 
     /**
      * Get user's list
-     * @group Admin > user
+     * @group
+     * Admin > User
      */
     public function index()
     {
