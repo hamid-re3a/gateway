@@ -110,7 +110,7 @@ Route::get('/testUserRabbit', function () {
     Log::debug("start Job For Consume on Rabbit");
 
     $user = new User();
-    $user->setId(1);
+    $user->setId(5);
     $user->setEmail("d@d.com");
     $user->setFirstName("Dariush1");
     $user->setLastName("Molaie1");
@@ -119,7 +119,7 @@ Route::get('/testUserRabbit', function () {
     $serializeUser = serialize($user);
     Log::info("data is : " . $serializeUser);
 
-    UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
-    Log::debug("Consume is Done! : " . $serializeUser);
+    $d = UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
+    Log::debug("Consume is Done! : " . $d);
 
 });
