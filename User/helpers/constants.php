@@ -122,7 +122,7 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
-    'TRANSACTION_PASSWORD_EMAIL_OTP'=>[
+    'CHANGE_TRANSACTION_PASSWORD_EMAIL_OTP'=>[
 
         'is_active' => true,
         'subject'=>'Transaction Password OTP',
