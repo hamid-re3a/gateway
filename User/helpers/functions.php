@@ -23,7 +23,7 @@ function getEmailAndTextSetting($key)
 {
     if (DB::table('email_content_settings')->exists()) {
         $setting = EmailContentSetting::query()->where('key', $key)->first();
-        if ($setting && !empty($setting->value))
+        if ($setting && !empty($setting->body))
             return $setting->toArray();
     }
 
