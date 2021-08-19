@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\User\UserDataJob;
 use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\GatewayServicesController;
 use User\Http\Controllers\Admin\TranslateController;
@@ -11,6 +12,7 @@ use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
+use User\Services\User;
 
 Route::middleware(['user_activity'])->group(function () {
 
@@ -26,7 +28,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/reset_forgot_password', [AuthController::class, 'resetForgetPassword'])->name('reset-forgot-password');
         });
 
-        Route::get('all_settings',[SettingController::class,'index'])->name('all-settings');
+        Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
 
         Route::middleware(['auth', 'email_verified'])->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -45,7 +47,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/sessions/signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
 
 
-            Route::prefix('profile_management')->group(function(){
+            Route::prefix('profile_management')->group(function () {
                 Route::get('', [UserController::class, 'getDetails'])->name('user-profile-detail');
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
@@ -57,7 +59,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('avatar/image', [UserController::class, 'getAvatarImage'])->name('get-avatar-image');
             });
 
-            Route::prefix('wallets')->group(function(){
+            Route::prefix('wallets')->group(function () {
                 Route::get('/available_crypto_currencies', [WalletController::class, 'availableCryptoCurrencies'])->name('wallets-available-crypto-currencies');
                 Route::post('/', [WalletController::class, 'add'])->name('wallets-add');
                 Route::patch('/update-wallet', [WalletController::class, 'updateWallet'])->name('wallets-update');
@@ -66,7 +68,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('inactive', [WalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
             });
 
-            Route::prefix('translates')->name('translates.')->group(function(){
+            Route::prefix('translates')->name('translates.')->group(function () {
                 Route::get('/', [TranslateController::class, 'index'])->name('list');
                 Route::get('/unfinished', [TranslateController::class, 'unfinished'])->name('unfinished');
                 Route::post('/show', [TranslateController::class, 'show'])->name('show');
@@ -75,7 +77,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::delete('/delete', [TranslateController::class, 'destroy'])->name('destroy');
             });
 
-            Route::prefix('activities')->name('activities.')->group(function() {
+            Route::prefix('activities')->name('activities.')->group(function () {
                 Route::get('/', [ActivityController::class, 'index'])->name('full-list');
             });
 
@@ -94,11 +96,23 @@ Route::middleware(['user_activity'])->group(function () {
             });
 
             Route::middleware(['role:admin'])->prefix('gateway_service')->name("gateway-service")->group(function () {
-                Route::get('/list',[GatewayServicesController::class, 'gatewayServicesList'])->name('list');
-                Route::post('/edit',[GatewayServicesController::class, 'editServiceGateway'])->name('edit');
+                Route::get('/list', [GatewayServicesController::class, 'gatewayServicesList'])->name('list');
+                Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
             });
 
 
         });
     });
+});
+
+Route::get('/testUserRabbit', function () {
+    $user = new User();
+    $user->setId(1);
+    $user->setEmail("d@d.com");
+    $user->setFirstName("Dariush1");
+    $user->setLastName("Molaie1");
+    $user->setUsername("ffffff");
+    $user->setRole('test2,test4,test7');
+    $serializeUser = serialize($user);
+    UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
 });
