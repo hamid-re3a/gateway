@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\User\UserDataJob;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\GatewayServicesController;
 use User\Http\Controllers\Admin\TranslateController;
@@ -106,6 +107,8 @@ Route::middleware(['user_activity'])->group(function () {
 });
 
 Route::get('/testUserRabbit', function () {
+    Log::debug("start Job For Consume on Rabbit");
+
     $user = new User();
     $user->setId(1);
     $user->setEmail("d@d.com");
@@ -114,5 +117,9 @@ Route::get('/testUserRabbit', function () {
     $user->setUsername("ffffff");
     $user->setRole('test2,test4,test7');
     $serializeUser = serialize($user);
+    Log::info("data is : " . $serializeUser);
+
     UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
+    Log::debug("Consume is Done! : " . $serializeUser);
+
 });
