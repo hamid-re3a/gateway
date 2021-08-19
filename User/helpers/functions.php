@@ -16,7 +16,7 @@ function getSetting($key)
     if (isset(SETTINGS[$key]) && isset(SETTINGS[$key]['value']))
         return SETTINGS[$key]['value'];
 
-    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
+    throw new Exception(trans('user.responses.main-key-settings-is-missing') . ' | key => ' . $key);
 }
 
 function getEmailAndTextSetting($key)
@@ -30,7 +30,7 @@ function getEmailAndTextSetting($key)
     if (isset(EMAIL_CONTENT_SETTINGS[$key]))
         return EMAIL_CONTENT_SETTINGS[$key];
 
-    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
+    throw new Exception(trans('user.responses.main-key-settings-is-missing') . ' | key => ' . $key);
 }
 
 function getLoginAttemptSetting()
