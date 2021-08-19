@@ -3,9 +3,11 @@
 namespace User\Http\Controllers\Front;
 
 
+use App\Jobs\User\UserDataJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
@@ -17,6 +19,7 @@ use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
+use User\Services\User;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
@@ -223,6 +226,24 @@ class UserController extends Controller
             return api()->error('',null,404);
 
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
+    }
+
+    public function testRabbit () {
+        Log::debug("start Job For Consume on Rabbit");
+
+        $user = new User();
+        $user->setId(5);
+        $user->setEmail("d@d.com");
+        $user->setFirstName("Dariush1");
+        $user->setLastName("Molaie1");
+        $user->setUsername("ffffff");
+        $user->setRole('test2,test4,test7');
+        $serializeUser = serialize($user);
+        Log::info("data is : " . $serializeUser);
+
+        $d = UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
+        Log::debug("Consume is Done! : " . $d);
+
     }
 
 }
