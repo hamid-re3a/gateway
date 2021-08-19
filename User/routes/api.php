@@ -28,7 +28,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/reset_forgot_password', [AuthController::class, 'resetForgetPassword'])->name('reset-forgot-password');
         });
 
-        Route::get('all_settings',[SettingController::class,'index'])->name('all-settings');
+        Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
 
         Route::middleware(['auth', 'email_verified'])->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -47,7 +47,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/sessions/signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
 
 
-            Route::prefix('profile_management')->group(function(){
+            Route::prefix('profile_management')->group(function () {
                 Route::get('', [UserController::class, 'getDetails'])->name('user-profile-detail');
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
@@ -59,7 +59,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('avatar/image', [UserController::class, 'getAvatarImage'])->name('get-avatar-image');
             });
 
-            Route::prefix('wallets')->group(function(){
+            Route::prefix('wallets')->group(function () {
                 Route::get('/available_crypto_currencies', [WalletController::class, 'availableCryptoCurrencies'])->name('wallets-available-crypto-currencies');
                 Route::post('/', [WalletController::class, 'add'])->name('wallets-add');
                 Route::patch('/update-wallet', [WalletController::class, 'updateWallet'])->name('wallets-update');
@@ -68,7 +68,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('inactive', [WalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
             });
 
-            Route::prefix('translates')->name('translates.')->group(function(){
+            Route::prefix('translates')->name('translates.')->group(function () {
                 Route::get('/', [TranslateController::class, 'index'])->name('list');
                 Route::get('/unfinished', [TranslateController::class, 'unfinished'])->name('unfinished');
                 Route::post('/show', [TranslateController::class, 'show'])->name('show');
@@ -77,7 +77,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::delete('/delete', [TranslateController::class, 'destroy'])->name('destroy');
             });
 
-            Route::prefix('activities')->name('activities.')->group(function() {
+            Route::prefix('activities')->name('activities.')->group(function () {
                 Route::get('/', [ActivityController::class, 'index'])->name('full-list');
             });
 
@@ -96,8 +96,8 @@ Route::middleware(['user_activity'])->group(function () {
             });
 
             Route::middleware(['role:admin'])->prefix('gateway_service')->name("gateway-service")->group(function () {
-                Route::get('/list',[GatewayServicesController::class, 'gatewayServicesList'])->name('list');
-                Route::post('/edit',[GatewayServicesController::class, 'editServiceGateway'])->name('edit');
+                Route::get('/list', [GatewayServicesController::class, 'gatewayServicesList'])->name('list');
+                Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
             });
 
 
@@ -105,7 +105,7 @@ Route::middleware(['user_activity'])->group(function () {
     });
 });
 
-Route::get('/testUserRabbit',function (){
+Route::get('/testUserRabbit', function () {
     $user = new User();
     $user->setId(1);
     $user->setEmail("d@d.com");
