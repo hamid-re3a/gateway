@@ -41,4 +41,5 @@ class EmailContentSetting extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $table = 'email_content_settings';
 }
