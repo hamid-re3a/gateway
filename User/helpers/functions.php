@@ -4,7 +4,7 @@ use User\Models\EmailContentSetting;
 use User\Models\LoginAttemptSetting;
 use User\Models\Setting;
 use Illuminate\Support\Facades\DB;
-opcache_reset();
+
 function getSetting($key)
 {
 
