@@ -5,11 +5,11 @@ namespace User\tests;
 
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use User\UserConfigure;
 use Tests\CreatesApplication;
-use Tests\TestCase;
 
-class UserTest extends TestCase
+class UserTest extends BaseTestCase
 {
     use CreatesApplication;
     use RefreshDatabase;
