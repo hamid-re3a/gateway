@@ -193,7 +193,7 @@ class UserActivityHelper
             ]);
 
             UrgentEmailJob::dispatch(new TransactionPasswordOtpEmail($user, $token), $user->email);
-            $data['token'] = $token;
+
             return [$data, $error];
 
         }
