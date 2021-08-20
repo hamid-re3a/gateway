@@ -6,6 +6,7 @@ use User\Mail\SettingableMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use User\Models\EmailContentSetting;
 
 class EmailChangeTransactionPasswordOTP extends Mailable implements SettingableMail
 {
@@ -35,7 +36,9 @@ class EmailChangeTransactionPasswordOTP extends Mailable implements SettingableM
      */
     public function build()
     {
-        $setting = $this->getSetting();
+//        $setting = $this->getSetting();
+        $setting = EmailContentSetting::query()->whereKey('CHANGE_TRANSACTION_PASSWORD_EMAIL_OTP')->first();
+        $setting = $setting->toArray();
 
         $setting['body'] = str_replace('{{full_name}}',(is_null($this->user->full_name) || empty($this->user->full_name)) ? 'Unknown': $this->user->full_name,$setting['body']);
         $setting['body'] = str_replace('{{otp}}',(is_null(hyphenate($this->token)) || empty(hyphenate($this->token))) ? 'Unknown': hyphenate($this->token),$setting['body']);
