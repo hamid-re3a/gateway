@@ -49,6 +49,27 @@ class TransactionPasswordOtp extends Mailable implements SettingableMail
 
     public function getSetting() : array
     {
-        return getEmailAndTextSetting('TRANSACTION_PASSWORD_OTP');
+        return [
+
+            'is_active' => true,
+            'subject'=>'Transaction Password OTP',
+            'from'=>'support@janex.com',
+            'from_name'=>'Janex Support Team',
+            'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <p>To change your transaction password, please use the below code</p>
+                <p></p>
+                <h2 style="text-align: center;"><span style="background-color: #ffff00;"> {{otp}}</span></h2>
+                <p><span style="background-color: #ffff00;"></span></p>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired</p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+            'variables'=>'full_name,otp,otp_expire_duration',
+            'variables_description'=>'full_name user full name, otp otp token',
+            'type'=>'email',
+        ];
     }
 }
