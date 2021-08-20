@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 function getSetting($key)
 {
+
     if (DB::table('settings')->exists()) {
         $key_db = Setting::query()->where('key', $key)->first();
         if ($key_db && !is_null($key_db->value))
@@ -16,11 +17,13 @@ function getSetting($key)
     if (isset(SETTINGS[$key]) && isset(SETTINGS[$key]['value']))
         return SETTINGS[$key]['value'];
 
-    throw new Exception(trans('user.responses.main-key-settings-is-missing') . ' | key => ' . $key);
+    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
+
 }
 
 function getEmailAndTextSetting($key)
 {
+
     if (DB::table('email_content_settings')->exists()) {
         $setting = EmailContentSetting::query()->where('key', $key)->first();
         if ($setting && !empty($setting->body))
@@ -30,7 +33,7 @@ function getEmailAndTextSetting($key)
     if (isset(EMAIL_CONTENT_SETTINGS[$key]))
         return EMAIL_CONTENT_SETTINGS[$key];
 
-    throw new Exception(trans('user.responses.main-key-settings-is-missing') . ' | key => ' . $key);
+    throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 }
 
 function getLoginAttemptSetting()
