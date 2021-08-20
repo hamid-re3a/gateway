@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TransactionPasswordOtp extends Mailable implements SettingableMail
+class TransactionPasswordOtpEmail extends Mailable implements SettingableMail
 {
     use Queueable, SerializesModels;
 
