@@ -29,11 +29,4 @@ class UserTest extends BaseTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function assert_true_test()
-    {
-        $this->assertTrue(true);
-    }
 }
