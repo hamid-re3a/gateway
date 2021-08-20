@@ -66,7 +66,7 @@ class UserServiceProvider extends ServiceProvider
      */
     protected function registerHelpers()
     {
-        if (file_exists($helperFile = __DIR__ . '/helpers/constants.php')) {
+        if (file_exists($helperFile = __DIR__ . './helpers/constants.php')) {
             require_once $helperFile;
         }
 
