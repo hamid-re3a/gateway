@@ -28,4 +28,12 @@ class UserTest extends TestCase
             "$class must have method $method"
         );
     }
+
+    /**
+     * @test
+     */
+    public function assert_true_test()
+    {
+        $this->assertTrue(true);
+    }
 }
