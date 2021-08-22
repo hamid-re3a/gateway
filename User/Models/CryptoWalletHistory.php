@@ -20,6 +20,7 @@ class CryptoWalletHistory extends Model
     protected $fillable = [
         'actor_id',
         'wallet_id',
+        'uuid',
         'user_id',
         'crypto_currency_id',
         'address',
@@ -31,6 +32,7 @@ class CryptoWalletHistory extends Model
         'id' => 'integer',
         'actor_id' => 'integer',
         'wallet_id' => 'integer',
+        'uuid' => 'string',
         'user_id' => 'integer',
         'crypto_currency_id' => 'integer',
         'address' => 'string',
