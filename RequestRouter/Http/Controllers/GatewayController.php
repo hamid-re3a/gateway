@@ -104,6 +104,13 @@ class GatewayController extends Controller
     }
 
 
+    /**
+     * @todo change config from database
+     * @param $route
+     * @param $request
+     * @param null $method
+     * @return array
+     */
     private function getValidRoute($route, $request, $method = null)
     {
         if (is_null($method))

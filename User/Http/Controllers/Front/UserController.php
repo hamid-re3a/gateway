@@ -3,7 +3,6 @@
 namespace User\Http\Controllers\Front;
 
 
-use App\Jobs\User\UserDataJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
