@@ -65,14 +65,14 @@ class WalletController extends Controller
     {
         try{
             DB::beginTransaction();
-            auth()->user()->wallets()->create([
+            $wallet = auth()->user()->wallets()->create([
                 'crypto_currency_id' => $request->get('crypto_currency_id'),
                 'address' => $request->get('address')
             ]);
 
             DB::commit();
 
-            return api()->success(trans('user.responses.ok'));
+            return api()->success(trans('user.responses.ok'), WalletResource::make($wallet));
 
         }catch (\Throwable $exception) {
             DB::rollBack();
@@ -91,7 +91,7 @@ class WalletController extends Controller
     {
         try{
             DB::beginTransaction();
-            $wallet = auth()->user()->wallets()->find($request->get('wallet_id'));
+            $wallet = auth()->user()->wallets()->where('uuid',$request->get('wallet_id'))->first();
             $wallet->update($request->validated());
 
             DB::commit();

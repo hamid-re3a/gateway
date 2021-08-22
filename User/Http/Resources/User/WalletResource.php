@@ -16,7 +16,7 @@ class WalletResource extends JsonResource
     {
 
         return [
-            'id' => $this->id,
+            'id' => $this->uuid,
             'crypto' => $this->cryptoCurrency->name,
             'address' => $this->address,
             'description' => $this->description,

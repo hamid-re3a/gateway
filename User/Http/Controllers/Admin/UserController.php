@@ -50,7 +50,7 @@ class UserController extends Controller
     {
 
         $user = User::whereEmail($request->get('email'))->first();
-        if($user->id == auth()->user->id)
+        if($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-block-unblock-your-account'));
         if ($request->get('deactivate')) {
             $user->block_type = USER_BLOCK_TYPE_BY_ADMIN;
@@ -76,7 +76,7 @@ class UserController extends Controller
     public function activateOrDeactivateUserAccount(ActivateOrDeactivateUserAccount $request)
     {
         $user = User::find($request->get('user_id'));
-        if($user->id == auth()->user->id)
+        if($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-deactivate-active-your-account'));
         if($request->get('status') == 'activate') {
             $user->update([
@@ -108,7 +108,7 @@ class UserController extends Controller
     public function freezeOrUnfreezeUserAccount(FreezeOrUnfreezeUserAccountRequest $request)
     {
         $user = User::find($request->get('user_id'));
-        if($user->id == auth()->user->id)
+        if($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-freeze-unfreeze-your-account'));
         if($request->get('status') == 'freeze'){
             $user->update([
