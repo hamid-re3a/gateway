@@ -16,6 +16,7 @@ class CreateCryptoWalletsTable extends Migration
         Schema::create('crypto_wallets', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->constrained('users','id');
             $table->foreignId('crypto_currency_id')->constrained('crypto_currencies','id');
             $table->string('address');
