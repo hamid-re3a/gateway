@@ -142,7 +142,7 @@ class UserController extends Controller
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             $request->user()->update([
-                'password' => $request->get('password') //bcrypt in User model (Mutator)
+                'transaction_password' => $request->get('password') //bcrypt in User model (Mutator)
             ]);
             UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
