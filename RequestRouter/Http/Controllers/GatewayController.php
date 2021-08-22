@@ -5,6 +5,9 @@ namespace RequestRouter\Http\Controllers;
 
 use App\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use RequestRouter\Http\Resources\GatewayServicesKeysResource;
+use RequestRouter\Http\Resources\GatewayServicesResource;
 use \Symfony\Component\HttpFoundation\Request as SymRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
@@ -15,9 +18,16 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use User\Models\User;
+use User\Services\GatewayService;
 
 class GatewayController extends Controller
 {
+    private $gateway_services;
+
+    public function __construct(GatewayService $gateway_services)
+    {
+        $this->gateway_services = $gateway_services;
+    }
 
     /**
      * @hideFromAPIDocumentation
@@ -104,14 +114,22 @@ class GatewayController extends Controller
     }
 
 
+    /**
+     * @param $route
+     * @param $request
+     * @param null $method
+     * @return array
+     * @todo change config from database
+     */
     private function getValidRoute($route, $request, $method = null)
     {
         if (is_null($method))
             $method = strtolower($request->method());
 
         $routes = config('gateway.routes');
-        $services = config('gateway.services');
-        $service_keys = collect(config('gateway.services'))->keys()->toArray();
+        $services = GatewayServicesResource::collection($this->gateway_services->getAllGatewayServices())->resolve();
+        $services = array_replace(...$services);
+        $service_keys = GatewayServicesKeysResource::collection($this->gateway_services->getAllGatewayServices())->response()->getData();
         if (Str::startsWith($route, '/'))
             return [false, null, null];
         if (preg_match('/^^(?!\W)((?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*))$/', $route, $match)) {
@@ -326,5 +344,18 @@ class GatewayController extends Controller
     private function attachContent(&$multipart, $key, $conent)
     {
         $multipart[] = ['name' => $key, 'contents' => $conent];
+    }
+
+    function sanitizeArray($array)
+    {
+        static $newArray = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                sanitizeArray($value);
+            } else {
+                $newArray[$key] = $value;
+            }
+        }
+        return $newArray;
     }
 }
