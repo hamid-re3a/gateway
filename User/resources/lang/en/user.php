@@ -61,6 +61,10 @@ return [
         'user-account-deactivate-successfully' => 'User account has been deactivated successfully',
         'user-account-activate-successfully' => 'User account has been activated successfully',
 
+        'you-cant-block-unblock-your-account' => 'You can not block/unblock your account',
+        'user.responses.you-cant-deactivate-active-your-account' => 'You can not activate/deactivate your account',
+        'user.responses.you-cant-freeze-unfreeze-your-account' => 'You can not freeze/unfreeze your account',
+
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',

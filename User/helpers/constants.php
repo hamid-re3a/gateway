@@ -1,5 +1,5 @@
 <?php
-
+// Comment Test
 const APP_NAME = 'Ride To Future';
 const USER_FORGOT_PASSWORD_OTP_DURATION = 60;
 const USER_FORGOT_PASSWORD_OTP_TRIES = 1;
@@ -122,7 +122,7 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
-    'TRANSACTION_PASSWORD_EMAIL_OTP'=>[
+    'TRANSACTION_PASSWORD_OTP'=>[
 
         'is_active' => true,
         'subject'=>'Transaction Password OTP',
