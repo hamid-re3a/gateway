@@ -25,11 +25,13 @@ composer update
 # Update codebas
 #chmod 777 .* -R
 #chown -R root:root .
+php artisan key:generate
 php artisan vendor:publish --all
 php artisan migrate:fresh
 php artisan db:seed
-php artisan optimize:clear
 php artisan scribe:generate
+php artisan optimize:clear
+php artisan queue:restart
 # Exit maintenance mode
 #php artisan up
 
