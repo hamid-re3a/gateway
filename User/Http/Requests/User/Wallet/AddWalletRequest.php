@@ -47,9 +47,11 @@ class AddWalletRequest extends FormRequest
         if($cryptoCurrency) {
             try {
                 $validator->after(function($validator) use($cryptoCurrency){
-                    $cryptoValidator = Validation::make($cryptoCurrency->iso);
-                    if(!$cryptoValidator->validate($this->address))
-                        $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+                    if(strlen($this->address) > 20){
+                        $cryptoValidator = Validation::make($cryptoCurrency->iso);
+                        if(!$cryptoValidator->validate($this->address))
+                            $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+                    }
                 });
             } catch (\Throwable $exception) {
                 Log::error('AddWalletRequest => ' . $exception->getMessage());
