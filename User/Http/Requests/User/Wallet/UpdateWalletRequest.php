@@ -3,6 +3,7 @@
 namespace User\Http\Requests\User\Wallet;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Merkeleon\PhpCryptocurrencyAddressValidation\Validation;
 use User\Models\CryptoCurrency;
 
@@ -46,12 +47,18 @@ class UpdateWalletRequest extends FormRequest
     {
         $cryptoCurrency = CryptoCurrency::find($this->get('crypto_currency_id'));
         if($cryptoCurrency) {
-            $validator->after(function($validator) use($cryptoCurrency){
-                $cryptoValidator = Validation::make($cryptoCurrency->iso);
-                if(!$cryptoValidator->validate($this->address))
-                    $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
-            });
+            try {
+                $validator->after(function($validator) use($cryptoCurrency){
+                    $cryptoValidator = Validation::make($cryptoCurrency->iso);
+                    if(!$cryptoValidator->validate($this->address))
+                        $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+                });
+            } catch (\Throwable $exception) {
+                Log::error('AddWalletRequest => ' . $exception->getMessage());
+                $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+            }
         }
         return;
+
     }
 }
