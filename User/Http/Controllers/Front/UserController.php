@@ -26,7 +26,7 @@ class UserController extends Controller
 
     /**
      * Get user profile details
-     * @group Profile Management
+     * @group Public User > Profile Management
      */
     public function getDetails()
     {
@@ -35,8 +35,7 @@ class UserController extends Controller
 
     /**
      * Change password
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param ChangePasswordRequest $request
      * @return JsonResponse
      */
@@ -63,8 +62,7 @@ class UserController extends Controller
 
     /**
      * Change Transaction password
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param ChangeTransactionPasswordRequest $request
      * @return JsonResponse
      */
@@ -90,8 +88,7 @@ class UserController extends Controller
 
     /**
      * Ask Email transaction password OTP
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      */
     public function askTransactionPasswordOtp()
     {
@@ -104,8 +101,7 @@ class UserController extends Controller
 
     /**
      * Verify Transaction password OTP
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param VerifyTransactionPasswordOtp $request
      * @return JsonResponse
      * @throws \Exception
@@ -152,8 +148,7 @@ class UserController extends Controller
 
     /**
      * Change personal details
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param UpdatePersonalDetails $request
      * @return JsonResponse
      */
@@ -173,8 +168,7 @@ class UserController extends Controller
 
     /**
      * Update avatar
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param UpdateAvatarRequest $request
      * @return JsonResponse
      */
@@ -198,8 +192,7 @@ class UserController extends Controller
 
     /**
      * Get avatar details
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      */
     public function getAvatarDetails()
     {
@@ -212,8 +205,7 @@ class UserController extends Controller
 
     /**
      * Get avatar image
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      */
     public function getAvatarImage()
     {

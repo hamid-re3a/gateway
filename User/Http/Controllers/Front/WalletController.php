@@ -16,8 +16,7 @@ class WalletController extends Controller
 {
     /**
      * Get All Crypto currencies list
-     * @group
-     * Wallets
+     * @group Public User > Wallets
      */
     public function availableCryptoCurrencies()
     {
@@ -26,8 +25,7 @@ class WalletController extends Controller
 
     /**
      * Get All Wallets list
-     * @group
-     * Wallets
+     * @group Public User > Wallets
      */
     public function index()
     {
@@ -36,8 +34,7 @@ class WalletController extends Controller
 
     /**
      * Get All Active wallets
-     * @group
-     * Wallets
+     * @group Public User > Wallets
      */
     public function activeWallets()
     {
@@ -46,8 +43,7 @@ class WalletController extends Controller
 
     /**
      * Get All Inactive wallets
-     * @group
-     * Wallets
+     * @group Public User > Wallets
      */
     public function inactiveWallets()
     {
@@ -56,8 +52,7 @@ class WalletController extends Controller
 
     /**
      * Add new wallet address
-     * @group
-     * Wallets
+     * @group Public User > Wallets
      * @param AddWalletRequest $request
      * @return JsonResponse
      */
@@ -82,8 +77,7 @@ class WalletController extends Controller
 
     /**
      * Update Wallet
-     * @group
-     * Wallets
+     * @group Public User > Wallets
      * @param UpdateWalletRequest $request
      * @return JsonResponse
      */

@@ -11,7 +11,7 @@ class ActivityController extends Controller
 
     /**
      * Get user activities list
-     * @group Activities
+     * @group Public User > Activities
      */
     public function index()
     {

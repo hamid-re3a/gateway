@@ -6,6 +6,7 @@ use User\Http\Controllers\Admin\TranslateController;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
 use User\Http\Controllers\Front\ActivityController;
 use User\Http\Controllers\Front\AuthController;
+use User\Http\Controllers\GeneralController;
 use User\Http\Controllers\Front\LoginSecurityController;
 use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
@@ -13,7 +14,6 @@ use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
 
 Route::middleware(['user_activity'])->group(function () {
-
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::middleware(['block_user'])->group(function () {
         Route::name('auth.')->group(function () {
@@ -100,6 +100,11 @@ Route::middleware(['user_activity'])->group(function () {
 
 
         });
+    });
+    Route::prefix('General')->name('General.')->group(function(){
+           Route::get('countries', [GeneralController::class,'countries'])->name('countries-list');
+           Route::get('states', [GeneralController::class,'states'])->name('states-list');
+           Route::get('cities', [GeneralController::class,'cities'])->name('cities-list');
     });
 });
 
