@@ -106,6 +106,8 @@ Route::middleware(['user_activity'])->group(function () {
            Route::get('countries', [GeneralController::class,'countries'])->name('countries-list');
            Route::get('states', [GeneralController::class,'states'])->name('states-list');
            Route::get('cities', [GeneralController::class,'cities'])->name('cities-list');
+           Route::get('avatar', [GeneralController::class,'getAvatarDetails'])->name('avatar-details');
+           Route::get('avatar/image', [GeneralController::class,'getAvatarImage'])->name('avatar-image');
     });
 });
 
