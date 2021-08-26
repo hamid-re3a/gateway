@@ -15,7 +15,6 @@ class UsersAdditionalField extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('sponsor_id')->after('email')->unsigned()->nullable();
-            $table->unsignedBigInteger('member_id')->after('sponsor_id')->unsigned()->nullable();
         });
     }
 
