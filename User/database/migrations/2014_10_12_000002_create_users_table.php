@@ -27,6 +27,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('birthday')->nullable();
             $table->string('password');
             $table->string('transaction_password')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->foreignId('city_id')->nullable()->constrained('cities');
+            $table->foreignId('state_id')->nullable()->constrained('cities','id');
 
             $table->string('block_type')->nullable();
             $table->string('block_reason')->nullable();

@@ -101,7 +101,7 @@ Route::middleware(['user_activity'])->group(function () {
 
         });
     });
-    Route::prefix('General')->name('General.')->group(function(){
+    Route::prefix('general')->name('general.')->group(function(){
            Route::get('countries', [GeneralController::class,'countries'])->name('countries-list');
            Route::get('states', [GeneralController::class,'states'])->name('states-list');
            Route::get('cities', [GeneralController::class,'cities'])->name('cities-list');
