@@ -170,7 +170,7 @@ class UserController extends Controller
     }
 
     /**
-     * Change Contact details
+     * Update contact details
      * @group Public User > Profile Management
      * @param UpdateContactDetails $request
      * @return JsonResponse
@@ -219,6 +219,10 @@ class UserController extends Controller
      */
     public function getAvatarDetails()
     {
+
+        if(empty(auth()->user()->avatar))
+            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+
         $avatar = json_decode(auth()->user()->avatar,true);
         return api()->success(null,[
             'mime' => $avatar['mime'],
@@ -232,6 +236,10 @@ class UserController extends Controller
      */
     public function getAvatarImage()
     {
+
+        if(empty(auth()->user()->avatar))
+            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+
         $avatar = json_decode(auth()->user()->avatar,true);
 
         if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
