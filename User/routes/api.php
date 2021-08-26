@@ -107,5 +107,3 @@ Route::middleware(['user_activity'])->group(function () {
            Route::get('cities', [GeneralController::class,'cities'])->name('cities-list');
     });
 });
-
-Route::get('/testUserRabbit', [UserController::class,'testRabbit']);
