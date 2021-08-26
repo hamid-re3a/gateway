@@ -3,9 +3,6 @@
 namespace User\Observers;
 
 use App\Jobs\User\UserDataJob;
-use Giftcode\Models\Giftcode;
-use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Uuid;
 use User\Mail\User\UserAccountActivatedEmail;
 use User\Jobs\TrivialEmailJob;
 use User\Models\User;
@@ -14,12 +11,12 @@ class UserObserver
 {
     public function creating(User $user)
     {
-        if(empty($user->uuid)) {
-            //User UUID field
-            $uuid = Uuid::uuid4()->toString();
-            while ($user->where('uuid', $uuid)->count())
-                $uuid = Uuid::uuid4()->toString();
-            $user->uuid = $uuid;
+        if(empty($user->member_id)) {
+            //User member_id field
+            $member_id = mt_rand(121212121,999999999);
+            while ($user->where('member_id', $member_id)->count())
+                $member_id = mt_rand(121212121,999999999);
+            $user->member_id = $member_id;
         }
     }
 

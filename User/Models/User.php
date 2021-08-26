@@ -7,10 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
-use Ramsey\Uuid\Uuid;
 use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
-use User\Exceptions\OldPasswordException;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -30,7 +28,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @mixin \Eloquent
  * @property int $id
- * @property string $uuid
+ * @property int $member_id
  * @property string $first_name
  * @property string $last_name
  * @property string|null $username
@@ -95,6 +93,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $block_histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection|PasswordHistory[] $passwordHistories
  * @property-read int|null $password_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Country[] $country
+ * @property-read \Illuminate\Database\Eloquent\Collection|City[] $city
+ * @property-read \Illuminate\Database\Eloquent\Collection|City[] $state
  */
 class User extends Authenticatable
 {
@@ -116,7 +117,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'uuid',
+        'member_id',
         'first_name',
         'last_name',
         'username',
@@ -151,11 +152,13 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-        if(empty($this->attributes['uuid'])) {
-            $uuid = Uuid::uuid4()->toString();
-            while ($this->where('uuid', $uuid)->count())
-                $uuid = Uuid::uuid4()->toString();
-            $this->attributes['uuid'] = $uuid;
+        if(empty($this->attributes['member_id'])) {
+            //User member_id field
+            $member_id = mt_rand(121212121,999999999);
+            while ($this->where('member_id', $member_id)->count())
+                $member_id = mt_rand(121212121,999999999);
+
+            $this->attributes['member_id'] = $member_id;
         }
 
         $this->attributes['password'] = bcrypt($value);

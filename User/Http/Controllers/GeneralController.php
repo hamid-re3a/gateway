@@ -59,12 +59,14 @@ class GeneralController extends Controller
      * Get avatar details
      * @group General
      * @unauthenticated
-     * @param AvatarRequest $request
+     * @param $member_id integer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAvatarDetails(AvatarRequest $request)
+    public function getAvatarDetails($member_id)
     {
-        $user = User::where('uuid', $request->get('uuid'))->first();
+        $user = User::where('member_id', $member_id)->get()->first();
+        if(!$user->count())
+            return api()->error(trans('user.responses.invalid-member-id'),null,404);
 
         if(empty($user->avatar))
             return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
@@ -72,7 +74,9 @@ class GeneralController extends Controller
         $avatar = json_decode($user->avatar,true);
         return api()->success(null,[
             'mime' => $avatar['mime'],
-            'link' => route('get-avatar-image')
+            'link' => route('general.avatar-image', [
+                'member_id' => $member_id
+            ])
         ]);
     }
 
@@ -80,16 +84,16 @@ class GeneralController extends Controller
      * Get avatar image
      * @group General
      * @unauthenticated
-     * @param AvatarRequest $request
+     * @param $member_id
      * @return \Illuminate\Http\JsonResponse|string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function getAvatarImage(AvatarRequest $request)
+    public function getAvatarImage($member_id)
     {
-        $user = User::where('uuid', $request->get('uuid'))->first();
+        $user = User::where('member_id', $member_id)->get()->first();
 
-        if(empty($user->avatar))
-            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+        if(!$user->count())
+            return api()->error(trans('user.responses.invalid-member-id'),null,404);
 
         $avatar = json_decode($user->avatar,true);
 

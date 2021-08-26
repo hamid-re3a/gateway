@@ -3,6 +3,7 @@
 return [
 
     'responses' => [
+        'invalid-member-id' => 'Invalid member id',
         'global-error' => 'An error occurred, Try again please.',
         'max-attempts-exceeded' => 'Too many invalid attempts. Try again after a while',
         'user-account-deactivated-by-admin' => 'Your account is deactivated by admin',

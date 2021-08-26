@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Otp type($type)
  * @property string|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|City[] $states
+ * @property-read \Illuminate\Database\Eloquent\Collection|City[] $cities
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $user
  */
 class Country extends Model
 {
@@ -37,6 +40,11 @@ class Country extends Model
     public function cities()
     {
         return $this->hasMany(City::class,'country_id','id')->whereNotNull('parent_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class,'country_id','id');
     }
 
 }

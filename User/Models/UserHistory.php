@@ -100,22 +100,31 @@ class UserHistory extends Authenticatable
     protected $fillable = [
         'user_id',
         'actor_id',
+        'member_id',
         'first_name',
         'last_name',
         'username',
-        'phone_number',
+        'mobile_number',
+        'landline_number',
+        'address_line1',
+        'address_line2',
         'email',
         'gender',
         'birthday',
         'password',
         'transaction_password',
+        'country_id',
+        'city_id',
+        'state_id',
         'block_type',
         'block_reason',
         'avatar',
         'passport_number',
         'email_verified_at',
         'google2fa_enable',
-        'google2fa_secret'
+        'google2fa_secret',
+        'is_freeze',
+        'is_deactivate'
     ];
 
     /**
