@@ -120,12 +120,18 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'username',
-        'phone_number',
+        'mobile_number',
+        'landline_number',
+        'address_line1',
+        'address_line2',
         'email',
         'gender',
         'birthday',
         'password',
         'transaction_password',
+        'country_id',
+        'city_id',
+        'state_id',
         'block_type',
         'block_reason',
         'avatar',
@@ -206,6 +212,21 @@ class User extends Authenticatable
         return $this->hasMany(UserActivity::class,'user_id','id');
     }
 
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(City::class,'state_id','id')->whereNull('parent_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class,'city_id','id')->whereNotNull('parent_id');
+    }
+
     /**
      * methods
      */
@@ -238,6 +259,24 @@ class User extends Authenticatable
                 return true;
 
         return false;
+    }
+
+    /**
+     * Mutators
+     */
+    public function setLandlineNumberAttribute($value)
+    {
+        if(!empty($value)){
+            $this->attributes['landline_number'] = phone($value,$this->country->iso2)->formatInternational();
+        }
+
+    }
+    public function setMobileNumberAttribute($value)
+    {
+        if(!empty($value)){
+            $this->attributes['mobile_number'] = phone($value,$this->country->iso2)->formatInternational();
+        }
+
     }
 
 }

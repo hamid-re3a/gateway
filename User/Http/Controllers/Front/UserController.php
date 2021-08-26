@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
+use User\Http\Requests\User\Profile\UpdateContactDetails;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
@@ -163,7 +164,27 @@ class UserController extends Controller
             return api()->error(trans('user.responses.global-error'),null,500,null);
         }
 
-        return api()->success(trans('user.responses.profile-details-updated'));
+        return api()->success(trans('user.responses.profile-details-updated'), ProfileDetailsResource::make(auth()->user()));
+    }
+
+    /**
+     * Change Contact details
+     * @group Public User > Profile Management
+     * @param UpdateContactDetails $request
+     * @return JsonResponse
+     */
+    public function updateContactDetails(UpdateContactDetails $request)
+    {
+        try {
+            DB::beginTransaction();
+            $request->user()->update($request->validated());
+            DB::commit();
+        }  catch (\Throwable $exception) {
+            DB::rollBack();
+            return api()->error(trans('user.responses.global-error'),null,500,null);
+        }
+
+        return api()->success(trans('user.responses.profile-details-updated'), ProfileDetailsResource::make(auth()->user()));
     }
 
     /**

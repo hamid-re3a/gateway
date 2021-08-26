@@ -52,6 +52,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::post('transaction_password_otp', [UserController::class, 'askTransactionPasswordOtp'])->name('ask-transaction-password-otp');
                 Route::post('verify_transaction_otp', [UserController::class, 'verifyTransactionPasswordOtp'])->name('verify-transaction-password-otp');
                 Route::post('update_personal_details', [UserController::class, 'updatePersonalDetails'])->name('update-personal-details');
+                Route::post('update_contact_details', [UserController::class, 'updateContactDetails'])->name('update-contact-details');
                 Route::post('update_avatar', [UserController::class, 'updateAvatar'])->name('update-avatar');
                 Route::get('avatar', [UserController::class, 'getAvatarDetails'])->name('get-avatar-detail');
                 Route::get('avatar/image', [UserController::class, 'getAvatarImage'])->name('get-avatar-image');

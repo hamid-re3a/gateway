@@ -21,7 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('first_name',100);
             $table->string('last_name',100);
             $table->string('username',100)->unique();
-            $table->string('phone_number',100)->nullable();
+            $table->string('mobile_number',100)->nullable();
+            $table->string('landline_number',100)->nullable();
+            $table->mediumText('address_line1')->nullable();
+            $table->mediumText('address_line2')->nullable();
             $table->string('email',100)->unique()->index();
             $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
             $table->timestamp('birthday')->nullable();
