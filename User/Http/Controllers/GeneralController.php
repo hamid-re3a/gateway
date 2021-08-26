@@ -10,6 +10,7 @@ use User\Http\Requests\Globally\CitiesRequest;
 use User\Http\Requests\Globally\StatesRequest;
 use User\Http\Resources\CityResource;
 use User\Http\Resources\CountryResource;
+use User\Http\Resources\General\ProfileDetailsResource;
 use User\Models\City;
 use User\Models\Country;
 use User\Models\User;
@@ -56,10 +57,26 @@ class GeneralController extends Controller
     }
 
     /**
+     * Get user details
+     * @group General
+     * @unauthenticated
+     * @queryParam member_id required integer
+     */
+    public function getUserDetails($member_id)
+    {
+        $user = User::where('member_id', $member_id)->get()->first();
+        if(!$user->count())
+            return api()->error(trans('user.responses.invalid-member-id'),null,404);
+
+        return api()->success(null,ProfileDetailsResource::make($user));
+
+    }
+
+    /**
      * Get avatar details
      * @group General
      * @unauthenticated
-     * @param $member_id integer
+     * @queryParam member_id required integer
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAvatarDetails($member_id)
@@ -84,7 +101,7 @@ class GeneralController extends Controller
      * Get avatar image
      * @group General
      * @unauthenticated
-     * @param $member_id
+     * @queryParam member_id required integer
      * @return \Illuminate\Http\JsonResponse|string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */

@@ -34,7 +34,9 @@ class ProfileDetailsResource extends JsonResource
             'email' => $this->email,
             'gender' => $this->gender,
             'birthday' => $this->birthday ? $this->birthday->format('Y/m/d') : null,
-            'avatar' => route('get-avatar-image'),
+            'avatar' => route('general.avatar-image', [
+                'member_id' => $this->member_id
+            ]),
         ];
     }
 }

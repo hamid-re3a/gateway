@@ -102,12 +102,14 @@ Route::middleware(['user_activity'])->group(function () {
 
         });
     });
+
     Route::prefix('general')->name('general.')->group(function(){
            Route::get('countries', [GeneralController::class,'countries'])->name('countries-list');
            Route::post('states', [GeneralController::class,'states'])->name('states-list');
            Route::post('cities', [GeneralController::class,'cities'])->name('cities-list');
-           Route::get('avatar/{member_id}', [GeneralController::class,'getAvatarDetails'])->name('avatar-details');
-           Route::get('avatar/{member_id}/image', [GeneralController::class,'getAvatarImage'])->name('avatar-image');
+           Route::get('user/{member_id}', [GeneralController::class,'getUserDetails'])->name('user-details');
+           Route::get('user/avatar/{member_id}', [GeneralController::class,'getAvatarDetails'])->name('avatar-details');
+           Route::get('user/avatar/{member_id}/image', [GeneralController::class,'getAvatarImage'])->name('avatar-image');
     });
 });
 
