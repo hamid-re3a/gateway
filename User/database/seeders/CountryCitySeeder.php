@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PragmaRX\Countries\Package\Countries;
+use User\Models\City;
 use User\Models\Country;
 
 /**
@@ -32,13 +33,15 @@ class CountryCitySeeder extends Seeder
                     if(is_array($city))
                         if(array_key_exists('adm0name',$city) AND !empty($city['adm1name']) AND !empty($city['name_en']) AND !empty($city['cca2'])) {
                             Country::query()->firstOrCreate([
-                                'name' => $city['sov0name'],
+                                'name' => $city['adm0name'],
                                 'iso2' => $city['cca2']
                             ]);
                             $cities[$city['sov0name']][$city['adm1name']][] = $city['name_en'];
                         }
                 }
             }
+            $now = now()->toDateTimeString();
+            $cities_to_db = [];
             foreach($cities AS $country => $states) {
                 $country = Country::query()->firstOrCreate([
                     'name' => $country
@@ -48,18 +51,36 @@ class CountryCitySeeder extends Seeder
                         'name' => $state
                     ]);
                     foreach($cities AS $city) {
-                        $state->cities()->firstOrCreate([
+                        $cities_to_db[] = [
                             'country_id' => $country->id,
-                            'name' => $city
-                        ]);
+                            'parent_id' => $state->id,
+                            'name' => $city,
+                            'created_at' => $now,
+                            'updated_at' => $now
+                        ];
                     }
+                    $cities_to_db[] = [
+                        'country_id' => $country->id,
+                        'parent_id' => $state->id,
+                        'name' => 'Others',
+                        'created_at' => $now,
+                        'updated_at' => $now
+                    ];
                 }
+                $state = $country->states()->firstOrCreate([
+                    'name' => 'Others'
+                ]);
+                $state->cities()->firstOrCreate([
+                    'name' => 'Others',
+                    'country_id' => $country->id
+                ]);
             }
+            City::query()->insert($cities_to_db);
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             $errorCode = mt_rand(10000,999999);
-            Log::error($errorCode . ' Country insert error | Global\CountryController@countries |' . $e->getMessage() );
+            throw $e;
 
         }
     }

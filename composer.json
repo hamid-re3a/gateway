@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "geoip2/geoip2": "^2.11",
+        "google/protobuf": "^3.17",
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
         "kalnoy/nestedset": "^5.0",
@@ -20,12 +21,13 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "merkeleon/php-cryptocurrency-address-validation": "^1.2",
+        "pragmarx/countries": "^0.7.2",
         "pragmarx/google2fa-laravel": "^1.4",
+        "propaganistas/laravel-phone": "^4.3",
         "ride-to-the-future/response-transformer": "^0.0.2",
         "spatie/laravel-permission": "^3.17",
         "torann/geoip": "^3.0",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3",
-        "google/protobuf": "^3.17"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",
