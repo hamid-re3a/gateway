@@ -8,7 +8,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Uuid;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdateContactDetails;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
@@ -195,7 +194,7 @@ class UserController extends Controller
      */
     public function updateAvatar(UpdateAvatarRequest $request)
     {
-        $fileName = auth()->user()->id . '-' . Uuid::uuid4() . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $fileName = auth()->user()->id . '-' .auth()->user()->member_id . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
         $mimeType = $request->file('avatar')->getMimeType();
         $request->file('avatar')->storeAs('/avatars/', $fileName);
         auth()->user()->update([
