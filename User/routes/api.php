@@ -102,5 +102,3 @@ Route::middleware(['user_activity'])->group(function () {
         });
     });
 });
-
-Route::get('/testUserRabbit', [UserController::class,'testRabbit']);
