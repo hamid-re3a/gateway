@@ -40,6 +40,7 @@ class CreateUsersTable extends Migration
 
             $table->boolean('is_freeze')->default(FALSE);
             $table->boolean('is_deactivate')->default(FALSE);
+            $table->unsignedBigInteger('sponsor_id')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

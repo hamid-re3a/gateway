@@ -230,4 +230,18 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * Methods
+     */
+    public function getUserService()
+    {
+        $user = new \User\Services\User();
+        $user->setId((int)$this->attributes['id']);
+        $user->setFirstName($this->attributes['first_name']);
+        $user->setLastName($this->attributes['last_name']);
+        $user->setUsername($this->attributes['username']);
+        $user->setEmail($this->attributes['email']);
+        return $user;
+    }
+
 }

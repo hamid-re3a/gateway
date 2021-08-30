@@ -5,6 +5,7 @@ namespace RequestRouter\Http\Controllers;
 
 use App\Http\Kernel;
 use Illuminate\Http\Request;
+use phpseclib3\Crypt\Hash;
 use \Symfony\Component\HttpFoundation\Request as SymRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
@@ -274,13 +275,18 @@ class GatewayController extends Controller
     private function setUserHeadersIfAuthenticated(Request $request): void
     {
         $request->headers->remove('X-user-id');
+
         $request->headers->remove('X-user-first-name');
         $request->headers->remove('X-user-last-name');
         $request->headers->remove('X-user-email');
         $request->headers->remove('X-user-username');
         if (auth()->check()) {
             $user = User::query()->find(auth()->user()->id);
+
             $request->headers->set('X-user-id', $user->id);
+            $user_service = $user->getUserService();
+            $hash = \Illuminate\Support\Facades\Hash::make($user_service);
+            $request->headers->set('X-user-hash', $hash);
             $request->headers->set('X-user-first-name', $user->first_name);
             $request->headers->set('X-user-last-name', $user->last_name);
             $request->headers->set('X-user-email', $user->email);
