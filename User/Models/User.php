@@ -29,6 +29,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Eloquent
  * @property int $id
  * @property int $member_id
+ * @property int $sponsor_id
+ * @property boolean $is_deactivate
+ * @property boolean $is_freeze
  * @property string $first_name
  * @property string $last_name
  * @property string|null $username
