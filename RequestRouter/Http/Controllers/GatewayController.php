@@ -303,6 +303,11 @@ class GatewayController extends Controller
             $request->headers->set('X-user-last-name', $user->last_name);
             $request->headers->set('X-user-email', $user->email);
             $request->headers->set('X-user-username', $user->username);
+            $request->headers->set('X-user-member-id', $user->member_id);
+            $request->headers->set('X-user-sponsor-id', $user->sponsor_id);
+            $request->headers->set('X-user-is-freeze', $user->is_freeze);
+            $request->headers->set('X-user-is-deactivate', $user->is_deactivate);
+            $request->headers->set('X-user-is-block-type', $user->block_type);
         }
     }
 

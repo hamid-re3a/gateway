@@ -36,9 +36,29 @@ class AuthTableSeeder extends Seeder
                 $admin->email_verified_at = now();
             }
 
-            $admin->email = 'admin@site.com';
+            $admin->email = 'work@sajidjaved.com';
             $admin->save();
             $admin->assignRole(USER_ROLE_ADMIN);
+        }
+        if (!User::query()->where('email', 'janexstaging@gmail.com')->exists()) {
+            $global = User::whereUsername('johny')->first();
+            if(!$global){
+                $global = User::factory()->create([
+                    'username' => 'johny',
+                ]);
+                $global->update([
+                    'member_id' => '2000',
+                    'email' => 'janexstaging@gmail.com',
+                    'password' => 'password',
+                    'transaction_password' => 'password',
+                    'first_name' => 'John',
+                    'last_name' => 'Due',
+                    'username' => 'johny',
+                    'email_verified_at' => now()
+                ]);
+            }
+
+            $global->assignRole(USER_ROLE_ADMIN);
         }
 
     }
