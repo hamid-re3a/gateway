@@ -22,13 +22,13 @@ class AuthTableSeeder extends Seeder
             Role::query()->firstOrCreate(['name' => $role]);
         }
 
-        if (!User::query()->where('email', 'admin@site.com')->exists()) {
+        if (!User::query()->where('email', 'work@sajidjaved.com')->exists()) {
             $admin = User::whereUsername('admin')->first();
             if(!$admin){
                 $admin = User::factory()->create([
                     'username' => 'admin',
                 ]);
-                $admin->password = 'password';
+                $admin->password = 'password123';
                 $admin->transaction_password = 'PA$$W0RD';
                 $admin->first_name = 'admin';
                 $admin->last_name = 'admin';
@@ -40,22 +40,5 @@ class AuthTableSeeder extends Seeder
             $admin->assignRole(USER_ROLE_ADMIN);
         }
 
-        if (!User::query()->where('email', 'niman2d@gmail.com')->exists()) {
-            $admin = User::whereUsername('nima')->first();
-            if(!$admin){
-                $admin = User::factory()->create([
-                    'username' => 'nima',
-                ]);
-                $admin->password = 'password';
-                $admin->transaction_password = 'PA$$W0RD';
-                $admin->first_name = 'Nima';
-                $admin->last_name = 'Nouri';
-                $admin->email_verified_at = now();
-            }
-
-            $admin->email = 'niman2d@gmail.com';
-            $admin->save();
-            $admin->assignRole(USER_ROLE_ADMIN);
-        }
     }
 }
