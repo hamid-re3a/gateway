@@ -296,6 +296,11 @@ class GatewayController extends Controller
         $request->headers->remove('X-user-last-name');
         $request->headers->remove('X-user-email');
         $request->headers->remove('X-user-username');
+        $request->headers->remove('X-user-member-id');
+        $request->headers->remove('X-user-sponsor-id');
+        $request->headers->remove('X-user-is-freeze');
+        $request->headers->remove('X-user-is-deactivate');
+        $request->headers->remove('X-user-block-type');
         if (auth()->check()) {
             $user = User::query()->find(auth()->user()->id);
             $request->headers->set('X-user-id', $user->id);
@@ -303,6 +308,11 @@ class GatewayController extends Controller
             $request->headers->set('X-user-last-name', $user->last_name);
             $request->headers->set('X-user-email', $user->email);
             $request->headers->set('X-user-username', $user->username);
+            $request->headers->set('X-user-member-id', $user->member_id);
+            $request->headers->set('X-user-sponsor-id', $user->sponsor_id);
+            $request->headers->set('X-user-is-freeze', $user->is_freeze);
+            $request->headers->set('X-user-is-deactivate', $user->is_deactivate);
+            $request->headers->set('X-user-block-type', $user->block_type);
         }
     }
 
