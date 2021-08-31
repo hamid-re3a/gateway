@@ -39,6 +39,7 @@ class UpdateContactDetails extends FormRequest
             'landline_number' => 'required|string|phone:' . $this->getCountryIso(),
             'address_line1' => "nullable|string",
             'address_line2' => "nullable|string",
+            'zip_code' => "nullable|string",
 
         ];
     }
