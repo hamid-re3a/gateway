@@ -35,6 +35,8 @@ class UserObserver
                 $userObject->setId($user->id);
                 $userObject->setEmail($user->email);
                 $userObject->setFirstName($user->first_name);
+                $userObject->setLastName($user->last_name);
+                $userObject->setUsername($user->username);
                 $role_name = implode(",",$user->getRoleNames()->toArray());
                 $userObject->setRole($role_name);
                 $serializeUser = serialize($userObject);

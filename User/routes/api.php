@@ -99,6 +99,15 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
             });
 
+            Route::middleware(['role:super-admin'])->prefix('user')->name("useradmin")->group(function () {
+                Route::post('/create_user', [\User\Http\Controllers\Admin\UserController::class, 'createUserByAdmin'])->name('create-user');
+            });
+
+            Route::middleware(['role:super-admin'])->prefix('role')->name("role")->group(function () {
+                Route::get('/get_roles', [\User\Http\Controllers\Admin\RoleController::class, 'getAllRoles'])->name('get-roles');
+                Route::post('/create', [\User\Http\Controllers\Admin\RoleController::class, 'createRole'])->name('create-roles');
+            });
+
 
         });
     });
