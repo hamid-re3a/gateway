@@ -144,7 +144,8 @@ class User extends Authenticatable
         'google2fa_enable',
         'google2fa_secret',
         'is_freeze',
-        'is_deactivate'
+        'is_deactivate',
+        'zip_code'
     ];
 
     protected $casts = [

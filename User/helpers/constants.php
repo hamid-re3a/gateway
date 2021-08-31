@@ -502,11 +502,15 @@ const QUEUES_EMAIL = 'emails';
 /**
  * user_roles
  */
-const USER_ROLE_ADMIN = 'admin';
+const USER_ROLE_SUPER_ADMIN = 'super-admin';
+const USER_ROLE_ADMIN_KYC = 'kyc-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS = 'subscriptions-admin';
 const USER_ROLE_CLIENT = 'client';
 const USER_ROLE_HELP_DESK = 'help-desk';
 const USER_ROLES = [
-    USER_ROLE_ADMIN,
+    USER_ROLE_SUPER_ADMIN,
+    USER_ROLE_ADMIN_KYC,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS,
     USER_ROLE_CLIENT,
     USER_ROLE_HELP_DESK,
 ];

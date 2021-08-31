@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use User\Http\Requests\Admin\ActivateOrDeactivateUserAccount;
 use User\Http\Requests\Admin\BlockOrUnblockUser;
+use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
 use User\Http\Requests\Admin\HistoryRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
@@ -22,11 +23,17 @@ use User\Mail\User\SuccessfulEmailVerificationEmail;
 use User\Mail\User\UserAccountHasBeenFrozenEmail;
 use User\Mail\User\UserAccountHasBeenUnfrozenEmail;
 use User\Models\User;
+use User\Services\UserAdminService;
 use User\Support\UserActivityHelper;
 
 
 class UserController extends Controller
 {
+    private $user_admin_service;
+
+    public function __construct(UserAdminService $user_admin_service){
+        $this->user_admin_service = $user_admin_service;
+    }
 
     /**
      * Get user's list
@@ -188,5 +195,12 @@ class UserController extends Controller
     public function emailVerificationHistory(HistoryRequest $request)
     {
         return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
+    }
+
+    public function createUserByAdmin(CreateAdminRequest $request)
+    {
+        $this->user_admin_service->createAdmin($request);
+        return api()->success(trans('user.responses.ok'),null);
+
     }
 }
