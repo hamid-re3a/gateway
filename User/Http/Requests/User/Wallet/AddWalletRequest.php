@@ -30,7 +30,7 @@ class AddWalletRequest extends FormRequest
         $user_id = auth()->check() ? auth()->user()->id : null;
         return [
             'crypto_currency_id' => 'required|exists:crypto_currencies,id,is_active,1',
-            'address' => 'required|string|unique:crypto_wallets,address,null,null,user_id,' . $user_id,
+            'address' => 'required|string|min:10|unique:crypto_wallets,address,null,null,user_id,' . $user_id,
             'description' => 'nullable|string'
         ];
     }
@@ -47,7 +47,7 @@ class AddWalletRequest extends FormRequest
         if($cryptoCurrency) {
             try {
                 $validator->after(function($validator) use($cryptoCurrency){
-                    if(strlen($this->address) > 20){
+                    if(!empty($this->address) AND strlen($this->address) > 10){
                         $cryptoValidator = Validation::make($cryptoCurrency->iso);
                         if(!$cryptoValidator->validate($this->address))
                             $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
