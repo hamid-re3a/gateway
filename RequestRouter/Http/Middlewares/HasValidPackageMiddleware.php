@@ -13,13 +13,14 @@ class HasValidPackageMiddleware
 
     public function handle($request, Closure $next)
     {
-        if (auth()->check() AND auth()->user()->hasRole('client')) {
-
+        if (auth()->check() AND auth()->user()->hasRole(USER_ROLE_CLIENT)) {
             $cacheKey = 'user_has_valid_package_' . auth()->user()->id;
 
             if(!cache()->has($cacheKey)){
 
-                $client = new \GuzzleHttp\Client(['headers' => $this->performHeaders()]);
+                $client = new \GuzzleHttp\Client([
+                    'headers' => $this->performHeaders()
+                ]);
                 $res = $client->request('GET', $this->getUrl());
 
                 if ($res->getStatusCode() == 200) {
@@ -64,16 +65,16 @@ class HasValidPackageMiddleware
         $hash = \Illuminate\Support\Facades\Hash::make(serialize($user_service));
         return [
             'X-user-id' => $user->id,
-            'X-user-hash', $hash,
-            'X-user-first-name', $user->first_name,
-            'X-user-last-name', $user->last_name,
-            'X-user-email', $user->email,
-            'X-user-username', $user->username,
-            'X-user-member-id', $user->member_id,
-            'X-user-sponsor-id', $user->sponsor_id,
-            'X-user-is-freeze', $user->is_freeze,
-            'X-user-is-deactivate', $user->is_deactivate,
-            'X-user-block-type', $user->block_type
+            'X-user-hash' => $hash,
+            'X-user-first-name' => $user->first_name,
+            'X-user-last-name' => $user->last_name,
+            'X-user-email' => $user->email,
+            'X-user-username' => $user->username,
+            'X-user-member-id' => $user->member_id,
+            'X-user-sponsor-id' => $user->sponsor_id,
+            'X-user-is-freeze' => $user->is_freeze,
+            'X-user-is-deactivate' => $user->is_deactivate,
+            'X-user-block-type' => $user->block_type
         ];
     }
 }
