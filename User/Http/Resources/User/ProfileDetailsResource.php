@@ -46,6 +46,7 @@ class ProfileDetailsResource extends JsonResource
             'city' => $this->city_id ? $cities->where(['id' => $this->city_id])->first()->name  : null,
             'country' => $this->country_id ? $countries->where('id',$this->country_id)->first()->name  : null,
             'zip_code' => $this->zip_code ? $this->zip_code  : null,
+            'roles' => $role_name = implode(",",auth()->user()->getRoleNames()->toArray())
         ];
     }
 }
