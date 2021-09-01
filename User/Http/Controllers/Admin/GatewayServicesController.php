@@ -18,6 +18,9 @@ class GatewayServicesController extends Controller
     }
 
     /**
+     * list gateway service list
+     * @group
+     * Admin > GatewayService
      * @return \Illuminate\Http\JsonResponse
      */
     public function gatewayServicesList()
@@ -29,6 +32,9 @@ class GatewayServicesController extends Controller
     }
 
     /**
+     * edit gateway service items
+     * @group
+     * Admin > GatewayService
      * @todo  make object serviceGateway and use that
      * @param EditGatewayRequest $request
      * @return \Illuminate\Http\JsonResponse

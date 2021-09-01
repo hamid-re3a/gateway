@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\GatewayServicesController;
+use User\Http\Controllers\Admin\RoleController;
 use User\Http\Controllers\Admin\TranslateController;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
 use User\Http\Controllers\Front\ActivityController;
@@ -91,6 +92,7 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('/user_login_history', [AdminUserController::class, 'loginHistory'])->name('user-login-history');
                 Route::get('/user_block_history', [AdminUserController::class, 'blockHistory'])->name('user-block-history');
                 Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
+                Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
 
             });
 
@@ -99,13 +101,9 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
             });
 
-            Route::middleware(['role:super-admin'])->prefix('user')->name("useradmin")->group(function () {
-                Route::post('/create_user', [\User\Http\Controllers\Admin\UserController::class, 'createUserByAdmin'])->name('create-user');
-            });
-
             Route::middleware(['role:super-admin'])->prefix('role')->name("role")->group(function () {
-                Route::get('/get_roles', [\User\Http\Controllers\Admin\RoleController::class, 'getAllRoles'])->name('get-roles');
-                Route::post('/create', [\User\Http\Controllers\Admin\RoleController::class, 'createRole'])->name('create-roles');
+                Route::get('/get_roles', [RoleController::class, 'getAllRoles'])->name('get-roles');
+                Route::post('/create', [RoleController::class, 'createRole'])->name('create-roles');
             });
 
 
