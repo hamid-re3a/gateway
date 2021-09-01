@@ -61,7 +61,7 @@ class HasValidPackageMiddleware
     {
         $user = request()->user();
         $user_service = $user->getUserService();
-        $hash = \Illuminate\Support\Facades\Hash::make($user_service);
+        $hash = \Illuminate\Support\Facades\Hash::make(serialize($user_service));
         return [
             'X-user-id' => $user->id,
             'X-user-hash', $hash,
