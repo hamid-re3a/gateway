@@ -38,18 +38,23 @@ return [
     'routes' => [
         [
             'services' => [
-                'default',
+                '*',
             ],
             'matches' => [
                 [
-                    'method' => 'POST',
+                    'method' => '*',
                     'paths' => [
-                        'login',
+                        '*',
+                    ],
+                    'exceptions_paths' => [
+                        'payments',
+                        'packages',
+                        'orders'
                     ]
                 ]
             ],
             'middlewares' => [
-                'login_attempt'
+                'has_valid_package'
             ]
         ],
 

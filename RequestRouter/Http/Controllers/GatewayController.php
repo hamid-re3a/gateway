@@ -127,9 +127,11 @@ class GatewayController extends Controller
             $method = strtolower($request->method());
 
         $routes = config('gateway.routes');
-        $services = GatewayServicesResource::collection($this->gateway_services->getAllGatewayServices())->resolve();
-        $services = array_replace(...$services);
-        $service_keys = GatewayServicesKeysResource::collection($this->gateway_services->getAllGatewayServices())->response()->getData();
+        $services = config('gateway.services');
+        $service_keys = collect(config('gateway.services'))->keys()->toArray();
+//        $services = GatewayServicesResource::collection($this->gateway_services->getAllGatewayServices())->resolve();
+//        $services = array_replace(...$services);
+//        $service_keys = GatewayServicesKeysResource::collection($this->gateway_services->getAllGatewayServices())->response()->getData();
         if (Str::startsWith($route, '/'))
             return [false, null, null];
         if (preg_match('/^^(?!\W)((?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*))$/', $route, $match)) {
@@ -146,11 +148,12 @@ class GatewayController extends Controller
                 $final_route = $domain . $sub_route;
 
 
-                list($can_pass, $middlewares) = $this->checkRoute($routes, $service, $route, $method, $sub_route);
+                list($can_pass, $middlewares) = $this->checkRouteForPossibleMiddlewares($routes, $service, $route, $method, $sub_route);
 
                 if ($can_pass || !$services[$service]['just_current_routes']) {
                     return [true, $final_route, $middlewares];
                 }
+
             }
             return [false, null, null];
 
@@ -190,14 +193,26 @@ class GatewayController extends Controller
      * @param $sub_route
      * @return array
      */
-    private function checkRoute($routes, $service, $route, string $method, $sub_route)
+    private function checkRouteForPossibleMiddlewares($routes, $service, $route, string $method, $sub_route)
     {
         foreach ($routes as $c_route)
-            if (in_array($service, $c_route['services']))
+            if (in_array($service, $c_route['services']) || $c_route['services'] = '*')
                 foreach ($c_route['matches'] as $match_route)
-                    if ($method == strtolower($match_route['method']))
+                    if ($method == strtolower($match_route['method']) || strtolower($match_route['method']) == '*')
                         foreach ($match_route['paths'] as $path)
-                            if (preg_match('/' . $path . '/', $sub_route)) {
+                            if ($path == '*' || preg_match('/' . $path . '/', $sub_route)) {
+                                $exception_flag = false;
+                                if (isset($match_route['exceptions_paths'])) {
+                                    foreach ($match_route['exceptions_paths'] as $exception) {
+                                        if (preg_match('/' . $exception . '/', $sub_route)) {
+                                            $exception_flag = true;
+                                        }
+                                    }
+                                }
+                                if ($exception_flag)
+                                    continue;
+
+
                                 $middlewares = [];
                                 if (isset($match_route['middlewares'])) {
                                     $middlewares = array_merge($middlewares, $match_route['middlewares']);
@@ -292,6 +307,7 @@ class GatewayController extends Controller
     private function setUserHeadersIfAuthenticated(Request $request): void
     {
         $request->headers->remove('X-user-id');
+
         $request->headers->remove('X-user-first-name');
         $request->headers->remove('X-user-last-name');
         $request->headers->remove('X-user-email');
@@ -303,7 +319,11 @@ class GatewayController extends Controller
         $request->headers->remove('X-user-block-type');
         if (auth()->check()) {
             $user = User::query()->find(auth()->user()->id);
+
             $request->headers->set('X-user-id', $user->id);
+            $user_service = $user->getUserService();
+            $hash = \Illuminate\Support\Facades\Hash::make($user_service);
+            $request->headers->set('X-user-hash', $hash);
             $request->headers->set('X-user-first-name', $user->first_name);
             $request->headers->set('X-user-last-name', $user->last_name);
             $request->headers->set('X-user-email', $user->email);

@@ -269,6 +269,19 @@ class User extends Authenticatable
     }
 
     /**
+     * Methods
+     */
+    public function getUserService()
+    {
+        $user = new \User\Services\User();
+        $user->setId((int)$this->attributes['id']);
+        $user->setFirstName($this->attributes['first_name']);
+        $user->setLastName($this->attributes['last_name']);
+        $user->setUsername($this->attributes['username']);
+        $user->setEmail($this->attributes['email']);
+        return $user;
+    }
+    /**
      * Mutators
      */
     public function setLandlineNumberAttribute($value)
