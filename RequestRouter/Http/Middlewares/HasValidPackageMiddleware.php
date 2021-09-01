@@ -13,7 +13,7 @@ class HasValidPackageMiddleware
 
     public function handle($request, Closure $next)
     {
-        if (auth()->check()) {
+        if (auth()->check() AND auth()->user()->hsaRole('client')) {
 
             $cacheKey = 'user_has_valid_package_' . auth()->user()->id;
 
@@ -59,8 +59,21 @@ class HasValidPackageMiddleware
 
     private function performHeaders()
     {
+        $user = request()->user();
+        $user_service = $user->getUserService();
+        $hash = \Illuminate\Support\Facades\Hash::make($user_service);
         return [
-            'X-user-id' => auth()->user()->id
+            'X-user-id' => $user->id,
+            'X-user-hash', $hash,
+            'X-user-first-name', $user->first_name,
+            'X-user-last-name', $user->last_name,
+            'X-user-email', $user->email,
+            'X-user-username', $user->username,
+            'X-user-member-id', $user->member_id,
+            'X-user-sponsor-id', $user->sponsor_id,
+            'X-user-is-freeze', $user->is_freeze,
+            'X-user-is-deactivate', $user->is_deactivate,
+            'X-user-block-type', $user->block_type
         ];
     }
 }
