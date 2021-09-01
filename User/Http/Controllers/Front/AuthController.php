@@ -41,6 +41,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         $user = User::query()->create($data);
+        $user->assignRole(USER_ROLE_CLIENT);
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);
 
