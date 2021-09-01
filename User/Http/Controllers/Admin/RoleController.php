@@ -17,12 +17,24 @@ class RoleController extends Controller
         $this->role_service = $role_service;
     }
 
+    /**
+     * list of Role Users
+     * @group
+     * Admin > Roles
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAllRoles()
     {
         $role = $this->role_service->getAllRoles();
         return api()->success(null,RoleListResource::collection($role)->response()->getData());
     }
-
+    /**
+     * create Role by Super Admin
+     * @group
+     * Admin > Roles
+     * @param CreateRoleRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createRole(CreateRoleRequest $request)
     {
         $role = $this->role_service->createRole($request);

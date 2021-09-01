@@ -197,6 +197,13 @@ class UserController extends Controller
         return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 
+    /**
+     * create user admin by super admin
+     * @group
+     * Admin > User
+     * @param CreateAdminRequest $request
+     * @return JsonResponse
+     */
     public function createUserByAdmin(CreateAdminRequest $request)
     {
         $this->user_admin_service->createAdmin($request);
