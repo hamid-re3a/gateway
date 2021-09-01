@@ -14,6 +14,23 @@ use User\Http\Controllers\Front\SettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
 
+/**
+ * @todo before lunch project we must migrate all route to this (admin-super admin)
+ * list of all route admin section
+ */
+Route::middleware(['role:super-admin|user-gateway-admin'])->name('admin.')->group(function () {
+
+});
+
+/**
+ * @todo before lunch project we must migrate all route to this (all api public and customer side)
+ * list of all route admin section
+ */
+Route::middleware(['role:client'])->name('customer.')->group(function () {
+
+});
+
+
 Route::middleware(['user_activity'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::middleware(['block_user'])->group(function () {
