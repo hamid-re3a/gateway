@@ -4,7 +4,7 @@ namespace User\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActivateOrDeactivateUserAccountRequest extends FormRequest
+class FreezeOrUnfreezeUserAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class ActivateOrDeactivateUserAccountRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email',
-            'deactivate' => 'nullable|boolean'
+            'user_id' => 'required|integer|exists:users,id',
+            'status' => 'required|in:freeze,unfreeze',
         ];
     }
 }

@@ -10,8 +10,7 @@ class SettingController extends Controller
 {
     /**
      * Get All Settings
-     * @group
-     * General
+     * @group General
      * @unauthenticated
      */
     public function index()

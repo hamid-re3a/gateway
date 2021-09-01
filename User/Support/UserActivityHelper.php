@@ -12,6 +12,7 @@ use User\Jobs\UrgentEmailJob;
 use User\Mail\User\ProfileManagement\EmailChangeTransactionPasswordOTP;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
+use User\Mail\User\ProfileManagement\TransactionPasswordOtpEmail;
 use User\Mail\User\WelcomeEmail;
 use User\Models\Agent as AgentModel;
 use User\Models\Ip;
@@ -191,7 +192,7 @@ class UserActivityHelper
                 "type" => OTP_TYPE_CHANGE_TRANSACTION_PASSWORD
             ]);
 
-            UrgentEmailJob::dispatch(new EmailChangeTransactionPasswordOTP($user, $token), $user->email);
+            UrgentEmailJob::dispatch(new TransactionPasswordOtpEmail($user, $token), $user->email);
 
             return [$data, $error];
 

@@ -3,6 +3,7 @@
 return [
 
     'responses' => [
+        'invalid-member-id' => 'Invalid member id',
         'global-error' => 'An error occurred, Try again please.',
         'max-attempts-exceeded' => 'Too many invalid attempts. Try again after a while',
         'user-account-deactivated-by-admin' => 'Your account is deactivated by admin',
@@ -51,18 +52,20 @@ return [
         'transaction-password-successfully-changed' => 'You\'ve successfully changed your transaction password ',
         'profile-details-updated' => 'You\'ve successfully changed your profile ',
         'avatar-updated' => 'You\'ve successfully updated your avatar',
+        'user-has-no-avatar' => 'User has no avatar',
 
         'wrong-wallet-address' => 'Enter a valid wallet address',
         'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
 
-        'your-account-frozen-successfully' => 'Your account has been frozen successfully',
-        'your-account-already-frozen' => 'Your account is already frozen',
+        'user-account-frozen-successfully' => 'User account has been frozen successfully',
+        'user-account-unfreeze-successfully' => 'User account has been unfrozen successfully',
 
-        'your-account-unfrozen-successfully' => 'Your account unfrozen successfully',
-        'your-account-already-unfreeze' => 'Your account is already unfreeze',
+        'user-account-deactivate-successfully' => 'User account has been deactivated successfully',
+        'user-account-activate-successfully' => 'User account has been activated successfully',
 
-        'your-account-deactivate-successfully' => 'Your account has been deactivated successfully',
-        'your-account-is-deactivate' => 'Your account is deactivate',
+        'you-cant-block-unblock-your-account' => 'You can not block/unblock your account',
+        'user.responses.you-cant-deactivate-active-your-account' => 'You can not activate/deactivate your account',
+        'user.responses.you-cant-freeze-unfreeze-your-account' => 'You can not freeze/unfreeze your account',
 
     ],
     'validation' => [

@@ -16,16 +16,24 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->id();
+            $table->unsignedBigInteger('member_id')->unique();
 
             $table->string('first_name',100);
             $table->string('last_name',100);
             $table->string('username',100)->unique();
-            $table->string('phone_number',100)->nullable();
+            $table->string('mobile_number',100)->nullable();
+            $table->string('landline_number',100)->nullable();
+            $table->mediumText('address_line1')->nullable();
+            $table->mediumText('address_line2')->nullable();
             $table->string('email',100)->unique()->index();
             $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
             $table->timestamp('birthday')->nullable();
             $table->string('password');
             $table->string('transaction_password')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->foreignId('city_id')->nullable()->constrained('cities');
+            $table->foreignId('state_id')->nullable()->constrained('cities','id');
+            $table->string('zip_code')->nullable();
 
             $table->string('block_type')->nullable();
             $table->string('block_reason')->nullable();

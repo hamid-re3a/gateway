@@ -1,5 +1,5 @@
 <?php
-
+// Comment Test
 const APP_NAME = 'Ride To Future';
 const USER_FORGOT_PASSWORD_OTP_DURATION = 60;
 const USER_FORGOT_PASSWORD_OTP_TRIES = 1;
@@ -104,7 +104,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
         'is_active' => true,
         'subject' => 'Forgot Password Code',
-        'from' => 'support@janex.com',
+        'from' => 'it@ridetothefuture.com',
         'from_name' => 'Janex Support Team',
         'body' => <<<EOT
                 <div>
@@ -122,11 +122,11 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
-    'CHANGE_TRANSACTION_PASSWORD_EMAIL_OTP'=>[
+    'TRANSACTION_PASSWORD_OTP'=>[
 
         'is_active' => true,
         'subject'=>'Transaction Password OTP',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -148,7 +148,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Email Verification Code',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -170,7 +170,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Welcome to Janex',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -192,7 +192,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Suspicious Login Attempt',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -219,7 +219,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'NORMAL_LOGIN_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Someone Logged-In',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -247,7 +247,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Too Many Attempts',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -278,7 +278,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Too Many Attempts - Account Blocked',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -305,7 +305,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Password Changed Warning',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -333,7 +333,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Email Verified Successfully',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -391,7 +391,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Transaction Password Changed Successfully',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -417,20 +417,13 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'FREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Your account frozen successfully',
-        'from'=>'support@janex.com',
+        'subject'=>'Your account has been frozen',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
-                <div>This is a confirmation that your account has been frozen successfully.<span></span></div>
-                <p></p>
-                <div><strong>Device Information:</strong><strong></strong></div>
-                <div>Country: {{country}}</div>
-                <div>City: {{city}}</div>
-                <div>IP: {{ip}}</div>
-                <div>Platform: {{platform}}</div>
-                <div>Browser: {{browser}}</div>
+                <div>This is a confirmation that your account has been frozen.<span></span></div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -438,26 +431,19 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
     'UNFREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Your account unfroze successfully',
-        'from'=>'support@janex.com',
+        'subject'=>'Your account has been unfrozen',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
-                <div>This is a confirmation that your account unfroze successfully.<span></span></div>
-                <p></p>
-                <div><strong>Device Information:</strong><strong></strong></div>
-                <div>Country: {{country}}</div>
-                <div>City: {{city}}</div>
-                <div>IP: {{ip}}</div>
-                <div>Platform: {{platform}}</div>
-                <div>Browser: {{browser}}</div>
+                <div>This is a confirmation that your account has been unfrozen .<span></span></div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -465,26 +451,19 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
-    'DEACTIVATE_ACCOUNT_EMAIL'=>[
+    'USER_ACCOUNT_HAS_BEEN_DEACTIVATED'=>[
         'is_active' => true,
-        'subject'=>'Your account deactivated successfully',
-        'from'=>'support@janex.com',
+        'subject'=>'Your account has been deactivated',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
                 <p>Hello {{full_name}},</p>
-                <div>This is a confirmation that your account has been deactivated successfully.<span></span></div>
-                <p></p>
-                <div><strong>Device Information:</strong><strong></strong></div>
-                <div>Country: {{country}}</div>
-                <div>City: {{city}}</div>
-                <div>IP: {{ip}}</div>
-                <div>Platform: {{platform}}</div>
-                <div>Browser: {{browser}}</div>
+                <div>This is a confirmation that your account has been deactivated .<span></span></div>
                 <p></p>
                 <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
                 <p></p>
@@ -492,7 +471,27 @@ const EMAIL_CONTENT_SETTINGS = [
                 <p>Janex Support Team</p>
                 </div>
             EOT,
-        'variables'=>'full_name,country,city,ip,platform,browser',
+        'variables'=>'full_name',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'USER_ACCOUNT_HAS_BEEN_ACTIVATED'=>[
+        'is_active' => true,
+        'subject'=>'Your account has been activated',
+        'from'=>'it@ridetothefuture.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <p>Hello {{full_name}},</p>
+                <div>This is a confirmation that your account has been activated .<span></span></div>
+                <p></p>
+                <div>If this was you, you can disregard this email. Otherwise reach the support team immediately.</div>
+                <p></p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name',
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
@@ -503,11 +502,15 @@ const QUEUES_EMAIL = 'emails';
 /**
  * user_roles
  */
-const USER_ROLE_ADMIN = 'admin';
+const USER_ROLE_SUPER_ADMIN = 'super-admin';
+const USER_ROLE_ADMIN_KYC = 'kyc-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS = 'subscriptions-admin';
 const USER_ROLE_CLIENT = 'client';
 const USER_ROLE_HELP_DESK = 'help-desk';
 const USER_ROLES = [
-    USER_ROLE_ADMIN,
+    USER_ROLE_SUPER_ADMIN,
+    USER_ROLE_ADMIN_KYC,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS,
     USER_ROLE_CLIENT,
     USER_ROLE_HELP_DESK,
 ];

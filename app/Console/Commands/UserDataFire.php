@@ -42,10 +42,11 @@ class UserDataFire extends Command
         $user = new User();
         $user->setId(1);
         $user->setEmail("d@d.com");
-        $user->setFirstName("Dariush");
-        $user->setLastName("Molaie");
-        $user->setRole('admin,client,dsafs');
+        $user->setFirstName("Dariush1");
+        $user->setLastName("Molaie1");
+        $user->setUsername("ffffff");
+        $user->setRole('test2,test4,test7');
         $serializeUser = serialize($user);
-        UserDataJob::dispatch($serializeUser)->onQueue('mlm');
+        UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
     }
 }

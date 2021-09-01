@@ -4,6 +4,7 @@ namespace User\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class CryptoWallet extends Model
 {
@@ -18,6 +19,7 @@ class CryptoWallet extends Model
      * @var array
      */
     protected $fillable = [
+        'uuid',
         'user_id',
         'crypto_currency_id',
         'address',
@@ -27,6 +29,7 @@ class CryptoWallet extends Model
 
     protected $casts = [
         'id' => 'integer',
+        'uuid' => 'string',
         'user_id' => 'integer',
         'crypto_currency_id' => 'integer',
         'address' => 'string',
@@ -64,5 +67,21 @@ class CryptoWallet extends Model
     {
         return $query->where('is_active',0);
     }
+
+    /**
+     * Mutators
+     */
+    public function setAddressAttribute($value)
+    {
+        $this->attributes['address'] = $value;
+        if(empty($this->attributes['uuid'])) {
+            $uuid = Uuid::uuid4()->toString();
+            while($this->where('uuid', $uuid)->first())
+                $uuid = Uuid::uuid4()->toString();
+
+            $this->attributes['uuid'] = $uuid;
+        }
+    }
+
 
 }

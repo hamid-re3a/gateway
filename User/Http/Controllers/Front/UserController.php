@@ -3,23 +3,24 @@
 namespace User\Http\Controllers\Front;
 
 
+use App\Jobs\User\UserDataJob;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Uuid;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
+use User\Http\Requests\User\Profile\UpdateContactDetails;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
 use User\Http\Requests\User\Profile\ChangePasswordRequest;
 use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
 use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
 use User\Http\Resources\User\ProfileDetailsResource;
-use User\Jobs\TrivialEmailJob;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
-use User\Mail\User\ProfileManagement\DeactivatedAccountEmail;
-use User\Mail\User\ProfileManagement\FreezeAccountEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
+use User\Services\User;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
@@ -27,7 +28,7 @@ class UserController extends Controller
 
     /**
      * Get user profile details
-     * @group Profile Management
+     * @group Public User > Profile Management
      */
     public function getDetails()
     {
@@ -36,8 +37,7 @@ class UserController extends Controller
 
     /**
      * Change password
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param ChangePasswordRequest $request
      * @return JsonResponse
      */
@@ -64,8 +64,7 @@ class UserController extends Controller
 
     /**
      * Change Transaction password
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param ChangeTransactionPasswordRequest $request
      * @return JsonResponse
      */
@@ -91,8 +90,7 @@ class UserController extends Controller
 
     /**
      * Ask Email transaction password OTP
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      */
     public function askTransactionPasswordOtp()
     {
@@ -105,8 +103,7 @@ class UserController extends Controller
 
     /**
      * Verify Transaction password OTP
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param VerifyTransactionPasswordOtp $request
      * @return JsonResponse
      * @throws \Exception
@@ -142,7 +139,7 @@ class UserController extends Controller
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             $request->user()->update([
-                'password' => $request->get('password') //bcrypt in User model (Mutator)
+                'transaction_password' => $request->get('password') //bcrypt in User model (Mutator)
             ]);
             UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
@@ -153,8 +150,7 @@ class UserController extends Controller
 
     /**
      * Change personal details
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param UpdatePersonalDetails $request
      * @return JsonResponse
      */
@@ -169,19 +165,38 @@ class UserController extends Controller
             return api()->error(trans('user.responses.global-error'),null,500,null);
         }
 
-        return api()->success(trans('user.responses.profile-details-updated'));
+        return api()->success(trans('user.responses.profile-details-updated'), ProfileDetailsResource::make(auth()->user()));
+    }
+
+    /**
+     * Update contact details
+     * @group Public User > Profile Management
+     * @param UpdateContactDetails $request
+     * @return JsonResponse
+     */
+    public function updateContactDetails(UpdateContactDetails $request)
+    {
+        try {
+            DB::beginTransaction();
+            $request->user()->update($request->validated());
+            DB::commit();
+        }  catch (\Throwable $exception) {
+            DB::rollBack();
+            return api()->error(trans('user.responses.global-error'),null,500,null);
+        }
+
+        return api()->success(trans('user.responses.profile-details-updated'), ProfileDetailsResource::make(auth()->user()));
     }
 
     /**
      * Update avatar
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      * @param UpdateAvatarRequest $request
      * @return JsonResponse
      */
     public function updateAvatar(UpdateAvatarRequest $request)
     {
-        $fileName = auth()->user()->id . '-' . Uuid::uuid4() . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $fileName = auth()->user()->id . '-' .auth()->user()->member_id . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
         $mimeType = $request->file('avatar')->getMimeType();
         $request->file('avatar')->storeAs('/avatars/', $fileName);
         auth()->user()->update([
@@ -199,11 +214,14 @@ class UserController extends Controller
 
     /**
      * Get avatar details
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      */
     public function getAvatarDetails()
     {
+
+        if(empty(auth()->user()->avatar))
+            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+
         $avatar = json_decode(auth()->user()->avatar,true);
         return api()->success(null,[
             'mime' => $avatar['mime'],
@@ -213,72 +231,20 @@ class UserController extends Controller
 
     /**
      * Get avatar image
-     * @group
-     * Profile Management
+     * @group Public User > Profile Management
      */
     public function getAvatarImage()
     {
+
+        if(empty(auth()->user()->avatar))
+            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+
         $avatar = json_decode(auth()->user()->avatar,true);
-        return Storage::disk('local')->response('/avatars/' . $avatar['file_name']);
+
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+            return api()->error('',null,404);
+
+        return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
     }
 
-    /**
-     * Freeze account
-     * @group
-     * Profile Management
-     */
-    public function freeze()
-    {
-        if(auth()->user()->is_freeze)
-            return api()->error(trans('user.responses.your-account-already-frozen'));
-
-        auth()->user()->update([
-            'is_freeze' => true
-        ]);
-
-        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
-
-        return api()->success(trans('user.responses.your-account-frozen-successfully'));
-    }
-
-    /**
-     * UnFreeze account
-     * @group
-     * Profile Management
-     */
-    public function unfreeze()
-    {
-        if(!auth()->user()->is_freeze)
-            return api()->error(trans('user.responses.your-account-already-unfreeze'));
-
-        auth()->user()->update([
-            'is_freeze' => false
-        ]);
-
-        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        UrgentEmailJob::dispatch(new FreezeAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
-
-        return api()->success(trans('user.responses.your-account-unfrozen-successfully'));
-    }
-
-    /**
-     * Deactivate account
-     * @group
-     * Profile Management
-     */
-    public function deactivate()
-    {
-        auth()->user()->update([
-            'is_deactivate' => TRUE
-        ]);
-
-        list($ip_db, $agent_db) = UserActivityHelper::getInfo(request());
-        UrgentEmailJob::dispatch(new DeactivatedAccountEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
-
-        auth()->user()->signOut();
-        return api()->success(trans('user.responses.your-account-deactivate-successfully'));
-
-
-    }
 }

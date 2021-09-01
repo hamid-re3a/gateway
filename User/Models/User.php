@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
-use User\Exceptions\OldPasswordException;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -29,6 +28,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @mixin \Eloquent
  * @property int $id
+ * @property int $member_id
+ * @property int $sponsor_id
+ * @property boolean $is_deactivate
+ * @property boolean $is_freeze
  * @property string $first_name
  * @property string $last_name
  * @property string|null $username
@@ -93,6 +96,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $block_histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection|PasswordHistory[] $passwordHistories
  * @property-read int|null $password_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Country[] $country
+ * @property-read \Illuminate\Database\Eloquent\Collection|City[] $city
+ * @property-read \Illuminate\Database\Eloquent\Collection|City[] $state
  */
 class User extends Authenticatable
 {
@@ -114,15 +120,22 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'member_id',
         'first_name',
         'last_name',
         'username',
-        'phone_number',
+        'mobile_number',
+        'landline_number',
+        'address_line1',
+        'address_line2',
         'email',
         'gender',
         'birthday',
         'password',
         'transaction_password',
+        'country_id',
+        'city_id',
+        'state_id',
         'block_type',
         'block_reason',
         'avatar',
@@ -131,7 +144,8 @@ class User extends Authenticatable
         'google2fa_enable',
         'google2fa_secret',
         'is_freeze',
-        'is_deactivate'
+        'is_deactivate',
+        'zip_code'
     ];
 
     protected $casts = [
@@ -142,6 +156,15 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
+        if(empty($this->attributes['member_id'])) {
+            //User member_id field
+            $member_id = mt_rand(121212121,999999999);
+            while ($this->where('member_id', $member_id)->count())
+                $member_id = mt_rand(121212121,999999999);
+
+            $this->attributes['member_id'] = $member_id;
+        }
+
         $this->attributes['password'] = bcrypt($value);
     }
 
@@ -196,6 +219,21 @@ class User extends Authenticatable
         return $this->hasMany(UserActivity::class,'user_id','id');
     }
 
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(City::class,'state_id','id')->whereNull('parent_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class,'city_id','id')->whereNotNull('parent_id');
+    }
+
     /**
      * methods
      */
@@ -242,6 +280,23 @@ class User extends Authenticatable
         $user->setUsername($this->attributes['username']);
         $user->setEmail($this->attributes['email']);
         return $user;
+    }
+    /**
+     * Mutators
+     */
+    public function setLandlineNumberAttribute($value)
+    {
+        if(!empty($value)){
+            $this->attributes['landline_number'] = phone($value,$this->country->iso2)->formatInternational();
+        }
+
+    }
+    public function setMobileNumberAttribute($value)
+    {
+        if(!empty($value)){
+            $this->attributes['mobile_number'] = phone($value,$this->country->iso2)->formatInternational();
+        }
+
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 namespace RequestRouter;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +29,7 @@ class GatewayServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(__DIR__.'/routes/api.php');
 
+        JsonResource::withoutWrapping();
     }
     /**
      * Determine if we should register the migrations.
