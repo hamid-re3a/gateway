@@ -63,7 +63,7 @@ Route::middleware(['user_activity'])->group(function () {
             Route::post('/sessions/signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('session-other-sessions');
 
 
-            Route::prefix('profile_management')->group(function () {
+            Route::prefix('profile_management')->middleware('has_valid_package')->group(function () {
                 Route::get('', [UserController::class, 'getDetails'])->name('user-profile-detail');
                 Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');
                 Route::post('change_transaction_password', [UserController::class, 'changeTransactionPassword'])->name('change-transaction-password');
