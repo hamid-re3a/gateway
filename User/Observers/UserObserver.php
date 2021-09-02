@@ -37,12 +37,16 @@ class UserObserver
                 $userObject->setFirstName($user->first_name);
                 $userObject->setLastName($user->last_name);
                 $userObject->setUsername($user->username);
+                $userObject->setBlockType($user->block_type);
+                $userObject->setIsDeactivate($user->is_deactivate);
+                $userObject->setIsFreeze($user->is_freeze);
+                $userObject->setSponsorId($user->sponsor_id);
                 $role_name = implode(",",$user->getRoleNames()->toArray());
                 $userObject->setRole($role_name);
                 $serializeUser = serialize($userObject);
-                UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
-                UserDataJob::dispatch($serializeUser)->onQueue('kyc');
-                UserDataJob::dispatch($serializeUser)->onQueue('mlm');
+                UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
+                UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
+                UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
             }
 
             if($user->isDirty('block_type')){

@@ -20,4 +20,11 @@ class UserRepository
         $user_entity->save();
         return $user_entity;
     }
+
+    public function getUserData($id)
+    {
+        $user_entity = new $this->entity_name;
+        $user_entity->whereId($id)->first();
+        return $user_entity->getUSerService();
+    }
 }

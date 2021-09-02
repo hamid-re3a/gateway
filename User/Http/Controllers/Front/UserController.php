@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdateContactDetails;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
