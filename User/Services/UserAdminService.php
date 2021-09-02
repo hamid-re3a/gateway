@@ -37,15 +37,23 @@ class UserAdminService
         $userObject->setFirstName($admin->first_name);
         $userObject->setLastName($admin->last_name);
         $userObject->setUsername($admin->username);
+        $userObject->setBlockType($admin->block_type);
+        $userObject->setIsDeactivate($admin->is_deactivate);
+        $userObject->setIsFreeze($admin->is_freeze);
+        $userObject->setSponsorId($admin->sponsor_id);
         $role_name = implode(",",$admin->getRoleNames()->toArray());
         $userObject->setRole($role_name);
         $serializeUser = serialize($userObject);
-        UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
-        UserDataJob::dispatch($serializeUser)->onQueue('kyc');
-        UserDataJob::dispatch($serializeUser)->onQueue('mlm');
+        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
+        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
+        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
 
         return $admin;
 
+    }
+
+    public function getUSerData($request){
+        $this->getUSerData($request);
     }
 
 }

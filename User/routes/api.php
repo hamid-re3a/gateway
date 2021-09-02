@@ -28,6 +28,10 @@ Route::middleware(['role:super-admin|user-gateway-admin'])->name('admin.')->grou
  */
 Route::middleware(['role:client'])->name('customer.')->group(function () {
 
+    Route::name("subscription-api")->group(function (){
+        Route::post("get_specific_user_data",[UserController::class,'getDataUser']);
+    });
+
 });
 
 

@@ -45,8 +45,13 @@ class UserDataFire extends Command
         $user->setFirstName("Dariush1");
         $user->setLastName("Molaie1");
         $user->setUsername("ffffff");
+        $user->setBlockType("");
+        $user->setIsDeactivate(true);
+        $user->setIsFreeze(true);
+        $user->setSponsorId(1);
         $user->setRole('test2,test4,test7');
         $serializeUser = serialize($user);
-        UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
+        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
+
     }
 }

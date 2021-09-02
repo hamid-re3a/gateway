@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdateContactDetails;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
@@ -245,6 +246,10 @@ class UserController extends Controller
             return api()->error('',null,404);
 
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
+    }
+
+    public function getDataUser(GetUserDataRequest $request)
+    {
     }
 
 }
