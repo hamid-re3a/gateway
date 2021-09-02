@@ -307,16 +307,8 @@ class GatewayController extends Controller
     private function setUserHeadersIfAuthenticated(Request $request): void
     {
         $request->headers->remove('X-user-id');
+        $request->headers->remove('X-user-hash');
 
-        $request->headers->remove('X-user-first-name');
-        $request->headers->remove('X-user-last-name');
-        $request->headers->remove('X-user-email');
-        $request->headers->remove('X-user-username');
-        $request->headers->remove('X-user-member-id');
-        $request->headers->remove('X-user-sponsor-id');
-        $request->headers->remove('X-user-is-freeze');
-        $request->headers->remove('X-user-is-deactivate');
-        $request->headers->remove('X-user-block-type');
         if (auth()->check()) {
             $user = User::query()->find(auth()->user()->id);
 
@@ -324,15 +316,6 @@ class GatewayController extends Controller
             $user_service = $user->getUserService();
             $hash = \Illuminate\Support\Facades\Hash::make(serialize($user_service));
             $request->headers->set('X-user-hash', $hash);
-            $request->headers->set('X-user-first-name', $user->first_name);
-            $request->headers->set('X-user-last-name', $user->last_name);
-            $request->headers->set('X-user-email', $user->email);
-            $request->headers->set('X-user-username', $user->username);
-            $request->headers->set('X-user-member-id', $user->member_id);
-            $request->headers->set('X-user-sponsor-id', $user->sponsor_id);
-            $request->headers->set('X-user-is-freeze', $user->is_freeze);
-            $request->headers->set('X-user-is-deactivate', $user->is_deactivate);
-            $request->headers->set('X-user-block-type', $user->block_type);
         }
     }
 

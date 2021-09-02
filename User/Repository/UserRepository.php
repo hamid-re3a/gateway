@@ -24,6 +24,7 @@ class UserRepository
     public function getUserData($id)
     {
         $user_entity = new $this->entity_name;
-        return $user_entity->whereId($id)->first();
+        $user_entity->whereId($id)->first();
+        return $user_entity->getUSerService();
     }
 }

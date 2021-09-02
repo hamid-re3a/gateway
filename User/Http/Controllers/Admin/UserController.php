@@ -9,6 +9,7 @@ use User\Http\Requests\Admin\ActivateOrDeactivateUserAccount;
 use User\Http\Requests\Admin\BlockOrUnblockUser;
 use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
+use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
 use User\Http\Resources\OtpResource;

@@ -248,8 +248,4 @@ class UserController extends Controller
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
     }
 
-    public function getDataUser(GetUserDataRequest $request)
-    {
-    }
-
 }

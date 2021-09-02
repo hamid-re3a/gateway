@@ -145,7 +145,8 @@ class User extends Authenticatable
         'google2fa_secret',
         'is_freeze',
         'is_deactivate',
-        'zip_code'
+        'zip_code',
+        'sponsor_id'
     ];
 
     protected $casts = [
@@ -279,6 +280,10 @@ class User extends Authenticatable
         $user->setLastName($this->attributes['last_name']);
         $user->setUsername($this->attributes['username']);
         $user->setEmail($this->attributes['email']);
+        $user->setBlockType($this->attributes['block_type']);
+        $user->setSponsorId($this->attributes['sponsor_id']);
+        $user->setIsFreeze($this->attributes['is_freeze']);
+        $user->setIsDeactivate($this->attributes['is_deactivate']);
         return $user;
     }
     /**

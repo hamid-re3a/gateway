@@ -52,8 +52,13 @@ class UserAdminService
 
     }
 
-    public function getUSerData($request){
-        $this->getUSerData($request);
+    /**
+     * get userService Object by id
+     * @param $user_update
+     * @return mixed
+     */
+    public function getUserData($user_update){
+        return $this->user_repository->getUserData($user_update->getId());
     }
 
 }
