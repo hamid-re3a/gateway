@@ -47,8 +47,9 @@ class CountryCitySeeder extends Seeder
                     'name' => $country
                 ]);
                 foreach($states AS $state => $cities) {
-                    $state = $country->states()->firstOrCreate([
-                        'name' => $state
+                    $state = City::query()->firstOrCreate([
+                        'name' => $state,
+                        'country_id' => $country->id
                     ]);
                     foreach($cities AS $city) {
                         $cities_to_db[] = [
@@ -75,11 +76,11 @@ class CountryCitySeeder extends Seeder
                     'country_id' => $country->id
                 ]);
             }
-            City::query()->insert($cities_to_db);
+            foreach(collect($cities_to_db)->chunk(150) AS $chunked_cities)
+                City::query()->insert($chunked_cities->toArray());
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
-            $errorCode = mt_rand(10000,999999);
             throw $e;
 
         }
