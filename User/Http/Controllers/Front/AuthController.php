@@ -48,9 +48,10 @@ class AuthController extends Controller
         $role_name = implode(",",$user->getRoleNames()->toArray());
         $userObject->setRole($role_name);
         $serializeUser = serialize($userObject);
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
+        //TODO uncomment after rabbitMQ & supervisord
+//        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
+//        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
+//        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);
 
