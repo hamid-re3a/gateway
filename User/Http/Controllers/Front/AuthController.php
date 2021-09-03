@@ -44,16 +44,7 @@ class AuthController extends Controller
         $user = User::query()->create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
-        $userObject = new \User\Services\User();
-        $userObject->setId($user->id);
-        $userObject->setEmail($user->email);
-        $userObject->setFirstName($user->first_name);
-        $userObject->setLastName($user->last_name);
-        $userObject->setUsername($user->username);
-        $userObject->setBlockType($user->block_type);
-        $userObject->setIsDeactivate($user->is_deactivate);
-        $userObject->setIsFreeze($user->is_freeze);
-        $userObject->setSponsorId($user->sponsor_id);
+        $userObject = $user->getUserService();
         $role_name = implode(",",$user->getRoleNames()->toArray());
         $userObject->setRole($role_name);
         $serializeUser = serialize($userObject);

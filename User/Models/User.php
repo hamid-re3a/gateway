@@ -269,21 +269,30 @@ class User extends Authenticatable
         return false;
     }
 
+
     /**
      * Methods
      */
     public function getUserService()
     {
         $user = new \User\Services\User();
-        $user->setId((int)$this->attributes['id']);
+        $user->setId($this->attributes['id']);
         $user->setFirstName($this->attributes['first_name']);
         $user->setLastName($this->attributes['last_name']);
         $user->setUsername($this->attributes['username']);
         $user->setEmail($this->attributes['email']);
-        $user->setBlockType($this->attributes['block_type']);
-        $user->setSponsorId($this->attributes['sponsor_id']);
-        $user->setIsFreeze($this->attributes['is_freeze']);
-        $user->setIsDeactivate($this->attributes['is_deactivate']);
+        if(isset($this->attributes['sponsor_id']))
+            $user->setSponsorId($this->attributes['sponsor_id']);
+
+        if(isset($this->attributes['block_type']))
+            $user->setBlockType($this->attributes['block_type']);
+
+        if(isset($this->attributes['is_deactivate']))
+            $user->setIsDeactivate($this->attributes['is_deactivate']);
+
+        if(isset($this->attributes['is_freeze']))
+            $user->setIsFreeze($this->attributes['is_freeze']);
+
         return $user;
     }
     /**
