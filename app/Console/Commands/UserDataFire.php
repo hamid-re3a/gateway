@@ -52,6 +52,7 @@ class UserDataFire extends Command
         $user->setRole('test2,test4,test7');
         $serializeUser = serialize($user);
         UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
+        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
 
     }
 }
