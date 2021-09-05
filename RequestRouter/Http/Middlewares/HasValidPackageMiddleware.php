@@ -5,7 +5,9 @@ namespace RequestRouter\Http\Middlewares;
 
 use Illuminate\Http\Request;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use User\Models\User;
 use User\Services\GatewayService;
 
 class HasValidPackageMiddleware
@@ -24,7 +26,7 @@ class HasValidPackageMiddleware
                 $res = $client->request('GET', $this->getUrl(),[
                     'headers' => [
                         'X-user-id' => auth()->user->id,
-                        'X-user-hash' => md5(auth()->user()->getUserService())
+                        'X-user-hash' => md5(Auth::user()->getUserService())
                     ]
                 ]);
 
