@@ -21,11 +21,11 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+    #- name: Execute tests (Unit and Feature tests) via PHPUnit
+     # env:
+     #   DB_CONNECTION: sqlite
+      #  DB_DATABASE: database/database.sqlite
+      #run: vendor/bin/phpunit
 
   laravel-deploy:
     runs-on: vmi627964
@@ -34,8 +34,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Copy project to deployment directory
       run: |
-        shopt -s dotglob 
-        sudo mkdir -p /home/stagingapigateway/public_html/API-Gateway/temp-project 
+        shopt -s dotglob
+        sudo mkdir -p /home/stagingapigateway/public_html/API-Gateway/temp-project
         sudo cp -r . /home/stagingapigateway/public_html/API-Gateway/temp-project/
         sudo rm -rf /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
         sudo mv /home/stagingapigateway/public_html/API-Gateway/temp-project/server_deploy.sh /home/stagingapigateway/public_html/API-Gateway/
@@ -43,5 +43,5 @@ jobs:
         sudo chmod 700 /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
         sudo chown -R stagingapigateway:stagingapigateway /home/stagingapigateway/public_html/API-Gateway/temp-project
     - name: Run server_deploy.sh
-      run: | 
+      run: |
         sudo su - stagingapigateway -c '/home/stagingapigateway/public_html/API-Gateway/server_deploy.sh'
