@@ -21,7 +21,12 @@ class HasValidPackageMiddleware
                 $client = new \GuzzleHttp\Client([
                     'headers' => $this->performHeaders()
                 ]);
-                $res = $client->request('GET', $this->getUrl());
+                $res = $client->request('GET', $this->getUrl(),[
+                    'headers' => [
+                        'X-user-id' => auth()->user->id,
+                        'X-user-hash' => md5(auth()->user()->getUserService())
+                    ]
+                ]);
 
                 if ($res->getStatusCode() == 200) {
 
