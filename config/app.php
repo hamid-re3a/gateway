@@ -180,6 +180,7 @@ return [
         \Torann\GeoIP\GeoIPServiceProvider::class,
         \ResponseTransformer\ResponseTransformerServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
     ],
 
