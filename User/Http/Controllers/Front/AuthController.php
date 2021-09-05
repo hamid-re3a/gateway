@@ -47,9 +47,9 @@ class AuthController extends Controller
         $userObject = $user->getUserService();
         $role_name = implode(",",$user->getRoleNames()->toArray());
         $userObject->setRole($role_name);
-        $serializeUser = serialize($userObject);
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
+        $serialize_user = serialize($userObject);
+        UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
+        UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
         //UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);

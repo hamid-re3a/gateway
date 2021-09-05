@@ -32,10 +32,10 @@ class UserObserver
 
             if(!empty($user->isDirty())){
                 $userObject = $user->getUserService();
-                $serializeUser = serialize($userObject);
-                UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
-                UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
-                UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
+                $serialize_user = serialize($userObject);
+                UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
+                UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
+                //UserDataJob::dispatch($hash_user_service)->onConnection('rabbit')->onQueue('mlm');
             }
 
             if($user->isDirty('block_type')){
