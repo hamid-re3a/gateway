@@ -50,9 +50,11 @@ class UserDataFire extends Command
         $user->setIsFreeze(true);
         $user->setSponsorId(1);
         $user->setRole('test2,test4,test7');
-        $serializeUser = serialize($user);
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
+        $serialize_user = serialize($user);
+        $hash_user_service = md5($serialize_user);
+
+        UserDataJob::dispatch($hash_user_service)->onConnection('rabbit')->onQueue('subscriptions');
+        UserDataJob::dispatch($hash_user_service)->onConnection('rabbit')->onQueue('kyc');
 
     }
 }
