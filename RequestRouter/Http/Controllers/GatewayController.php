@@ -314,7 +314,7 @@ class GatewayController extends Controller
 
             $request->headers->set('X-user-id', $user->id);
             $user_service = $user->getUserService();
-            $hash = \Illuminate\Support\Facades\Hash::make(serialize($user_service));
+            $hash = md5(serialize($user_service));
             $request->headers->set('X-user-hash', $hash);
         }
     }
