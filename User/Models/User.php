@@ -293,6 +293,11 @@ class User extends Authenticatable
         if(isset($this->attributes['is_freeze']))
             $user->setIsFreeze($this->attributes['is_freeze']);
 
+        if($this->getRoleNames()->count()) {
+            $role_name = implode(",",$this->getRoleNames()->toArray());
+            $user->setRole($role_name);
+        }
+
         return $user;
     }
     /**

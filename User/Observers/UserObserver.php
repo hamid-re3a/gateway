@@ -32,8 +32,6 @@ class UserObserver
 
             if(!empty($user->isDirty())){
                 $userObject = $user->getUserService();
-                $role_name = implode(",",$user->getRoleNames()->toArray());
-                $userObject->setRole($role_name);
                 $serializeUser = serialize($userObject);
                 UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
                 UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
