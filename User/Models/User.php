@@ -285,8 +285,6 @@ class User extends Authenticatable
         $user->setUsername($this->attributes['username']);
         $user->setEmail($this->attributes['email']);
         $user->setMemberId($this->attributes['member_id']);
-        $user->setIsDeactivate($this->attributes['is_deactivate']);
-        $user->setIsFreeze($this->attributes['is_freeze']);
 
         if (isset($this->attributes['sponsor_id']) AND !empty($this->attributes['sponsor_id']))
             $user->setSponsorId($this->attributes['sponsor_id']);
@@ -294,6 +292,11 @@ class User extends Authenticatable
         if (isset($this->attributes['block_type']) AND !empty($this->attributes['block_type']))
             $user->setBlockType($this->attributes['block_type']);
 
+        if (isset($this->attributes['is_deactivate']))
+            $user->setIsDeactivate($this->attributes['is_deactivate']);
+
+        if (isset($this->attributes['is_freeze']))
+            $user->setIsFreeze($this->attributes['is_freeze']);
 
         if ($this->getRoleNames()->count()) {
             $role_name = implode(",", $this->getRoleNames()->toArray());
