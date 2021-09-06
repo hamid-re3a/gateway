@@ -281,6 +281,7 @@ class User extends Authenticatable
         $user->setLastName($this->attributes['last_name']);
         $user->setUsername($this->attributes['username']);
         $user->setEmail($this->attributes['email']);
+        $user->setMemberId($this->attributes['member_id']);
         if(isset($this->attributes['sponsor_id']))
             $user->setSponsorId($this->attributes['sponsor_id']);
 
