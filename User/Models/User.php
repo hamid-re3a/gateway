@@ -152,7 +152,9 @@ class User extends Authenticatable
     protected $casts = [
         'birthday' => 'datetime',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'is_freeze' => 'boolean',
+        'is_deactivate' => 'boolean'
     ];
 
     public function setPasswordAttribute($value)
@@ -275,6 +277,7 @@ class User extends Authenticatable
      */
     public function getUserService()
     {
+        $this->fresh();
         $user = new \User\Services\User();
         $user->setId($this->attributes['id']);
         $user->setFirstName($this->attributes['first_name']);
@@ -282,25 +285,28 @@ class User extends Authenticatable
         $user->setUsername($this->attributes['username']);
         $user->setEmail($this->attributes['email']);
         $user->setMemberId($this->attributes['member_id']);
-        if(isset($this->attributes['sponsor_id']))
+
+        if (isset($this->attributes['sponsor_id']) AND !empty($this->attributes['sponsor_id']))
             $user->setSponsorId($this->attributes['sponsor_id']);
 
-        if(isset($this->attributes['block_type']))
+        if (isset($this->attributes['block_type']) AND !empty($this->attributes['block_type']))
             $user->setBlockType($this->attributes['block_type']);
 
-        if(isset($this->attributes['is_deactivate']))
+        if (isset($this->attributes['is_deactivate']))
             $user->setIsDeactivate($this->attributes['is_deactivate']);
 
-        if(isset($this->attributes['is_freeze']))
+        if (isset($this->attributes['is_freeze']))
             $user->setIsFreeze($this->attributes['is_freeze']);
 
-        if($this->getRoleNames()->count()) {
-            $role_name = implode(",",$this->getRoleNames()->toArray());
+        if ($this->getRoleNames()->count()) {
+            $role_name = implode(",", $this->getRoleNames()->toArray());
             $user->setRole($role_name);
         }
 
         return $user;
     }
+
+
     /**
      * Mutators
      */
