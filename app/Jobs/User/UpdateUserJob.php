@@ -17,10 +17,12 @@ class UpdateUserJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $data;
+    private $user_service;
 
-    public function __construct($data)
+    public function __construct($data,UserService $userService)
     {
         $this->data = $data;
+        $this->user_service = $userService;
     }
 
     /**
@@ -35,14 +37,7 @@ class UpdateUserJob implements ShouldQueue
          */
         $user_object = unserialize($this->data);
         $user_db = User::query()->find($user_object->getId());
-        if($user_db) {
-            $user_service = app(UserAdminService::class);
-            $user_object = $user_service->userUpdate($user_object);
-            if($user_object instanceof \User\Services\User) {
-                $serialize_user = serialize($user_object);
-                UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
-                UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
-            }
-        }
+        if($user_db AND $user_object instanceof \User\Services\User)
+            $this->user_service->userUpdate($user_object);
     }
 }

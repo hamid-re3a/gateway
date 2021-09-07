@@ -62,13 +62,5 @@ class UserAdminService
         return $this->user_repository->getUserData($user_update->getId());
     }
 
-    /**
-     * Update user and roles
-     * @param User $user
-     */
-    public function userUpdate(User $user)
-    {
-        $this->user_repository->update($user);
-    }
 
 }
