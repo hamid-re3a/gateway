@@ -2,6 +2,7 @@
 
 namespace User\database\seeders;
 
+use App\Jobs\User\UserDataJob;
 use User\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -39,6 +40,13 @@ class AuthTableSeeder extends Seeder
             $admin->email = 'work@sajidjaved.com';
             $admin->save();
             $admin->assignRole(USER_ROLE_SUPER_ADMIN);
+
+            $userObject = $admin->getUserService();
+            $role_name = implode(",",$admin->getRoleNames()->toArray());
+            $userObject->setRole($role_name);
+            $serialize_user = serialize($userObject);
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
         }
         if (!User::query()->where('email', 'janexstaging@gmail.com')->exists()) {
             $global = User::whereUsername('johny')->first();
@@ -59,6 +67,13 @@ class AuthTableSeeder extends Seeder
             }
 
             $global->assignRole(USER_ROLE_SUPER_ADMIN);
+
+            $userObject = $global->getUserService();
+            $role_name = implode(",",$global->getRoleNames()->toArray());
+            $userObject->setRole($role_name);
+            $serialize_user = serialize($userObject);
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
         }
 
     }
