@@ -154,7 +154,7 @@ class User extends Authenticatable
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'is_freeze' => 'boolean',
-        'is_deactivate' => 'boolean'
+        'is_deactivate' => 'boolean',
     ];
 
     public function setPasswordAttribute($value)

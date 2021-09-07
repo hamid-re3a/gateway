@@ -25,6 +25,6 @@ class UserRepository
     {
         $user_entity = new $this->entity_name;
         $user_entity->whereId($id)->first();
-        return $user_entity->getUSerService();
+        return $user_entity->getUserService();
     }
 }
