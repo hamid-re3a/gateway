@@ -78,6 +78,7 @@ return [
         'sponsor-username-not-exists' => 'The sponsor does not exist',
         'sponsor-username-regex' => 'The sponsor username may have alpha-numeric characters or underscores',
         'sponsor-username-required' => 'Enter your sponsor username',
+        'sponsor-username-exists' => 'The sponsor username is invalid',
         'password-regex' => 'The password is not complex enough',
         'first-name-required' => 'Enter your first name',
         'last-name-required' => 'Enter your last name',
