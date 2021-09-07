@@ -40,6 +40,7 @@ class RegisterUserRequest extends FormRequest
             'email.unique:users' => trans('user.validation.email-unique'),
             'sponsor_username.regex' => trans('user.validation.sponsor-username-regex'),
             'sponsor_username.required' => trans('user.validation.sponsor-username-required'),
+            'sponsor_username.exists' => trans('user.validation.sponsor-username-required'),
             'sponsor_username.exists:users' => trans('user.validation.sponsor-username-not-exists'),
             'username.unique:users' => trans('user.validation.username-unique'),
             'username.required' => trans('user.validation.username-required'),
