@@ -6,6 +6,7 @@ namespace User\Services;
 
 use App\Jobs\User\UserDataJob;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use User\Repository\RoleRepository;
 use User\Repository\UserRepository;
 
@@ -59,6 +60,15 @@ class UserAdminService
      */
     public function getUserData($user_update){
         return $this->user_repository->getUserData($user_update->getId());
+    }
+
+    /**
+     * Update user and roles
+     * @param User $user
+     */
+    public function userUpdate(User $user)
+    {
+        $this->user_repository->update($user);
     }
 
 }

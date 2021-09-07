@@ -48,6 +48,7 @@ class CreateUsersTable extends Migration
 
             $table->boolean('is_freeze')->default(FALSE)->nullable();
             $table->boolean('is_deactivate')->default(FALSE)->nullable();
+            $table->boolean('is_fake')->default(FALSE)->nullable();
             $table->unsignedBigInteger('sponsor_id')->nullable();
 
             $table->timestamps();
