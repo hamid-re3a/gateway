@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->id();
-            $table->unsignedBigInteger('member_id')->unique();
+            $table->unsignedBigInteger('member_id')->unique()->nullable();
 
             $table->string('first_name',100);
             $table->string('last_name',100);
@@ -46,8 +46,8 @@ class CreateUsersTable extends Migration
             $table->boolean('google2fa_enable')->default(false);
             $table->string('google2fa_secret')->nullable();
 
-            $table->boolean('is_freeze')->default(FALSE);
-            $table->boolean('is_deactivate')->default(FALSE);
+            $table->boolean('is_freeze')->default(FALSE)->nullable();
+            $table->boolean('is_deactivate')->default(FALSE)->nullable();
             $table->unsignedBigInteger('sponsor_id')->nullable();
 
             $table->timestamps();
