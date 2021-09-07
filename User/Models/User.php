@@ -32,7 +32,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int $sponsor_id
  * @property boolean $is_deactivate
  * @property boolean $is_freeze
- * @property boolean $is_fake
  * @property string $first_name
  * @property string $last_name
  * @property string|null $username
@@ -146,7 +145,6 @@ class User extends Authenticatable
         'google2fa_secret',
         'is_freeze',
         'is_deactivate',
-        'is_fake',
         'zip_code',
         'sponsor_id'
     ];
@@ -157,7 +155,6 @@ class User extends Authenticatable
         'updated_at' => 'datetime',
         'is_freeze' => 'boolean',
         'is_deactivate' => 'boolean',
-        'is_fake' => 'boolean',
     ];
 
     public function setPasswordAttribute($value)
@@ -300,9 +297,6 @@ class User extends Authenticatable
 
         if (isset($this->attributes['is_freeze']))
             $user->setIsFreeze($this->attributes['is_freeze']);
-
-        if (isset($this->attributes['is_fake']))
-            $user->setIsFake($this->attributes['is_fake']);
 
         if ($this->getRoleNames()->count()) {
             $role_name = implode(",", $this->getRoleNames()->toArray());
