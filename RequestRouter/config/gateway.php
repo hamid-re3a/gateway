@@ -50,7 +50,7 @@ return [
                         'payments',
                         'packages',
                         'orders',
-                        'wallets/deposit'
+                        'wallets'
                     ]
                 ]
             ],
