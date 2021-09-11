@@ -49,7 +49,8 @@ return [
                     'exceptions_paths' => [
                         'payments',
                         'packages',
-                        'orders'
+                        'orders',
+                        'wallets/deposit'
                     ]
                 ]
             ],
