@@ -1,6 +1,6 @@
 <?php
-require './vendor/autoload.php';
-require './public/index.php';
+require '/home/stagingapigateway/public_html/API-Gateway/vendor/autoload.php';
+require '/home/stagingapigateway/public_html/API-Gateway/public/index.php';
 
 $grpc = new \Mix\Grpc\Server();
 $grpc->register(\User\Services\UserGrpcService::class);
