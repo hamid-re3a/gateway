@@ -30,7 +30,6 @@ Route::middleware(['role:client'])->name('customer.')->group(function () {
 
 });
 
-
 Route::middleware(['user_activity'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::middleware(['block_user'])->group(function () {
