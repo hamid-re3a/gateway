@@ -1,6 +1,8 @@
 Admin (User\tests\Feature\Admin)
- [x] Verify email user account green
- [x] User deactivate activate
+ [ ] Verify email user account green
+
+User Produce Rabbit (User\tests\Feature\UserProduceRabbit)
+ [x] Update exist user produce change rabbit
 
 User (User\tests\Feature\User)
  [x] Register new user green
