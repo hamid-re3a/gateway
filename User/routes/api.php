@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use User\Http\Controllers\Admin\EmailContentController;
 use User\Http\Controllers\Admin\GatewayServicesController;
 use User\Http\Controllers\Admin\RoleController;
 use User\Http\Controllers\Admin\TranslateController;
@@ -11,16 +12,25 @@ use User\Http\Controllers\GeneralController;
 use User\Http\Controllers\Front\LoginSecurityController;
 use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
+use User\Http\Controllers\Admin\SettingController as AdminSettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
 
-/**
- * @todo before lunch project we must migrate all route to this (admin-super admin)
- * list of all route admin section
- */
-Route::middleware(['role:super-admin|user-gateway-admin'])->name('admin.')->group(function () {
+
+Route::middleware(['role:super-admin|user-gateway-admin','user_activity'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::prefix('settings')->group(function(){
+        Route::get('', [AdminSettingController::class, 'index'])->name('index');
+        Route::patch('', [AdminSettingController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('email-content')->group(function(){
+        Route::get('', [EmailContentController::class,'index'])->name('index');
+        Route::patch('', [EmailContentController::class,'update'])->name('update');
+    });
 
 });
+
 
 /**
  * @todo before lunch project we must migrate all route to this (all api public and customer side)
