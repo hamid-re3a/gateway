@@ -67,6 +67,9 @@ return [
         'user.responses.you-cant-deactivate-active-your-account' => 'You can not activate/deactivate your account',
         'user.responses.you-cant-freeze-unfreeze-your-account' => 'You can not freeze/unfreeze your account',
 
+        'invalid-setting-key' => 'Invalid setting key',
+        'invalid-email-key' => 'Invalid email key',
+
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',
