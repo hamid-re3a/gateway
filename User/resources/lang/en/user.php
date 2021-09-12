@@ -67,6 +67,9 @@ return [
         'user.responses.you-cant-deactivate-active-your-account' => 'You can not activate/deactivate your account',
         'user.responses.you-cant-freeze-unfreeze-your-account' => 'You can not freeze/unfreeze your account',
 
+        'invalid-setting-key' => 'Invalid setting key',
+        'invalid-email-key' => 'Invalid email key',
+
     ],
     'validation' => [
         'email-not-exists'=>'The selected email address is not yet registered',
@@ -75,10 +78,10 @@ return [
         'username-unique' => 'The username already exists',
         'username-regex' => 'The username may have alpha-numeric characters or underscores',
         'username-required' => 'Enter your username',
-        'sponsor-username-not-exists' => 'The sponsor does not exist',
-        'sponsor-username-regex' => 'The sponsor username may have alpha-numeric characters or underscores',
+        'sponsor-username-not-exists' => 'Invalid sponsor name',
+        'sponsor-username-regex' => 'Invalid sponsor name',
         'sponsor-username-required' => 'Enter your sponsor username',
-        'sponsor-username-exists' => 'The sponsor username is invalid',
+        'sponsor-username-exists' => 'Invalid sponsor name',
         'password-regex' => 'The password is not complex enough',
         'first-name-required' => 'Enter your first name',
         'last-name-required' => 'Enter your last name',

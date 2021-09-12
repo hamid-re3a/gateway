@@ -3,36 +3,59 @@ return [
     // List of microservices behind the gateway
     'services' => [
         'default' => [
-            'prefix' => '/default',
             'doc_point' => '/docs',
             /** Can client calls the routes that are not defined here on this service */
-            'routes' => true,
+            'just_current_routes' => true,
             'domain' => 'local',
         ],
         'fake' => [
-            'prefix' => '/fake',
             'doc_point' => 'https://jsonplaceholder.typicode.com/',
-            'routes' => false,
+            'just_current_routes' => true,
             'domain' => 'https://jsonplaceholder.typicode.com/'
-        ]
+        ],
+        'subscription' => [
+            'doc_point' => 'https://staging-subscription.janex.org/docs',
+            'just_current_routes' => false,
+            'domain' => 'https://staging-subscription.janex.org/'
+        ],
+        'kyc' => [
+            'doc_point' => 'https://staging-kyc.janex.org/docs',
+            'just_current_routes' => false,
+            'domain' => 'https://staging-kyc.janex.org/'
+        ],
+        'local_subscription' => [
+            'doc_point' => 'http://192.168.43.121:3561/docs',
+            'just_current_routes' => false,
+            'domain' => 'http://192.168.43.121:3561/'
+        ],
+        'google' =>  [
+            'doc_point' => 'https://jsonplaceholder.typicode.com/',
+            'just_current_routes' => false,
+            'domain' => 'https://google.com/'
+        ],
 
     ],
     'routes' => [
         [
             'services' => [
-                'fake'
+                '*',
             ],
             'matches' => [
                 [
-                    'method' => 'GET',
+                    'method' => '*',
                     'paths' => [
-                        'posts',
-                        'comments'
+                        '*',
+                    ],
+                    'exceptions_paths' => [
+                        'payments',
+                        'packages',
+                        'orders',
+                        'wallets'
                     ]
                 ]
             ],
             'middlewares' => [
-                'auth:sanctum'
+                'has_valid_package'
             ]
         ],
 

@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse as JsonResponseAlias;
 use User\Http\Requests\Admin\ShowTranslateRequest;
 use User\Http\Requests\Admin\StoreTranslateRequest;
 use User\Http\Requests\Admin\UpdateTranslateRequest;
-use User\Http\Resources\TranslateResource;
+use User\Http\Resources\Admin\TranslateResource;
 use User\Models\Translate;
 use User\Services\TranslateService;
 

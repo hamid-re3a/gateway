@@ -8,11 +8,6 @@ return [
             'just_current_routes' => true,
             'domain' => 'local',
         ],
-        'fake' => [
-            'doc_point' => 'https://jsonplaceholder.typicode.com/',
-            'just_current_routes' => true,
-            'domain' => 'https://jsonplaceholder.typicode.com/'
-        ],
         'subscription' => [
             'doc_point' => 'https://staging-subscription.janex.org/docs',
             'just_current_routes' => false,
@@ -27,11 +22,6 @@ return [
             'doc_point' => 'https://staging-mlm.janex.org/docs',
             'just_current_routes' => false,
             'domain' => 'https://staging-mlm.janex.org/'
-        ],
-        'google' =>  [
-            'doc_point' => 'https://jsonplaceholder.typicode.com/',
-            'just_current_routes' => false,
-            'domain' => 'https://google.com/'
         ],
 
     ],
@@ -50,6 +40,7 @@ return [
                         'payments',
                         'packages',
                         'orders',
+                        'wallets'
                     ]
                 ]
             ],
