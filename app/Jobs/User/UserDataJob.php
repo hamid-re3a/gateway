@@ -33,6 +33,6 @@ class UserDataJob implements ShouldQueue
      */
     public function handle()
     {
-        echo "event has been handle. the name of paymentType is:". PHP_EOL;
+//        echo "event has been handle. the name of paymentType is:". PHP_EOL;
     }
 }
