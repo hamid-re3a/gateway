@@ -39,7 +39,9 @@ class AuthTableSeeder extends Seeder
 
             $admin->email = 'work@sajidjaved.com';
             $admin->save();
+
             $admin->assignRole(USER_ROLE_SUPER_ADMIN);
+            $admin->assignRole(USER_ROLE_CLIENT);
 
             $userObject = $admin->getUserService();
             $role_name = implode(",",$admin->getRoleNames()->toArray());
@@ -67,6 +69,7 @@ class AuthTableSeeder extends Seeder
             }
 
             $global->assignRole(USER_ROLE_SUPER_ADMIN);
+            $global->assignRole(USER_ROLE_CLIENT);
 
             $userObject = $global->getUserService();
             $role_name = implode(",",$global->getRoleNames()->toArray());
