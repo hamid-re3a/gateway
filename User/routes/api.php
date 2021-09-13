@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use User\Http\Controllers\Admin\EmailContentController;
 use User\Http\Controllers\Admin\GatewayServicesController;
+use User\Http\Controllers\Admin\LoginAttemptSetting;
 use User\Http\Controllers\Admin\RoleController;
 use User\Http\Controllers\Admin\TranslateController;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
@@ -18,6 +19,13 @@ use User\Http\Controllers\Front\WalletController;
 
 
 Route::middleware(['role:super-admin|user-gateway-admin','user_activity'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::prefix('login-attempts-settings')->group(function(){
+        Route::get('', [LoginAttemptSetting::class, 'index'])->name('index');
+        Route::post('', [LoginAttemptSetting::class, 'store'])->name('store');
+        Route::patch('', [LoginAttemptSetting::class, 'update'])->name('update');
+        Route::delete('', [LoginAttemptSetting::class, 'delete'])->name('delete');
+    });
 
     Route::prefix('settings')->group(function(){
         Route::get('', [AdminSettingController::class, 'index'])->name('index');
