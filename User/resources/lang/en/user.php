@@ -69,6 +69,7 @@ return [
 
         'invalid-setting-key' => 'Invalid setting key',
         'invalid-email-key' => 'Invalid email key',
+        'invalid-login-attempt-id' => 'Invalid login attempt',
 
     ],
     'validation' => [
