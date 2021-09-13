@@ -199,7 +199,7 @@ class UserController extends Controller
     }
 
     /**
-     * create user admin by super admin
+     * create user by super admin
      * @group
      * Admin > User
      * @param CreateAdminRequest $request
