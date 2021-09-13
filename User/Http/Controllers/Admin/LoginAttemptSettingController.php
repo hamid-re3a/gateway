@@ -13,7 +13,7 @@ use User\Http\Requests\Admin\UpdateLoginAttemptSettingRequest;
 use User\Http\Resources\Admin\LoginAttemptResource;
 use User\Repository\LoginAttemptSettingRepository;
 
-class LoginAttemptSetting extends Controller
+class LoginAttemptSettingController extends Controller
 {
     private $setting_repository;
 
