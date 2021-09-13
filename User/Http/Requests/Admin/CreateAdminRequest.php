@@ -32,6 +32,7 @@ class CreateAdminRequest extends FormRequest
             'password' => ['required', 'regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/'],
             'password_confirmation' => 'required|string|same:password',
             'role_id' => 'required|numeric|exists:roles,id',
+            'sponsor_id' => 'required|numeric|exists:users,id',
         ];
     }
 }
