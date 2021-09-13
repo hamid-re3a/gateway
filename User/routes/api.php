@@ -75,7 +75,8 @@ Route::middleware('user_activity')->group(function () {
 
         });
 
-        Route::middleware([ 'role:client|super-admin|user-gateway-admin','block_user', 'email_verified'])->name('customer.')->group(function () {
+//        Route::middleware(['role:client','block_user', 'email_verified'])->name('customer.')->group(function () {
+        Route::middleware(['block_user', 'email_verified'])->name('customer.')->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::get('/ping', [AuthController::class, 'ping'])->name('ping');
 
