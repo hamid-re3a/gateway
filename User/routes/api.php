@@ -19,62 +19,63 @@ use User\Http\Controllers\Front\WalletController;
 
 Route::middleware('user_activity')->group(function () {
 
-    Route::middleware(['role:super-admin|user-gateway-admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('auth')->group(function(){
+        Route::middleware(['role:super-admin|user-gateway-admin'])->prefix('admin')->name('admin.')->group(function () {
 
-        Route::prefix('settings')->group(function () {
-            Route::get('', [AdminSettingController::class, 'index'])->name('index');
-            Route::patch('', [AdminSettingController::class, 'update'])->name('update');
+            Route::prefix('settings')->group(function () {
+                Route::get('', [AdminSettingController::class, 'index'])->name('index');
+                Route::patch('', [AdminSettingController::class, 'update'])->name('update');
+            });
+
+            Route::prefix('login-attempts-settings')->group(function () {
+                Route::get('', [LoginAttemptSetting::class, 'index'])->name('index');
+                Route::post('', [LoginAttemptSetting::class, 'store'])->name('store');
+                Route::patch('', [LoginAttemptSetting::class, 'update'])->name('update');
+                Route::delete('', [LoginAttemptSetting::class, 'delete'])->name('delete');
+            });
+
+            Route::prefix('email-content')->group(function () {
+                Route::get('', [EmailContentController::class, 'index'])->name('index');
+                Route::patch('', [EmailContentController::class, 'update'])->name('update');
+            });
+
+            Route::prefix('users')->group(function () {
+                Route::get('', [AdminUserController::class, 'index'])->name('users-list');
+                Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
+                Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
+                Route::post('/freeze_or_unfreeze_user', [AdminUserController::class, 'freezeOrUnfreezeUserAccount'])->name('freeze-or-unfreeze-user-account');
+
+                Route::post('/verify_email_user', [AdminUserController::class, 'verifyUserEmailAccount'])->name('verify-email-user-account');
+                Route::get('/user_email_verification_history', [AdminUserController::class, 'emailVerificationHistory'])->name('user-email-verification-history');
+                Route::get('/user_login_history', [AdminUserController::class, 'loginHistory'])->name('user-login-history');
+                Route::get('/user_block_history', [AdminUserController::class, 'blockHistory'])->name('user-block-history');
+                Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
+                Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
+
+            });
+
+            Route::prefix('gateway_service')->name("gateway-service")->group(function () {
+                Route::get('/list', [GatewayServicesController::class, 'gatewayServicesList'])->name('list');
+                Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
+            });
+
+            Route::prefix('role')->name("role")->group(function () {
+                Route::get('/get_roles', [RoleController::class, 'getAllRoles'])->name('get-roles');
+                Route::post('/create', [RoleController::class, 'createRole'])->name('create-roles');
+            });
+
+            Route::prefix('translates')->name('translates.')->group(function () {
+                Route::get('/', [TranslateController::class, 'index'])->name('list');
+                Route::get('/unfinished', [TranslateController::class, 'unfinished'])->name('unfinished');
+                Route::post('/show', [TranslateController::class, 'show'])->name('show');
+                Route::post('/store', [TranslateController::class, 'store'])->name('store');
+                Route::patch('/update', [TranslateController::class, 'update'])->name('update');
+                Route::delete('/delete', [TranslateController::class, 'destroy'])->name('destroy');
+            });
+
         });
 
-        Route::prefix('login-attempts-settings')->group(function () {
-            Route::get('', [LoginAttemptSetting::class, 'index'])->name('index');
-            Route::post('', [LoginAttemptSetting::class, 'store'])->name('store');
-            Route::patch('', [LoginAttemptSetting::class, 'update'])->name('update');
-            Route::delete('', [LoginAttemptSetting::class, 'delete'])->name('delete');
-        });
-
-        Route::prefix('email-content')->group(function () {
-            Route::get('', [EmailContentController::class, 'index'])->name('index');
-            Route::patch('', [EmailContentController::class, 'update'])->name('update');
-        });
-
-        Route::prefix('users')->group(function () {
-            Route::get('', [AdminUserController::class, 'index'])->name('users-list');
-            Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
-            Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
-            Route::post('/freeze_or_unfreeze_user', [AdminUserController::class, 'freezeOrUnfreezeUserAccount'])->name('freeze-or-unfreeze-user-account');
-
-            Route::post('/verify_email_user', [AdminUserController::class, 'verifyUserEmailAccount'])->name('verify-email-user-account');
-            Route::get('/user_email_verification_history', [AdminUserController::class, 'emailVerificationHistory'])->name('user-email-verification-history');
-            Route::get('/user_login_history', [AdminUserController::class, 'loginHistory'])->name('user-login-history');
-            Route::get('/user_block_history', [AdminUserController::class, 'blockHistory'])->name('user-block-history');
-            Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
-            Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
-
-        });
-
-        Route::prefix('gateway_service')->name("gateway-service")->group(function () {
-            Route::get('/list', [GatewayServicesController::class, 'gatewayServicesList'])->name('list');
-            Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
-        });
-
-        Route::prefix('role')->name("role")->group(function () {
-            Route::get('/get_roles', [RoleController::class, 'getAllRoles'])->name('get-roles');
-            Route::post('/create', [RoleController::class, 'createRole'])->name('create-roles');
-        });
-
-        Route::prefix('translates')->name('translates.')->group(function () {
-            Route::get('/', [TranslateController::class, 'index'])->name('list');
-            Route::get('/unfinished', [TranslateController::class, 'unfinished'])->name('unfinished');
-            Route::post('/show', [TranslateController::class, 'show'])->name('show');
-            Route::post('/store', [TranslateController::class, 'store'])->name('store');
-            Route::patch('/update', [TranslateController::class, 'update'])->name('update');
-            Route::delete('/delete', [TranslateController::class, 'destroy'])->name('destroy');
-        });
-
-    });
-
-    Route::middleware(['role:client', 'block_user','auth', 'email_verified'])->name('customer.')->group(function () {
+        Route::middleware([ 'role:client|super-admin|user-gateway-admin','block_user', 'email_verified'])->name('customer.')->group(function () {
             Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::get('/ping', [AuthController::class, 'ping'])->name('ping');
 
@@ -126,8 +127,8 @@ Route::middleware('user_activity')->group(function () {
                 Route::get('user/avatar/{member_id}/image', [GeneralController::class, 'getAvatarImage'])->name('avatar-image');
             });
 
+        });
     });
-
 
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::name('auth.')->group(function () {
