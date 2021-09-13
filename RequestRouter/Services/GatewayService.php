@@ -1,7 +1,8 @@
 <?php
-namespace User\Services;
+namespace RequestRouter\Services;
 
-use User\Repository\GatewayServiceRepository;
+
+use RequestRouter\Repository\GatewayServiceRepository;
 
 class GatewayService
 {
