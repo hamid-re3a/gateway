@@ -6,6 +6,8 @@ const USER_FORGOT_PASSWORD_OTP_TRIES = 1;
 
 const USER_EMAIL_VERIFICATION_OTP_DURATION = 60;
 const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
+const USER_CHANGE_TRANSACTION_OTP_DURATION = 60;
+const USER_CHANGE_TRANSACTION_OTP_TRIES = 1;
 
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
@@ -63,6 +65,16 @@ const SETTINGS = [
     ],
     'USER_EMAIL_VERIFICATION_OTP_TRIES' => [
         'value' => USER_EMAIL_VERIFICATION_OTP_TRIES,
+        'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
+        'category' => 'User > Email Verification',
+    ],
+    'USER_CHANGE_TRANSACTION_OTP_DURATION' => [
+        'value' => USER_CHANGE_TRANSACTION_OTP_DURATION,
+        'description' => '(in seconds) Transaction password otp is valid for 90 seconds as default.',
+        'category' => 'User > Transaction password',
+    ],
+    'USER_CHANGE_TRANSACTION_OTP_TRIES' => [
+        'value' => USER_CHANGE_TRANSACTION_OTP_TRIES,
         'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
         'category' => 'User > Email Verification',
     ],
