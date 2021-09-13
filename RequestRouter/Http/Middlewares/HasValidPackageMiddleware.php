@@ -17,7 +17,7 @@ class HasValidPackageMiddleware
     public function handle($request, Closure $next)
     {
         try {
-            if (auth()->check() AND auth()->user()->hasRole(USER_ROLE_CLIENT)) {
+            if (auth()->check() AND auth()->user()->roles()->count() == 1 AND auth()->user()->hasRole(USER_ROLE_CLIENT)) {
                 $cacheKey = 'user_has_valid_package_' . auth()->user()->id;
 
                 if (!cache()->has($cacheKey)) {
