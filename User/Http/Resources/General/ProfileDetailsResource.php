@@ -17,7 +17,7 @@ class ProfileDetailsResource extends JsonResource
         return [
             'member_id' => $this->member_id,
             'full_name' => $this->full_name,
-            'avatar' => route('general.avatar-image', [
+            'avatar' => route('customer.general.avatar-image', [
                 'member_id' => $this->member_id
             ]),
         ];

@@ -39,7 +39,7 @@ class ProfileDetailsResource extends JsonResource
             'email' => $this->email,
             'gender' => $this->gender,
             'birthday' => $this->birthday ? $this->birthday->format('Y/m/d') : null,
-            'avatar' => route('general.avatar-image', [
+            'avatar' => route('customer.general.avatar-image', [
                 'member_id' => $this->member_id
             ]),
             'state' => $this->state_id ? $cities->where(['id'=> $this->state_id,'parent_id' => null] )->first()->name : null,
