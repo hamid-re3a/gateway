@@ -173,8 +173,8 @@ class UserActivityHelper
         $data['try_in_timestamp'] = null;
         $error = null;
 
-        $tries = getSetting('USER_EMAIL_VERIFICATION_OTP_TRIES');
-        $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
+        $tries = getSetting('USER_CHANGE_TRANSACTION_OTP_TRIES');
+        $duration = getSetting('USER_CHANGE_TRANSACTION_OTP_DURATION');
 
         if (Otp::query()
                 ->type(OTP_TYPE_CHANGE_TRANSACTION_PASSWORD)
