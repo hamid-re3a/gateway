@@ -20,12 +20,15 @@ use User\Http\Controllers\Front\WalletController;
 
 Route::middleware(['role:super-admin|user-gateway-admin','user_activity'])->prefix('admin')->name('admin.')->group(function () {
 
+
     Route::prefix('login-attempts-settings')->group(function(){
         Route::get('', [LoginAttemptSetting::class, 'index'])->name('index');
         Route::post('', [LoginAttemptSetting::class, 'store'])->name('store');
         Route::patch('', [LoginAttemptSetting::class, 'update'])->name('update');
         Route::delete('', [LoginAttemptSetting::class, 'delete'])->name('delete');
-    });
+
+    Route::name('user.')->prefix('users')->group(function () {
+        Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
 
     Route::prefix('settings')->group(function(){
         Route::get('', [AdminSettingController::class, 'index'])->name('index');
@@ -126,8 +129,6 @@ Route::middleware(['user_activity'])->group(function () {
                 Route::get('/user_login_history', [AdminUserController::class, 'loginHistory'])->name('user-login-history');
                 Route::get('/user_block_history', [AdminUserController::class, 'blockHistory'])->name('user-block-history');
                 Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
-                Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
-
             });
 
             Route::middleware(['role:admin'])->prefix('gateway_service')->name("gateway-service")->group(function () {

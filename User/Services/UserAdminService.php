@@ -7,8 +7,10 @@ namespace User\Services;
 use App\Jobs\User\UserDataJob;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 use User\Repository\RoleRepository;
 use User\Repository\UserRepository;
+use Exception;
 
 class UserAdminService
 {
@@ -31,7 +33,6 @@ class UserAdminService
         $admin = $this->user_repository->createAdmin($request);
         $role = $this->role_repository->getRole($request->role_id);
         $admin->assignRole($role->id);
-
         $userObject = new \User\Services\User();
         $userObject->setId($admin->id);
         $userObject->setEmail($admin->email);
@@ -45,9 +46,13 @@ class UserAdminService
         $role_name = implode(",",$admin->getRoleNames()->toArray());
         $userObject->setRole($role_name);
         $serializeUser = serialize($userObject);
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
-        UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
+        try{
+            UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
+            UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
+            UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
+        }catch (Exception $exception){
+            Log::error("error dispatch data in register on rabbit",$exception);
+        }
 
         return $admin;
 
