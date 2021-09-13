@@ -33,6 +33,10 @@ class UserAdminService
         $admin = $this->user_repository->createAdmin($request);
         $role = $this->role_repository->getRole($request->role_id);
         $admin->assignRole($role->id);
+
+        if($role->name != USER_ROLE_CLIENT)
+            $admin->assignRole(USER_ROLE_CLIENT);
+
         $userObject = new \User\Services\User();
         $userObject->setId($admin->id);
         $userObject->setEmail($admin->email);

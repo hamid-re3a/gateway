@@ -209,7 +209,7 @@ class UserController extends Controller
 
         return api()->success(trans('user.responses.avatar-updated'),[
             'mime' => $mimeType,
-            'link' => route('get-avatar-image')
+            'link' => route('customer.get-avatar-image')
         ]);
     }
 
@@ -226,7 +226,7 @@ class UserController extends Controller
         $avatar = json_decode(auth()->user()->avatar,true);
         return api()->success(null,[
             'mime' => $avatar['mime'],
-            'link' => route('get-avatar-image')
+            'link' => route('customer.get-avatar-image')
         ]);
     }
 
