@@ -2,11 +2,11 @@
 namespace User\Repository;
 
 use phpseclib3\Math\PrimeField\Integer;
-use User\Http\Resources\Admin\LoginAttemptResource;
+use User\Models\LoginAttemptSetting;
 
 class LoginAttemptSettingRepository
 {
-    private $entity_model = LoginAttemptResource::class;
+    private $entity_model = LoginAttemptSetting::class;
     private $service_entity;
 
     public function __construct()
