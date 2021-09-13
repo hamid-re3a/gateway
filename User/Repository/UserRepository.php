@@ -1,7 +1,6 @@
 <?php
 namespace User\Repository;
 
-use User\Models\GatewayServices;
 use User\Models\User;
 
 class UserRepository

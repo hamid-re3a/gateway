@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Http\Requests\Admin;
+namespace RequestRouter\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 

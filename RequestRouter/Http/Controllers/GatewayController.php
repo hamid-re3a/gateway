@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use User\Models\User;
-use User\Services\GatewayService;
+use RequestRouter\Services\GatewayService;
 
 class GatewayController extends Controller
 {

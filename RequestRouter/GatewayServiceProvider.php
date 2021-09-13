@@ -2,8 +2,10 @@
 namespace RequestRouter;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use User\UserConfigure;
 
 class GatewayServiceProvider extends ServiceProvider
 {
@@ -14,6 +16,18 @@ class GatewayServiceProvider extends ServiceProvider
         if (! $this->app->runningInConsole()) {
             return;
         }
+
+        if ($this->shouldMigrate()) {
+            $this->loadMigrationsFrom([
+                __DIR__ . '/database/migrations',
+            ]);
+        }
+        $this->publishes([
+            __DIR__ . '/database/migrations' => database_path('migrations'),
+        ], 'request-router-migrations');
+        $this->publishes([
+            __DIR__ . '/database/seeders/' => database_path('seeders'),
+        ], 'request-router-seeds');
 
         $this->publishes([
             __DIR__.'/config/gateway.php' => config_path('gateway.php'),
@@ -29,8 +43,30 @@ class GatewayServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(__DIR__.'/routes/api.php');
 
+        $this->registerHelpers();
+        if ($this->app->runningInConsole()) {
+            if (isset($_SERVER['argv']))
+                if (array_search('db:seed', $_SERVER['argv']))
+                    Artisan::call('db:seed', ['--class' => "RequestRouter\database\seeders\GatewayServicesSeeder"]);
+        }
+
         JsonResource::withoutWrapping();
     }
+
+    /**
+     * Register helpers.
+     */
+    protected function registerHelpers()
+    {
+        if (file_exists($helperFile = __DIR__ . '/helpers/constants.php')) {
+            require_once $helperFile;
+        }
+
+        if (file_exists($helperFile = __DIR__ . '/helpers/functions.php')) {
+            require_once $helperFile;
+        }
+    }
+
     /**
      * Determine if we should register the migrations.
      *
@@ -41,6 +77,13 @@ class GatewayServiceProvider extends ServiceProvider
         return GatewayConfigure::$runsMigrations;
     }
 
+    private function seed()
+    {
+        if (isset($_SERVER['argv']))
+            if (array_search('db:seed', $_SERVER['argv'])) {
+                UserConfigure::seed();
+            }
+    }
 
 
 }

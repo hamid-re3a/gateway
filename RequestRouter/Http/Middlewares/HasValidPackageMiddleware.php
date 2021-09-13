@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use User\Models\User;
-use User\Services\GatewayService;
+use RequestRouter\Services\GatewayService;
 
 class HasValidPackageMiddleware
 {
