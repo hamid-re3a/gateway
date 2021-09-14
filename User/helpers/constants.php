@@ -16,6 +16,10 @@ const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
 
+const LOGOUT_CLIENTS_FOR_MAINTENANCE = false;
+const SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE = false;
+const SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE = false;
+
 const SETTINGS = [
     'APP_NAME' => [
         'value' => APP_NAME,
@@ -92,6 +96,21 @@ const SETTINGS = [
         'value' => 1,
         'description' => null,
         'category' => 'User > Profile Management'
+    ],
+    'SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE' => [
+        'value' => SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE,
+        'description' => null,
+        'category' => 'User > Registration'
+    ],
+    'SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE' => [
+        'value' => SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE,
+        'description' => null,
+        'category' => 'User > Registration'
+    ],
+    'LOGOUT_CLIENTS_FOR_MAINTENANCE' => [
+        'value' => LOGOUT_CLIENTS_FOR_MAINTENANCE,
+        'description' => 'Logout all logged-in clients for maintenance mode',
+        'category' => 'User > Registration'
     ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [

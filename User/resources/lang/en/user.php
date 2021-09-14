@@ -70,6 +70,7 @@ return [
         'invalid-setting-key' => 'Invalid setting key',
         'invalid-email-key' => 'Invalid email key',
         'invalid-login-attempt-id' => 'Invalid login attempt',
+        'we-are-under-maintenance' => 'We\'re under maintenance .',
 
     ],
     'validation' => [
