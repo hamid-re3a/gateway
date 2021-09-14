@@ -91,7 +91,7 @@ class GeneralController extends Controller
         $avatar = json_decode($user->avatar,true);
         return api()->success(null,[
             'mime' => $avatar['mime'],
-            'link' => route('general.avatar-image', [
+            'link' => route('customer.general.avatar-image', [
                 'member_id' => $member_id
             ])
         ]);

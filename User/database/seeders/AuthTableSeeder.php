@@ -39,7 +39,8 @@ class AuthTableSeeder extends Seeder
 
             $admin->email = 'work@sajidjaved.com';
             $admin->save();
-            $admin->assignRole(USER_ROLE_SUPER_ADMIN);
+
+            $admin->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
         if (!User::query()->where('email', 'janexstaging@gmail.com')->exists()) {
             $global = User::whereUsername('johny')->first();
@@ -59,8 +60,7 @@ class AuthTableSeeder extends Seeder
                 ]);
             }
 
-            $global->assignRole(USER_ROLE_SUPER_ADMIN);
-
+            $global->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
 
     }

@@ -7,8 +7,10 @@ namespace User\Services;
 use App\Jobs\User\UserDataJob;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 use User\Repository\RoleRepository;
 use User\Repository\UserRepository;
+use Exception;
 
 class UserAdminService
 {
@@ -31,6 +33,8 @@ class UserAdminService
         $admin = $this->user_repository->createAdmin($request);
         $role = $this->role_repository->getRole($request->role_id);
         $admin->assignRole($role->id);
+        if($role->name != USER_ROLE_CLIENT)
+            $admin->assignRole(USER_ROLE_CLIENT);
         return $admin;
 
     }

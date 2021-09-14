@@ -1,7 +1,6 @@
 <?php
 namespace User\Repository;
 
-use User\Models\GatewayServices;
 use User\Models\User;
 
 class UserRepository
@@ -16,6 +15,7 @@ class UserRepository
         $user_entity->email = $request->email;
         $user_entity->email_verified_at = now();
         $user_entity->username = $request->username;
+        $user_entity->sponsor_id = $request->sponsor_id;
         $user_entity->password = encrypt($request->password);
         $user_entity->save();
         return $user_entity;

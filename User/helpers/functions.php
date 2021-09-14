@@ -10,7 +10,7 @@ function getSetting($key)
 
     if (DB::table('settings')->exists()) {
         $key_db = Setting::query()->where('key', $key)->first();
-        if ($key_db && !is_null($key_db->value))
+        if ($key_db && !empty($key_db->value))
             return $key_db->value;
     }
 

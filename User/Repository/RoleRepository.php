@@ -2,7 +2,6 @@
 namespace User\Repository;
 
 use Spatie\Permission\Models\Role;
-use User\Models\GatewayServices;
 use User\Models\User;
 
 class RoleRepository

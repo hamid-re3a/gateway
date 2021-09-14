@@ -6,6 +6,8 @@ const USER_FORGOT_PASSWORD_OTP_TRIES = 1;
 
 const USER_EMAIL_VERIFICATION_OTP_DURATION = 60;
 const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
+const USER_CHANGE_TRANSACTION_OTP_DURATION = 60;
+const USER_CHANGE_TRANSACTION_OTP_TRIES = 1;
 
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
@@ -13,6 +15,10 @@ const USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
+
+const LOGOUT_CLIENTS_FOR_MAINTENANCE = false;
+const SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE = false;
+const SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE = false;
 
 const SETTINGS = [
     'APP_NAME' => [
@@ -66,6 +72,16 @@ const SETTINGS = [
         'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
         'category' => 'User > Email Verification',
     ],
+    'USER_CHANGE_TRANSACTION_OTP_DURATION' => [
+        'value' => USER_CHANGE_TRANSACTION_OTP_DURATION,
+        'description' => '(in seconds) Transaction password otp is valid for 90 seconds as default.',
+        'category' => 'User > Transaction password',
+    ],
+    'USER_CHANGE_TRANSACTION_OTP_TRIES' => [
+        'value' => USER_CHANGE_TRANSACTION_OTP_TRIES,
+        'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
+        'category' => 'User > Email Verification',
+    ],
     'USER_REGISTRATION_PASSWORD_CRITERIA' => [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
         'description' => 'Password pattern for user registration',
@@ -80,6 +96,21 @@ const SETTINGS = [
         'value' => 1,
         'description' => null,
         'category' => 'User > Profile Management'
+    ],
+    'SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE' => [
+        'value' => SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE,
+        'description' => null,
+        'category' => 'User > Registration'
+    ],
+    'SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE' => [
+        'value' => SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE,
+        'description' => null,
+        'category' => 'User > Registration'
+    ],
+    'LOGOUT_CLIENTS_FOR_MAINTENANCE' => [
+        'value' => LOGOUT_CLIENTS_FOR_MAINTENANCE,
+        'description' => 'Logout all logged-in clients for maintenance mode',
+        'category' => 'User > Registration'
     ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [

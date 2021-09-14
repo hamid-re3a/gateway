@@ -31,7 +31,7 @@ class UserGetDataJob implements ShouldQueue
         $user_get_data_serialize = unserialize($this->data);
         $user_data = app(UserAdminService::class)->getUserData($user_get_data_serialize);
         $user_data_serialize = serialize($user_data);
-        Log::info("get user info and produce for service request sender",[$user_data]);
+//        Log::info("get user info and produce for service request sender",[$user_data]);
         UserDataJob::dispatch($user_data_serialize)->onConnection('rabbit')->onQueue($user_get_data_serialize->getQueueName());
     }
 }
