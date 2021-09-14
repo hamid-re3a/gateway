@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\User\UserDataJob;
 use Illuminate\Console\Command;
-use User\Services\User;
+use User\Services\Grpc\User;
 
 class UserDataFire extends Command
 {

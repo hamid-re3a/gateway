@@ -1,7 +1,7 @@
 <?php
 // GENERATED CODE -- DO NOT EDIT!
 
-namespace User\Services;
+namespace User\Services\Grpc;
 
 /**
  */
@@ -17,16 +17,16 @@ class UserServiceClient extends \Grpc\BaseStub {
     }
 
     /**
-     * @param \User\Services\Id $argument input argument
+     * @param \User\Services\Grpc\Id $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \User\Services\User
+     * @return \User\Services\Grpc\User
      */
-    public function getUserById(\User\Services\Id $argument,
+    public function getUserById(\User\Services\Grpc\Id $argument,
       $metadata = [], $options = []) {
-        return $this->_simpleRequest('/user.services.UserService/getUserById',
+        return $this->_simpleRequest('/user.services.grpc.UserService/getUserById',
         $argument,
-        ['\User\Services\User', 'decode'],
+        ['\User\Services\Grpc\User', 'decode'],
         $metadata, $options);
     }
 

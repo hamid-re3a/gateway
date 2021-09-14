@@ -1,7 +1,7 @@
 <?php
 
 
-namespace User\Services;
+namespace User\Services\Grpc;
 
 use Mix\Grpc\Context;
 

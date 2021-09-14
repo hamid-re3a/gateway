@@ -11,17 +11,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use User\Http\Requests\Admin\GetUserDataRequest;
-use User\Http\Requests\User\Profile\UpdateAvatarRequest;
-use User\Http\Requests\User\Profile\UpdateContactDetails;
-use User\Http\Requests\User\Profile\UpdatePersonalDetails;
-use User\Http\Requests\User\Profile\ChangePasswordRequest;
-use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
-use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
+use User\Http\Requests\User\profile\UpdateAvatarRequest;
+use User\Http\Requests\User\profile\UpdateContactDetails;
+use User\Http\Requests\User\profile\UpdatePersonalDetails;
+use User\Http\Requests\User\profile\ChangePasswordRequest;
+use User\Http\Requests\User\profile\ChangeTransactionPasswordRequest;
+use User\Http\Requests\User\profile\VerifyTransactionPasswordOtp;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
-use User\Services\User;
+use User\Services\Grpc\User;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller

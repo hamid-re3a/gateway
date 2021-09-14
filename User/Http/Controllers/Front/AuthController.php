@@ -44,14 +44,6 @@ class AuthController extends Controller
         $user = User::query()->create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
-        $userObject = $user->getUserService();
-        $role_name = implode(",",$user->getRoleNames()->toArray());
-        $userObject->setRole($role_name);
-        $serialize_user = serialize($userObject);
-        UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
-        UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
-        //UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
-
         UserActivityHelper::makeEmailVerificationOtp($user, $request);
 
         return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'));

@@ -9,7 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use User\Services\UserAdminService;
-use User\Services\UserService;
 
 class UserGetDataJob implements ShouldQueue
 {

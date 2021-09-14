@@ -18,6 +18,7 @@ class UserTest extends BaseTestCase
     {
         parent::setUp();
         $this->app->setLocale('en');
+
         UserConfigure::seed();
     }
 

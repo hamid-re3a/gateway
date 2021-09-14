@@ -3,7 +3,7 @@ require '/home/stagingapigateway/public_html/API-Gateway/vendor/autoload.php';
 require '/home/stagingapigateway/public_html/API-Gateway/public/index.php';
 
 $grpc = new \Mix\Grpc\Server();
-$grpc->register(\User\Services\UserGrpcService::class);
+$grpc->register(\User\Services\Grpc\UserGrpcService::class);
 
 Swoole\Coroutine\run(function () use ($grpc) {
     $server = new Swoole\Coroutine\Http\Server('0.0.0.0', 9595, false);
