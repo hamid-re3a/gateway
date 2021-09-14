@@ -88,7 +88,7 @@ class LoginAttemptSettingController extends Controller
     public function delete(DeleteLoginAttemptSettingRequest $request)
     {
         try {
-            $this->setting_repository->delete($request->get('key'));
+            $this->setting_repository->delete($request->get('id'));
 
             return api()->success(null, null);
 
