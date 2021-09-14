@@ -34,7 +34,7 @@ class LoginAttemptSettingRepository
 
     }
 
-    public function update(Integer $id, array $fields)
+    public function update($id, array $fields)
     {
         $setting = $this->service_entity->query()->where('id', $id)->first();
         if(!$setting)
@@ -50,7 +50,7 @@ class LoginAttemptSettingRepository
         return $setting->fresh();
     }
 
-    public function delete(Integer $id)
+    public function delete($id)
     {
         $setting = $this->service_entity->query()->where('id', $id)->first();
         if(!$setting)
