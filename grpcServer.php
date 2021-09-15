@@ -1,6 +1,8 @@
 <?php
-require '/home/stagingapigateway/public_html/API-Gateway/vendor/autoload.php';
-require '/home/stagingapigateway/public_html/API-Gateway/public/index.php';
+//require '/home/stagingapigateway/public_html/API-Gateway/vendor/autoload.php';
+//require '/home/stagingapigateway/public_html/API-Gateway/public/index.php';
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/public/index.php';
 
 $grpc = new \Mix\Grpc\Server();
 $grpc->register(\User\Services\Grpc\UserGrpcService::class);
