@@ -12,6 +12,7 @@ use User\Services\RoleService;
 class RoleController extends Controller
 {
     private $role_service;
+
     public function __construct(RoleService $role_service)
     {
         $this->role_service = $role_service;
@@ -26,8 +27,9 @@ class RoleController extends Controller
     public function getAllRoles()
     {
         $role = $this->role_service->getAllRoles();
-        return api()->success(null,RoleListResource::collection($role)->response()->getData());
+        return api()->success(null, RoleListResource::collection($role)->response()->getData());
     }
+
     /**
      * create Role by Super Admin
      * @group
@@ -38,7 +40,7 @@ class RoleController extends Controller
     public function createRole(CreateRoleRequest $request)
     {
         $role = $this->role_service->createRole($request);
-        return api()->success(null,new RoleListResource($role));
+        return api()->success(null, new RoleListResource($role));
     }
 
 }

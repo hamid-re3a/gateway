@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
 use Spatie\Permission\Traits\HasRoles;
+use User\Observers\UserObserver;
 
 /**
  * User\Models\User
@@ -107,6 +108,24 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
     use HasApiTokens;
+
+
+    use HasRoles {
+        assignRole as protected originalAssignRole;
+    }
+
+    /**
+     * @param mixed ...$roles
+     * @return $this
+     */
+    public function assignRole(...$roles)
+    {
+        $this->originalAssignRole(...$roles);
+
+        $this->notifyRoleAssigned();
+
+        return $this;
+    }
 
     protected $guard_name = 'api';
 
@@ -278,7 +297,7 @@ class User extends Authenticatable
     public function getUserService()
     {
         $this->fresh();
-        $user = new \User\Services\User();
+        $user = new \User\Services\Grpc\User();
         $user->setId($this->attributes['id']);
         $user->setFirstName($this->attributes['first_name']);
         $user->setLastName($this->attributes['last_name']);
@@ -322,6 +341,11 @@ class User extends Authenticatable
             $this->attributes['mobile_number'] = phone($value,$this->country->iso2)->formatInternational();
         }
 
+    }
+
+    private function notifyRoleAssigned()
+    {
+        UserObserver::notifySubServices($this);
     }
 
 }

@@ -40,15 +40,7 @@ class AuthTableSeeder extends Seeder
             $admin->email = 'work@sajidjaved.com';
             $admin->save();
 
-            $admin->assignRole(USER_ROLE_SUPER_ADMIN);
-            $admin->assignRole(USER_ROLE_CLIENT);
-
-            $userObject = $admin->getUserService();
-            $role_name = implode(",",$admin->getRoleNames()->toArray());
-            $userObject->setRole($role_name);
-            $serialize_user = serialize($userObject);
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
+            $admin->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
         if (!User::query()->where('email', 'janexstaging@gmail.com')->exists()) {
             $global = User::whereUsername('johny')->first();
@@ -68,15 +60,7 @@ class AuthTableSeeder extends Seeder
                 ]);
             }
 
-            $global->assignRole(USER_ROLE_SUPER_ADMIN);
-            $global->assignRole(USER_ROLE_CLIENT);
-
-            $userObject = $global->getUserService();
-            $role_name = implode(",",$global->getRoleNames()->toArray());
-            $userObject->setRole($role_name);
-            $serialize_user = serialize($userObject);
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
+            $global->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
 
     }

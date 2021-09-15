@@ -33,31 +33,8 @@ class UserAdminService
         $admin = $this->user_repository->createAdmin($request);
         $role = $this->role_repository->getRole($request->role_id);
         $admin->assignRole($role->id);
-
         if($role->name != USER_ROLE_CLIENT)
             $admin->assignRole(USER_ROLE_CLIENT);
-
-        $userObject = new \User\Services\User();
-        $userObject->setId($admin->id);
-        $userObject->setEmail($admin->email);
-        $userObject->setFirstName($admin->first_name);
-        $userObject->setLastName($admin->last_name);
-        $userObject->setUsername($admin->username);
-        $userObject->setBlockType($admin->block_type);
-        $userObject->setIsDeactivate($admin->is_deactivate);
-        $userObject->setIsFreeze($admin->is_freeze);
-        $userObject->setSponsorId($admin->sponsor_id);
-        $role_name = implode(",",$admin->getRoleNames()->toArray());
-        $userObject->setRole($role_name);
-        $serializeUser = serialize($userObject);
-        try{
-            UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('subscriptions');
-            UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('kyc');
-            UserDataJob::dispatch($serializeUser)->onConnection('rabbit')->onQueue('mlm');
-        }catch (Exception $exception){
-            Log::error("error dispatch data in register on rabbit",$exception);
-        }
-
         return $admin;
 
     }

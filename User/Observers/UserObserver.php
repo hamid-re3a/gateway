@@ -3,6 +3,7 @@
 namespace User\Observers;
 
 use App\Jobs\User\UserDataJob;
+use Illuminate\Support\Facades\Log;
 use User\Mail\User\UserAccountActivatedEmail;
 use User\Jobs\TrivialEmailJob;
 use User\Models\User;
@@ -31,11 +32,7 @@ class UserObserver
             $history = $user->userHistories()->create($attributes);
 
             if(!empty($user->isDirty())){
-                $userObject = $user->getUserService();
-                $serialize_user = serialize($userObject);
-                UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
-                UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
-                //UserDataJob::dispatch($hash_user_service)->onConnection('rabbit')->onQueue('mlm');
+                self::notifySubServices($user);
             }
 
             if($user->isDirty('block_type')){
@@ -44,6 +41,22 @@ class UserObserver
                     TrivialEmailJob::dispatch(new UserAccountActivatedEmail($user,$history),$user->email);
 
             }
+        }
+    }
+
+    /**
+     * @param User $user
+     */
+    public static function notifySubServices(User $user): void
+    {
+        $userObject = $user->getUserService();
+        $serialize_user = serialize($userObject);
+        try {
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
+            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('mlm');
+        } catch (\Exception $exception) {
+            Log::error('rabbit is disconnected => ' . $exception->getMessage());
         }
     }
 

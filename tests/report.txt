@@ -1,9 +1,3 @@
-Admin (User\tests\Feature\Admin)
- [ ] Verify email user account green
-
-User Produce Rabbit (User\tests\Feature\UserProduceRabbit)
- [x] Update exist user produce change rabbit
-
 User (User\tests\Feature\User)
  [x] Register new user green
  [x] Register new user not enough strong password

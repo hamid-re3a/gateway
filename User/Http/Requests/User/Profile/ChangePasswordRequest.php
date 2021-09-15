@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Http\Requests\User\Profile;
+namespace User\Http\Requests\User\profile;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;

@@ -2,10 +2,10 @@
 require './vendor/autoload.php';
 
 
-$client = new \User\Services\UserServiceClient('staging-api-gateway.janex.org:9595', [
+$client = new \User\Services\Grpc\UserServiceClient('staging-api-gateway.janex.org:9595', [
     'credentials' => \Grpc\ChannelCredentials::createInsecure()
 ]);
-$request = new \User\Services\Id();
+$request = new \User\Services\Grpc\Id();
 $request->setId((int)1);
 
 

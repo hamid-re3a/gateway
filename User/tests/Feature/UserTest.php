@@ -25,6 +25,7 @@ class UserTest extends \User\tests\UserTest
      */
     public function register_new_user_green()
     {
+
         Mail::fake();
         $response = $this->post(route('auth.register'), [
             "first_name" => 'hamid',
@@ -35,7 +36,7 @@ class UserTest extends \User\tests\UserTest
             "password" => '123456789!Q',
             "password_confirmation" => '123456789!Q',
         ]);
-        //$response->assertOk();
+        $response->assertOk();
         Mail::assertSent(WelcomeEmail::class);
     }
 
@@ -53,7 +54,7 @@ class UserTest extends \User\tests\UserTest
             "password" => '123',
             "password_confirmation" => '123',
         ]);
-//        $response->assertStatus(422);
+        $response->assertStatus(422);
         Mail::assertNotSent(WelcomeEmail::class);
     }
 
@@ -71,7 +72,7 @@ class UserTest extends \User\tests\UserTest
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "password" => 'password',
         ]);
-//        $response->assertStatus(403);
+        $response->assertStatus(403);
     }
 
     /**
@@ -89,7 +90,7 @@ class UserTest extends \User\tests\UserTest
             "email" => 'hamidrezanoruzinejad@gmail.com',
             "password" => 'password',
         ]);
-//        $response->assertOk();
+        $response->assertOk();
     }
 
     /**
@@ -127,7 +128,7 @@ class UserTest extends \User\tests\UserTest
         Mail::assertSent(TooManyLoginAttemptPermanentBlockedEmail::class);
 
         $user->refresh();
-//        $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
+        $this->assertEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
     }
 
     /**
@@ -158,7 +159,7 @@ class UserTest extends \User\tests\UserTest
                 "email" => 'hamidrezanoruzinejad@gmail.com',
                 "password" => 'incorrect password',
             ]);
-//            $this->assertEquals(429, $response->status());
+            $this->assertEquals(429, $response->status());
             break;
         }
     }
@@ -199,7 +200,7 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.forgot-password'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-//        $this->assertEquals(429, $response->status());
+        $this->assertEquals(429, $response->status());
     }
 
 
@@ -229,7 +230,7 @@ class UserTest extends \User\tests\UserTest
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
         ]);
-//        $this->assertEquals(422, $response->status());
+        $this->assertEquals(422, $response->status());
     }
 
 
@@ -254,7 +255,7 @@ class UserTest extends \User\tests\UserTest
             "password" => "123456789!QaA",
             "password_confirmation" => "123456789!QaA"
         ]);
-//        $this->assertEquals(200, $response->status());
+        $this->assertEquals(200, $response->status());
     }
 
 
@@ -293,7 +294,7 @@ class UserTest extends \User\tests\UserTest
             "password_confirmation" => "123456789!Q55"
         ]);
 
-//        $this->assertEquals(200, $response->status());
+        $this->assertEquals(200, $response->status());
     }
 
     /**
@@ -327,7 +328,7 @@ class UserTest extends \User\tests\UserTest
             "password" => "123456789!Q",
             "password_confirmation" => "123456789!Q"
         ]);
-//        $this->assertEquals(422, $response->status());
+        $this->assertEquals(422, $response->status());
     }
 
     /**
@@ -344,7 +345,7 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.ask-for-email-otp'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-//        Mail::assertSent(EmailVerifyOtp::class);
+        Mail::assertSent(EmailVerifyOtp::class);
     }
 
     /**
@@ -363,7 +364,7 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.ask-for-email-otp'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-//        $this->assertEquals(429, $response->status());
+        $this->assertEquals(429, $response->status());
     }
 
     /**
@@ -393,8 +394,8 @@ class UserTest extends \User\tests\UserTest
         $this->assertEquals(trans('user.responses.max-attempts-exceeded'), $response->json()['message']);
 
         $user->refresh();
-//        $this->assertNotEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
-//        $this->assertEquals(null, $user->block_type);
+        $this->assertNotEquals(USER_BLOCK_TYPE_AUTOMATIC, $user->block_type);
+        $this->assertEquals(null, $user->block_type);
     }
 
     /**
@@ -410,7 +411,7 @@ class UserTest extends \User\tests\UserTest
         $response = $this->post(route('auth.ask-for-email-otp'), [
             "email" => 'hamidrezanoruzinejad@gmail.com',
         ]);
-//        $response->assertOk();
-//        Mail::assertSent(EmailVerifyOtp::class);
+        $response->assertOk();
+        Mail::assertSent(EmailVerifyOtp::class);
     }
 }
