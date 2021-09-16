@@ -54,7 +54,7 @@ return [
         'avatar-updated' => 'You\'ve successfully updated your avatar',
         'user-has-no-avatar' => 'User has no avatar',
 
-        'wrong-wallet-address' => 'Enter a valid wallet address',
+        'wrong-wallet-address' => 'Invalid Bitcoin wallet address.',
         'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
 
         'user-account-frozen-successfully' => 'User account has been frozen successfully',
