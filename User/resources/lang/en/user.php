@@ -54,7 +54,7 @@ return [
         'avatar-updated' => 'You\'ve successfully updated your avatar',
         'user-has-no-avatar' => 'User has no avatar',
 
-        'wrong-wallet-address' => 'Enter a valid wallet address',
+        'wrong-wallet-address' => 'Invalid Bitcoin wallet address.',
         'wallet-updated' => 'You\'ve successfully updated your :currency wallet',
 
         'user-account-frozen-successfully' => 'User account has been frozen successfully',
@@ -74,23 +74,22 @@ return [
 
     ],
     'validation' => [
-        'email-not-exists'=>'The selected email address is not yet registered',
-        'password-same' => 'The passwords are not matching',
-        'email-unique' => 'The email address already exists',
-        'username-unique' => 'The username already exists',
-        'username-regex' => 'The username may have alpha-numeric characters or underscores',
-        'username-required' => 'Enter your username',
-        'sponsor-username-not-exists' => 'Invalid sponsor name',
-        'sponsor-username-regex' => 'Invalid sponsor name',
-        'sponsor-username-required' => 'Enter your sponsor username',
-        'sponsor-username-exists' => 'Invalid sponsor name',
-        'password-regex' => 'The password is not complex enough',
-        'first-name-required' => 'Enter your first name',
-        'last-name-required' => 'Enter your last name',
-        'email-address-required' => 'Enter your email address',
-        'password-is-required' => 'Enter your password',
-        'confirm-password' => 'Confirm your password',
-        'email-is-incorrect' => 'The email address is incorrect',
+        'email-not-exists'=>'The selected email address is not yet registered.',
+        'password-same' => 'The passwords are not matching.',
+        'email-unique' => 'The email address already exists.',
+        'username-unique' => 'The username already exists.',
+        'username-regex' => 'The username may have alpha-numeric characters or underscores.',
+        'username-required' => 'Enter your username.',
+        'sponsor-username-regex' => 'Invalid sponsor name.',
+        'sponsor-username-required' => 'Enter your sponsor username.',
+        'sponsor-username-exists' => 'The sponsor username is invalid.',
+        'password-regex' => 'The password is not complex enough.',
+        'first-name-required' => 'Enter your first name.',
+        'last-name-required' => 'Enter your last name.',
+        'email-address-required' => 'Enter your email address.',
+        'password-is-required' => 'Enter your password.',
+        'confirm-password' => 'Confirm your password.',
+        'email-is-incorrect' => 'The email address is incorrect.',
     ]
 ];
 
