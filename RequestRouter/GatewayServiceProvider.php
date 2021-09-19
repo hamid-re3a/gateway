@@ -47,7 +47,7 @@ class GatewayServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             if (isset($_SERVER['argv']))
                 if (array_search('db:seed', $_SERVER['argv']))
-                    Artisan::call('db:seed', ['--class' => "RequestRouter\database\seeders\GatewayServicesSeeder"]);
+                    Artisan::call('db:seed', ['--class' => "RequestRouter\database\seeder\GatewayServicesSeeder"]);
         }
 
         JsonResource::withoutWrapping();

@@ -39,11 +39,12 @@ class UserServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        $this->registerHelpers();
+        
         Route::prefix('api/gateway/default')
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(__DIR__ . '/routes/api.php');
-        $this->registerHelpers();
         if ($this->app->runningInConsole()) {
             if (isset($_SERVER['argv']))
                 if (array_search('db:seed', $_SERVER['argv']))

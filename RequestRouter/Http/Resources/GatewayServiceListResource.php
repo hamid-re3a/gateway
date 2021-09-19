@@ -1,6 +1,6 @@
 <?php
 
-namespace RequestRouter\Http\Resources\Gateway;
+namespace RequestRouter\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use User\Http\Resources\Auth\ProfileResource;
