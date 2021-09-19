@@ -414,4 +414,10 @@ class UserTest extends \User\tests\UserTest
         $response->assertOk();
         Mail::assertSent(EmailVerifyOtp::class);
     }
+    /**
+     * @test
+     */
+    public function admin_can_update_user_details(){
+
+    }
 }

@@ -27,4 +27,20 @@ class UserRepository
         $user_entity->whereId($id)->first();
         return $user_entity->getUserService();
     }
+
+
+    public function update($request)
+    {
+        $user_entity = new $this->entity_name;
+        $user_find = $user_entity->query()->firstOrCreate(
+            [
+                'id' => $request->id,
+            ],
+            $request
+        );
+        $user_find->update($request);
+
+        return $user_find;
+
+    }
 }
