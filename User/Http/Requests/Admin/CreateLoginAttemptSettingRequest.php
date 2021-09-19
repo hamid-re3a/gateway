@@ -24,7 +24,7 @@ class CreateLoginAttemptSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'times' => 'required|unique:login_attempt_settings,times',
+            'times' => 'required|integer',
             'duration' => 'required|integer',
             'priority' => 'nullable|integer',
             'blocking_duration' => 'required|integer',
