@@ -18,7 +18,7 @@ $request->setId((int)1);
 list($reply, $status) = $client->getUserById($request)->wait();
 
 print_r($status);
-//print_r($reply->getFirstName());
+print_r($reply->getFirstName());
 ////$getdata = $reply->getGetdataarr();
 //
 ////WalletInfo
