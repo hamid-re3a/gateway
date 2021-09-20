@@ -16,7 +16,7 @@ class LoginAttemptSettingRepository
 
     public function lists()
     {
-        return $this->service_entity->query()->get();
+        return $this->service_entity->query()->orderBy('priority')->get();
     }
 
     public function store(array $fields)
