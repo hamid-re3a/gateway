@@ -23,15 +23,10 @@ class HasValidPackageMiddleware
 
                 if (!cache()->has($cacheKey)) {
 
-                    $client = new \GuzzleHttp\Client([
-                        'headers' => $this->performHeaders()
-                    ]);
-
-
                     /** @var $acknowledge Acknowledge */
-                    list($stats,$acknowledge) = getMLMGrpcClient()->hasValidPackage(auth()->user()->getUserService());
+                    list($acknowledge,$stats) = getMLMGrpcClient()->hasValidPackage(auth()->user()->getUserService())->wait();
 
-                    if ($stats == 0) {
+                    if ($stats->code == 0) {
 
                         if ($acknowledge->getStatus()) {
 
