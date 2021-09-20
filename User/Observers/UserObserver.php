@@ -31,9 +31,6 @@ class UserObserver
             ]);
             $history = $user->userHistories()->create($attributes);
 
-            if(!empty($user->isDirty())){
-                self::notifySubServices($user);
-            }
 
             if($user->isDirty('block_type')){
 
@@ -44,20 +41,5 @@ class UserObserver
         }
     }
 
-    /**
-     * @param User $user
-     */
-    public static function notifySubServices(User $user): void
-    {
-        $userObject = $user->getUserService();
-        $serialize_user = serialize($userObject);
-        try {
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('subscriptions');
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('kyc');
-            UserDataJob::dispatch($serialize_user)->onConnection('rabbit')->onQueue('mlm');
-        } catch (\Exception $exception) {
-            Log::error('rabbit is disconnected => ' . $exception->getMessage());
-        }
-    }
 
 }
