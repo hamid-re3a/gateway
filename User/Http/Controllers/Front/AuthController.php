@@ -51,7 +51,7 @@ class AuthController extends Controller
             ],406);
 
         $data = $request->validated();
-        $data['sponsor_id'] = User::query()->where('user_name',$request->sponsor_username)->first()->id;
+        $data['sponsor_id'] = User::query()->where('username',$request->sponsor_username)->first()->id;
         $user = User::query()->create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
