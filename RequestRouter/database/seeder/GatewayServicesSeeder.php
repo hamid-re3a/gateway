@@ -1,9 +1,9 @@
 <?php
 
-namespace RequestRouter\database\seeders;
+namespace RequestRouter\database\seeder;
 
 use Illuminate\Database\Seeder;
-use RequestRouter\Models\GatewayServices;
+use RequestRouter\Model\GatewayServices;
 
 class GatewayServicesSeeder extends Seeder
 {

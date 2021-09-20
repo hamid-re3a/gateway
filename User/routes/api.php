@@ -20,9 +20,12 @@ Route::middleware('user_activity')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
     Route::middleware(['auth', 'email_verified','block_user'])->group(function () {
-        Route::middleware(['role:super-admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::middleware(['role:'. USER_ROLE_SUPER_ADMIN])->prefix('admin')->name('admin.')->group(function () {
 
             Route::name('user.')->prefix('users')->group(function () {
+                Route::middleware(['role:'. USER_ROLE_ADMIN_GATEWAY])->group(function () {
+                    Route::put('/', [AdminUserController::class, 'update'])->name('update');
+                });
                 Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
                 Route::get('', [AdminUserController::class, 'index'])->name('users-list');
                 Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');

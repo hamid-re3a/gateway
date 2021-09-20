@@ -1,6 +1,6 @@
 <?php
 
-namespace RequestRouter\Models;
+namespace RequestRouter\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 
 /**
- * RequestRouter\Models\GatewayServices
+ * RequestRouter\Model\GatewayServices
  *
  * @property int $id
  * @property string $key

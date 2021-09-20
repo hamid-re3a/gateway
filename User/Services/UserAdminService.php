@@ -49,4 +49,11 @@ class UserAdminService
     }
 
 
+    public function update($request)
+    {
+        return $this->user_repository->update($request);
+
+    }
+
+
 }

@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use MLM\Services\Grpc\Acknowledge;
 use User\Models\User;
 use RequestRouter\Services\GatewayService;
 
@@ -25,15 +26,17 @@ class HasValidPackageMiddleware
                     $client = new \GuzzleHttp\Client([
                         'headers' => $this->performHeaders()
                     ]);
-                    $res = $client->request('GET', $this->getUrl());
 
-                    if ($res->getStatusCode() == 200) {
 
-                        $response = json_decode($res->getBody()->getContents());
-                        if ($response->data->has_valid_package) {
+                    /** @var $acknowledge Acknowledge */
+                    list($stats,$acknowledge) = getMLMGrpcClient()->hasValidPackage(auth()->user()->getUserService());
+
+                    if ($stats == 0) {
+
+                        if ($acknowledge->getStatus()) {
 
                             //User has valid package
-                            cache()->put($cacheKey, $response->data->has_valid_package);
+                            cache()->put($cacheKey, true);
 
                         } else {
 

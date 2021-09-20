@@ -211,4 +211,23 @@ class UserController extends Controller
         return api()->success(trans('user.responses.ok'),null);
 
     }
+
+    /**
+     * Block Or Unblock User Account
+     * @group
+     * Admin > User
+     * @param UserUpdateRequest $request
+     * @return JsonResponse
+     */
+    public function update(UserUpdateRequest $request ,UserAdminService $userAdminService)
+    {
+        try {
+            $user=$userAdminService->update($request->validated());
+            return api()->success(trans('responses.ok'), $user);
+
+        }catch (\Throwable $e){
+            return api()->error($e->getMessage(), null);
+        }
+
+    }
 }

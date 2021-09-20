@@ -2,7 +2,7 @@
 namespace RequestRouter\Repository;
 
 
-use RequestRouter\Models\GatewayServices;
+use RequestRouter\Model\GatewayServices;
 
 class GatewayServiceRepository
 {

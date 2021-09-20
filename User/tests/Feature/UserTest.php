@@ -414,4 +414,19 @@ class UserTest extends \User\tests\UserTest
         $response->assertOk();
         Mail::assertSent(EmailVerifyOtp::class);
     }
+//    /**
+//     * @test
+//     */
+//    public function admin_can_update_user_details(){
+//        $this->withHeaders($this->getHeaders());
+//        $user = User::factory()->create();
+//        $resp=$this->put(route('admin.user.update'), [
+//           'id'=>$user->id
+//        ]);
+//        dd($resp);
+//
+//
+//
+////            ->assertStatus(422);
+//    }
 }

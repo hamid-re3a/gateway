@@ -4,7 +4,7 @@ namespace RequestRouter\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use RequestRouter\Http\Requests\Admin\EditGatewayRequest;
-use RequestRouter\Http\Resources\Gateway\GatewayServiceListResource;
+use RequestRouter\Http\Resources\GatewayServiceListResource;
 use RequestRouter\Services\GatewayService;
 
 class GatewayServicesController extends Controller
