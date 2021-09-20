@@ -20,7 +20,14 @@ function getSetting($key)
     throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 
 }
-
+if (!function_exists('getMLMGrpcClient')) {
+    function getMLMGrpcClient()
+    {
+        return new \MLM\Services\Grpc\MLMServiceClient('staging-api-gateway.janex.org:9598', [
+            'credentials' => \Grpc\ChannelCredentials::createInsecure()
+        ]);
+    }
+}
 function getEmailAndTextSetting($key)
 {
     // Comment Test

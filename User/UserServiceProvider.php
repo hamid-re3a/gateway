@@ -40,7 +40,7 @@ class UserServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerHelpers();
-        
+
         Route::prefix('api/gateway/default')
             ->middleware('api')
             ->namespace($this->namespace)

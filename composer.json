@@ -67,6 +67,8 @@
             "RequestRouter\\": "RequestRouter/",
             "User\\": "User/",
             "Greeter\\": "Greeter/",
+            "MLM\\": "MLM/",
+            "Orders\\": "Orders/",
             "GPBMetadata\\": "GPBMetadata/"
         }
     },
