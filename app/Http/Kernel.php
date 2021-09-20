@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
         'email_verified' => EmailVerifiedMiddleware::class,
         'block_user' => BlockUserMiddleware::class,
         'has_valid_package' => HasValidPackageMiddleware::class,
+        'maintenance_mode' => HasValidPackageMiddleware::class,
     ];
 }

@@ -37,6 +37,25 @@ return [
                         '*',
                     ],
                     'exceptions_paths' => [
+                        ''
+                    ]
+                ]
+            ],
+            'middlewares' => [
+                'maintenance_mode'
+            ]
+        ],
+        [
+            'services' => [
+                '*',
+            ],
+            'matches' => [
+                [
+                    'method' => '*',
+                    'paths' => [
+                        '*',
+                    ],
+                    'exceptions_paths' => [
                         'payments',
                         'packages',
                         'orders',
