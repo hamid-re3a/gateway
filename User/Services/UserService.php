@@ -23,6 +23,11 @@ class UserService
         return $this->user_repository->getUserData($id->getId());
     }
 
+    public function getUserByMemberId(Id $id)
+    {
+        return $this->user_repository->getUserDataByMemberId($id->getId());
+    }
+
     public function getUserWalletInfo(WalletRequest $walletRequest)
     {
         $id = $walletRequest->getUserId();

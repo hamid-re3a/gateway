@@ -28,6 +28,14 @@ class UserGrpcService implements UserServiceInterface
     /**
      * @inheritDoc
      */
+    public function getUserByMemberId(Context $context, Id $request): User
+    {
+        return $this->user_service->getUserByMemberId($request);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getUserWalletInfo(Context $context, WalletRequest $request): WalletInfo
     {
         return $this->user_service->getUserWalletInfo($request);
