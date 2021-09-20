@@ -2,7 +2,6 @@
 
 namespace User\Observers;
 
-use App\Jobs\User\UserDataJob;
 use Illuminate\Support\Facades\Log;
 use User\Mail\User\UserAccountActivatedEmail;
 use User\Jobs\TrivialEmailJob;
