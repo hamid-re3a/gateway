@@ -122,7 +122,6 @@ class User extends Authenticatable
     {
         $this->originalAssignRole(...$roles);
 
-        $this->notifyRoleAssigned();
 
         return $this;
     }
@@ -343,9 +342,5 @@ class User extends Authenticatable
 
     }
 
-    private function notifyRoleAssigned()
-    {
-        UserObserver::notifySubServices($this);
-    }
 
 }
