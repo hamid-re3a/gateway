@@ -1,6 +1,8 @@
 <?php
+
 namespace User\Repository;
 
+use Illuminate\Database\Eloquent\Builder;
 use User\Models\User;
 
 class UserRepository
@@ -28,19 +30,22 @@ class UserRepository
         return $user_entity->getUserService();
     }
 
-
-    public function update($request)
+    public function getUserWallet($id, $crypto_name)
     {
-        $user_entity = new $this->entity_name;
-        $user_find = $user_entity->query()->firstOrCreate(
-            [
-                'id' => $request->id,
-            ],
-            $request
-        );
-        $user_find->update($request);
+        /** @var $user User */
+        $user = new $this->entity_name;
+        $user = $user->query()->whereId($id)->first();
 
-        return $user_find;
+        if (!$user)
+            return false;
+        if (
+        $wallet = $user->wallets()->active()->whereHas('cryptoCurrency', function (Builder $query) use ($crypto_name) {
+            $query->where('iso', '=', $crypto_name);
+        })->first()
+        )
+            return $wallet;
 
+        return false;
     }
+
 }

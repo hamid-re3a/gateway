@@ -115,17 +115,17 @@ const SETTINGS = [
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
     [
-        'priority' => 0,
+        'priority' => 1,
         'times' => 3,
         'duration' => 90,
         'blocking_duration' => 5 * 60,
     ], [
-        'priority' => 0,
+        'priority' => 2,
         'times' => 2,
         'duration' => 90,
         'blocking_duration' => 10 * 60,
     ], [
-        'priority' => 0,
+        'priority' => 3,
         'times' => 6,
         'duration' => 90,
         'blocking_duration' => 20 * 60,

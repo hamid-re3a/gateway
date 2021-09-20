@@ -71,15 +71,16 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
 
+
+        $credentials = $request->only(['email', 'password']);
+        $user = User::query()->where('email', $credentials['email'])->first();
+
         //Check if system is not available
-        if($this->systemIsUnderMaintenance())
+        if($user->roles()->count() == 1 AND $user->hasRole(USER_ROLE_CLIENT) AND $this->systemIsUnderMaintenance())
             return api()->error(null,[
                 'subject' => trans('user.responses.we-are-under-maintenance')
             ],406);
 
-
-        $credentials = $request->only(['email', 'password']);
-        $user = User::query()->where('email', $credentials['email'])->first();
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
         $data = [];
@@ -378,8 +379,8 @@ class AuthController extends Controller
                 $response = true;
         }
 
-        if($response AND getSetting('LOGOUT_CLIENTS_FOR_MAINTENANCE')) //Check if we should revoke current active tokens
-            PersonalAccessToken::query()->where('tokenable_type','=','User\Models\User')->where('abilities','LIKE','%' . USER_ROLE_CLIENT . '%')->delete();
+//        if($response AND getSetting('LOGOUT_CLIENTS_FOR_MAINTENANCE')) //Check if we should revoke current active tokens
+//            PersonalAccessToken::query()->where('tokenable_type','=','User\Models\User')->can(USER_ROLE_CLIENT)->delete();
 
         return $response;
     }
