@@ -25,10 +25,10 @@ class UpdateLoginAttemptSettingRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:login_attempt_settings,id',
-            'times' => 'required|integer',
-            'duration' => 'required|integer',
-            'priority' => 'nullable|integer',
-            'blocking_duration' => 'required|integer',
+            'times' => 'required|integer|min:1',
+            'duration' => 'required|integer|min:1',
+            'priority' => 'required|integer|min:1|unique:login_attempts,priority',
+            'blocking_duration' => 'required|integer|min:1',
         ];
     }
 }
