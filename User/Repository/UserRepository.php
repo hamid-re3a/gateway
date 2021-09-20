@@ -23,11 +23,12 @@ class UserRepository
         return $user_entity;
     }
 
-    public function getUserData($id)
+    public function getUserData($id): \User\Services\Grpc\User
     {
-        $user_entity = new $this->entity_name;
-        $user_entity->whereId($id)->first();
-        return $user_entity->getUserService();
+        /** @var $user User */
+        $user = new $this->entity_name;
+        $user = $user->query()->whereId($id)->first();
+        return !is_null($user) ? $user->getUserService() : new \User\Services\Grpc\User;
     }
 
     public function getUserWallet($id, $crypto_name)
