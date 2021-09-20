@@ -31,6 +31,14 @@ class UserRepository
         return !is_null($user) ? $user->getUserService() : new \User\Services\Grpc\User;
     }
 
+    public function getUserDataByMemberId($member_id): \User\Services\Grpc\User
+    {
+        /** @var $user User */
+        $user = new $this->entity_name;
+        $user = $user->query()->where('member_id','=',$member_id)->first();
+        return !is_null($user) ? $user->getUserService() : new \User\Services\Grpc\User;
+    }
+
     public function getUserWallet($id, $crypto_name)
     {
         /** @var $user User */
