@@ -12,7 +12,7 @@ $client = new \User\Services\Grpc\UserServiceClient('staging-api-gateway.janex.o
     'credentials' => \Grpc\ChannelCredentials::createInsecure()
 ]);
 $request = new \User\Services\Grpc\Id();
-$request->setId((int)1);
+$request->setId((int)3);
 
 
 list($reply, $status) = $client->getUserById($request)->wait();

@@ -54,6 +54,7 @@ class AuthTableSeeder extends Seeder
                     'transaction_password' => 'password',
                     'first_name' => 'John',
                     'last_name' => 'Due',
+                    'sponsor_id' => 1,
                     'username' => 'johny',
                     'email_verified_at' => now()
                 ]);
