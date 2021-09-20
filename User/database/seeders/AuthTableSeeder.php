@@ -2,7 +2,6 @@
 
 namespace User\database\seeders;
 
-use App\Jobs\User\UserDataJob;
 use User\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
