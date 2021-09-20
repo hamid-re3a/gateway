@@ -5,6 +5,7 @@ namespace User\Services\Grpc;
 
 use Mix\Grpc;
 use Mix\Grpc\Context;
+use User\Services\UserService;
 
 class UserGrpcService implements UserServiceInterface
 {
