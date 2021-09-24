@@ -44,7 +44,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Ip whereTimezone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ip whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property int $user_id
  * @property string|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|Ip whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ip whereUserId($value)
