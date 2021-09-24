@@ -323,7 +323,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->user()->signOut();
+        auth()->user()->tokens()->delete();
         return api()->success(trans('user.responses.logout-successful'));
     }
 
