@@ -54,28 +54,4 @@ class HasValidPackageMiddleware
         return $next($request);
     }
 
-    private function getUrl()
-    {
-        $gatewayService = app(GatewayService::class)->getAllGatewayServices();
-        $gatewayService = $gatewayService->where('name', 'subscription')->first();
-        if ($gatewayService)
-            $externalDomain = $gatewayService->domain;
-        else
-            $externalDomain = config('gateway.services.subscription.domain');
-
-        return $externalDomain . 'v1/orders/packages/has-valid-package';
-    }
-
-    private function performHeaders()
-    {
-
-        $user = request()->user();
-        $user_service = $user->getUserService();
-
-        return [
-            'X-user-id' => $user->id,
-            'X-user-hash' => md5(serialize($user_service))
-        ];
-
-    }
 }
