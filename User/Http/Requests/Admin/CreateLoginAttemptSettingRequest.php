@@ -26,7 +26,7 @@ class CreateLoginAttemptSettingRequest extends FormRequest
         return [
             'times' => 'required|integer|min:1',
             'duration' => 'required|integer|min:1',
-            'priority' => 'required|integer|min:1|unique:login_attempts,priority',
+            'priority' => 'required|integer|min:1|unique:login_attempt_settings,priority,' . $this->get('times') . ',times',
             'blocking_duration' => 'required|integer|min:1',
         ];
     }
