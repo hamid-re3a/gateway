@@ -3,14 +3,10 @@
 namespace User\Http\Controllers\Front;
 
 
-use App\Jobs\User\UserDataJob;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\User\profile\UpdateAvatarRequest;
 use User\Http\Requests\User\profile\UpdateContactDetails;
 use User\Http\Requests\User\profile\UpdatePersonalDetails;
@@ -21,7 +17,6 @@ use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
-use User\Services\Grpc\User;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
