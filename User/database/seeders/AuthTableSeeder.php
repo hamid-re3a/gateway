@@ -22,7 +22,7 @@ class AuthTableSeeder extends Seeder
             Role::query()->firstOrCreate(['name' => $role]);
         }
 
-        if (!User::query()->where('email', 'work@sajidjaved.com')->exists()) {
+        if (!User::query()->where('email', 'admin@yopmail.com')->exists()) {
             $admin = User::whereUsername('admin')->first();
             if(!$admin){
                 $admin = User::factory()->create([
@@ -61,6 +61,27 @@ class AuthTableSeeder extends Seeder
             }
 
             $global->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
+        }
+        if (!User::query()->where('email', 'customer@yopmail.com')->exists()) {
+            $global = User::whereUsername('johny')->first();
+            if(!$global){
+                $global = User::factory()->create([
+                    'username' => 'George',
+                ]);
+                $global->update([
+                    'member_id' => '3000',
+                    'email' => 'customer@yopmail.com',
+                    'password' => 'password',
+                    'transaction_password' => 'password',
+                    'first_name' => 'George',
+                    'last_name' => 'W Father',
+                    'sponsor_id' => 1,
+                    'username' => 'George',
+                    'email_verified_at' => now()
+                ]);
+            }
+
+            $global->assignRole([USER_ROLE_CLIENT]);
         }
 
     }

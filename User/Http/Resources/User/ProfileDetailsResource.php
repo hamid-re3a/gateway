@@ -30,7 +30,7 @@ class ProfileDetailsResource extends JsonResource
             'landline_number' => $this->landline_number,
             'address_line1' => $this->address_line1,
             'address_line2' => $this->address_line2,
-            'sponsor' => null,
+            'sponsor' => $this->sponsor()->exists() ? $this->sponsor->full_name : null,
             'placement' => null,
             'rank' => null,
             'status' => null,
