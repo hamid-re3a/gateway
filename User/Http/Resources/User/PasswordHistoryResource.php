@@ -18,7 +18,7 @@ class PasswordHistoryResource extends JsonResource
     {
         return [
             'actor' => !is_null($this->actor_id) ? ProfileResource::make(User::find($this->actor_id)) : null,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->timestamp,
         ];
     }
 }

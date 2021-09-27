@@ -30,7 +30,7 @@ class AgentResource extends JsonResource
             'platform_version'=>$this->platform_version,
             'browser_version'=>$this->browser_version,
             'hit'=>$this->hit,
-            'created_at'=>$this->created_at,
+            'created_at'=>$this->created_at->timestamp,
         ];
     }
 }
