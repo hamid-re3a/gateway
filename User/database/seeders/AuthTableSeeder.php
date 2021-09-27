@@ -71,6 +71,7 @@ class AuthTableSeeder extends Seeder
                 $global->update([
                     'member_id' => '3000',
                     'email' => 'customer@yopmail.com',
+
                     'password' => 'password',
                     'transaction_password' => 'password',
                     'first_name' => 'George',
