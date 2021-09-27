@@ -63,10 +63,10 @@ class AuthTableSeeder extends Seeder
             $global->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
         if (!User::query()->where('email', 'customer@yopmail.com')->exists()) {
-            $global = User::whereUsername('johny')->first();
+            $global = User::whereUsername('george')->first();
             if(!$global){
                 $global = User::factory()->create([
-                    'username' => 'George',
+                    'username' => 'george',
                 ]);
                 $global->update([
                     'member_id' => '3000',
@@ -77,7 +77,7 @@ class AuthTableSeeder extends Seeder
                     'first_name' => 'George',
                     'last_name' => 'W Father',
                     'sponsor_id' => 1,
-                    'username' => 'George',
+                    'username' => 'george',
                     'email_verified_at' => now()
                 ]);
             }
