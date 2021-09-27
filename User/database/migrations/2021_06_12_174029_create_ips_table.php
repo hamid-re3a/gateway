@@ -16,7 +16,7 @@ class CreateIpsTable extends Migration
         Schema::create('ips', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->nullable()->constrained('users','id');
+//            $table->foreignId('user_id')->nullable()->constrained('users','id');
             $table->string('ip')->nullable();
             $table->string('iso_code')->nullable();
             $table->string('country')->nullable();

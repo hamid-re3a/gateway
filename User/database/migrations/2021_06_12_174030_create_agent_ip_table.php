@@ -13,10 +13,10 @@ class CreateAgentIpTable extends Migration
      */
     public function up()
     {
-        Schema::create('agent_ip', function (Blueprint $table) {
-            $table->foreignId('agent_id')->constrained('agents','id');
-            $table->foreignId('ip_id')->constrained('ips','id');
-        });
+//        Schema::create('agent_ip', function (Blueprint $table) {
+//            $table->foreignId('agent_id')->constrained('agents','id');
+//            $table->foreignId('ip_id')->constrained('ips','id');
+//        });
     }
 
     /**
@@ -26,6 +26,6 @@ class CreateAgentIpTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ips');
+//        Schema::dropIfExists('ips');
     }
 }

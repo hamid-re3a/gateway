@@ -95,12 +95,12 @@ Route::middleware('user_activity')->group(function () {
                     Route::get('avatar/image', [UserController::class, 'getAvatarImage'])->name('get-avatar-image');
                 });
 
-                Route::prefix('sessions')->name('sessions.')->group(function () {
-                    Route::get('all', [SessionController::class, 'index'])->name('history');
-                    Route::post('signout', [SessionController::class, 'signout'])->name('logout');
-                    Route::post('signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('other-sessions');
-
-                });
+//                Route::prefix('sessions')->name('sessions.')->group(function () {
+//                    Route::get('all', [SessionController::class, 'index'])->name('history');
+//                    Route::post('signout', [SessionController::class, 'signout'])->name('logout');
+//                    Route::post('signout-all-others', [SessionController::class, 'signOutAllOtherSessions'])->name('other-sessions');
+//
+//                });
 
                 Route::prefix('wallets')->group(function () {
                     Route::get('/available_crypto_currencies', [WalletController::class, 'availableCryptoCurrencies'])->name('wallets-available-crypto-currencies');
