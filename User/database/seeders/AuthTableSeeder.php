@@ -22,9 +22,9 @@ class AuthTableSeeder extends Seeder
             Role::query()->firstOrCreate(['name' => $role]);
         }
 
-        if (!User::query()->where('email', 'work@sajidjaved.com')->exists()) {
+        if (!User::query()->where('email', 'admin@yopmail.com')->exists()) {
             $admin = User::whereUsername('admin')->first();
-            if (!$admin) {
+            if(!$admin){
                 $admin = User::factory()->create([
                     'username' => 'admin',
                 ]);
@@ -39,11 +39,11 @@ class AuthTableSeeder extends Seeder
             $admin->email = 'work@sajidjaved.com';
             $admin->save();
 
-            $admin->assignRole([USER_ROLE_SUPER_ADMIN, USER_ROLE_CLIENT]);
+            $admin->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
         if (!User::query()->where('email', 'janexstaging@gmail.com')->exists()) {
             $global = User::whereUsername('johny')->first();
-            if (!$global) {
+            if(!$global){
                 $global = User::factory()->create([
                     'username' => 'johny',
                 ]);
@@ -60,30 +60,30 @@ class AuthTableSeeder extends Seeder
                 ]);
             }
 
-            $global->assignRole([USER_ROLE_SUPER_ADMIN, USER_ROLE_CLIENT]);
+            $global->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
         }
-        for ($i = 0; $i < 20; $i++)
-            if (!User::query()->where('email', "janexstaging$i@gmail.com")->exists()) {
-                $global = User::whereUsername("johny$i")->first();
-                if (!$global) {
-                    $global = User::factory()->create([
-                        'username' => "johny$i",
-                    ]);
-                    $global->update([
-                        'member_id' => "2000$i",
-                        "email" => "janexstaging$i@gmail.com",
-                        "password" => "password",
-                        "transaction_password" => "password",
-                        "first_name" => "John$i",
-                        "last_name" => "Due",
-                        "sponsor_id" => $i > 10 ? 2 : 1,
-                        "username" => "johny$i",
-                        'email_verified_at' => now()
-                    ]);
-                }
+        if (!User::query()->where('email', 'customer@yopmail.com')->exists()) {
+            $global = User::whereUsername('johny')->first();
+            if(!$global){
+                $global = User::factory()->create([
+                    'username' => 'George',
+                ]);
+                $global->update([
+                    'member_id' => '3000',
+                    'email' => 'customer@yopmail.com',
 
-                $global->assignRole([USER_ROLE_SUPER_ADMIN, USER_ROLE_CLIENT]);
+                    'password' => 'password',
+                    'transaction_password' => 'password',
+                    'first_name' => 'George',
+                    'last_name' => 'W Father',
+                    'sponsor_id' => 1,
+                    'username' => 'George',
+                    'email_verified_at' => now()
+                ]);
             }
+
+            $global->assignRole([USER_ROLE_CLIENT]);
+        }
 
     }
 }

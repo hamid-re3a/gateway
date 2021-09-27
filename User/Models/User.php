@@ -100,6 +100,7 @@ use User\Observers\UserObserver;
  * @property-read \Illuminate\Database\Eloquent\Collection|Country[] $country
  * @property-read \Illuminate\Database\Eloquent\Collection|City[] $city
  * @property-read \Illuminate\Database\Eloquent\Collection|City[] $state
+ * @property-read User $sponsor
  */
 class User extends Authenticatable
 {
@@ -253,6 +254,11 @@ class User extends Authenticatable
     public function city()
     {
         return $this->belongsTo(City::class,'city_id','id')->whereNotNull('parent_id');
+    }
+
+    public function sponsor()
+    {
+        return $this->belongsTo(User::class,'sponsor_id','id');
     }
 
     /**
