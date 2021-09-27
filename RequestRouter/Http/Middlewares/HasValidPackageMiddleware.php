@@ -31,7 +31,7 @@ class HasValidPackageMiddleware
                         if ($acknowledge->getStatus()) {
 
                             //User has valid package
-                            cache()->put($cacheKey, true);
+//                            cache()->put($cacheKey, true);
 
                         } else {
 
