@@ -36,7 +36,7 @@ class AuthTableSeeder extends Seeder
                 $admin->email_verified_at = now();
             }
 
-            $admin->email = 'work@sajidjaved.com';
+            $admin->email = 'admin@yopmail.com';
             $admin->save();
 
             $admin->assignRole([USER_ROLE_SUPER_ADMIN,USER_ROLE_CLIENT]);
