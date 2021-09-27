@@ -29,7 +29,7 @@ class ProfileResource extends JsonResource
             'username' => $this->username,
             'phone_number' => $this->phone_number,
             'passport_number' => $this->passport_number,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->timestamp,
         ]);
     }
 
