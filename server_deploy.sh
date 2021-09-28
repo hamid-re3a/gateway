@@ -10,6 +10,7 @@ rm -rf database/
 rm -rf ReqeuestRouter/
 rm -rf User/
 rm -rf routes/
+rm -rf resources/
 #git clone git@github.com:Ride-To-The-Future/API-Gateway.git
 #cp -r temp-project/* .
 shopt -s dotglob
