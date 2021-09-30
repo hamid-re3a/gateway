@@ -3,8 +3,6 @@
 namespace User\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use User\Models\City;
-use User\Models\Country;
 use User\Models\User;
 
 class ProfileDetailsResource extends JsonResource
@@ -17,10 +15,6 @@ class ProfileDetailsResource extends JsonResource
      */
     public function toArray($request)
     {
-        $countries = new Country();
-        $cities = new City();
-        /**@var $user User*/
-        $user =  auth()->user();
         return [
             'id' => $this->id,
             'member_id' => $this->member_id,
@@ -44,11 +38,11 @@ class ProfileDetailsResource extends JsonResource
             'avatar' => route('customer.general.avatar-image', [
                 'member_id' => $this->member_id
             ]),
-            'state' => $this->state_id ? $cities->where(['id'=> $this->state_id,'parent_id' => null] )->first()->name : null,
-            'city' => $this->city_id ? $cities->where(['id' => $this->city_id])->first()->name  : null,
-            'country' => $this->country_id ? $countries->where('id',$this->country_id)->first()->name  : null,
+            'state' => $this->state_id ? $this->state->name : null,
+            'city' => $this->city_id ? $this->city->name  : null,
+            'country' => $this->country_id ? $this->country->name : null,
             'zip_code' => $this->zip_code ? $this->zip_code  : null,
-            'roles' => $user->getRoleNames()->first()
+            'roles' => $this->getRoleNames()->first()
         ];
     }
 }
