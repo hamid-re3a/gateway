@@ -5,6 +5,7 @@ namespace User\Http\Resources\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use User\Models\City;
 use User\Models\Country;
+use User\Models\User;
 
 class ProfileDetailsResource extends JsonResource
 {
@@ -18,7 +19,8 @@ class ProfileDetailsResource extends JsonResource
     {
         $countries = new Country();
         $cities = new City();
-
+        /**@var $user User*/
+        $user =  auth()->user();
         return [
             'id' => $this->id,
             'member_id' => $this->member_id,
@@ -46,7 +48,7 @@ class ProfileDetailsResource extends JsonResource
             'city' => $this->city_id ? $cities->where(['id' => $this->city_id])->first()->name  : null,
             'country' => $this->country_id ? $countries->where('id',$this->country_id)->first()->name  : null,
             'zip_code' => $this->zip_code ? $this->zip_code  : null,
-            'roles' => $role_name = implode(",",auth()->user()->getRoleNames()->toArray())
+            'roles' => $user->getRoleNames()->first()
         ];
     }
 }
