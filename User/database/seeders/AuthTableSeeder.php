@@ -31,8 +31,8 @@ class AuthTableSeeder extends Seeder
                 $admin->password = 'password123';
                 $admin->member_id = 1000;
                 $admin->transaction_password = 'PA$$W0RD';
-                $admin->first_name = 'admin';
-                $admin->last_name = 'admin';
+                $admin->first_name = 'Doctor';
+                $admin->last_name = 'Johny';
                 $admin->email_verified_at = now();
             }
 
