@@ -3,6 +3,7 @@
 namespace User\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use User\Models\User;
 
 class ProfileDetailsResource extends JsonResource
 {
@@ -16,11 +17,16 @@ class ProfileDetailsResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'member_id' => $this->member_id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'full_name' => $this->full_name,
             'username' => $this->username,
-            'sponsor' => null,
+            'mobile_number' => $this->mobile_number,
+            'landline_number' => $this->landline_number,
+            'address_line1' => $this->address_line1,
+            'address_line2' => $this->address_line2,
+            'sponsor' => $this->sponsor()->exists() ? $this->sponsor->username : null,
             'placement' => null,
             'rank' => null,
             'status' => null,
@@ -29,7 +35,14 @@ class ProfileDetailsResource extends JsonResource
             'email' => $this->email,
             'gender' => $this->gender,
             'birthday' => $this->birthday ? $this->birthday->format('Y/m/d') : null,
-            'avatar' => route('get-avatar-image'),
+            'avatar' => route('customer.general.avatar-image', [
+                'member_id' => $this->member_id
+            ]),
+            'state' => $this->state_id ? $this->state->name : null,
+            'city' => $this->city_id ? $this->city->name  : null,
+            'country' => $this->country_id ? $this->country->name : null,
+            'zip_code' => $this->zip_code ? $this->zip_code  : null,
+            'roles' => $this->getRoleNames()->first()
         ];
     }
 }

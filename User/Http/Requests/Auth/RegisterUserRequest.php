@@ -24,7 +24,7 @@ class RegisterUserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             /** username can contain alphabet, underline and digits */
             'sponsor_username' => ['required', 'exists:users,username', 'regex:/^[a-z][a-z0-9_]{2,}$/'],
-            'username' => ['required', 'unique:users', 'regex:/^[a-z][a-z0-9_]{2,}$/'],
+            'username' => ['required', 'unique:users,username', 'regex:/^[a-z][a-z0-9_]{2,}$/'],
             'password' => ['required', 'regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/'],
             'password_confirmation' => 'required|string|same:password',
         ];
@@ -40,7 +40,8 @@ class RegisterUserRequest extends FormRequest
             'email.unique:users' => trans('user.validation.email-unique'),
             'sponsor_username.regex' => trans('user.validation.sponsor-username-regex'),
             'sponsor_username.required' => trans('user.validation.sponsor-username-required'),
-            'sponsor_username.exists:users' => trans('user.validation.sponsor-username-not-exists'),
+            'sponsor_username.exists' => trans('user.validation.sponsor-username-exists'),
+            'sponsor_username.exists:users' => trans('user.validation.sponsor-username-exists'),
             'username.unique:users' => trans('user.validation.username-unique'),
             'username.required' => trans('user.validation.username-required'),
             'username.regex' => trans('user.validation.username-regex'),

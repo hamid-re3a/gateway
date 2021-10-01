@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use RequestRouter\Http\Controllers\GatewayServicesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-////Admin
-//Route::prefix('admin')->middleware(['api', 'auth', 'role:admin|help-desk'])->group(function () {
-//
-//
-//});
+Route::middleware(['role:super-admin|user-gateway-admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::prefix('gateway_service')->name("gateway-service")->group(function () {
+        Route::get('/list', [GatewayServicesController::class, 'gatewayServicesList'])->name('list');
+        Route::post('/edit', [GatewayServicesController::class, 'editServiceGateway'])->name('edit');
+    });
+
+});
+

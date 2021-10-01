@@ -2,13 +2,23 @@
 
 namespace User\Observers;
 
-use App\Jobs\User\UserDataJob;
+use Illuminate\Support\Facades\Log;
 use User\Mail\User\UserAccountActivatedEmail;
 use User\Jobs\TrivialEmailJob;
 use User\Models\User;
 
 class UserObserver
 {
+    public function creating(User $user)
+    {
+        if(empty($user->member_id)) {
+            //User member_id field
+            $member_id = mt_rand(121212121,999999999);
+            while ($user->where('member_id', $member_id)->count())
+                $member_id = mt_rand(121212121,999999999);
+            $user->member_id = $member_id;
+        }
+    }
 
     public function updating(User $user)
     {
@@ -20,18 +30,6 @@ class UserObserver
             ]);
             $history = $user->userHistories()->create($attributes);
 
-            if(!empty($user->isDirty())){
-                $userObject = new \User\Services\User();
-                $userObject->setId($user->id);
-                $userObject->setEmail($user->email);
-                $userObject->setFirstName($user->first_name);
-                $role_name = implode(",",$user->getRoleNames()->toArray());
-                $userObject->setRole($role_name);
-                $serializeUser = serialize($userObject);
-                UserDataJob::dispatch($serializeUser)->onQueue('subscriptions');
-                UserDataJob::dispatch($serializeUser)->onQueue('kyc');
-                UserDataJob::dispatch($serializeUser)->onQueue('mlm');
-            }
 
             if($user->isDirty('block_type')){
 
@@ -41,5 +39,6 @@ class UserObserver
             }
         }
     }
+
 
 }

@@ -3,36 +3,68 @@ return [
     // List of microservices behind the gateway
     'services' => [
         'default' => [
-            'prefix' => '/default',
             'doc_point' => '/docs',
             /** Can client calls the routes that are not defined here on this service */
-            'routes' => true,
+            'just_current_routes' => true,
             'domain' => 'local',
         ],
-        'fake' => [
-            'prefix' => '/fake',
-            'doc_point' => 'https://jsonplaceholder.typicode.com/',
-            'routes' => false,
-            'domain' => 'https://jsonplaceholder.typicode.com/'
-        ]
+        'subscription' => [
+            'doc_point' => 'https://staging-subscription.janex.org/docs',
+            'just_current_routes' => false,
+            'domain' => 'https://staging-subscription.janex.org/'
+        ],
+        'kyc' => [
+            'doc_point' => 'https://staging-kyc.janex.org/docs',
+            'just_current_routes' => false,
+            'domain' => 'https://staging-kyc.janex.org/'
+        ],
+        'mlm' => [
+            'doc_point' => 'https://staging-mlm.janex.org/docs',
+            'just_current_routes' => false,
+            'domain' => 'https://staging-mlm.janex.org/'
+        ],
 
     ],
     'routes' => [
         [
             'services' => [
-                'fake'
+                '*',
             ],
             'matches' => [
                 [
-                    'method' => 'GET',
+                    'method' => '*',
                     'paths' => [
-                        'posts',
-                        'comments'
+                        '*',
+                    ],
+                    'exceptions_paths' => [
+                        ''
                     ]
                 ]
             ],
             'middlewares' => [
-                'auth:sanctum'
+                'maintenance_mode'
+            ]
+        ],
+        [
+            'services' => [
+                '*',
+            ],
+            'matches' => [
+                [
+                    'method' => '*',
+                    'paths' => [
+                        '*',
+                    ],
+                    'exceptions_paths' => [
+                        'payments',
+                        'packages',
+                        'orders',
+                        'wallets'
+                    ]
+                ]
+            ],
+            'middlewares' => [
+                'has_valid_package'
             ]
         ],
 

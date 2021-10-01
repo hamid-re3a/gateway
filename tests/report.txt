@@ -1,7 +1,3 @@
-Admin (User\tests\Feature\Admin)
- [x] Verify email user account green
- [x] User deactivate activate
-
 User (User\tests\Feature\User)
  [x] Register new user green
  [x] Register new user not enough strong password

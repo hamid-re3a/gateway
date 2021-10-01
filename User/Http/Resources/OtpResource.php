@@ -23,7 +23,7 @@ class OtpResource extends JsonResource
             'ip'=>(!is_null($this->ip_id))?IpResource::make(Ip::find($this->ip_id)):null,
             'agent'=>(!is_null($this->agent_id))?AgentResource::make(Agent::find($this->agent_id)):null,
             'type'=>$this->type,
-            'created_at'=>$this->created_at,
+            'created_at'=>$this->created_at->timestamp,
         ];
     }
 }

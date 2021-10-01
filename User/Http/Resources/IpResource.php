@@ -32,7 +32,7 @@ class IpResource extends JsonResource
             'timezone'=>$this->timezone,
             'continent'=>$this->continent,
             'hit'=>$this->hit,
-            'created_at'=>$this->created_at,
+            'created_at'=>$this->created_at->timestamp,
         ];
     }
 }

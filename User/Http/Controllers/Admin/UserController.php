@@ -7,7 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use User\Http\Requests\Admin\ActivateOrDeactivateUserAccount;
 use User\Http\Requests\Admin\BlockOrUnblockUser;
+use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
+use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
 use User\Http\Resources\OtpResource;
@@ -22,11 +24,17 @@ use User\Mail\User\SuccessfulEmailVerificationEmail;
 use User\Mail\User\UserAccountHasBeenFrozenEmail;
 use User\Mail\User\UserAccountHasBeenUnfrozenEmail;
 use User\Models\User;
+use User\Services\UserAdminService;
 use User\Support\UserActivityHelper;
 
 
 class UserController extends Controller
 {
+    private $user_admin_service;
+
+    public function __construct(UserAdminService $user_admin_service){
+        $this->user_admin_service = $user_admin_service;
+    }
 
     /**
      * Get user's list
@@ -50,7 +58,7 @@ class UserController extends Controller
     {
 
         $user = User::whereEmail($request->get('email'))->first();
-        if($user->id == auth()->user->id)
+        if($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-block-unblock-your-account'));
         if ($request->get('deactivate')) {
             $user->block_type = USER_BLOCK_TYPE_BY_ADMIN;
@@ -76,7 +84,7 @@ class UserController extends Controller
     public function activateOrDeactivateUserAccount(ActivateOrDeactivateUserAccount $request)
     {
         $user = User::find($request->get('user_id'));
-        if($user->id == auth()->user->id)
+        if($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-deactivate-active-your-account'));
         if($request->get('status') == 'activate') {
             $user->update([
@@ -108,7 +116,7 @@ class UserController extends Controller
     public function freezeOrUnfreezeUserAccount(FreezeOrUnfreezeUserAccountRequest $request)
     {
         $user = User::find($request->get('user_id'));
-        if($user->id == auth()->user->id)
+        if($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-freeze-unfreeze-your-account'));
         if($request->get('status') == 'freeze'){
             $user->update([
@@ -188,5 +196,38 @@ class UserController extends Controller
     public function emailVerificationHistory(HistoryRequest $request)
     {
         return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
+    }
+
+    /**
+     * create user by super admin
+     * @group
+     * Admin > User
+     * @param CreateAdminRequest $request
+     * @return JsonResponse
+     */
+    public function createUserByAdmin(CreateAdminRequest $request)
+    {
+        $this->user_admin_service->createAdmin($request);
+        return api()->success(trans('user.responses.ok'),null);
+
+    }
+
+    /**
+     * Block Or Unblock User Account
+     * @group
+     * Admin > User
+     * @param UserUpdateRequest $request
+     * @return JsonResponse
+     */
+    public function update(UserUpdateRequest $request ,UserAdminService $userAdminService)
+    {
+        try {
+            $user=$userAdminService->update($request->validated());
+            return api()->success(trans('responses.ok'), $user);
+
+        }catch (\Throwable $e){
+            return api()->error($e->getMessage(), null);
+        }
+
     }
 }

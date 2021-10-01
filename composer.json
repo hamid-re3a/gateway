@@ -8,11 +8,13 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.3",
         "creativeorange/gravatar": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "geoip2/geoip2": "^2.11",
+        "google/protobuf": "^3.17",
+        "grpc/grpc": "^1.39",
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
         "kalnoy/nestedset": "^5.0",
@@ -20,17 +22,21 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "merkeleon/php-cryptocurrency-address-validation": "^1.2",
+        "mix/grpc": "^3.0",
+        "pragmarx/countries": "^0.7.2",
         "pragmarx/google2fa-laravel": "^1.4",
+        "propaganistas/laravel-phone": "^4.3",
+        "rap2hpoutre/laravel-log-viewer": "^1.7",
         "ride-to-the-future/response-transformer": "^0.0.2",
         "spatie/laravel-permission": "^3.17",
         "torann/geoip": "^3.0",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3",
-        "google/protobuf": "^3.17"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "imanghafoori/laravel-microscope": "^1.0",
         "knuckleswtf/scribe": "^2.5",
         "laravel/envoy": "^2.7",
         "laravel/sail": "^0.0.5",
@@ -60,6 +66,9 @@
             "Database\\Seeders\\": "database/seeders/",
             "RequestRouter\\": "RequestRouter/",
             "User\\": "User/",
+            "Greeter\\": "Greeter/",
+            "MLM\\": "MLM/",
+            "Orders\\": "Orders/",
             "GPBMetadata\\": "GPBMetadata/"
         }
     },

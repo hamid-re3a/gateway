@@ -15,8 +15,8 @@ class CreateAgentsTable extends Migration
     {
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users','id');
-            $table->foreignId('token_id')->nullable()->constrained('personal_access_tokens','id');
+//            $table->foreignId('user_id')->nullable()->constrained('users','id')->onDelete('SET NULL');
+//            $table->foreignId('token_id')->nullable()->constrained('personal_access_tokens','id')->onDelete('SET NULL');
             $table->string('language')->nullable();
             $table->string('device_type')->nullable();
             $table->string('platform')->nullable();

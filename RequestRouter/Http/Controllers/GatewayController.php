@@ -5,6 +5,9 @@ namespace RequestRouter\Http\Controllers;
 
 use App\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use RequestRouter\Http\Resources\GatewayServicesKeysResource;
+use RequestRouter\Http\Resources\GatewayServicesResource;
 use \Symfony\Component\HttpFoundation\Request as SymRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
@@ -15,9 +18,16 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use User\Models\User;
+use RequestRouter\Services\GatewayService;
 
 class GatewayController extends Controller
 {
+    private $gateway_services;
+
+    public function __construct(GatewayService $gateway_services)
+    {
+        $this->gateway_services = $gateway_services;
+    }
 
     /**
      * @hideFromAPIDocumentation
@@ -104,6 +114,13 @@ class GatewayController extends Controller
     }
 
 
+    /**
+     * @param $route
+     * @param $request
+     * @param null $method
+     * @return array
+     * @todo change config from database
+     */
     private function getValidRoute($route, $request, $method = null)
     {
         if (is_null($method))
@@ -112,6 +129,9 @@ class GatewayController extends Controller
         $routes = config('gateway.routes');
         $services = config('gateway.services');
         $service_keys = collect(config('gateway.services'))->keys()->toArray();
+//        $services = GatewayServicesResource::collection($this->gateway_services->getAllGatewayServices())->resolve();
+//        $services = array_replace(...$services);
+//        $service_keys = GatewayServicesKeysResource::collection($this->gateway_services->getAllGatewayServices())->response()->getData();
         if (Str::startsWith($route, '/'))
             return [false, null, null];
         if (preg_match('/^^(?!\W)((?P<service>.*?)(?=\/)\/(?P<route>.*)|(?P<second_service>.*))$/', $route, $match)) {
@@ -128,11 +148,12 @@ class GatewayController extends Controller
                 $final_route = $domain . $sub_route;
 
 
-                list($can_pass, $middlewares) = $this->checkRoute($routes, $service, $route, $method, $sub_route);
+                list($can_pass, $middlewares) = $this->checkRouteForPossibleMiddlewares($routes, $service, $route, $method, $sub_route);
 
                 if ($can_pass || !$services[$service]['just_current_routes']) {
                     return [true, $final_route, $middlewares];
                 }
+
             }
             return [false, null, null];
 
@@ -172,14 +193,26 @@ class GatewayController extends Controller
      * @param $sub_route
      * @return array
      */
-    private function checkRoute($routes, $service, $route, string $method, $sub_route)
+    private function checkRouteForPossibleMiddlewares($routes, $service, $route, string $method, $sub_route)
     {
         foreach ($routes as $c_route)
-            if (in_array($service, $c_route['services']))
+            if (in_array($service, $c_route['services']) || $c_route['services'] = '*')
                 foreach ($c_route['matches'] as $match_route)
-                    if ($method == strtolower($match_route['method']))
+                    if ($method == strtolower($match_route['method']) || strtolower($match_route['method']) == '*')
                         foreach ($match_route['paths'] as $path)
-                            if (preg_match('/' . $path . '/', $sub_route)) {
+                            if ($path == '*' || preg_match('/' . $path . '/', $sub_route)) {
+                                $exception_flag = false;
+                                if (isset($match_route['exceptions_paths'])) {
+                                    foreach ($match_route['exceptions_paths'] as $exception) {
+                                        if (preg_match('/' . $exception . '/', $sub_route)) {
+                                            $exception_flag = true;
+                                        }
+                                    }
+                                }
+                                if ($exception_flag)
+                                    continue;
+
+
                                 $middlewares = [];
                                 if (isset($match_route['middlewares'])) {
                                     $middlewares = array_merge($middlewares, $match_route['middlewares']);
@@ -274,17 +307,15 @@ class GatewayController extends Controller
     private function setUserHeadersIfAuthenticated(Request $request): void
     {
         $request->headers->remove('X-user-id');
-        $request->headers->remove('X-user-first-name');
-        $request->headers->remove('X-user-last-name');
-        $request->headers->remove('X-user-email');
-        $request->headers->remove('X-user-username');
+        $request->headers->remove('X-user-hash');
+
         if (auth()->check()) {
             $user = User::query()->find(auth()->user()->id);
+
             $request->headers->set('X-user-id', $user->id);
-            $request->headers->set('X-user-first-name', $user->first_name);
-            $request->headers->set('X-user-last-name', $user->last_name);
-            $request->headers->set('X-user-email', $user->email);
-            $request->headers->set('X-user-username', $user->username);
+            $user_service = $user->getUserService();
+            $hash = md5(serialize($user_service));
+            $request->headers->set('X-user-hash', $hash);
         }
     }
 
@@ -326,5 +357,18 @@ class GatewayController extends Controller
     private function attachContent(&$multipart, $key, $conent)
     {
         $multipart[] = ['name' => $key, 'contents' => $conent];
+    }
+
+    function sanitizeArray($array)
+    {
+        static $newArray = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                sanitizeArray($value);
+            } else {
+                $newArray[$key] = $value;
+            }
+        }
+        return $newArray;
     }
 }

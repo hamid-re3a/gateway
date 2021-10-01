@@ -25,7 +25,7 @@ class LoginHistoryResource extends JsonResource
             'agent'=>(!is_null($this->agent_id))?AgentResource::make(Agent::find($this->agent_id)):null,
             'login_status'=>$this->login_status_string,
             'is_from_new_device'=>$this->is_from_new_device,
-            'created_at'=>$this->created_at,
+            'created_at'=>$this->created_at->timestamp,
         ];
     }
 }

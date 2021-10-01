@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * User\Models\UserActivity
  *
  * @property int $id
- * @property int|null $user_id
+// * @property int|null $user_id
  * @property int|null $ip_id
  * @property int|null $agent_id
  * @property string|null $route

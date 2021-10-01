@@ -3,7 +3,7 @@
 namespace User\Http\Controllers\Front;
 
 
-use User\Http\Requests\User\Session\TerminateSessionRequest;
+use User\Http\Requests\User\session\TerminateSessionRequest;
 use User\Http\Resources\User\ActiveSessionsResource;
 use User\Models\Agent;
 use Illuminate\Routing\Controller;
@@ -12,8 +12,7 @@ class SessionController extends Controller
 {
     /**
      * Get All Sessions
-     * @group
-     * Session
+     * @group Public User > Session
      */
     public function index()
     {
@@ -23,8 +22,7 @@ class SessionController extends Controller
 
     /**
      * Logout a session
-     * @group
-     * Session
+     * @group Public User > Session
      * @param TerminateSessionRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -44,8 +42,7 @@ class SessionController extends Controller
 
     /**
      * Logout all other sessions
-     * @group
-     * Session
+     * @group Public User > Session
      * @return \Illuminate\Http\JsonResponse
      */
     public function signOutAllOtherSessions()
