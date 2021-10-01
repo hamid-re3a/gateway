@@ -36,20 +36,15 @@ jobs:
     needs: laravel-tests
     steps:
     - uses: actions/checkout@v2
-    - name: Copy project to deployment directory
+    - name: Building docker image
       run: |
         shopt -s dotglob
-        sudo mkdir -p /home/stagingapigateway/public_html/API-Gateway/temp-project
-        sudo cp -r . /home/stagingapigateway/public_html/API-Gateway/temp-project/
-        sudo rm -rf /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
-        sudo mv /home/stagingapigateway/public_html/API-Gateway/temp-project/server_deploy.sh /home/stagingapigateway/public_html/API-Gateway/
-        sudo chown stagingapigateway:stagingapigateway /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
-        sudo chmod 700 /home/stagingapigateway/public_html/API-Gateway/server_deploy.sh
-        sudo chown -R stagingapigateway:stagingapigateway /home/stagingapigateway/public_html/API-Gateway/temp-project
-    - name: Run server_deploy.sh
+        sudo docker build --network=mysql_wo_r2f -t api-gateway:1 .
+    - name: deploy docker-compose
+      run: | 
+        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml stop api-gateway
+        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml rm -f api-gateway
+        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml up -d api-gateway
+    - name: Handle laravel-log directory issue
       run: |
-        sudo su - stagingapigateway -c '/home/stagingapigateway/public_html/API-Gateway/server_deploy.sh'
-    - name: Restart supervisord api-gaateway workers
-      run: |
-        sudo supervisorctl restart api-gateway-subscription-socket-worker:api-gateway-subscription-socket-worker_00
-        sudo supervisorctl restart api-gateway-grpcServer:api-gateway-grpcServer_00
+        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml exec api-gateway chmod -R 777 storage/logs 
