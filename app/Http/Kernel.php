@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use RequestRouter\Http\Middlewares\HasValidPackageMiddleware;
 use User\Http\Middlewares\BlockUserMiddleware;
 use User\Http\Middlewares\EmailVerifiedMiddleware;
 use User\Http\Middlewares\LoginAttemptMiddleware;
@@ -74,5 +75,7 @@ class Kernel extends HttpKernel
         'login_attempt' => LoginAttemptMiddleware::class,
         'email_verified' => EmailVerifiedMiddleware::class,
         'block_user' => BlockUserMiddleware::class,
+        'has_valid_package' => HasValidPackageMiddleware::class,
+        'maintenance_mode' => HasValidPackageMiddleware::class,
     ];
 }

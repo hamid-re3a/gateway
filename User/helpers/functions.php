@@ -10,7 +10,7 @@ function getSetting($key)
 
     if (DB::table('settings')->exists()) {
         $key_db = Setting::query()->where('key', $key)->first();
-        if ($key_db && !is_null($key_db->value))
+        if ($key_db && !empty($key_db->value))
             return $key_db->value;
     }
 
@@ -20,7 +20,14 @@ function getSetting($key)
     throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 
 }
-
+if (!function_exists('getMLMGrpcClient')) {
+    function getMLMGrpcClient()
+    {
+        return new \MLM\Services\Grpc\MLMServiceClient('staging-api-gateway.janex.org:9598', [
+            'credentials' => \Grpc\ChannelCredentials::createInsecure()
+        ]);
+    }
+}
 function getEmailAndTextSetting($key)
 {
     // Comment Test

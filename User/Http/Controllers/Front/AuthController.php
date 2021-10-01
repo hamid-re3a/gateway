@@ -3,12 +3,16 @@
 namespace User\Http\Controllers\Front;
 
 
+use App\Jobs\User\UserDataJob;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 use User\Http\Requests\Auth\EmailExistenceRequest;
 use User\Http\Requests\Auth\EmailVerificationOtpRequest;
 use User\Http\Requests\Auth\ForgetPasswordRequest;
@@ -39,8 +43,17 @@ class AuthController extends Controller
      */
     public function register(RegisterUserRequest $request)
     {
+
+        //Check if system is not available
+        if($this->systemIsUnderMaintenance())
+            return api()->error(null,[
+                'subject' => trans('user.responses.we-are-under-maintenance')
+            ],406);
+
         $data = $request->validated();
+        $data['sponsor_id'] = User::query()->where('username',$request->sponsor_username)->first()->id;
         $user = User::query()->create($data);
+        $user->assignRole(USER_ROLE_CLIENT);
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request);
 
@@ -58,8 +71,17 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
+
+
         $credentials = $request->only(['email', 'password']);
         $user = User::query()->where('email', $credentials['email'])->first();
+
+        //Check if system is not available
+        if($user->roles()->count() == 1 AND $user->hasRole(USER_ROLE_CLIENT) AND $this->systemIsUnderMaintenance())
+            return api()->error(null,[
+                'subject' => trans('user.responses.we-are-under-maintenance')
+            ],406);
+
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
         $data = [];
@@ -301,7 +323,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->user()->signOut();
+        auth()->user()->tokens()->delete();
         return api()->success(trans('user.responses.logout-successful'));
     }
 
@@ -332,7 +354,36 @@ class AuthController extends Controller
      */
     private function getNewToken($user)
     {
-        return $user->createToken(getSetting("APP_NAME"));
+        return $user->createToken(getSetting("APP_NAME"),$user->roles()->pluck('name')->toArray());
+    }
+
+    private function systemIsUnderMaintenance()
+    {
+
+        $registration_block_from_date = getSetting('SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE');
+        $registration_block_from_date = strtotime($registration_block_from_date) ? Carbon::parse($registration_block_from_date) : null;
+
+        $registration_block_to_date = getSetting('SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE');
+        $registration_block_to_date = strtotime($registration_block_to_date) ? Carbon::parse($registration_block_to_date) : null;
+
+        $response = false;
+
+        if(!empty($registration_block_from_date) OR !empty($registration_block_to_date)) {
+
+            if(!empty($registration_block_from_date) AND !empty($registration_block_to_date))
+                $response = Carbon::now()->between($registration_block_from_date,$registration_block_to_date);
+
+            if(!empty($registration_block_from_date) AND empty($registration_block_to_date) AND $registration_block_from_date->isPast())
+                $response = true;
+
+            if(empty($registration_block_from_date) AND !empty($registration_block_to_date) AND !$registration_block_to_date->isPast())
+                $response = true;
+        }
+
+//        if($response AND getSetting('LOGOUT_CLIENTS_FOR_MAINTENANCE')) //Check if we should revoke current active tokens
+//            PersonalAccessToken::query()->where('tokenable_type','=','User\Models\User')->can(USER_ROLE_CLIENT)->delete();
+
+        return $response;
     }
 
 

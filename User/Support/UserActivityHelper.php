@@ -45,7 +45,7 @@ class UserActivityHelper
                 $ip_db->save();
             }
         }
-        $token = !empty($request->user()) ? $request->user()->currentAccessToken() : null;
+//        $token = !empty($request->user()) ? $request->user()->currentAccessToken() : null;
 
         $agent_db = null;
         if (!is_null($request->userAgent())) {
@@ -53,8 +53,8 @@ class UserActivityHelper
             $agentJess->setUserAgent($request->userAgent());
             $agentJess->setHttpHeaders($request->get('headers'));
             $agent_db = AgentModel::query()->firstOrCreate([
-                'user_id' => !empty($token) ? $token->tokenable_id : null,
-                'token_id' => !empty($token->id) ? $token->id : null,
+//                'user_id' => !empty($token) ? $token->tokenable_id : null,
+//                'token_id' => !empty($token->id) ? $token->id : null,
                 "language" => is_null($agentJess->languages()) || !isset($agentJess->languages()[0]) ? null : $agentJess->languages()[0],
                 "device_type" => $agentJess->device(),
                 "platform" => $agentJess->platform(),
@@ -67,7 +67,7 @@ class UserActivityHelper
                 "browser_version" => $agentJess->version($agentJess->browser()),
                 "user_agent" => $request->userAgent(),
             ]);
-            $agent_db->ips()->syncWithoutDetaching($ip_db);
+//            $agent_db->ips()->syncWithoutDetaching($ip_db);
             if (!is_null($request)) {
                 $agent_db->hit = $agent_db->hit + 1;
                 $agent_db->save();
@@ -173,8 +173,8 @@ class UserActivityHelper
         $data['try_in_timestamp'] = null;
         $error = null;
 
-        $tries = getSetting('USER_EMAIL_VERIFICATION_OTP_TRIES');
-        $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
+        $tries = getSetting('USER_CHANGE_TRANSACTION_OTP_TRIES');
+        $duration = getSetting('USER_CHANGE_TRANSACTION_OTP_DURATION');
 
         if (Otp::query()
                 ->type(OTP_TYPE_CHANGE_TRANSACTION_PASSWORD)

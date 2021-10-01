@@ -6,6 +6,8 @@ const USER_FORGOT_PASSWORD_OTP_TRIES = 1;
 
 const USER_EMAIL_VERIFICATION_OTP_DURATION = 60;
 const USER_EMAIL_VERIFICATION_OTP_TRIES = 1;
+const USER_CHANGE_TRANSACTION_OTP_DURATION = 60;
+const USER_CHANGE_TRANSACTION_OTP_TRIES = 1;
 
 const USER_REGISTRATION_PASSWORD_CRITERIA = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 const USER_CHECK_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
@@ -13,6 +15,10 @@ const USER_CHECK_TRANSACTION_PASSWORD_HISTORY_FOR_NEW_PASSWORD = true;
 const OTP_LENGTH = 6;
 const OTP_CONTAIN_ALPHABET = false;
 const OTP_CONTAIN_ALPHABET_LOWER_CASE = true;
+
+const LOGOUT_CLIENTS_FOR_MAINTENANCE = false;
+const SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE = false;
+const SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE = false;
 
 const SETTINGS = [
     'APP_NAME' => [
@@ -66,6 +72,16 @@ const SETTINGS = [
         'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
         'category' => 'User > Email Verification',
     ],
+    'USER_CHANGE_TRANSACTION_OTP_DURATION' => [
+        'value' => USER_CHANGE_TRANSACTION_OTP_DURATION,
+        'description' => '(in seconds) Transaction password otp is valid for 90 seconds as default.',
+        'category' => 'User > Transaction password',
+    ],
+    'USER_CHANGE_TRANSACTION_OTP_TRIES' => [
+        'value' => USER_CHANGE_TRANSACTION_OTP_TRIES,
+        'description' => 'This is used with max user duration to stop user requesting a lot for email verification  otp',
+        'category' => 'User > Email Verification',
+    ],
     'USER_REGISTRATION_PASSWORD_CRITERIA' => [
         'value' => USER_REGISTRATION_PASSWORD_CRITERIA,
         'description' => 'Password pattern for user registration',
@@ -81,20 +97,35 @@ const SETTINGS = [
         'description' => null,
         'category' => 'User > Profile Management'
     ],
+    'SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE' => [
+        'value' => SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE,
+        'description' => null,
+        'category' => 'User > Registration'
+    ],
+    'SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE' => [
+        'value' => SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE,
+        'description' => null,
+        'category' => 'User > Registration'
+    ],
+    'LOGOUT_CLIENTS_FOR_MAINTENANCE' => [
+        'value' => LOGOUT_CLIENTS_FOR_MAINTENANCE,
+        'description' => 'Logout all logged-in clients for maintenance mode',
+        'category' => 'User > Registration'
+    ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
     [
-        'priority' => 0,
+        'priority' => 1,
         'times' => 3,
         'duration' => 90,
         'blocking_duration' => 5 * 60,
     ], [
-        'priority' => 0,
+        'priority' => 2,
         'times' => 2,
         'duration' => 90,
         'blocking_duration' => 10 * 60,
     ], [
-        'priority' => 0,
+        'priority' => 3,
         'times' => 6,
         'duration' => 90,
         'blocking_duration' => 20 * 60,
@@ -104,7 +135,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
         'is_active' => true,
         'subject' => 'Forgot Password Code',
-        'from' => 'support@janex.com',
+        'from' => 'it@ridetothefuture.com',
         'from_name' => 'Janex Support Team',
         'body' => <<<EOT
                 <div>
@@ -126,7 +157,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Transaction Password OTP',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -148,7 +179,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Email Verification Code',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -170,7 +201,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Welcome to Janex',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -192,7 +223,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Suspicious Login Attempt',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -219,7 +250,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'NORMAL_LOGIN_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Someone Logged-In',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -247,7 +278,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Too Many Attempts',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -278,7 +309,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Too Many Attempts - Account Blocked',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -305,7 +336,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Password Changed Warning',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -333,7 +364,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Email Verified Successfully',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -391,7 +422,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Transaction Password Changed Successfully',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -418,7 +449,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'FREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Your account has been frozen',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -438,7 +469,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'UNFREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Your account has been unfrozen',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -458,7 +489,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_HAS_BEEN_DEACTIVATED'=>[
         'is_active' => true,
         'subject'=>'Your account has been deactivated',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -478,7 +509,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_HAS_BEEN_ACTIVATED'=>[
         'is_active' => true,
         'subject'=>'Your account has been activated',
-        'from'=>'support@janex.com',
+        'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -502,11 +533,27 @@ const QUEUES_EMAIL = 'emails';
 /**
  * user_roles
  */
-const USER_ROLE_ADMIN = 'admin';
+const USER_ROLE_SUPER_ADMIN = 'super-admin';
+const USER_ROLE_ADMIN_GATEWAY = 'user-gateway-admin';
+const USER_ROLE_ADMIN_KYC = 'kyc-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS_ORDER = 'subscriptions-order-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS_PACKAGE = 'subscriptions-package-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS_PAYMENT = 'subscriptions-payment-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS_WALLET = 'subscriptions-wallet-admin';
+const USER_ROLE_ADMIN_SUBSCRIPTIONS_GIFTCODE = 'subscriptions-giftcode-admin';
+const USER_ROLE_ADMIN_MLM = 'mlm-admin';
 const USER_ROLE_CLIENT = 'client';
 const USER_ROLE_HELP_DESK = 'help-desk';
 const USER_ROLES = [
-    USER_ROLE_ADMIN,
+    USER_ROLE_SUPER_ADMIN,
+    USER_ROLE_ADMIN_GATEWAY,
+    USER_ROLE_ADMIN_KYC,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS_ORDER,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS_PACKAGE,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS_PAYMENT,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS_WALLET,
+    USER_ROLE_ADMIN_SUBSCRIPTIONS_GIFTCODE,
+    USER_ROLE_ADMIN_MLM,
     USER_ROLE_CLIENT,
     USER_ROLE_HELP_DESK,
 ];

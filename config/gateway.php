@@ -8,11 +8,6 @@ return [
             'just_current_routes' => true,
             'domain' => 'local',
         ],
-        'fake' => [
-            'doc_point' => 'https://jsonplaceholder.typicode.com/',
-            'just_current_routes' => true,
-            'domain' => 'https://jsonplaceholder.typicode.com/'
-        ],
         'subscription' => [
             'doc_point' => 'https://staging-subscription.janex.org/docs',
             'just_current_routes' => false,
@@ -23,33 +18,53 @@ return [
             'just_current_routes' => false,
             'domain' => 'https://staging-kyc.janex.org/'
         ],
-        'local_subscription' => [
-            'doc_point' => 'http://192.168.43.121:3561/docs',
+        'mlm' => [
+            'doc_point' => 'https://staging-mlm.janex.org/docs',
             'just_current_routes' => false,
-            'domain' => 'http://192.168.43.121:3561/'
-        ],
-        'google' =>  [
-            'doc_point' => 'https://jsonplaceholder.typicode.com/',
-            'just_current_routes' => false,
-            'domain' => 'https://google.com/'
+            'domain' => 'https://staging-mlm.janex.org/'
         ],
 
     ],
     'routes' => [
         [
             'services' => [
-                'default',
+                '*',
             ],
             'matches' => [
                 [
-                    'method' => 'POST',
+                    'method' => '*',
                     'paths' => [
-                        'login',
+                        '*',
+                    ],
+                    'exceptions_paths' => [
+                        ''
                     ]
                 ]
             ],
             'middlewares' => [
-                'login_attempt'
+                'maintenance_mode'
+            ]
+        ],
+        [
+            'services' => [
+                '*',
+            ],
+            'matches' => [
+                [
+                    'method' => '*',
+                    'paths' => [
+                        '*',
+                    ],
+                    'exceptions_paths' => [
+                        'payments',
+                        'packages',
+                        'orders',
+                        'wallets'
+                    ]
+                ]
+            ],
+            'middlewares' => [
+                'has_valid_package'
             ]
         ],
 
