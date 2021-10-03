@@ -15,6 +15,7 @@ use User\Http\Requests\User\profile\ChangePasswordRequest;
 use User\Http\Requests\User\profile\ChangeTransactionPasswordRequest;
 use User\Http\Requests\User\profile\VerifyTransactionPasswordOtp;
 use User\Http\Requests\User\SponsorUserRequest;
+use User\Http\Resources\Auth\ProfileResource;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
@@ -263,7 +264,7 @@ class UserController extends Controller
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request,true,true);
 
-        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'));
+        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'),ProfileResource::make($user));
     }
 
 
