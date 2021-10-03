@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->simplePaginate();
+        $users = User::query()->simplePaginate(5);
         return api()->success(null,ProfileDetailsResource::collection($users)->response()->getData());
     }
 
