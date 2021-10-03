@@ -257,6 +257,7 @@ class UserController extends Controller
 
         $data = $request->validated();
         $data['sponsor_id'] = auth()->user()->id;
+        $data['password'] = '123456789!Q';
         $user = User::query()->create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
