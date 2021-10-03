@@ -24,6 +24,10 @@ const DEVELOPERS_STYLES = '';
 const DEVELOPERS_STYLES_IS_ENABLED = false;
 const DEVELOPERS_SCRIPTS = '';
 const DEVELOPERS_SCRIPTS_IS_ENABLED = false;
+const DEVELOPERS_SCRIPTS_CDN = '';
+const DEVELOPERS_SCRIPTS_CDN_IS_UP = false;
+const DEVELOPERS_STYLES_CDN = '';
+const DEVELOPERS_STYLES_CDN_IS_UP = false;
 
 const SETTINGS = [
     'APP_NAME' => [
@@ -137,6 +141,26 @@ const SETTINGS = [
         'description' => 'Developers scripts is enabled or not',
         'category' => 'Developers > Scripts'
     ],
+    'DEVELOPERS_SCRIPTS_CDN' => [
+        'value' => DEVELOPERS_SCRIPTS_CDN,
+        'description' => 'Developers scripts  CDN',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_SCRIPTS_CDN_IS_UP' => [
+        'value' => DEVELOPERS_SCRIPTS_CDN_IS_UP,
+        'description' => 'Developers scripts  CDN is up or down',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_STYLES_CDN' => [
+        'value' => DEVELOPERS_STYLES_CDN,
+        'description' => 'Developers Styles CDN',
+        'category' => 'Developers > Styles'
+    ],
+    'DEVELOPERS_STYLES_CDN_IS_UP' => [
+        'value' => DEVELOPERS_STYLES_CDN_IS_UP,
+        'description' => 'Developers Styles CDN is up or down',
+        'category' => 'Developers > Styles'
+    ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
     [
@@ -233,6 +257,30 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>Hello,&nbsp;{{full_name}}!</div>
                 <div>&nbsp;</div>
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
+                <div>&nbsp;</div>
+                <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
+                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired.</p>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,otp',
+        'variables_description'=>'full_name user full name, otp otp token',
+        'type'=>'email',
+    ],
+    'USER_REGISTRATION_WELCOME_EMAIL_WITH_PASSWORD'=>[
+
+        'is_active' => true,
+        'subject'=>'Welcome to Janex',
+        'from'=>'it@ridetothefuture.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <div>Hello,&nbsp;{{full_name}}!</div>
+                <div>&nbsp;</div>
+                <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
+                <div>&nbsp;</div>
+                <div>Here is your password {{password}}.</div>
                 <div>&nbsp;</div>
                 <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
                 <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired.</p>
