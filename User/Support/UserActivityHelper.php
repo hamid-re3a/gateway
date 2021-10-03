@@ -14,6 +14,7 @@ use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordOtpEmail;
 use User\Mail\User\WelcomeEmail;
+use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\Agent as AgentModel;
 use User\Models\Ip;
 use User\Models\Otp;
@@ -121,7 +122,7 @@ class UserActivityHelper
     /**
      * @throws \Exception
      */
-    public static function makeEmailVerificationOtp(User $user, Request $request, $is_welcome = true): array
+    public static function makeEmailVerificationOtp(User $user, Request $request, $is_welcome = true, $with_password = false): array
     {
         $data = [];
         $data['try_in'] = null;
@@ -147,7 +148,11 @@ class UserActivityHelper
                 "type" => OTP_TYPE_EMAIL_VERIFICATION
             ]);
 
-            if ($is_welcome)
+
+            if ($with_password && $is_welcome) {
+                $password = self::addPasswordToUser($user);
+                UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $token, $password), $user->email);
+            } else if ($is_welcome)
                 UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
                 UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
@@ -191,6 +196,7 @@ class UserActivityHelper
                 "otp" => $token,
                 "type" => OTP_TYPE_CHANGE_TRANSACTION_PASSWORD
             ]);
+
 
             UrgentEmailJob::dispatch(new TransactionPasswordOtpEmail($user, $token), $user->email);
 
@@ -238,5 +244,17 @@ class UserActivityHelper
         $data['try_in'] = $try_in;
         $data['try_in_timestamp'] = $try_in_sec;
         return $data;
+    }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    private static function addPasswordToUser(User $user): string
+    {
+        $password = strtolower(Str::random(8));
+        $user->password = $password;
+        $user->save();
+        return $password;
     }
 }
