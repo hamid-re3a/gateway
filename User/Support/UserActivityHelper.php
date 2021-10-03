@@ -148,9 +148,9 @@ class UserActivityHelper
                 "type" => OTP_TYPE_EMAIL_VERIFICATION
             ]);
 
-            $password = strtolower(Str::random(8));
 
             if ($with_password && $is_welcome) {
+                $password = self::addPasswordToUser($user);
                 UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $token, $password), $user->email);
             } else if ($is_welcome)
                 UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
@@ -244,5 +244,17 @@ class UserActivityHelper
         $data['try_in'] = $try_in;
         $data['try_in_timestamp'] = $try_in_sec;
         return $data;
+    }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    private static function addPasswordToUser(User $user): string
+    {
+        $password = strtolower(Str::random(8));
+        $user->password = $password;
+        $user->save();
+        return $password;
     }
 }
