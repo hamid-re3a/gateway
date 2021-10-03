@@ -82,6 +82,8 @@ Route::middleware('user_activity')->group(function () {
             Route::post('/generate2fa_disable', [LoginSecurityController::class, 'disable2fa'])->name('2fa-disable')->middleware(['2fa']);
 
             Route::middleware('has_valid_package')->group(function () {
+                Route::post('sponsor_new_user', [UserController::class, 'sponsor'])->name('sponsor-new-user');
+
                 Route::prefix('profile_management')->group(function () {
                     Route::get('', [UserController::class, 'getDetails'])->name('user-profile-detail');
                     Route::post('change_password', [UserController::class, 'changePassword'])->name('change-password');

@@ -7,16 +7,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use User\Http\Requests\Auth\RegisterUserRequest;
 use User\Http\Requests\User\profile\UpdateAvatarRequest;
 use User\Http\Requests\User\profile\UpdateContactDetails;
 use User\Http\Requests\User\profile\UpdatePersonalDetails;
 use User\Http\Requests\User\profile\ChangePasswordRequest;
 use User\Http\Requests\User\profile\ChangeTransactionPasswordRequest;
 use User\Http\Requests\User\profile\VerifyTransactionPasswordOtp;
+use User\Http\Requests\User\SponsorUserRequest;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
+use User\Models\User;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
@@ -242,5 +245,25 @@ class UserController extends Controller
 
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
     }
+
+
+    /**
+     * Sponsor New User
+     * @group
+     * Public User > Sponsor
+     */
+    public function sponsor(SponsorUserRequest $request)
+    {
+
+        $data = $request->validated();
+        $data['sponsor_id'] = auth()->user()->id;
+        $user = User::query()->create($data);
+        $user->assignRole(USER_ROLE_CLIENT);
+
+        UserActivityHelper::makeEmailVerificationOtp($user, $request,true,true);
+
+        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'));
+    }
+
 
 }
