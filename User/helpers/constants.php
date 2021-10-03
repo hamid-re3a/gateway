@@ -20,6 +20,11 @@ const LOGOUT_CLIENTS_FOR_MAINTENANCE = false;
 const SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE = false;
 const SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE = false;
 
+const DEVELOPERS_STYLES = '';
+const DEVELOPERS_STYLES_IS_ENABLED = false;
+const DEVELOPERS_SCRIPTS = '';
+const DEVELOPERS_SCRIPTS_IS_ENABLED = false;
+
 const SETTINGS = [
     'APP_NAME' => [
         'value' => APP_NAME,
@@ -111,6 +116,26 @@ const SETTINGS = [
         'value' => LOGOUT_CLIENTS_FOR_MAINTENANCE,
         'description' => 'Logout all logged-in clients for maintenance mode',
         'category' => 'User > Registration'
+    ],
+    'DEVELOPERS_STYLES' => [
+        'value' => DEVELOPERS_STYLES,
+        'description' => 'Developers styles',
+        'category' => 'Developers > Styles'
+    ],
+    'DEVELOPERS_STYLES_IS_ENABLED' => [
+        'value' => DEVELOPERS_STYLES_IS_ENABLED,
+        'description' => 'Developers styles is enabled or not',
+        'category' => 'Developers > Styles'
+    ],
+    'DEVELOPERS_SCRIPTS' => [
+        'value' => DEVELOPERS_SCRIPTS,
+        'description' => 'Developers scripts',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_SCRIPTS_IS_ENABLED' => [
+        'value' => DEVELOPERS_SCRIPTS_IS_ENABLED,
+        'description' => 'Developers scripts is enabled or not',
+        'category' => 'Developers > Scripts'
     ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
