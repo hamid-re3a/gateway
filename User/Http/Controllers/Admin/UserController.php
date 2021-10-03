@@ -32,7 +32,8 @@ class UserController extends Controller
 {
     private $user_admin_service;
 
-    public function __construct(UserAdminService $user_admin_service){
+    public function __construct(UserAdminService $user_admin_service)
+    {
         $this->user_admin_service = $user_admin_service;
     }
 
@@ -43,8 +44,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->simplePaginate(5);
-        return api()->success(null,ProfileDetailsResource::collection($users)->response()->getData());
+        $list = User::query()->paginate(2);
+        return api()->success(null, [
+            'list' => ProfileDetailsResource::collection($list),
+            'pagination' => [
+                'total' => $list->total(),
+                'per_page' => $list->perPage(),
+            ]
+        ]);
     }
 
     /**
@@ -58,7 +65,7 @@ class UserController extends Controller
     {
 
         $user = User::whereEmail($request->get('email'))->first();
-        if($user->id == auth()->user()->id)
+        if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-block-unblock-your-account'));
         if ($request->get('deactivate')) {
             $user->block_type = USER_BLOCK_TYPE_BY_ADMIN;
@@ -84,15 +91,15 @@ class UserController extends Controller
     public function activateOrDeactivateUserAccount(ActivateOrDeactivateUserAccount $request)
     {
         $user = User::find($request->get('user_id'));
-        if($user->id == auth()->user()->id)
+        if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-deactivate-active-your-account'));
-        if($request->get('status') == 'activate') {
+        if ($request->get('status') == 'activate') {
             $user->update([
                 'is_deactivate' => false
             ]);
             UrgentEmailJob::dispatch(new UserAccountHasBeenDeactivatedEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-activate-successfully'));
-        } else if($request->get('status') == 'deactivate') {
+        } else if ($request->get('status') == 'deactivate') {
 
             $user->update([
                 'is_deactivate' => true
@@ -103,7 +110,7 @@ class UserController extends Controller
             return api()->success(trans('user.responses.user-account-deativate-successfully'));
         }
 
-        return api()->error(trans('user.responses.global-error'),null,400);
+        return api()->error(trans('user.responses.global-error'), null, 400);
     }
 
     /**
@@ -116,16 +123,16 @@ class UserController extends Controller
     public function freezeOrUnfreezeUserAccount(FreezeOrUnfreezeUserAccountRequest $request)
     {
         $user = User::find($request->get('user_id'));
-        if($user->id == auth()->user()->id)
+        if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-freeze-unfreeze-your-account'));
-        if($request->get('status') == 'freeze'){
+        if ($request->get('status') == 'freeze') {
             $user->update([
                 'is_freeze' => true
             ]);
             UrgentEmailJob::dispatch(new UserAccountHasBeenFrozenEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-frozen-successfully'));
         }
-        if($request->get('status') == 'unfreeze') {
+        if ($request->get('status') == 'unfreeze') {
             $user->update([
                 'is_freeze' => false,
             ]);
@@ -133,7 +140,7 @@ class UserController extends Controller
             return api()->success(trans('user.responses.user-account-unfreeze-successfully'));
         }
 
-        return api()->error(trans('user.responses.global-error'),null,400);
+        return api()->error(trans('user.responses.global-error'), null, 400);
     }
 
     /**
@@ -158,7 +165,6 @@ class UserController extends Controller
     }
 
 
-
     /**
      * User Password History
      * @group
@@ -178,6 +184,7 @@ class UserController extends Controller
     {
         return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::find($request->get('user_id'))->userHistories('block_type')->get()));
     }
+
     /**
      * User Login History
      * @group
@@ -195,7 +202,7 @@ class UserController extends Controller
      */
     public function emailVerificationHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type',OTP_TYPE_EMAIL_VERIFICATION)->get()));
+        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type', OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 
     /**
@@ -208,7 +215,7 @@ class UserController extends Controller
     public function createUserByAdmin(CreateAdminRequest $request)
     {
         $this->user_admin_service->createAdmin($request);
-        return api()->success(trans('user.responses.ok'),null);
+        return api()->success(trans('user.responses.ok'), null);
 
     }
 
@@ -219,13 +226,13 @@ class UserController extends Controller
      * @param UserUpdateRequest $request
      * @return JsonResponse
      */
-    public function update(UserUpdateRequest $request ,UserAdminService $userAdminService)
+    public function update(UserUpdateRequest $request, UserAdminService $userAdminService)
     {
         try {
-            $user=$userAdminService->update($request->validated());
+            $user = $userAdminService->update($request->validated());
             return api()->success(trans('responses.ok'), $user);
 
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             return api()->error($e->getMessage(), null);
         }
 
