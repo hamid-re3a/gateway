@@ -1,4 +1,4 @@
-FROM webdevops/php-apache:7.4
+FROM webdevops/php-nginx:7.4
 
 # php modules
 RUN apt update -y 
