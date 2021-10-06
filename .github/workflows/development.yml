@@ -1,4 +1,4 @@
-name: Laravel
+name: Development
 on:
   push:
     branches: [ development ]
@@ -39,6 +39,8 @@ jobs:
     - name: Building docker image
       run: |
         shopt -s dotglob
+        rm -rf .env
+        cp .env.development .env
         sudo docker build --network=mysql_wo_r2f -t api-gateway:1 .
     - name: deploy docker-compose
       run: | 
