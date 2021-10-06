@@ -2,10 +2,8 @@
 namespace RequestRouter;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use User\UserConfigure;
 
 class GatewayServiceProvider extends ServiceProvider
 {
@@ -44,10 +42,9 @@ class GatewayServiceProvider extends ServiceProvider
             ->group(__DIR__.'/routes/api.php');
 
         $this->registerHelpers();
+
         if ($this->app->runningInConsole()) {
-            if (isset($_SERVER['argv']))
-                if (array_search('db:seed', $_SERVER['argv']))
-                    Artisan::call('db:seed', ['--class' => "RequestRouter\database\seeder\GatewayServicesSeeder"]);
+            $this->seed();
         }
 
         JsonResource::withoutWrapping();
@@ -81,7 +78,7 @@ class GatewayServiceProvider extends ServiceProvider
     {
         if (isset($_SERVER['argv']))
             if (array_search('db:seed', $_SERVER['argv'])) {
-                UserConfigure::seed();
+                GatewayConfigure::seed();
             }
     }
 
