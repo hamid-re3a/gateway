@@ -21,6 +21,7 @@ class UserConfigure
 
     public static function seed()
     {
+
         $files = scandir(__DIR__ . DIRECTORY_SEPARATOR . "database" . DIRECTORY_SEPARATOR . "seeders");
         unset($files[array_search('.', $files)]);
         unset($files[array_search('..', $files)]);

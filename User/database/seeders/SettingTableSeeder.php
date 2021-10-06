@@ -59,5 +59,6 @@ class SettingTableSeeder extends Seeder
                 ]);
             }
         }
+
     }
 }
