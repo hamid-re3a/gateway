@@ -51,7 +51,6 @@ class UserServiceProvider extends ServiceProvider
                     Artisan::call('db:seed', ['--class' => "User\database\seeders\AuthTableSeeder"]);
         }
 
-
         if ($this->app->runningInConsole()) {
             $this->seed();
         }
