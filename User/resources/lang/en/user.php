@@ -13,6 +13,7 @@ return [
         'invalid-inputs-from-user' => 'Email or password is not correct',
         '2FA-is-now-disabled' => 'You\'ve disabled 2fa',
         'Invalid-verification-Code-Please-try-again' => 'Enter a valid 2FA code',
+        '2FA-is-already-enabled' => '2Fa is already enabled',
         '2FA-is-enabled-successfully' => 'You\'ve enabled 2fa',
         'ok'=>'ok',
         'login-successful' => 'You\'ve successfully logged in ',
