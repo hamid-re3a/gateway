@@ -11,6 +11,7 @@ class GatewayServiceProvider extends ServiceProvider
 
     public function register()
     {
+
         if (! $this->app->runningInConsole()) {
             return;
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace RequestRouter\database\seeder;
+namespace RequestRouter\database\seeders;
 
 use Illuminate\Database\Seeder;
 use RequestRouter\Model\GatewayServices;
@@ -14,6 +14,7 @@ class GatewayServicesSeeder extends Seeder
      */
     public function run()
     {
+
         GatewayServices::insert([
             [
                 'name' => 'default',
