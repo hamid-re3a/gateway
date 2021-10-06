@@ -21,6 +21,10 @@ class LoginSecurityController extends Controller
 
         $google2fa = (new \PragmaRX\Google2FAQRCode\Google2FA());
 
+        if($user->google2fa_enable) {
+            return api()->success('user.responses.2FA-is-already-enabled');
+        }
+
         if(is_null($user->google2fa_secret)){
             $user->google2fa_enable = false;
             $user->google2fa_secret = $google2fa->generateSecretKey();
@@ -51,6 +55,8 @@ class LoginSecurityController extends Controller
     public function enable2fa(OtpRequest $request)
     {
         $user = auth()->user();
+
+
         $google2fa = (new \PragmaRX\Google2FAQRCode\Google2FA());
 
         $secret = $request->input('one_time_password');

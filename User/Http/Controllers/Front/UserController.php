@@ -15,6 +15,7 @@ use User\Http\Requests\User\profile\ChangePasswordRequest;
 use User\Http\Requests\User\profile\ChangeTransactionPasswordRequest;
 use User\Http\Requests\User\profile\VerifyTransactionPasswordOtp;
 use User\Http\Requests\User\SponsorUserRequest;
+use User\Http\Resources\Auth\ProfileResource;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
@@ -257,12 +258,13 @@ class UserController extends Controller
 
         $data = $request->validated();
         $data['sponsor_id'] = auth()->user()->id;
+        $data['password'] = '123456789!Q';
         $user = User::query()->create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
         UserActivityHelper::makeEmailVerificationOtp($user, $request,true,true);
 
-        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'));
+        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'),ProfileResource::make($user));
     }
 
 

@@ -1,7 +1,7 @@
-name: Laravel
+name: Development
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches: [ development ]
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
@@ -39,14 +39,11 @@ jobs:
     - name: Building docker image
       run: |
         shopt -s dotglob
+        rm -rf .env
+        cp .env.development .env
         sudo docker build --network=mysql_wo_r2f -t api-gateway:1 .
     - name: deploy docker-compose
       run: | 
         sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml stop api-gateway
         sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml rm -f api-gateway
         sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml up -d api-gateway
-    - name: Handle laravel-log directory issue
-      run: |
-        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml exec -T api-gateway chmod -R 777 storage/logs
-        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml exec -T api-gateway chmod -R 777 storage/framework/sessions
-        sudo docker-compose -f /opt/docker-compose-files/backend/docker-compose.yml exec -T api-gateway chmod -R 777 storage/framework/views
