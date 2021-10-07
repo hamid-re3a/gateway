@@ -11,17 +11,17 @@ return [
         'subscription' => [
             'doc_point' => 'https://staging-subscription.janex.org/docs',
             'just_current_routes' => false,
-            'domain' => 'https://staging-subscription.janex.org/'
+            'domain' => env('SUBSCRIPTION_BASE_URL','https://staging-subscription.janex.org/')
         ],
         'kyc' => [
             'doc_point' => 'https://staging-kyc.janex.org/docs',
             'just_current_routes' => false,
-            'domain' => 'https://staging-kyc.janex.org/'
+            'domain' =>  env('KYC_BASE_URL','https://staging-kyc.janex.org/')
         ],
         'mlm' => [
             'doc_point' => 'https://staging-mlm.janex.org/docs',
             'just_current_routes' => false,
-            'domain' => 'https://staging-mlm.janex.org/'
+            'domain' => env('MLM_BASE_URL','https://staging-mlm.janex.org/')
         ],
 
     ],
