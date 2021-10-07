@@ -7,12 +7,12 @@ require './vendor/autoload.php';
 //]);
 //list($reply, $status) = $client->hasValidPackage($user)->wait();
 //print_r($status);
-$client = new \User\Services\Grpc\UserServiceClient('staging-api-gateway.janex.org:9595', [
+$client = new \User\Services\Grpc\UserServiceClient('staging.dreamcometrue.ai:9595', [
 //$client = new \User\Services\Grpc\UserServiceClient('127.0.0.1:9595', [
     'credentials' => \Grpc\ChannelCredentials::createInsecure()
 ]);
 $request = new \User\Services\Grpc\Id();
-$request->setId((int)3);
+$request->setId((int)24);
 
 
 list($reply, $status) = $client->getUserById($request)->wait();
