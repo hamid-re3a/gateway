@@ -23,7 +23,7 @@ class ProfileDetailsResource extends JsonResource
         $avatar = null;
         $avatar_check = json_decode($user->avatar,true);
 
-        if(!$avatar_check OR !is_array($avatar_check) OR !array_key_exists('file_name', $avatar_check) OR !Storage::disk('local')->exists('/avatars/' . $avatar_check['file_name']))
+        if(isset($avatar_check) AND is_array($avatar_check) AND array_key_exists('file_name', $avatar_check) AND Storage::disk('local')->exists('/avatars/' . $avatar_check['file_name']))
             $avatar = base64_encode(Storage::disk('local')->get('/avatars/' . $avatar_check['file_name']));
 
         return [
