@@ -82,7 +82,7 @@ class UserController extends Controller
     public function blockOrUnblockUser(BlockOrUnblockUser $request)
     {
 
-        $user = User::whereEmail($request->get('email'))->first();
+        $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-block-unblock-your-account'));
         if ($request->get('deactivate')) {
@@ -108,7 +108,7 @@ class UserController extends Controller
      */
     public function activateOrDeactivateUserAccount(ActivateOrDeactivateUserAccount $request)
     {
-        $user = User::find($request->get('user_id'));
+        $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-deactivate-active-your-account'));
         if ($request->get('status') == 'activate') {
@@ -140,7 +140,7 @@ class UserController extends Controller
      */
     public function freezeOrUnfreezeUserAccount(FreezeOrUnfreezeUserAccountRequest $request)
     {
-        $user = User::find($request->get('user_id'));
+        $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-freeze-unfreeze-your-account'));
         if ($request->get('status') == 'freeze') {
@@ -171,7 +171,7 @@ class UserController extends Controller
     public function verifyUserEmailAccount(VerifyUserEmailRequest $request)
     {
 
-        $user = User::whereEmail($request->get('email'))->first();
+        $user = User::whereMemberId($request->get('member_id'))->first();
         if (!$user->isEmailVerified()) {
             $user->email_verified_at = now();
             $user->save();
@@ -192,7 +192,7 @@ class UserController extends Controller
      */
     public function passwordHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::find($request->get('user_id'))->userHistories('password')->get()));
+        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::whereMemberId($request->get('user_id'))->first()->userHistories('password')->get()));
     }
 
     /**
@@ -204,7 +204,7 @@ class UserController extends Controller
      */
     public function blockHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::find($request->get('user_id'))->userHistories('block_type')->get()));
+        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::whereMemberId($request->get('user_id'))->first()->userHistories('block_type')->get()));
     }
 
     /**
@@ -216,7 +216,7 @@ class UserController extends Controller
      */
     public function loginHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::find($request->get('user_id'))->loginAttempts));
+        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::whereMemberId($request->get('user_id'))->first()->loginAttempts));
     }
 
     /**
@@ -228,7 +228,7 @@ class UserController extends Controller
      */
     public function emailVerificationHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type', OTP_TYPE_EMAIL_VERIFICATION)->get()));
+        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::whereMemberId($request->get('user_id'))->first()->otps()->where('type', OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 
     /**
@@ -246,7 +246,7 @@ class UserController extends Controller
     }
 
     /**
-     * Block Or Unblock User Account
+     * Update user
      * @group
      * Admin > User
      * @param UserUpdateRequest $request
@@ -256,7 +256,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request)
     {
         try {
-            $user = User::query()->where('member_id','=',$request->get('user_id'))->first();
+            $user = User::whereMemberId($request->get('member_id'))->first();
             $user->update($request->validated());
             $user->refresh();
             return api()->success(trans('responses.ok'), ProfileDetailsResource::make($user));
