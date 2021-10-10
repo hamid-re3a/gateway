@@ -3,9 +3,8 @@
 namespace User\Http\Controllers\Front;
 
 
-use User\Http\Requests\User\session\TerminateSessionRequest;
+use User\Http\Requests\User\Session\TerminateSessionRequest;
 use User\Http\Resources\User\ActiveSessionsResource;
-use User\Models\Agent;
 use Illuminate\Routing\Controller;
 
 class SessionController extends Controller
