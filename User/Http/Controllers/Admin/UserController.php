@@ -61,10 +61,15 @@ class UserController extends Controller
      * Admin > User
      * @param GetUserDataRequest $request
      * @return JsonResponse
+     * @throws \Throwable
      */
     public function getUser(GetUserDataRequest $request)
     {
-        return api()->success(null,ProfileDetailsResource::make(User::query()->where('member_id','=',$request->get('user_id'))->first()));
+        try {
+            return api()->success(null,ProfileDetailsResource::make(User::query()->where('member_id','=',$request->get('user_id'))->first()));
+        } catch (\Throwable $exception) {
+            throw $exception;
+        }
     }
 
     /**
