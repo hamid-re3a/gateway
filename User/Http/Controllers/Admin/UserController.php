@@ -11,6 +11,7 @@ use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
 use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
+use User\Http\Requests\Admin\UserUpdateRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
 use User\Http\Resources\OtpResource;
 use User\Http\Resources\User\LoginHistoryResource;
@@ -44,7 +45,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $list = User::query()->paginate(2);
+        $list = User::query()->simplePaginate(15);
         return api()->success(null, [
             'list' => ProfileDetailsResource::collection($list),
             'pagination' => [
@@ -52,6 +53,23 @@ class UserController extends Controller
                 'per_page' => $list->perPage(),
             ]
         ]);
+    }
+
+    /**
+     * Get user data
+     * @group
+     * Admin > User
+     * @param GetUserDataRequest $request
+     * @return JsonResponse
+     * @throws \Throwable
+     */
+    public function getUser(GetUserDataRequest $request)
+    {
+        try {
+            return api()->success(null,ProfileDetailsResource::make(User::query()->where('member_id','=',$request->get('user_id'))->first()));
+        } catch (\Throwable $exception) {
+            throw $exception;
+        }
     }
 
     /**
@@ -169,6 +187,8 @@ class UserController extends Controller
      * User Password History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function passwordHistory(HistoryRequest $request)
     {
@@ -179,6 +199,8 @@ class UserController extends Controller
      * User Block History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function blockHistory(HistoryRequest $request)
     {
@@ -189,6 +211,8 @@ class UserController extends Controller
      * User Login History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function loginHistory(HistoryRequest $request)
     {
@@ -199,6 +223,8 @@ class UserController extends Controller
      * User Email Verification History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function emailVerificationHistory(HistoryRequest $request)
     {
@@ -225,15 +251,17 @@ class UserController extends Controller
      * Admin > User
      * @param UserUpdateRequest $request
      * @return JsonResponse
+     * @throws \Throwable
      */
-    public function update(UserUpdateRequest $request, UserAdminService $userAdminService)
+    public function update(UserUpdateRequest $request)
     {
         try {
-            $user = $userAdminService->update($request->validated());
-            return api()->success(trans('responses.ok'), $user);
-
+            $user = User::query()->where('member_id','=',$request->get('user_id'))->first();
+            $user->update($request->validated());
+            $user->refresh();
+            return api()->success(trans('responses.ok'), ProfileDetailsResource::make($user));
         } catch (\Throwable $e) {
-            return api()->error($e->getMessage(), null);
+            throw $e;
         }
 
     }
