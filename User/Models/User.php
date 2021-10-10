@@ -37,18 +37,28 @@ use User\Observers\UserObserver;
  * @property string $last_name
  * @property string|null $username
  * @property string|null $phone_number
+ * @property string|null $mobile_number
+ * @property string|null $landline_number
  * @property string $email
  * @property string $password
+ * @property string $address_line1
+ * @property string $address_line2
+ * @property string $gender
  * @property string|null $transaction_password
  * @property string|null $avatar
  * @property string|null $passport_number
  * @property int|null $is_passport_number_accepted
  * @property string|null $national_id
  * @property int|null $is_national_id_accepted
+ * @property int|null $state_id
+ * @property int|null $city_id
+ * @property int|null $country_id
+ * @property int|null $zip_code
  * @property string|null $driving_licence
  * @property int|null $is_driving_licence_accepted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $birthday
  * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
