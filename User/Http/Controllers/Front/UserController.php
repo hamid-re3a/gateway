@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use User\Http\Requests\Auth\RegisterUserRequest;
 use User\Http\Requests\User\Profile\UpdateAvatarRequest;
 use User\Http\Requests\User\Profile\UpdateContactDetails;
 use User\Http\Requests\User\Profile\UpdatePersonalDetails;
