@@ -246,7 +246,7 @@ class UserController extends Controller
     }
 
     /**
-     * Block Or Unblock User Account
+     * Update user
      * @group
      * Admin > User
      * @param UserUpdateRequest $request
