@@ -65,7 +65,7 @@ class GeneralController extends Controller
     public function getUserDetails($member_id)
     {
         $user = User::where('member_id', $member_id)->get()->first();
-        if(!$user->count())
+        if(!$user)
             return api()->error(trans('user.responses.invalid-member-id'),null,404);
 
         return api()->success(null,ProfileDetailsResource::make($user));
@@ -82,7 +82,7 @@ class GeneralController extends Controller
     public function getAvatarDetails($member_id)
     {
         $user = User::where('member_id', $member_id)->get()->first();
-        if(!$user->count())
+        if(!$user)
             return api()->error(trans('user.responses.invalid-member-id'),null,404);
 
         if(empty($user->avatar))
@@ -109,7 +109,7 @@ class GeneralController extends Controller
     {
         $user = User::where('member_id', $member_id)->get()->first();
 
-        if(!$user->count())
+        if(!$user)
             return api()->error(trans('user.responses.invalid-member-id'),null,404);
 
         $avatar = json_decode($user->avatar,true);

@@ -4,7 +4,7 @@ namespace User\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActivateOrDeactivateUserAccount extends FormRequest
+class MemberIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,12 +20,12 @@ class ActivateOrDeactivateUserAccount extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     * @throws \Exception
      */
     public function rules()
     {
         return [
-            'user_id' => 'required|integer|exists:users,member_id',
-            'status' => 'required|in:activate,deactivate',
+            'member_id' => 'required|exists:users,member_id',
         ];
     }
 }

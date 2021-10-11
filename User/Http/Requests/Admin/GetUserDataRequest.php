@@ -25,7 +25,7 @@ class GetUserDataRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|numeric|exists:users,id',
+            'user_id' => 'required|numeric|exists:users,member_id',
         ];
     }
 }
