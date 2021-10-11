@@ -49,11 +49,11 @@ class LoginSecurityController extends Controller
     }
 
     /**
-     * Enable 2FA
+     * Add 2fa on token
      * @group
      * Auth
      */
-    public function add2faOnToken()
+    public function add2faOnToken(OtpRequest $request)
     {
         $user = auth()->user();
         $this->restrictUserAbilities($user);
