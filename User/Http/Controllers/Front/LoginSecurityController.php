@@ -56,7 +56,7 @@ class LoginSecurityController extends Controller
     public function add2faOnToken()
     {
         $user = auth()->user();
-        $this->restrictUserAblilities($user);
+        $this->restrictUserAbilities($user);
         return api()->success();
     }
 
@@ -76,7 +76,7 @@ class LoginSecurityController extends Controller
         $valid = $google2fa->verifyKey($user->google2fa_secret, $secret);
 
         if ($valid) {
-            $this->restrictUserAblilities($user);
+            $this->restrictUserAbilities($user);
 
             $user->google2fa_enable = true;
             $user->save();
@@ -106,14 +106,10 @@ class LoginSecurityController extends Controller
     /**
      * @param \Illuminate\Contracts\Auth\Authenticatable|null $user
      */
-    private function restrictUserAblilities(?\Illuminate\Contracts\Auth\Authenticatable $user): void
+    private function restrictUserAbilities(?\Illuminate\Contracts\Auth\Authenticatable $user): void
     {
         /** @var  $access_token  PersonalAccessToken */
         $access_token = $user->currentAccessToken();
-        $abilities = $access_token->abilities;
-        if (($key = array_search('*', $abilities)) !== false) {
-            unset($abilities[$key]);
-        }
         $access_token->update([
             'abilities' => array_merge($access_token->abilities, ['hasPassed:2fa'])
         ]);
