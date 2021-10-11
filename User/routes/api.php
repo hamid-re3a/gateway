@@ -38,9 +38,9 @@ Route::middleware('user_activity')->group(function () {
                 Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
 
                 Route::name('wallets.')->prefix('wallets')->group(function(){
-                    Route::get('all', [AdminUserWalletController::class, 'index'])->name('wallets-list');
-                    Route::get('active', [AdminUserWalletController::class, 'activeWallets'])->name('wallets-actives-list');
-                    Route::get('inactive', [AdminUserWalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
+                    Route::post('list', [AdminUserWalletController::class, 'index'])->name('wallets-list');
+                    Route::post('active', [AdminUserWalletController::class, 'activeWallets'])->name('wallets-actives-list');
+                    Route::post('inactive', [AdminUserWalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
                     Route::post('/', [AdminUserWalletController::class, 'add'])->name('wallets-add');
                     Route::patch('/update-wallet', [AdminUserWalletController::class, 'updateWallet'])->name('wallets-update');
                 });
