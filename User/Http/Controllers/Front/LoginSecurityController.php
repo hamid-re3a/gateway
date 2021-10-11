@@ -5,6 +5,7 @@ namespace User\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Laravel\Sanctum\PersonalAccessToken;
 use User\Http\Requests\Auth\OtpRequest;
 
 class LoginSecurityController extends Controller
@@ -21,11 +22,11 @@ class LoginSecurityController extends Controller
 
         $google2fa = (new \PragmaRX\Google2FAQRCode\Google2FA());
 
-        if($user->google2fa_enable) {
+        if ($user->google2fa_enable) {
             return api()->success('user.responses.2FA-is-already-enabled');
         }
 
-        if(is_null($user->google2fa_secret)){
+        if (is_null($user->google2fa_secret)) {
             $user->google2fa_enable = false;
             $user->google2fa_secret = $google2fa->generateSecretKey();
             $user->save();
@@ -52,6 +53,22 @@ class LoginSecurityController extends Controller
      * @group
      * Auth
      */
+    public function add2faOnToken()
+    {
+        $user = auth()->user();
+        /** @var  $access_token  PersonalAccessToken */
+        $access_token = $user->currentAccessToken();
+        $access_token->update([
+            'abilities' => array_merge($access_token->abilities, ['hasPassed:2fa'])
+        ]);
+        return api()->success();
+    }
+
+    /**
+     * Enable 2FA
+     * @group
+     * Auth
+     */
     public function enable2fa(OtpRequest $request)
     {
         $user = auth()->user();
@@ -71,7 +88,7 @@ class LoginSecurityController extends Controller
             $errors = [
                 'one_time_password' => $message
             ];
-            return api()->error($message,'',422,$errors);
+            return api()->error($message, '', 422, $errors);
         }
     }
 

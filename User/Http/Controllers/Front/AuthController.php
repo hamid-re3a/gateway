@@ -354,7 +354,7 @@ class AuthController extends Controller
      */
     private function getNewToken($user)
     {
-        return $user->createToken(getSetting("APP_NAME"),$user->roles()->pluck('name')->toArray());
+        return $user->createToken(getSetting("APP_NAME"));
     }
 
     private function systemIsUnderMaintenance()
