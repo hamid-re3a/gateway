@@ -80,6 +80,12 @@ class LoginSecurityController extends Controller
         $valid = $google2fa->verifyKey($user->google2fa_secret, $secret);
 
         if ($valid) {
+
+            /** @var  $access_token  PersonalAccessToken */
+            $access_token = $user->currentAccessToken();
+            $access_token->update([
+                'abilities' => array_merge($access_token->abilities, ['hasPassed:2fa'])
+            ]);
             $user->google2fa_enable = true;
             $user->save();
             return api()->success(trans('user.responses.2FA-is-enabled-successfully'));
