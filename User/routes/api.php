@@ -19,7 +19,7 @@ use User\Http\Controllers\Admin\WalletController as AdminUserWalletController;
 Route::middleware('user_activity')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
-    Route::middleware(['auth', 'email_verified','block_user'])->group(function () {
+    Route::middleware(['auth', 'email_verified','block_user','token_passed_2fa'])->group(function () {
         Route::middleware(['role:'. USER_ROLE_SUPER_ADMIN])->prefix('admin')->name('admin.')->group(function () {
 
             Route::name('user.')->prefix('users')->group(function () {
@@ -87,6 +87,7 @@ Route::middleware('user_activity')->group(function () {
             Route::post('/generate2fa_secret', [LoginSecurityController::class, 'generate2faSecret'])->name('2fa-secret');
             Route::post('/generate2fa_enable', [LoginSecurityController::class, 'enable2fa'])->name('2fa-enable');
             Route::post('/generate2fa_disable', [LoginSecurityController::class, 'disable2fa'])->name('2fa-disable')->middleware(['2fa']);
+            Route::post('/add2fa_on_token', [LoginSecurityController::class, 'add2faOnToken'])->name('add-2fa-on-token')->middleware(['2fa']);
 
             Route::middleware('has_valid_package')->group(function () {
                 Route::post('sponsor_new_user', [UserController::class, 'sponsor'])->name('sponsor-new-user');
