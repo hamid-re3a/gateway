@@ -1,17 +1,11 @@
 <?php
 
-namespace User\Http\Requests\User\Profile;
+namespace User\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Merkeleon\PhpCryptocurrencyAddressValidation\Validation;
-use Propaganistas\LaravelPhone\PhoneNumber;
 use User\Models\Country;
-use User\Models\CryptoCurrency;
-use User\Models\User;
 
-class UpdateContactDetails extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,6 +26,11 @@ class UpdateContactDetails extends FormRequest
     public function rules()
     {
         return [
+            'user_id' => 'required|exists:users,member_id',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'gender' => 'nullable|in:Male,Female,Other',
+            'birthday' => 'nullable|date|before:' . now() . '|date_format:Y/m/d',
             'country_id' => 'bail|required|integer|exists:countries,id',
             'state_id' => 'nullable|integer|exists:cities,id,country_id,' . $this->get('country_id'),
             'city_id' => 'nullable|integer|exists:cities,id,country_id,' . $this->get('country_id') . ',parent_id,' . $this->get('state_id'),
@@ -54,5 +53,4 @@ class UpdateContactDetails extends FormRequest
 
         return null;
     }
-
 }

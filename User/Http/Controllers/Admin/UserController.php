@@ -11,6 +11,7 @@ use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
 use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
+use User\Http\Requests\Admin\UserUpdateRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
 use User\Http\Resources\OtpResource;
 use User\Http\Resources\User\LoginHistoryResource;
@@ -44,7 +45,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $list = User::query()->paginate(2);
+        $list = User::query()->simplePaginate(15);
         return api()->success(null, [
             'list' => ProfileDetailsResource::collection($list),
             'pagination' => [
@@ -52,6 +53,23 @@ class UserController extends Controller
                 'per_page' => $list->perPage(),
             ]
         ]);
+    }
+
+    /**
+     * Get user data
+     * @group
+     * Admin > User
+     * @param GetUserDataRequest $request
+     * @return JsonResponse
+     * @throws \Throwable
+     */
+    public function getUser(GetUserDataRequest $request)
+    {
+        try {
+            return api()->success(null,ProfileDetailsResource::make(User::query()->where('member_id','=',$request->get('user_id'))->first()));
+        } catch (\Throwable $exception) {
+            throw $exception;
+        }
     }
 
     /**
@@ -64,7 +82,7 @@ class UserController extends Controller
     public function blockOrUnblockUser(BlockOrUnblockUser $request)
     {
 
-        $user = User::whereEmail($request->get('email'))->first();
+        $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-block-unblock-your-account'));
         if ($request->get('deactivate')) {
@@ -90,7 +108,7 @@ class UserController extends Controller
      */
     public function activateOrDeactivateUserAccount(ActivateOrDeactivateUserAccount $request)
     {
-        $user = User::find($request->get('user_id'));
+        $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-deactivate-active-your-account'));
         if ($request->get('status') == 'activate') {
@@ -122,7 +140,7 @@ class UserController extends Controller
      */
     public function freezeOrUnfreezeUserAccount(FreezeOrUnfreezeUserAccountRequest $request)
     {
-        $user = User::find($request->get('user_id'));
+        $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-freeze-unfreeze-your-account'));
         if ($request->get('status') == 'freeze') {
@@ -153,7 +171,7 @@ class UserController extends Controller
     public function verifyUserEmailAccount(VerifyUserEmailRequest $request)
     {
 
-        $user = User::whereEmail($request->get('email'))->first();
+        $user = User::whereMemberId($request->get('member_id'))->first();
         if (!$user->isEmailVerified()) {
             $user->email_verified_at = now();
             $user->save();
@@ -169,40 +187,48 @@ class UserController extends Controller
      * User Password History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function passwordHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::find($request->get('user_id'))->userHistories('password')->get()));
+        return api()->success(trans('user.responses.ok'), PasswordHistoryResource::collection(User::whereMemberId($request->get('user_id'))->first()->userHistories('password')->get()));
     }
 
     /**
      * User Block History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function blockHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::find($request->get('user_id'))->userHistories('block_type')->get()));
+        return api()->success(trans('user.responses.ok'), UserBlockHistoryResource::collection(User::whereMemberId($request->get('user_id'))->first()->userHistories('block_type')->get()));
     }
 
     /**
      * User Login History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function loginHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::find($request->get('user_id'))->loginAttempts));
+        return api()->success(trans('user.responses.ok'), LoginHistoryResource::collection(User::whereMemberId($request->get('user_id'))->first()->loginAttempts));
     }
 
     /**
      * User Email Verification History
      * @group
      * Admin > User History
+     * @param HistoryRequest $request
+     * @return JsonResponse
      */
     public function emailVerificationHistory(HistoryRequest $request)
     {
-        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::find($request->get('user_id'))->otps()->where('type', OTP_TYPE_EMAIL_VERIFICATION)->get()));
+        return api()->success(trans('user.responses.ok'), OtpResource::collection(User::whereMemberId($request->get('user_id'))->first()->otps()->where('type', OTP_TYPE_EMAIL_VERIFICATION)->get()));
     }
 
     /**
@@ -220,20 +246,22 @@ class UserController extends Controller
     }
 
     /**
-     * Block Or Unblock User Account
+     * Update user
      * @group
      * Admin > User
      * @param UserUpdateRequest $request
      * @return JsonResponse
+     * @throws \Throwable
      */
-    public function update(UserUpdateRequest $request, UserAdminService $userAdminService)
+    public function update(UserUpdateRequest $request)
     {
         try {
-            $user = $userAdminService->update($request->validated());
-            return api()->success(trans('responses.ok'), $user);
-
+            $user = User::whereMemberId($request->get('member_id'))->first();
+            $user->update($request->validated());
+            $user->refresh();
+            return api()->success(trans('responses.ok'), ProfileDetailsResource::make($user));
         } catch (\Throwable $e) {
-            return api()->error($e->getMessage(), null);
+            throw $e;
         }
 
     }
