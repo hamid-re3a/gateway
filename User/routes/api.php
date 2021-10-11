@@ -10,11 +10,11 @@ use User\Http\Controllers\Front\ActivityController;
 use User\Http\Controllers\Front\AuthController;
 use User\Http\Controllers\GeneralController;
 use User\Http\Controllers\Front\LoginSecurityController;
-use User\Http\Controllers\Front\SessionController;
 use User\Http\Controllers\Front\SettingController;
 use User\Http\Controllers\Admin\SettingController as AdminSettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
+use User\Http\Controllers\Admin\WalletController as AdminUserWalletController;
 
 Route::middleware('user_activity')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
@@ -36,6 +36,14 @@ Route::middleware('user_activity')->group(function () {
                 Route::get('/user_login_history', [AdminUserController::class, 'loginHistory'])->name('user-login-history');
                 Route::get('/user_block_history', [AdminUserController::class, 'blockHistory'])->name('user-block-history');
                 Route::get('/user_password_history', [AdminUserController::class, 'passwordHistory'])->name('password-history');
+
+                Route::name('wallets.')->prefix('wallets')->group(function(){
+                    Route::get('all', [AdminUserWalletController::class, 'index'])->name('wallets-list');
+                    Route::get('active', [AdminUserWalletController::class, 'activeWallets'])->name('wallets-actives-list');
+                    Route::get('inactive', [AdminUserWalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
+                    Route::post('/', [AdminUserWalletController::class, 'add'])->name('wallets-add');
+                    Route::patch('/update-wallet', [AdminUserWalletController::class, 'updateWallet'])->name('wallets-update');
+                });
             });
 
             Route::prefix('login-attempts-settings')->name('login-attempts-settings')->group(function () {
@@ -105,11 +113,11 @@ Route::middleware('user_activity')->group(function () {
 
                 Route::prefix('wallets')->group(function () {
                     Route::get('/available_crypto_currencies', [WalletController::class, 'availableCryptoCurrencies'])->name('wallets-available-crypto-currencies');
-                    Route::post('/', [WalletController::class, 'add'])->name('wallets-add');
-                    Route::patch('/update-wallet', [WalletController::class, 'updateWallet'])->name('wallets-update');
                     Route::get('all', [WalletController::class, 'index'])->name('wallets-list');
                     Route::get('active', [WalletController::class, 'activeWallets'])->name('wallets-actives-list');
                     Route::get('inactive', [WalletController::class, 'inactiveWallets'])->name('wallets-inactive-list');
+                    Route::post('/', [WalletController::class, 'add'])->name('wallets-add');
+                    Route::patch('/update-wallet', [WalletController::class, 'updateWallet'])->name('wallets-update');
                 });
 
                 Route::prefix('activities')->name('activities.')->group(function () {
