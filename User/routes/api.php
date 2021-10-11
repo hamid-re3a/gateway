@@ -15,7 +15,6 @@ use User\Http\Controllers\Front\SettingController;
 use User\Http\Controllers\Admin\SettingController as AdminSettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
-
 Route::middleware('user_activity')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
