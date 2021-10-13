@@ -5,7 +5,6 @@ namespace User\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
-use User\Http\Requests\Globally\AvatarRequest;
 use User\Http\Requests\Globally\CitiesRequest;
 use User\Http\Requests\Globally\StatesRequest;
 use User\Http\Resources\CityResource;
