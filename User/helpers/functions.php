@@ -104,14 +104,19 @@ function secondsToHumanReadable($seconds)
 function getDbTranslate($key,$defaultValue = null)
 {
 
-    $translate = cache()->get('dbTranslates')->where('key', $key)->first();
-    if($translate)
-        return $translate->value;
-
-    \User\Models\Translate::insertOrIgnore([
+    if(cache()->has('dbTranslates')) {
+        $translate = cache()->get('dbTranslates')->where('key', $key)->first();
+        if($translate)
+            return $translate->value;
+    }
+    $translate = \User\Models\Translate::query()->firstOrCreate([
         'key' => $key
     ]);
 
-    return $defaultValue ? $defaultValue : $key;
+    $return = $translate AND !empty($translate->value) ? $translate->value : $translate->key;
+    if(!empty($defaultValue))
+        $return = $defaultValue;
+
+    return $return;
 
 }
