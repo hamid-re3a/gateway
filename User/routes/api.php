@@ -17,6 +17,9 @@ use User\Http\Controllers\Front\WalletController;
 use User\Http\Controllers\Admin\WalletController as AdminUserWalletController;
 
 Route::middleware('user_activity')->group(function () {
+
+    Route::get('general/user/avatar/{member_id}/image', [GeneralController::class, 'getAvatarImage'])->name('avatar-image');
+
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::middleware(['auth', 'email_verified', 'block_user'])->group(function () {
         Route::post('/add2fa_on_token', [LoginSecurityController::class, 'add2faOnToken'])->name('add-2fa-on-token')->middleware(['2fa']);
@@ -133,7 +136,6 @@ Route::middleware('user_activity')->group(function () {
                         Route::post('cities', [GeneralController::class, 'cities'])->name('cities-list');
                         Route::get('user/details/{member_id}', [GeneralController::class, 'getUserDetails'])->name('user-details');
                         Route::get('user/avatar/{member_id}', [GeneralController::class, 'getAvatarDetails'])->name('avatar-details');
-                        Route::get('user/avatar/{member_id}/image', [GeneralController::class, 'getAvatarImage'])->name('avatar-image');
                     });
 
                 });
