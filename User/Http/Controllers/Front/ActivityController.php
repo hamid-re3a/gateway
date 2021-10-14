@@ -5,6 +5,7 @@ namespace User\Http\Controllers\Front;
 
 use Illuminate\Routing\Controller;
 use User\Http\Resources\User\ActivityResource;
+use User\Models\User;
 
 class ActivityController extends Controller
 {
@@ -15,12 +16,20 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        return api()->success(null,ActivityResource::collection(
-            auth()->user()->activities()->with([
-                'agent',
-                'ip'
-            ])->simplePaginate()
-        )->response()->getData());
+        /**@var $user User*/
+        $user = auth()->user();
+        $list = $user->activities()->orderByDesc('id')->with([
+            'ip',
+            'agent'
+        ])->paginate();
+
+        return api()->success(null,[
+            'list' => ActivityResource::collection($list),
+            'pagination' => [
+                'total' => $list->total(),
+                'perPage' => $list->perPage()
+            ]
+        ]);
     }
 
 }
