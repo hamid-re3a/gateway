@@ -5,6 +5,7 @@ namespace User\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Laravel\Sanctum\PersonalAccessToken;
 use User\Http\Requests\Auth\OtpRequest;
 
 class LoginSecurityController extends Controller
@@ -21,11 +22,11 @@ class LoginSecurityController extends Controller
 
         $google2fa = (new \PragmaRX\Google2FAQRCode\Google2FA());
 
-        if($user->google2fa_enable) {
+        if ($user->google2fa_enable) {
             return api()->success('user.responses.2FA-is-already-enabled');
         }
 
-        if(is_null($user->google2fa_secret)){
+        if (is_null($user->google2fa_secret)) {
             $user->google2fa_enable = false;
             $user->google2fa_secret = $google2fa->generateSecretKey();
             $user->save();
@@ -48,6 +49,18 @@ class LoginSecurityController extends Controller
     }
 
     /**
+     * Add 2fa on token
+     * @group
+     * Auth
+     */
+    public function add2faOnToken(OtpRequest $request)
+    {
+        $user = auth()->user();
+        $this->restrictUserAbilities($user);
+        return api()->success();
+    }
+
+    /**
      * Enable 2FA
      * @group
      * Auth
@@ -63,6 +76,8 @@ class LoginSecurityController extends Controller
         $valid = $google2fa->verifyKey($user->google2fa_secret, $secret);
 
         if ($valid) {
+            $this->restrictUserAbilities($user);
+
             $user->google2fa_enable = true;
             $user->save();
             return api()->success(trans('user.responses.2FA-is-enabled-successfully'));
@@ -71,7 +86,7 @@ class LoginSecurityController extends Controller
             $errors = [
                 'one_time_password' => $message
             ];
-            return api()->error($message,'',422,$errors);
+            return api()->error($message, '', 422, $errors);
         }
     }
 
@@ -86,5 +101,17 @@ class LoginSecurityController extends Controller
         $user->google2fa_enable = false;
         $user->save();
         return api()->success(trans('user.responses.2FA-is-now-disabled'));
+    }
+
+    /**
+     * @param \Illuminate\Contracts\Auth\Authenticatable|null $user
+     */
+    private function restrictUserAbilities(?\Illuminate\Contracts\Auth\Authenticatable $user): void
+    {
+        /** @var  $access_token  PersonalAccessToken */
+        $access_token = $user->currentAccessToken();
+        $access_token->update([
+            'abilities' => array_merge($access_token->abilities, ['hasPassed:2fa'])
+        ]);
     }
 }

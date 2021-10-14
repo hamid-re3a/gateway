@@ -26,7 +26,7 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:users,member_id',
+            'member_id' => 'required|exists:users,member_id',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'gender' => 'nullable|in:Male,Female,Other',

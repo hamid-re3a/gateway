@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -32,6 +33,7 @@ use User\Support\UserActivityHelper;
 
 class AuthController extends Controller
 {
+
     /**
      * Register New User
      * @group
@@ -354,7 +356,7 @@ class AuthController extends Controller
      */
     private function getNewToken($user)
     {
-        return $user->createToken(getSetting("APP_NAME"),$user->roles()->pluck('name')->toArray());
+        return $user->createToken(getSetting("APP_NAME"),[]);
     }
 
     private function systemIsUnderMaintenance()
