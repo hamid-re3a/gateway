@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Notifications\QueueFailed;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $slackUrl = env('SLACK_WEBHOOK_URL');
+        Queue::failing(function (JobFailed $event) use ($slackUrl) {
+            Notification::route('slack', $slackUrl)->notify(new QueueFailed($event));
+        });
     }
 }
