@@ -30,15 +30,20 @@ if (!function_exists('getMLMGrpcClient')) {
 }
 function getEmailAndTextSetting($key)
 {
-    // Comment Test
-    if (DB::table('email_content_settings')->exists()) {
-        $setting = EmailContentSetting::query()->where('key', $key)->first();
-        if ($setting && !empty($setting->body))
-            return $setting->toArray();
+    $email = null;
+
+    $setting = EmailContentSetting::query()->where('key',$key)->first();
+    if ($setting && !empty($setting->value)) {
+        $email = $setting->toArray();
     }
 
     if (isset(EMAIL_CONTENT_SETTINGS[$key]))
-        return EMAIL_CONTENT_SETTINGS[$key];
+        $email = EMAIL_CONTENT_SETTINGS[$key];
+
+    if($email AND is_array($email)) {
+        $email['from'] = env('MAIL_FROM', $email['from']);
+        return $email;
+    }
 
     throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 }
