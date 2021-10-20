@@ -120,7 +120,7 @@ class GeneralController extends Controller
     }
 
     /**
-     * Get avatar image
+     * Get avatar image file
      * @group General
      * @unauthenticated
      * @queryParam member_id required integer
