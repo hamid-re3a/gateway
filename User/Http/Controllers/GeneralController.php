@@ -139,7 +139,8 @@ class GeneralController extends Controller
         if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
             return api()->error('',null,404);
 
-        return response()->file(Storage::disk('local')->get('/avatars/' . $avatar['file_name']),[
+
+        return response()->file(Storage::disk('local')->path('/avatars/' . $avatar['file_name']),[
             'Content-Type' => $avatar['mime']
         ]);
     }
