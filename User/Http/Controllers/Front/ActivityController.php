@@ -27,7 +27,7 @@ class ActivityController extends Controller
             'list' => ActivityResource::collection($list),
             'pagination' => [
                 'total' => $list->total(),
-                'perPage' => $list->perPage()
+                'per_page' => $list->per_page()
             ]
         ]);
     }

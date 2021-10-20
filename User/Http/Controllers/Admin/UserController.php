@@ -50,7 +50,7 @@ class UserController extends Controller
             'list' => ProfileDetailsResource::collection($list),
             'pagination' => [
                 'total' => $list->total(),
-                'per_page' => $list->perPage(),
+                'per_page' => $list->per_page(),
             ]
         ]);
     }
