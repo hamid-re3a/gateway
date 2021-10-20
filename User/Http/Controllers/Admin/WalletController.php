@@ -28,7 +28,7 @@ class WalletController extends Controller
             'list' => WalletResource::collection($list),
             'pagination' => [
                 'total' => $list->total(),
-                'per_page' => $list->per_page()
+                'per_page' => $list->perPage()
             ]
         ]);
     }
@@ -47,7 +47,7 @@ class WalletController extends Controller
             'list' => WalletResource::collection($list),
             'pagination' => [
                 'total' => $list->total(),
-                'per_page' => $list->per_page()
+                'per_page' => $list->perPage()
             ]
         ]);
     }
@@ -66,7 +66,7 @@ class WalletController extends Controller
             'list' => WalletResource::collection($list),
             'pagination' => [
                 'total' => $list->total(),
-                'per_page' => $list->per_page()
+                'per_page' => $list->perPage()
             ]
         ]);
     }

@@ -80,7 +80,7 @@ class GeneralController extends Controller
      */
     public function getAvatarDetails($member_id)
     {
-        $user = User::where('member_id', $member_id)->get()->first();
+        $user = User::query()->where('member_id', $member_id)->get()->first();
         if(!$user)
             return api()->error(trans('user.responses.invalid-member-id'),null,404);
 
@@ -106,7 +106,7 @@ class GeneralController extends Controller
      */
     public function getAvatarImage($member_id)
     {
-        $user = User::where('member_id', $member_id)->get()->first();
+        $user = User::query()->where('member_id', $member_id)->get()->first();
 
         if(!$user)
             return api()->error(trans('user.responses.invalid-member-id'),null,404);
@@ -117,5 +117,30 @@ class GeneralController extends Controller
             return api()->error('',null,404);
 
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
+    }
+
+    /**
+     * Get avatar image
+     * @group General
+     * @unauthenticated
+     * @queryParam member_id required integer
+     * @return \Illuminate\Http\JsonResponse|string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function getAvatarFile($member_id)
+    {
+        $user = User::query()->where('member_id', $member_id)->get()->first();
+
+        if(!$user)
+            return api()->error(trans('user.responses.invalid-member-id'),null,404);
+
+        $avatar = json_decode($user->avatar,true);
+
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+            return api()->error('',null,404);
+
+        return response()->file(Storage::disk('local')->get('/avatars/' . $avatar['file_name']),[
+            'Content-Type' => $avatar['mime']
+        ]);
     }
 }
