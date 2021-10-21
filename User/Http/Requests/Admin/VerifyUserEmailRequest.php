@@ -24,7 +24,7 @@ class VerifyUserEmailRequest extends FormRequest
     public function rules()
     {
         return [
-            'member_id' => 'required|email|exists:users,member_id',
+            'member_id' => 'required|exists:users,member_id',
         ];
     }
 }

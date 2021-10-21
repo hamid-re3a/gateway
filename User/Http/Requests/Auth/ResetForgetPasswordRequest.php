@@ -27,7 +27,7 @@ class ResetForgetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email:rfc,dns|exists:users,email',
             'otp' => 'required|string|exists:otps,otp',
             'password' => 'required|regex:/' . getSetting('USER_REGISTRATION_PASSWORD_CRITERIA') . '/|confirmed',
         ];
