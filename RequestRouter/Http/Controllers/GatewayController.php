@@ -273,10 +273,14 @@ class GatewayController extends Controller
 
 
         $res = $req->$method($final_route);
-        if (in_array($res->header('Content-type'), ALL_MIME_TYPES)) {
+        if (in_array($res->header('Content-Type'), ALL_MIME_TYPES)) {
             if (!$multi)
-                foreach ($res->headers() as $key => $value)
-                    header("$key: $value");
+                foreach ($res->headers() as $key => $value) {
+                    if (is_array($value))
+                        header("$key: ".implode(';',$value));
+                    else
+                        header("$key: $value");
+                }
             echo $res->body();
             return null;
         }

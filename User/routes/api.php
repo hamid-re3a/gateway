@@ -19,6 +19,7 @@ use User\Http\Controllers\Admin\WalletController as AdminUserWalletController;
 Route::middleware('user_activity')->group(function () {
 
     Route::get('general/user/avatar/{member_id}/image', [GeneralController::class, 'getAvatarImage'])->name('avatar-image');
+    Route::get('general/user/avatar/{member_id}/file', [GeneralController::class, 'getAvatarFile'])->name('avatar-file');
 
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::middleware(['auth', 'email_verified', 'block_user'])->group(function () {
