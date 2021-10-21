@@ -21,7 +21,7 @@ class SponsorUserRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'min:1', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
             'last_name' => ['required', 'string', 'min:1', 'max:255', 'regex:/^[a-zA-Z ]*$/'],
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'username' => ['required', 'unique:users,username', 'regex:/^[a-z][a-z0-9_]{2,}$/'],
             'birthday' => 'nullable|date|before:' . now() . '|date_format:Y/m/d',
         ];
