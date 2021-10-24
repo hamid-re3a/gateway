@@ -6,8 +6,7 @@ namespace User\Http\Controllers\Admin;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use User\Http\Requests\Admin\MemberIdOrUserRequest;
-use User\Http\Resources\User\ActivityResource;
-use User\Http\Resources\User\UserActivityResource;
+use User\Http\Resources\Admin\UserActivityResource;
 use User\Models\User;
 use User\Repository\ActivityRepository;
 
