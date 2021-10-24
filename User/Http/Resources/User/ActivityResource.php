@@ -21,6 +21,7 @@ class ActivityResource extends JsonResource
             'state'=> !empty($this->ip_id) ? $this->ip->state : 'Unknown',
             'ip' => !empty($this->ip_id) ? $this->ip->ip : 'Unknown',
             'device' => !empty($this->agent_id) ? $this->agent->device_type : 'Unknown',
+            'platform' => !empty($this->agent_id) ? $this->agent->platform . '(' . $this->agent->platform_version .')' : 'Unknown',
             'browser'=> !empty($this->agent_id) ? $this->agent->browser . ' ' . $this->agent->browser_version : 'Unknown',
             'action' => getDbTranslate($this->route, $this->route)
         ];
