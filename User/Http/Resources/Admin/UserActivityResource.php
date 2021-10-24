@@ -14,10 +14,9 @@ class UserActivityResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
-            'user_id' => $this->user_id ,
-            'user_full_name' => $this->user->full_name ,
+            'user_member_id' => !empty($this->user_id) ? $this->user->member_id : 'Unknown' ,
+            'user_full_name' => !empty($this->user_id) ? $this->user->full_name : 'Unknown',
             'when' => $this->created_at->diffForHumans(),
             'country'=> !empty($this->ip_id) ? $this->ip->country : 'Unknown',
             'state'=> !empty($this->ip_id) ? $this->ip->state : 'Unknown',
