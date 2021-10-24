@@ -5,6 +5,7 @@ use User\Http\Controllers\Admin\EmailContentController;
 use User\Http\Controllers\Admin\LoginAttemptSettingController;
 use User\Http\Controllers\Admin\RoleController;
 use User\Http\Controllers\Admin\TranslateController;
+use User\Http\Controllers\Admin\UserActivityController as AdminUserActivityController;
 use User\Http\Controllers\Admin\UserController as AdminUserController;
 use User\Http\Controllers\Front\ActivityController;
 use User\Http\Controllers\Front\AuthController;
@@ -49,6 +50,12 @@ Route::middleware('user_activity')->group(function () {
                         Route::post('/', [AdminUserWalletController::class, 'add'])->name('wallets-add');
                         Route::patch('/update-wallet', [AdminUserWalletController::class, 'updateWallet'])->name('wallets-update');
                     });
+
+                    Route::name('activities.')->prefix('activities')->group(function () {
+                        Route::post('list', [AdminUserActivityController::class, 'index'])->name('index');
+                        Route::post('user', [AdminUserActivityController::class, 'userActivity'])->name('user-list');
+                    });
+
                 });
 
                 Route::prefix('login-attempts-settings')->name('login-attempts-settings')->group(function () {
