@@ -49,7 +49,7 @@ class UserActivityController extends Controller
             if($request->has('member_id') AND !$request->has('user_id')) {
                 $user = User::query()->whereMemberId($request->get('member_id'))->first();
             }
-            $user_id = $request->has('user_id') ? $request->get('user_id') : $user->member_id;
+            $user_id = $request->has('user_id') ? $request->get('user_id') : $user->id;
             $list = $this->activity_repository->getPaginated($user_id);
 
             return api()->success(null,[
