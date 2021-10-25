@@ -57,4 +57,11 @@ class UserRepository
         return false;
     }
 
+    public function getUsersCount()
+    {
+        /**@var $model User*/
+        $model = new $this->entity_name;
+        return $model->query()->count();
+    }
+
 }
