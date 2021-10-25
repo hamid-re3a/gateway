@@ -1,10 +1,10 @@
 <?php
 
-namespace User\Http\Resources\User;
+namespace User\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ActivityResource extends JsonResource
+class UserActivityResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,8 +14,9 @@ class ActivityResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
+            'user_member_id' => !empty($this->user_id) ? $this->user->member_id : 'Unknown' ,
+            'user_full_name' => !empty($this->user_id) ? $this->user->full_name : 'Unknown',
             'when' => $this->created_at->diffForHumans(),
             'country'=> !empty($this->ip_id) ? $this->ip->country : 'Unknown',
             'state'=> !empty($this->ip_id) ? $this->ip->state : 'Unknown',

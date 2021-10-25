@@ -186,31 +186,6 @@ class User extends Authenticatable
         'is_freeze' => 'boolean',
         'is_deactivate' => 'boolean',
     ];
-
-    public function setPasswordAttribute($value)
-    {
-        if(empty($this->attributes['member_id'])) {
-            //User member_id field
-            $member_id = mt_rand(121212121,999999999);
-            while ($this->where('member_id', $member_id)->count())
-                $member_id = mt_rand(121212121,999999999);
-
-            $this->attributes['member_id'] = $member_id;
-        }
-
-        $this->attributes['password'] = bcrypt($value);
-    }
-
-    public function setTransactionPasswordAttribute($value)
-    {
-        $this->attributes['transaction_password'] = bcrypt($value);
-    }
-
-    public function getFullNameAttribute()
-    {
-        return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
-    }
-
     /**
      * relations
      */
@@ -345,6 +320,7 @@ class User extends Authenticatable
         }
 
     }
+
     public function setMobileNumberAttribute($value)
     {
         if(!empty($value)){
@@ -352,6 +328,31 @@ class User extends Authenticatable
         }
 
     }
+
+    public function setPasswordAttribute($value)
+    {
+        if(empty($this->attributes['member_id'])) {
+            //User member_id field
+            $member_id = mt_rand(121212121,999999999);
+            while ($this->where('member_id', $member_id)->count())
+                $member_id = mt_rand(121212121,999999999);
+
+            $this->attributes['member_id'] = $member_id;
+        }
+
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function setTransactionPasswordAttribute($value)
+    {
+        $this->attributes['transaction_password'] = bcrypt($value);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
+    }
+
 
 
 }
