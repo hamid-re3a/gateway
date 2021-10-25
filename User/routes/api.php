@@ -16,6 +16,7 @@ use User\Http\Controllers\Admin\SettingController as AdminSettingController;
 use User\Http\Controllers\Front\UserController;
 use User\Http\Controllers\Front\WalletController;
 use User\Http\Controllers\Admin\WalletController as AdminUserWalletController;
+use User\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::middleware('user_activity')->group(function () {
 
@@ -29,6 +30,7 @@ Route::middleware('user_activity')->group(function () {
             Route::middleware(['role:' . USER_ROLE_SUPER_ADMIN])->prefix('admin')->name('admin.')->group(function () {
 
                 Route::name('user.')->prefix('users')->group(function () {
+                    Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data');
                     Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
                     Route::get('', [AdminUserController::class, 'index'])->name('users-list');
                     Route::post('/user', [AdminUserController::class, 'getUser'])->name('user-data');
