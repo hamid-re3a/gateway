@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $list = User::query()->simplePaginate(15);
+        $list = User::query()->paginate();
         return api()->success(null, [
             'list' => ProfileDetailsResource::collection($list),
             'pagination' => [
