@@ -15,7 +15,7 @@ class ActivityRepository
 
         /**@var $activities UserActivity*/
         $activities = new $this->entity_name;
-        $activities = $activities->query()->with([
+        $activities = $activities->query()->orderByDesc('id')->with([
             'user',
             'ip',
             'agent'
