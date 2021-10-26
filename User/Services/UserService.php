@@ -52,9 +52,8 @@ class UserService
     /**
      * @param SponsorUserRequest $request
      * @return array
-     * @throws \Exception
      */
-    public function createAndSponsorUser(SponsorUserRequest $request): User
+    public function createAndSponsorUser(SponsorUserRequest $request): array
     {
         $user_array = [];
         $user_array['first_name'] = $request->get('first_name');
@@ -68,9 +67,7 @@ class UserService
         $user = User::query()->create($user_array);
         $user->assignRole(USER_ROLE_CLIENT);
 
-        UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $user_array['password']), $user->email);
-
-        return $user;
+        return [$user,$user_array['password']];
     }
 
 }
