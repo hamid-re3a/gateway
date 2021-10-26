@@ -12,6 +12,7 @@ use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
 use User\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
 use User\Mail\User\WelcomeEmail;
+use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
@@ -45,6 +46,8 @@ class UserTest extends \User\tests\UserTest
         $user = User::query()->where('username','hamid')->first();
         $this->assertNotNull($user);
         $response->assertOk();
+
+        Mail::assertSent(WelcomeWithPasswordEmail::class);
     }
     /**
      * @test
@@ -68,6 +71,8 @@ class UserTest extends \User\tests\UserTest
         $user = User::query()->where('username','hamid')->first();
         $this->assertNull($user);
         $response->assertStatus(400);
+
+        Mail::assertNotSent(WelcomeWithPasswordEmail::class);
     }
     /**
      * @test

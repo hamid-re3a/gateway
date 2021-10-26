@@ -6,6 +6,7 @@ namespace User\Http\Controllers\Front;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Orders\Services\Grpc\Order;
 use User\Http\Requests\User\profile\ChangePasswordRequest;
@@ -20,6 +21,7 @@ use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
+use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Services\OrderClientFacade;
 use User\Services\UserService;
 use User\Support\UserActivityHelper;
@@ -267,7 +269,7 @@ class UserController extends Controller
     {
 
 
-        $user = $this->user_service->createAndSponsorUser($request);
+        list($user, $password) = $this->user_service->createAndSponsorUser($request);
 
         $order = new Order();
         $order->setFromUserId((int)auth()->user()->id);
@@ -275,7 +277,12 @@ class UserController extends Controller
         $order->setPackageId((int)$request->package_id);
         $acknowledge = OrderClientFacade::sponsorPackage($order);
 
-        if($acknowledge->getStatus()){
+        if ($acknowledge->getStatus()) {
+            try {
+                UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $password), $user->email);
+            } catch (\Exception $exception) {
+                Log::error("UserController@sponsor => sending email failed " . $exception->getMessage());
+            }
             return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'), ProfileResource::make($user));
         } else {
             $user->forceDelete();
@@ -284,8 +291,6 @@ class UserController extends Controller
 
 
     }
-
-
 
 
 }
