@@ -31,7 +31,7 @@ if (!function_exists('getMLMGrpcClient')) {
 if (!function_exists('getOrderGrpcClient')) {
     function getOrderGrpcClient()
     {
-        return new \Orders\Services\Grpc\OrdersServiceClient(env('MLM_GRPC_URL','staging-api-gateway.janex.org:9596'), [
+        return new \Orders\Services\Grpc\OrdersServiceClient(env('SUBSCRIPTION_GRPC_URL','staging-api-gateway.janex.org:9596'), [
             'credentials' => \Grpc\ChannelCredentials::createInsecure()
         ]);
     }

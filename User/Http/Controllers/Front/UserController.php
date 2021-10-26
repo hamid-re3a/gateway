@@ -286,7 +286,7 @@ class UserController extends Controller
             return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'), ProfileResource::make($user));
         } else {
             $user->forceDelete();
-            return api()->error();
+            return api()->error($acknowledge->getMessage());
         }
 
 
