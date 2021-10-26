@@ -3,7 +3,7 @@
 namespace User\Http\Controllers\Front;
 
 
-use User\Http\Requests\User\Session\TerminateSessionRequest;
+use User\Http\Requests\User\session\TerminateSessionRequest;
 use User\Http\Resources\User\ActiveSessionsResource;
 use Illuminate\Routing\Controller;
 

@@ -282,8 +282,6 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>&nbsp;</div>
                 <div>Here is your password {{password}}.</div>
                 <div>&nbsp;</div>
-                <h2 style="text-align: center;"><span style="background-color: #ffff00;">{{otp}}</span></h2>
-                <p>This code is valid only for {{otp_expire_duration}}. You will need to request another code once expired.</p>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
                 </div>
