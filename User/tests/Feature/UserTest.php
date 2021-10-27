@@ -7,6 +7,7 @@ namespace User\tests\Feature;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Orders\Services\Grpc\Acknowledge;
+use MLM\Services\Grpc\Acknowledge as MLMAck;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
@@ -16,8 +17,7 @@ use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
-use User\Models\UserBlockHistory;
-use User\Models\UserHistory;
+use User\Services\MlmClientFacade;
 use User\Services\OrderClientFacade;
 
 class UserTest extends \User\tests\UserTest
@@ -81,6 +81,9 @@ class UserTest extends \User\tests\UserTest
     {
 
         Mail::fake();
+        $ack = new MLMAck();
+        $ack->setStatus(true);
+        MlmClientFacade::shouldReceive('hasValidPackage')->once()->andReturn($ack);
         $response = $this->post(route('auth.register'), [
             "first_name" => 'hamid',
             "last_name" => 'noruzi',
