@@ -122,7 +122,7 @@ class UserActivityHelper
     /**
      * @throws \Exception
      */
-    public static function makeEmailVerificationOtp(User $user, Request $request, $is_welcome = true, $with_password = false): array
+    public static function makeEmailVerificationOtp(User $user, Request $request, $is_welcome = true): array
     {
         $data = [];
         $data['try_in'] = null;
@@ -149,10 +149,7 @@ class UserActivityHelper
             ]);
 
 
-            if ($with_password && $is_welcome) {
-                $password = self::addPasswordToUser($user);
-                UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $token, $password), $user->email);
-            } else if ($is_welcome)
+             if ($is_welcome)
                 UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
                 UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
@@ -246,15 +243,5 @@ class UserActivityHelper
         return $data;
     }
 
-    /**
-     * @param User $user
-     * @return string
-     */
-    private static function addPasswordToUser(User $user): string
-    {
-        $password = strtolower(Str::random(8));
-        $user->password = $password;
-        $user->save();
-        return $password;
-    }
+
 }

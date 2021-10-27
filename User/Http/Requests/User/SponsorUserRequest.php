@@ -24,6 +24,8 @@ class SponsorUserRequest extends FormRequest
             'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'username' => ['required', 'unique:users,username', 'regex:/^[a-z][a-z0-9_]{2,}$/'],
             'birthday' => 'nullable|date|before:' . now() . '|date_format:Y/m/d',
+
+            'package_id' => 'required|numeric',
         ];
     }
 

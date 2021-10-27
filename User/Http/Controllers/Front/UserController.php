@@ -6,24 +6,37 @@ namespace User\Http\Controllers\Front;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use User\Http\Requests\User\Profile\UpdateAvatarRequest;
-use User\Http\Requests\User\Profile\UpdateContactDetails;
-use User\Http\Requests\User\Profile\UpdatePersonalDetails;
-use User\Http\Requests\User\Profile\ChangePasswordRequest;
-use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
-use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
+use Orders\Services\Grpc\Order;
+use User\Http\Requests\User\profile\ChangePasswordRequest;
+use User\Http\Requests\User\profile\ChangeTransactionPasswordRequest;
+use User\Http\Requests\User\profile\UpdateAvatarRequest;
+use User\Http\Requests\User\profile\UpdateContactDetails;
+use User\Http\Requests\User\profile\UpdatePersonalDetails;
+use User\Http\Requests\User\profile\VerifyTransactionPasswordOtp;
 use User\Http\Requests\User\SponsorUserRequest;
 use User\Http\Resources\Auth\ProfileResource;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
-use User\Models\User;
+use User\Mail\User\WelcomeWithPasswordEmail;
+use User\Services\OrderClientFacade;
+use User\Services\UserService;
 use User\Support\UserActivityHelper;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserService
+     */
+    private $user_service;
+
+    public function __construct(UserService $user_service)
+    {
+        $this->user_service = $user_service;
+    }
 
     /**
      * Get user profile details
@@ -31,7 +44,7 @@ class UserController extends Controller
      */
     public function getDetails()
     {
-        return api()->success(null,ProfileDetailsResource::make(auth()->user()));
+        return api()->success(null, ProfileDetailsResource::make(auth()->user()));
     }
 
     /**
@@ -50,7 +63,7 @@ class UserController extends Controller
             ]);
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            if(getSetting('IS_LOGIN_PASSWORD_CHANGE_EMAIL_ENABLE'))
+            if (getSetting('IS_LOGIN_PASSWORD_CHANGE_EMAIL_ENABLE'))
                 UrgentEmailJob::dispatch(new PasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
             DB::commit();
@@ -76,7 +89,7 @@ class UserController extends Controller
             ]);
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            if(getSetting('IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE'))
+            if (getSetting('IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE'))
                 UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
             DB::commit();
@@ -159,9 +172,9 @@ class UserController extends Controller
             DB::beginTransaction();
             $request->user()->update($request->validated());
             DB::commit();
-        }  catch (\Throwable $exception) {
+        } catch (\Throwable $exception) {
             DB::rollBack();
-            return api()->error(trans('user.responses.global-error'),null,500,null);
+            return api()->error(trans('user.responses.global-error'), null, 500, null);
         }
 
         return api()->success(trans('user.responses.profile-details-updated'), ProfileDetailsResource::make(auth()->user()));
@@ -179,9 +192,9 @@ class UserController extends Controller
             DB::beginTransaction();
             $request->user()->update($request->validated());
             DB::commit();
-        }  catch (\Throwable $exception) {
+        } catch (\Throwable $exception) {
             DB::rollBack();
-            return api()->error(trans('user.responses.global-error'),null,500,null);
+            return api()->error(trans('user.responses.global-error'), null, 500, null);
         }
 
         return api()->success(trans('user.responses.profile-details-updated'), ProfileDetailsResource::make(auth()->user()));
@@ -195,7 +208,7 @@ class UserController extends Controller
      */
     public function updateAvatar(UpdateAvatarRequest $request)
     {
-        $fileName = auth()->user()->id . '-' .auth()->user()->member_id . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $fileName = auth()->user()->id . '-' . auth()->user()->member_id . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
         $mimeType = $request->file('avatar')->getMimeType();
         $request->file('avatar')->storeAs('/avatars/', $fileName);
         auth()->user()->update([
@@ -205,7 +218,7 @@ class UserController extends Controller
             ]
         ]);
 
-        return api()->success(trans('user.responses.avatar-updated'),[
+        return api()->success(trans('user.responses.avatar-updated'), [
             'mime' => $mimeType,
             'link' => route('customer.get-avatar-image')
         ]);
@@ -218,11 +231,11 @@ class UserController extends Controller
     public function getAvatarDetails()
     {
 
-        if(empty(auth()->user()->avatar))
-            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+        if (empty(auth()->user()->avatar))
+            return api()->error(trans('user.responses.user-has-no-avatar'), null, 404);
 
-        $avatar = json_decode(auth()->user()->avatar,true);
-        return api()->success(null,[
+        $avatar = json_decode(auth()->user()->avatar, true);
+        return api()->success(null, [
             'mime' => $avatar['mime'],
             'link' => route('customer.get-avatar-image')
         ]);
@@ -235,13 +248,13 @@ class UserController extends Controller
     public function getAvatarImage()
     {
 
-        if(empty(auth()->user()->avatar))
-            return api()->error(trans('user.responses.user-has-no-avatar'),null,404);
+        if (empty(auth()->user()->avatar))
+            return api()->error(trans('user.responses.user-has-no-avatar'), null, 404);
 
-        $avatar = json_decode(auth()->user()->avatar,true);
+        $avatar = json_decode(auth()->user()->avatar, true);
 
-        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
-            return api()->error('',null,404);
+        if (!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+            return api()->error('', null, 404);
 
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
     }
@@ -255,15 +268,28 @@ class UserController extends Controller
     public function sponsor(SponsorUserRequest $request)
     {
 
-        $data = $request->validated();
-        $data['sponsor_id'] = auth()->user()->id;
-        $data['password'] = '123456789!Q';
-        $user = User::query()->create($data);
-        $user->assignRole(USER_ROLE_CLIENT);
 
-        UserActivityHelper::makeEmailVerificationOtp($user, $request,true,true);
+        list($user, $password) = $this->user_service->createAndSponsorUser($request);
 
-        return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'),ProfileResource::make($user));
+        $order = new Order();
+        $order->setFromUserId((int)auth()->user()->id);
+        $order->setUserId((int)$user->id);
+        $order->setPackageId((int)$request->package_id);
+        $acknowledge = OrderClientFacade::sponsorPackage($order);
+
+        if ($acknowledge->getStatus()) {
+            try {
+                UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $password), $user->email);
+            } catch (\Exception $exception) {
+                Log::error("UserController@sponsor => sending email failed " . $exception->getMessage());
+            }
+            return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'), ProfileResource::make($user));
+        } else {
+            $user->forceDelete();
+            return api()->error($acknowledge->getMessage());
+        }
+
+
     }
 
 

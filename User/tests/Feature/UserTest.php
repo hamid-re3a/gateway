@@ -6,20 +6,74 @@ namespace User\tests\Feature;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Orders\Services\Grpc\Acknowledge;
+use MLM\Services\Grpc\Acknowledge as MLMAck;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
 use User\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
 use User\Mail\User\WelcomeEmail;
+use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
-use User\Models\UserBlockHistory;
-use User\Models\UserHistory;
+use User\Services\MlmClientFacade;
+use User\Services\OrderClientFacade;
 
 class UserTest extends \User\tests\UserTest
 {
 
+
+    /**
+     * @test
+     */
+    public function sponsor_user_green()
+    {
+
+        $user = User::query()->first();
+        $this->be($user);
+        $ack = new Acknowledge();
+        $ack->setStatus(true);
+        OrderClientFacade::shouldReceive('sponsorPackage')->once()->andReturn($ack);
+        Mail::fake();
+        $response = $this->post(route('customer.sponsor-new-user'), [
+            "first_name" => 'hamid',
+            "last_name" => 'noruzi',
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "username" => 'hamid',
+            "package_id" => 1
+        ]);
+        $user = User::query()->where('username','hamid')->first();
+        $this->assertNotNull($user);
+        $response->assertOk();
+
+        Mail::assertSent(WelcomeWithPasswordEmail::class);
+    }
+    /**
+     * @test
+     */
+    public function sponsor_user_failure()
+    {
+
+        $user = User::query()->first();
+        $this->be($user);
+        $ack = new Acknowledge();
+        $ack->setStatus(false);
+        OrderClientFacade::shouldReceive('sponsorPackage')->once()->andReturn($ack);
+        Mail::fake();
+        $response = $this->post(route('customer.sponsor-new-user'), [
+            "first_name" => 'hamid',
+            "last_name" => 'noruzi',
+            "email" => 'hamidrezanoruzinejad@gmail.com',
+            "username" => 'hamid',
+            "package_id" => 1
+        ]);
+        $user = User::query()->where('username','hamid')->first();
+        $this->assertNull($user);
+        $response->assertStatus(400);
+
+        Mail::assertNotSent(WelcomeWithPasswordEmail::class);
+    }
     /**
      * @test
      */
@@ -27,6 +81,9 @@ class UserTest extends \User\tests\UserTest
     {
 
         Mail::fake();
+        $ack = new MLMAck();
+        $ack->setStatus(true);
+        MlmClientFacade::shouldReceive('hasValidPackage')->once()->andReturn($ack);
         $response = $this->post(route('auth.register'), [
             "first_name" => 'hamid',
             "last_name" => 'noruzi',

@@ -3,12 +3,16 @@
 namespace User;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
 use User\Models\CryptoWallet;
 use User\Models\User;
 use User\Observers\CryptoWalletObserver;
 use User\Observers\UserObserver;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
+use User\Services\MlmClientFacade;
+use User\Services\MlmGrpcClientProvider;
+use User\Services\OrderClientFacade;
+use User\Services\OrderGrpcClientProvider;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -39,6 +43,9 @@ class UserServiceProvider extends ServiceProvider
 
     public function boot()
     {
+
+        OrderClientFacade::shouldProxyTo(OrderGrpcClientProvider::class);
+        MlmClientFacade::shouldProxyTo(MlmGrpcClientProvider::class);
         $this->registerHelpers();
 
         Route::prefix('api/gateway/default')
