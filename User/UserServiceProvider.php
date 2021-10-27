@@ -9,6 +9,8 @@ use User\Models\CryptoWallet;
 use User\Models\User;
 use User\Observers\CryptoWalletObserver;
 use User\Observers\UserObserver;
+use User\Services\MlmClientFacade;
+use User\Services\MlmGrpcClientProvider;
 use User\Services\OrderClientFacade;
 use User\Services\OrderGrpcClientProvider;
 
@@ -43,7 +45,7 @@ class UserServiceProvider extends ServiceProvider
     {
 
         OrderClientFacade::shouldProxyTo(OrderGrpcClientProvider::class);
-
+        MlmClientFacade::shouldProxyTo(MlmGrpcClientProvider::class);
         $this->registerHelpers();
 
         Route::prefix('api/gateway/default')

@@ -29,6 +29,7 @@ use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
 use User\Models\LoginAttempt;
 use User\Models\User;
+use User\Services\MlmClientFacade;
 use User\Support\UserActivityHelper;
 
 class AuthController extends Controller
@@ -47,13 +48,20 @@ class AuthController extends Controller
     {
 
         //Check if system is not available
-        if($this->systemIsUnderMaintenance())
-            return api()->error(null,[
+        if ($this->systemIsUnderMaintenance())
+            return api()->error(null, [
                 'subject' => trans('user.responses.we-are-under-maintenance')
-            ],406);
+            ], 406);
 
         $data = $request->validated();
-        $data['sponsor_id'] = User::query()->where('username',$request->sponsor_username)->first()->id;
+        $sponsor = User::query()->where('username', $request->sponsor_username)->first();
+        $ack = MlmClientFacade::hasValidPackage($sponsor->getUserService());
+        if (!$ack->getStatus()) {
+            return api()->error(null,'',422,[
+                'sponsor_username' => trans('user.responses.sponsor-has-no-valid-package')
+            ]);
+        }
+        $data['sponsor_id'] = $sponsor->id;
         $user = User::query()->create($data);
         $user->assignRole(USER_ROLE_CLIENT);
 
@@ -79,10 +87,10 @@ class AuthController extends Controller
         $user = User::query()->where('email', $credentials['email'])->first();
 
         //Check if system is not available
-        if($user->roles()->count() == 1 AND $user->hasRole(USER_ROLE_CLIENT) AND $this->systemIsUnderMaintenance())
-            return api()->error(null,[
+        if ($user->roles()->count() == 1 AND $user->hasRole(USER_ROLE_CLIENT) AND $this->systemIsUnderMaintenance())
+            return api()->error(null, [
                 'subject' => trans('user.responses.we-are-under-maintenance')
-            ],406);
+            ], 406);
 
         $login_attempt = LoginAttempt::find($request->attributes->get('login_attempt'));
 
@@ -104,10 +112,10 @@ class AuthController extends Controller
         if (!$user->isEmailVerified())
             return api()->error(trans('user.responses.go-activate-your-email'), null, 403);
 
-        if($user->isDeactivate())
-            return api()->error(trans('user.responses.your-account-is-deactivate'),null,403);
+        if ($user->isDeactivate())
+            return api()->error(trans('user.responses.your-account-is-deactivate'), null, 403);
 
-            $token = $this->getNewToken($user);
+        $token = $this->getNewToken($user);
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
@@ -196,8 +204,8 @@ class AuthController extends Controller
         if ($user->isEmailVerified())
             return api()->success(trans('user.responses.email-is-already-verified'));
 
-        if($user->isDeactivate())
-            return api()->error(trans('user.responses.your-account-is-deactivate'),null,403);
+        if ($user->isDeactivate())
+            return api()->error(trans('user.responses.your-account-is-deactivate'), null, 403);
 
         $duration = getSetting('USER_EMAIL_VERIFICATION_OTP_DURATION');
         $otp_db = $user->otps()
@@ -268,7 +276,7 @@ class AuthController extends Controller
      */
     public function resetForgetPassword(ResetForgetPasswordRequest $request)
     {
-        try{
+        try {
             DB::beginTransaction();
             $user = User::whereEmail($request->get('email'))->first();
             $duration = getSetting('USER_FORGOT_PASSWORD_OTP_DURATION');
@@ -307,7 +315,7 @@ class AuthController extends Controller
                 return api()->success(trans('user.responses.password-successfully-changed'));
             }
 
-        } catch(Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             return api()->error('user.responses.global-error', null, 500);
         }
@@ -356,7 +364,7 @@ class AuthController extends Controller
      */
     private function getNewToken($user)
     {
-        return $user->createToken(getSetting("APP_NAME"),[]);
+        return $user->createToken(getSetting("APP_NAME"), []);
     }
 
     private function systemIsUnderMaintenance()
@@ -370,15 +378,15 @@ class AuthController extends Controller
 
         $response = false;
 
-        if(!empty($registration_block_from_date) OR !empty($registration_block_to_date)) {
+        if (!empty($registration_block_from_date) OR !empty($registration_block_to_date)) {
 
-            if(!empty($registration_block_from_date) AND !empty($registration_block_to_date))
-                $response = Carbon::now()->between($registration_block_from_date,$registration_block_to_date);
+            if (!empty($registration_block_from_date) AND !empty($registration_block_to_date))
+                $response = Carbon::now()->between($registration_block_from_date, $registration_block_to_date);
 
-            if(!empty($registration_block_from_date) AND empty($registration_block_to_date) AND $registration_block_from_date->isPast())
+            if (!empty($registration_block_from_date) AND empty($registration_block_to_date) AND $registration_block_from_date->isPast())
                 $response = true;
 
-            if(empty($registration_block_from_date) AND !empty($registration_block_to_date) AND !$registration_block_to_date->isPast())
+            if (empty($registration_block_from_date) AND !empty($registration_block_to_date) AND !$registration_block_to_date->isPast())
                 $response = true;
         }
 
