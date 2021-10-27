@@ -271,23 +271,23 @@ class UserController extends Controller
 
         list($user, $password) = $this->user_service->createAndSponsorUser($request);
 
-//        $order = new Order();
-//        $order->setFromUserId((int)auth()->user()->id);
-//        $order->setUserId((int)$user->id);
-//        $order->setPackageId((int)$request->package_id);
-//        $acknowledge = OrderClientFacade::sponsorPackage($order);
+        $order = new Order();
+        $order->setFromUserId((int)auth()->user()->id);
+        $order->setUserId((int)$user->id);
+        $order->setPackageId((int)$request->package_id);
+        $acknowledge = OrderClientFacade::sponsorPackage($order);
 
-//        if ($acknowledge->getStatus()) {
+        if ($acknowledge->getStatus()) {
             try {
                 UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $password), $user->email);
             } catch (\Exception $exception) {
                 Log::error("UserController@sponsor => sending email failed " . $exception->getMessage());
             }
             return api()->success(trans('user.responses.successfully-registered-go-activate-your-email'), ProfileResource::make($user));
-//        } else {
-//            $user->forceDelete();
-//            return api()->error($acknowledge->getMessage());
-//        }
+        } else {
+            $user->forceDelete();
+            return api()->error($acknowledge->getMessage());
+        }
 
 
     }
