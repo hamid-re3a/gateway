@@ -203,6 +203,10 @@ class User extends Authenticatable
         if(request()->has('rank'))
             $query->where('rank_name','LIKE', '%' . request()->get('rank') . '%');
 
+        if(request()->has('ranks') AND is_array(request()->get('ranks')))
+            foreach(request()->get('ranks') AS $rank)
+                $query->where('rank_name','LIKE', '%' . $rank . '%');
+
         if(request()->has('email'))
             $query->where('email','LIKE','%'. request()->get('email') .'%');
 
