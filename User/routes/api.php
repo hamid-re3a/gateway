@@ -32,7 +32,7 @@ Route::middleware('user_activity')->group(function () {
                 Route::name('user.')->prefix('users')->group(function () {
                     Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data');
                     Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
-                    Route::get('', [AdminUserController::class, 'index'])->name('users-list');
+                    Route::post('', [AdminUserController::class, 'index'])->name('users-list');
                     Route::post('/user', [AdminUserController::class, 'getUser'])->name('user-data');
                     Route::patch('/', [AdminUserController::class, 'update'])->name('update');
                     Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
