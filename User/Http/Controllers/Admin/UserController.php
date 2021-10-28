@@ -11,6 +11,7 @@ use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
 use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
+use User\Http\Requests\Admin\UserListRequest;
 use User\Http\Requests\Admin\UserUpdateRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
 use User\Http\Resources\OtpResource;
@@ -42,10 +43,12 @@ class UserController extends Controller
      * Get user's list
      * @group
      * Admin > User
+     * @param UserListRequest $request
+     * @return JsonResponse
      */
-    public function index()
+    public function index(UserListRequest $request)
     {
-        $list = User::query()->paginate();
+        $list = User::query()->filter()->paginate();
         return api()->success(null, [
             'list' => ProfileDetailsResource::collection($list),
             'pagination' => [

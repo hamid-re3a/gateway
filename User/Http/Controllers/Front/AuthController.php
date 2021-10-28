@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
+use MLM\Services\Grpc\MLMServiceClient;
 use User\Http\Requests\Auth\EmailExistenceRequest;
 use User\Http\Requests\Auth\EmailVerificationOtpRequest;
 use User\Http\Requests\Auth\ForgetPasswordRequest;
@@ -119,6 +120,9 @@ class AuthController extends Controller
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
+
+        if($user->updated_at->addDay()->isPast())
+            $user->updateUserRank();
 
         UrgentEmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
         return $this->respondWithToken($token);
