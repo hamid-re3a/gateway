@@ -20,6 +20,7 @@ use User\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::middleware('user_activity')->group(function () {
 
+    Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
     Route::get('general/user/avatar/{member_id}/image', [GeneralController::class, 'getAvatarImage'])->name('avatar-image');
     Route::get('general/user/avatar/{member_id}/file', [GeneralController::class, 'getAvatarFile'])->name('avatar-file');
 
@@ -138,7 +139,7 @@ Route::middleware('user_activity')->group(function () {
                         Route::get('/', [ActivityController::class, 'index'])->name('full-list');
                     });
 
-                    Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
+//                    Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
 
                     Route::prefix('general')->name('general.')->group(function () {
                         Route::get('countries', [GeneralController::class, 'countries'])->name('countries-list');
