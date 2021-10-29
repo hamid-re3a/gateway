@@ -12,6 +12,7 @@ use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
 use Spatie\Permission\Traits\HasRoles;
 use User\Observers\UserObserver;
+use User\Services\MlmClientFacade;
 
 /**
  * User\Models\User
@@ -219,7 +220,7 @@ class User extends Authenticatable
 
     public function updateUserRank()
     {
-        $user_rank_grpc = MLMServiceClient::getUserRank($this->getUserService());
+        $user_rank_grpc = MlmClientFacade::getUserRank($this->getUserService());
         $this->update([
             'rank' => $user_rank_grpc->getRankName()
         ]);
