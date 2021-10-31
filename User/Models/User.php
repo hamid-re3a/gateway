@@ -222,7 +222,7 @@ class User extends Authenticatable
     {
         $user_rank_grpc = MlmClientFacade::getUserRank($this->getUserService());
         $this->update([
-            'rank' => $user_rank_grpc->getRankName()
+            'rank_name' => $user_rank_grpc->getRankName()
         ]);
     }
 
