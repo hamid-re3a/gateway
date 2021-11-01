@@ -20,6 +20,7 @@ use User\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::middleware('user_activity')->group(function () {
 
+    Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
     Route::get('general/user/avatar/{member_id}/image', [GeneralController::class, 'getAvatarImage'])->name('avatar-image');
     Route::get('general/user/avatar/{member_id}/file', [GeneralController::class, 'getAvatarFile'])->name('avatar-file');
 
@@ -32,7 +33,7 @@ Route::middleware('user_activity')->group(function () {
                 Route::name('user.')->prefix('users')->group(function () {
                     Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data');
                     Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
-                    Route::get('', [AdminUserController::class, 'index'])->name('users-list');
+                    Route::post('', [AdminUserController::class, 'index'])->name('users-list');
                     Route::post('/user', [AdminUserController::class, 'getUser'])->name('user-data');
                     Route::patch('/', [AdminUserController::class, 'update'])->name('update');
                     Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
@@ -138,7 +139,7 @@ Route::middleware('user_activity')->group(function () {
                         Route::get('/', [ActivityController::class, 'index'])->name('full-list');
                     });
 
-                    Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
+//                    Route::get('all_settings', [SettingController::class, 'index'])->name('all-settings');
 
                     Route::prefix('general')->name('general.')->group(function () {
                         Route::get('countries', [GeneralController::class, 'countries'])->name('countries-list');

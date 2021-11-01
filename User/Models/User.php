@@ -7,10 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use MLM\Services\Grpc\MLMServiceClient;
 use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
 use Spatie\Permission\Traits\HasRoles;
 use User\Observers\UserObserver;
+use User\Services\MlmClientFacade;
 
 /**
  * User\Models\User
@@ -45,6 +47,7 @@ use User\Observers\UserObserver;
  * @property string $address_line2
  * @property string $gender
  * @property string|null $transaction_password
+ * @property string|null $rank_name
  * @property string|null $avatar
  * @property string|null $passport_number
  * @property int|null $is_passport_number_accepted
@@ -62,6 +65,7 @@ use User\Observers\UserObserver;
  * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User filter()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
@@ -161,6 +165,7 @@ class User extends Authenticatable
         'email',
         'gender',
         'birthday',
+        'rank_name',
         'password',
         'transaction_password',
         'country_id',
@@ -186,6 +191,42 @@ class User extends Authenticatable
         'is_freeze' => 'boolean',
         'is_deactivate' => 'boolean',
     ];
+
+    /**
+     * Scopes
+     */
+
+    public function scopeFilter($query)
+    {
+        if(request()->has('username'))
+            $query->where('username','LIKE','%' . request()->get('username') . '%');
+
+        if(request()->has('rank'))
+            $query->where('rank_name','LIKE', '%' . request()->get('rank') . '%');
+
+        if(request()->has('ranks') AND is_array(request()->get('ranks')))
+            foreach(request()->get('ranks') AS $rank)
+                $query->where('rank_name','LIKE', '%' . $rank . '%');
+
+        if(request()->has('email'))
+            $query->where('email','LIKE','%'. request()->get('email') .'%');
+
+        if(request()->has('membership_id'))
+            $query->where('membership_id','LIKE','%' . request()->get('membership_id') . '%');
+
+        return $query;
+
+    }
+
+    public function updateUserRank()
+    {
+        $user_rank_grpc = MlmClientFacade::getUserRank($this->getUserService());
+        $this->update([
+            'rank_name' => $user_rank_grpc->getRankName()
+        ]);
+    }
+
+
     /**
      * relations
      */
