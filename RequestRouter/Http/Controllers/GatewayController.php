@@ -317,7 +317,7 @@ class GatewayController extends Controller
             $user = User::query()->find(auth()->user()->id);
 
             $request->headers->set('X-user-id', $user->id);
-            $user_service = $user->getUserService();
+            $user_service = $user->getGrpcMessage();
             $hash = md5(serialize($user_service));
             $request->headers->set('X-user-hash', $hash);
         }
