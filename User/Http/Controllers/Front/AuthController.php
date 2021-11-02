@@ -56,7 +56,7 @@ class AuthController extends Controller
 
         $data = $request->validated();
         $sponsor = User::query()->where('username', $request->sponsor_username)->first();
-        $ack = MlmClientFacade::hasValidPackage($sponsor->getUserService());
+        $ack = MlmClientFacade::hasValidPackage($sponsor->getGrpcMessage());
         if (!$ack->getStatus()) {
             return api()->error(null,'',422,[
                 'sponsor_username' => trans('user.responses.sponsor-has-no-valid-package')
