@@ -220,7 +220,7 @@ class User extends Authenticatable
 
     public function updateUserRank()
     {
-        $user_rank_grpc = MlmClientFacade::getUserRank($this->getUserService());
+        $user_rank_grpc = MlmClientFacade::getUserRank($this->getGrpcMessage());
         $this->update([
             'rank_name' => $user_rank_grpc->getRankName()
         ]);
@@ -326,7 +326,7 @@ class User extends Authenticatable
     /**
      * Methods
      */
-    public function getUserService()
+    public function getGrpcMessage()
     {
         $this->fresh();
         $user = new \User\Services\Grpc\User();
