@@ -312,7 +312,7 @@ class UserController extends Controller
         if(!$mlm_grpc->getStatus())
             return api()->notFound();
 
-        return api()->success(null,ProfileResource::make($node_user));
+        return api()->success(null,ProfileDetailsResource::make($node_user));
     }
 
 
