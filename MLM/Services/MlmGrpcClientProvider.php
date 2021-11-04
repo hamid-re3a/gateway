@@ -1,11 +1,12 @@
 <?php
 
 
-namespace User\Services;
+namespace MLM\Services;
 
 
 use MLM\Services\Grpc\Acknowledge;
 use MLM\Services\Grpc\Rank;
+use MLM\Services\Grpc\UserDescendantCheck;
 use Orders\Services\Grpc\Order;
 use User\Services\Grpc\User;
 
@@ -45,13 +46,22 @@ class MlmGrpcClientProvider
         return $submit_response;
     }
 
-
     public static function getUserRank(User $user) : Rank
     {
         /** @var $submit_response Rank */
         list($submit_response, $flag) = self::$client->getUserRank($user)->wait();
         if ($flag->code != 0)
             throw new \Exception('MLM not responding', 406);
+        return $submit_response;
+    }
+
+    public function isUserInSecondUserDescendant(UserDescendantCheck $request) : Acknowledge
+    {
+        /** @var $submit_response Acknowledge */
+        list($submit_response, $flag) = self::$client->isUserInSecondUserDescendant($request)->wait();
+        if ($flag->code != 0)
+            throw new \Exception('MLM not responding', 406);
+
         return $submit_response;
     }
 }

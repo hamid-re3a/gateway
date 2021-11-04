@@ -9,10 +9,10 @@ use User\Models\CryptoWallet;
 use User\Models\User;
 use User\Observers\CryptoWalletObserver;
 use User\Observers\UserObserver;
-use User\Services\MlmClientFacade;
-use User\Services\MlmGrpcClientProvider;
-use User\Services\OrderClientFacade;
-use User\Services\OrderGrpcClientProvider;
+use MLM\Services\MlmClientFacade;
+use MLM\Services\MlmGrpcClientProvider;
+use Order\Services\OrderClientFacade;
+use Order\Services\OrderGrpcClientProvider;
 
 class UserServiceProvider extends ServiceProvider
 {
