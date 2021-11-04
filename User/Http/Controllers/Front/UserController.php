@@ -26,7 +26,7 @@ use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\User;
-use Order\Services\OrderClientFacade;
+use Orders\Services\OrderClientFacade;
 use User\Services\UserService;
 use User\Support\UserActivityHelper;
 
@@ -295,8 +295,8 @@ class UserController extends Controller
     }
 
     /**
-     * Get sponsored users details
-     * @group Public User > Profile Management
+     * Get sponsored user details
+     * @group Public User > Sponsor
      * @param MemberIdRequest $request
      * @return JsonResponse
      */

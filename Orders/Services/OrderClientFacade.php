@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Order\Services;
+namespace Orders\Services;
 
 
 use Illuminate\Support\Facades\Facade;

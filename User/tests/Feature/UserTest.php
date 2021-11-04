@@ -18,7 +18,7 @@ use User\Models\LoginAttempt as LoginAttemptModel;
 use User\Models\Otp;
 use User\Models\User;
 use MLM\Services\MlmClientFacade;
-use Order\Services\OrderClientFacade;
+use Orders\Services\OrderClientFacade;
 
 class UserTest extends \User\tests\UserTest
 {
