@@ -26,7 +26,7 @@ use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\User;
-use Order\Services\OrderClientFacade;
+use Orders\Services\OrderClientFacade;
 use User\Services\UserService;
 use User\Support\UserActivityHelper;
 

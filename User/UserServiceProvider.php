@@ -11,8 +11,8 @@ use User\Observers\CryptoWalletObserver;
 use User\Observers\UserObserver;
 use MLM\Services\MlmClientFacade;
 use MLM\Services\MlmGrpcClientProvider;
-use Order\Services\OrderClientFacade;
-use Order\Services\OrderGrpcClientProvider;
+use Orders\Services\OrderClientFacade;
+use Orders\Services\OrderGrpcClientProvider;
 
 class UserServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Order\Services;
+namespace Orders\Services;
 
 use Orders\Services\Grpc\Acknowledge;
 use Orders\Services\Grpc\Order;
