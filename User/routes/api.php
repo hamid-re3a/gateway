@@ -126,6 +126,10 @@ Route::middleware('user_activity')->group(function () {
 //
 //                });
 
+                    Route::prefix('members')->name('members')->group(function(){
+                        Route::post('', [UserController::class,'getSponsoredUserDetails'])->name('show_node');
+                    });
+
                     Route::prefix('wallets')->group(function () {
                         Route::get('/available_crypto_currencies', [WalletController::class, 'availableCryptoCurrencies'])->name('wallets-available-crypto-currencies');
                         Route::get('all', [WalletController::class, 'index'])->name('wallets-list');

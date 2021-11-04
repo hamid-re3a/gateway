@@ -12,7 +12,7 @@ use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
 use Spatie\Permission\Traits\HasRoles;
 use User\Observers\UserObserver;
-use User\Services\MlmClientFacade;
+use MLM\Services\MlmClientFacade;
 
 /**
  * User\Models\User
