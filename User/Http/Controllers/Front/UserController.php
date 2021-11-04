@@ -296,7 +296,7 @@ class UserController extends Controller
 
     /**
      * Get sponsored user details
-     * @group Public User > Profile Management
+     * @group Public User > Sponsor
      * @param MemberIdRequest $request
      * @return JsonResponse
      */
