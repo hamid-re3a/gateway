@@ -29,6 +29,17 @@ const DEVELOPERS_SCRIPTS_CDN_IS_UP = false;
 const DEVELOPERS_STYLES_CDN = '';
 const DEVELOPERS_STYLES_CDN_IS_UP = false;
 
+
+const GENDER_MALE = "Male";
+const GENDER_FEMALE = "Female";
+const GENDER_OTHER = "Other";
+const GENDERS = [
+    GENDER_MALE,
+    GENDER_FEMALE,
+    GENDER_OTHER
+];
+
+
 const SETTINGS = [
     'APP_NAME' => [
         'value' => APP_NAME,
