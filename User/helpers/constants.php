@@ -280,7 +280,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>&nbsp;</div>
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
                 <div>&nbsp;</div>
-                <div>Here is your password <b>{{password}}  ~</b> .</div>
+                <div>Here is your password <b>{{password}}</b> .</div>
                 <div>&nbsp;</div>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
