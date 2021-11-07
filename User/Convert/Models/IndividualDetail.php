@@ -4,10 +4,10 @@ namespace User\Convert\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Individual extends Model
+class IndividualDetail extends Model
 {
     protected $guarded = [];
 
-    protected $table = '2297_ft_individual';
+    protected $table = '2297_user_details';
     protected $connection = 'conversion_mysql';
 }
