@@ -1,12 +1,10 @@
 <?php
 
-namespace User\Http\Requests\User\Profile;
+namespace User\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
-use User\Models\User;
 
-class UpdateAvatarRequest extends FormRequest
+class UserListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +20,16 @@ class UpdateAvatarRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
-     * @throws \Exception
      */
     public function rules()
     {
-
         return [
-            'avatar' => 'required|file|mimes:png,jpg,jpeg|max:2048',
+            'username' => 'nullable|string',
+            'rank' => 'nullable|string',
+            'ranks' => 'nullable|array',
+            'ranks.*' => 'nullable|string',
+            'email' => 'nullable|email:rfc,dns',
+            'membership_id' => 'nullable|numeric'
         ];
     }
-
 }

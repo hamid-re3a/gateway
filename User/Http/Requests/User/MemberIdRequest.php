@@ -1,12 +1,10 @@
 <?php
 
-namespace User\Http\Requests\User\Profile;
+namespace User\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
-use User\Models\User;
 
-class UpdateAvatarRequest extends FormRequest
+class MemberIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +24,8 @@ class UpdateAvatarRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
-            'avatar' => 'required|file|mimes:png,jpg,jpeg|max:2048',
+            'member_id' => 'required|exists:users,member_id',
         ];
     }
-
 }

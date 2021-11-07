@@ -8,13 +8,16 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use MLM\Services\Grpc\UserDescendantCheck;
+use MLM\Services\MlmClientFacade;
 use Orders\Services\Grpc\Order;
-use User\Http\Requests\User\profile\ChangePasswordRequest;
-use User\Http\Requests\User\profile\ChangeTransactionPasswordRequest;
-use User\Http\Requests\User\profile\UpdateAvatarRequest;
-use User\Http\Requests\User\profile\UpdateContactDetails;
-use User\Http\Requests\User\profile\UpdatePersonalDetails;
-use User\Http\Requests\User\profile\VerifyTransactionPasswordOtp;
+use User\Http\Requests\User\MemberIdRequest;
+use User\Http\Requests\User\Profile\ChangePasswordRequest;
+use User\Http\Requests\User\Profile\ChangeTransactionPasswordRequest;
+use User\Http\Requests\User\Profile\UpdateAvatarRequest;
+use User\Http\Requests\User\Profile\UpdateContactDetails;
+use User\Http\Requests\User\Profile\UpdatePersonalDetails;
+use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
 use User\Http\Requests\User\SponsorUserRequest;
 use User\Http\Resources\Auth\ProfileResource;
 use User\Http\Resources\User\ProfileDetailsResource;
@@ -22,7 +25,8 @@ use User\Jobs\UrgentEmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Mail\User\WelcomeWithPasswordEmail;
-use User\Services\OrderClientFacade;
+use User\Models\User;
+use Orders\Services\OrderClientFacade;
 use User\Services\UserService;
 use User\Support\UserActivityHelper;
 
@@ -259,11 +263,9 @@ class UserController extends Controller
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
     }
 
-
     /**
      * Sponsor New User
-     * @group
-     * Public User > Sponsor
+     * @group Public User > Sponsor
      */
     public function sponsor(SponsorUserRequest $request)
     {
@@ -290,6 +292,27 @@ class UserController extends Controller
         }
 
 
+    }
+
+    /**
+     * Get sponsored user details
+     * @group Public User > Sponsor
+     * @param MemberIdRequest $request
+     * @return JsonResponse
+     */
+    public function getSponsoredUserDetails(MemberIdRequest $request)
+    {
+        $node_user = User::query()->whereMemberId($request->get('member_id'))->first();
+
+        $mlm_message = new UserDescendantCheck();
+        $mlm_message->setUserIndexId(auth()->user()->id);
+        $mlm_message->setUserToShowId($node_user->id);
+
+        $mlm_grpc = MlmClientFacade::isUserInSecondUserDescendant($mlm_message);
+        if(!$mlm_grpc->getStatus())
+            return api()->notFound();
+
+        return api()->success(null,ProfileDetailsResource::make($node_user));
     }
 
 

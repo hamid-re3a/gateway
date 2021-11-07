@@ -24,7 +24,7 @@ class HasValidPackageMiddleware
                 if (!cache()->has($cacheKey)) {
 
                     /** @var $acknowledge Acknowledge */
-                    list($acknowledge,$stats) = getMLMGrpcClient()->hasValidPackage(auth()->user()->getUserService())->wait();
+                    list($acknowledge,$stats) = getMLMGrpcClient()->hasValidPackage(auth()->user()->getGrpcMessage())->wait();
 
                     if ($stats->code == 0) {
 

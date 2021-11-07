@@ -1,10 +1,8 @@
 <?php
 
-namespace User\Http\Requests\User\profile;
+namespace User\Http\Requests\User\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
-use User\Models\User;
 
 class UpdatePersonalDetails extends FormRequest
 {
