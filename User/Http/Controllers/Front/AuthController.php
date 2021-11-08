@@ -30,7 +30,7 @@ use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
 use User\Models\LoginAttempt;
 use User\Models\User;
-use User\Services\MlmClientFacade;
+use MLM\Services\MlmClientFacade;
 use User\Support\UserActivityHelper;
 
 class AuthController extends Controller

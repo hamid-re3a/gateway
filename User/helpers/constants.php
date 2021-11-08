@@ -29,6 +29,17 @@ const DEVELOPERS_SCRIPTS_CDN_IS_UP = false;
 const DEVELOPERS_STYLES_CDN = '';
 const DEVELOPERS_STYLES_CDN_IS_UP = false;
 
+
+const GENDER_MALE = "Male";
+const GENDER_FEMALE = "Female";
+const GENDER_OTHER = "Other";
+const GENDERS = [
+    GENDER_MALE,
+    GENDER_FEMALE,
+    GENDER_OTHER
+];
+
+
 const SETTINGS = [
     'APP_NAME' => [
         'value' => APP_NAME,
@@ -280,7 +291,7 @@ const EMAIL_CONTENT_SETTINGS = [
                 <div>&nbsp;</div>
                 <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
                 <div>&nbsp;</div>
-                <div>Here is your password {{password}}.</div>
+                <div>Here is your password <b>{{password}}</b> .</div>
                 <div>&nbsp;</div>
                 <p>Cheers,</p>
                 <p>Janex Support Team</p>
