@@ -359,7 +359,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'TOO_MANY_LOGIN_ATTEMPTS_TEMPORARY_BLOCK_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Too Many Attempts',
+        'subject'=>'Too Many Attempts - Account blocked for sometime',
         'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
@@ -463,7 +463,7 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'USER_ACCOUNT_ACTIVATED_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Account Activated',
+        'subject'=>'Account Activated by Admin',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is activated by {{actor_full_name}}</p>',
@@ -474,7 +474,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_DEACTIVATED_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Account Deactivated',
+        'subject'=>'Account Deactivated by Admin',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is deactivated by {{actor_full_name}}</p>',
@@ -485,7 +485,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_ACTIVATED_AUTOMATICALLY_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Account Activated',
+        'subject'=>'Account Automatically Activated',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=><<<EOT
