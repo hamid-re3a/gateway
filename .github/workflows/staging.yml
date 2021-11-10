@@ -46,5 +46,5 @@ jobs:
         sudo docker push staging-reg.dreamcometrue.ai/staging-api-gateway:1
     - name: deploy docker-compose
       run: | 
-        sudo docker-compose -f devops/docker-composse-files/docker-compose-staging.yml -p api-gateway down
-        sudo docker-compose -f devops/docker-composse-files/docker-compose-staging.yml -p api-gateway up -d
+        sudo docker-compose -f devops/docker-compose-files/docker-compose-staging.yml -p api-gateway down
+        sudo docker-compose -f devops/docker-compose-files/docker-compose-staging.yml -p api-gateway up -d
