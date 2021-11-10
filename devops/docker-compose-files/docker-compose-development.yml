@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    image: staging-reg.dreamcometrue.ai/development-api-gateway:1
+    restart: unless-stopped
+    networks:
+      - mysql_wo_r2f
+    ports:
+      - 127.0.0.1:30080:80
+      - 9595:9595
+
+networks:
+  mysql_wo_r2f:
+    external: true
