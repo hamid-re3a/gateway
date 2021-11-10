@@ -88,7 +88,7 @@ class UserController extends Controller
         $user = User::whereMemberId($request->get('user_id'))->first();
         if ($user->id == auth()->user()->id)
             return api()->error(trans('user.responses.you-cant-block-unblock-your-account'));
-        if ($request->get('deactivate')) {
+        if ($request->get('block')) {
             $user->block_type = USER_BLOCK_TYPE_BY_ADMIN;
             $user->block_reason = $request->has('block_reason') ? $request->get('block_reason') : trans('user.responses.user-account-deactivated-by-admin');
         } else {

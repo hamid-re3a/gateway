@@ -240,10 +240,10 @@ class User extends Authenticatable
         return $this->hasMany(Otp::class);
     }
 
-    public function agents()
-    {
-        return $this->hasMany(Agent::class,'user_id','id');
-    }
+//    public function agents()
+//    {
+//        return $this->hasMany(Agent::class,'user_id','id');
+//    }
 
     public function ips()
     {
@@ -303,9 +303,9 @@ class User extends Authenticatable
 
     public function signOut()
     {
-        $this->agents()->update([
-            'token_id' => null
-        ]);
+//        $this->agents()->update([
+//            'token_id' => null
+//        ]);
         $this->tokens()->delete();
     }
 

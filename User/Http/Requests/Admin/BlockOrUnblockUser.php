@@ -24,8 +24,8 @@ class BlockOrUnblockUser extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|email:rfc,dns|exists:users,member_id',
-            'block' => 'nullable|boolean',
+            'user_id' => 'required|integer|exists:users,member_id',
+            'block' => 'required|boolean',
             'block_reason' => 'nullable|string'
         ];
     }
