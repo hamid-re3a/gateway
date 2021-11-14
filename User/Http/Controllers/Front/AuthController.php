@@ -182,6 +182,10 @@ class AuthController extends Controller
     public function askForEmailVerificationOtp(EmailVerificationOtpRequest $request)
     {
         $user = User::whereEmail($request->get('email'))->first();
+
+        if ($user->isDeactivate())
+            return api()->error(trans('user.responses.your-account-is-deactivate'), null, 403);
+
         if ($user->isEmailVerified())
             return api()->success(trans('user.responses.email-is-already-verified'));
 
