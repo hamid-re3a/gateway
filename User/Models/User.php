@@ -198,21 +198,22 @@ class User extends Authenticatable
 
     public function scopeFilter($query)
     {
+        $query->where(1,'=',1);
         if(request()->has('username'))
-            $query->where('username','LIKE','%' . request()->get('username') . '%');
+            $query->orWhere('username','LIKE','%' . request()->get('username') . '%');
 
         if(request()->has('rank'))
-            $query->where('rank_name','LIKE', '%' . request()->get('rank') . '%');
+            $query->orWhere('rank_name','LIKE', '%' . request()->get('rank') . '%');
 
         if(request()->has('ranks') AND is_array(request()->get('ranks')))
             foreach(request()->get('ranks') AS $rank)
-                $query->where('rank_name','LIKE', '%' . $rank . '%');
+                $query->orWhere('rank_name','LIKE', '%' . $rank . '%');
 
         if(request()->has('email'))
-            $query->where('email','LIKE','%'. request()->get('email') .'%');
+            $query->orWhere('email','LIKE','%'. request()->get('email') .'%');
 
-        if(request()->has('membership_id'))
-            $query->where('membership_id','LIKE','%' . request()->get('membership_id') . '%');
+        if(request()->has('member_id'))
+            $query->orWhere('member_id','LIKE','%' . request()->get('member_id') . '%');
 
         return $query;
 
