@@ -21,6 +21,7 @@ class CountryCitySeeder extends Seeder
      */
     public function run()
     {
+
         try {
             DB::beginTransaction();
 
@@ -80,6 +81,7 @@ class CountryCitySeeder extends Seeder
                 City::query()->insert($chunked_cities->toArray());
             DB::commit();
         } catch (\Throwable $e) {
+
             DB::rollBack();
             throw $e;
 

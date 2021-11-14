@@ -20,6 +20,26 @@ const LOGOUT_CLIENTS_FOR_MAINTENANCE = false;
 const SYSTEM_IS_UNDER_MAINTENANCE_FROM_DATE = false;
 const SYSTEM_IS_UNDER_MAINTENANCE_TO_DATE = false;
 
+const DEVELOPERS_STYLES = '';
+const DEVELOPERS_STYLES_IS_ENABLED = false;
+const DEVELOPERS_SCRIPTS = '';
+const DEVELOPERS_SCRIPTS_IS_ENABLED = false;
+const DEVELOPERS_SCRIPTS_CDN = '';
+const DEVELOPERS_SCRIPTS_CDN_IS_UP = false;
+const DEVELOPERS_STYLES_CDN = '';
+const DEVELOPERS_STYLES_CDN_IS_UP = false;
+
+
+const GENDER_MALE = "Male";
+const GENDER_FEMALE = "Female";
+const GENDER_OTHER = "Other";
+const GENDERS = [
+    GENDER_MALE,
+    GENDER_FEMALE,
+    GENDER_OTHER
+];
+
+
 const SETTINGS = [
     'APP_NAME' => [
         'value' => APP_NAME,
@@ -111,6 +131,46 @@ const SETTINGS = [
         'value' => LOGOUT_CLIENTS_FOR_MAINTENANCE,
         'description' => 'Logout all logged-in clients for maintenance mode',
         'category' => 'User > Registration'
+    ],
+    'DEVELOPERS_STYLES' => [
+        'value' => DEVELOPERS_STYLES,
+        'description' => 'Developers styles',
+        'category' => 'Developers > Styles'
+    ],
+    'DEVELOPERS_STYLES_IS_ENABLED' => [
+        'value' => DEVELOPERS_STYLES_IS_ENABLED,
+        'description' => 'Developers styles is enabled or not',
+        'category' => 'Developers > Styles'
+    ],
+    'DEVELOPERS_SCRIPTS' => [
+        'value' => DEVELOPERS_SCRIPTS,
+        'description' => 'Developers scripts',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_SCRIPTS_IS_ENABLED' => [
+        'value' => DEVELOPERS_SCRIPTS_IS_ENABLED,
+        'description' => 'Developers scripts is enabled or not',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_SCRIPTS_CDN' => [
+        'value' => DEVELOPERS_SCRIPTS_CDN,
+        'description' => 'Developers scripts  CDN',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_SCRIPTS_CDN_IS_UP' => [
+        'value' => DEVELOPERS_SCRIPTS_CDN_IS_UP,
+        'description' => 'Developers scripts  CDN is up or down',
+        'category' => 'Developers > Scripts'
+    ],
+    'DEVELOPERS_STYLES_CDN' => [
+        'value' => DEVELOPERS_STYLES_CDN,
+        'description' => 'Developers Styles CDN',
+        'category' => 'Developers > Styles'
+    ],
+    'DEVELOPERS_STYLES_CDN_IS_UP' => [
+        'value' => DEVELOPERS_STYLES_CDN_IS_UP,
+        'description' => 'Developers Styles CDN is up or down',
+        'category' => 'Developers > Styles'
     ],
 ];
 const LOGIN_ATTEMPT_SETTINGS = [
@@ -219,6 +279,28 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name, otp otp token',
         'type'=>'email',
     ],
+    'USER_REGISTRATION_WELCOME_EMAIL_WITH_PASSWORD'=>[
+
+        'is_active' => true,
+        'subject'=>'Welcome to Janex',
+        'from'=>'it@ridetothefuture.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <div>Hello,&nbsp;{{full_name}}!</div>
+                <div>&nbsp;</div>
+                <div>We're excited to have you get started. First, you need to confirm your account by using the below code.</div>
+                <div>&nbsp;</div>
+                <div>Here is your password <b>{{password}}</b> .</div>
+                <div>&nbsp;</div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name,otp',
+        'variables_description'=>'full_name user full name, otp otp token',
+        'type'=>'email',
+    ],
     'SUSPICIOUS_LOGIN_ATTEMPT_EMAIL'=>[
 
         'is_active' => true,
@@ -277,7 +359,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'TOO_MANY_LOGIN_ATTEMPTS_TEMPORARY_BLOCK_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Too Many Attempts',
+        'subject'=>'Too Many Attempts - Account blocked for sometime',
         'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
@@ -381,7 +463,7 @@ const EMAIL_CONTENT_SETTINGS = [
     ],
     'USER_ACCOUNT_ACTIVATED_EMAIL'=>[
         'is_active' => true,
-        'subject'=>'Account Activated',
+        'subject'=>'Account Activated by Admin',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is activated by {{actor_full_name}}</p>',
@@ -392,7 +474,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_DEACTIVATED_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Account Deactivated',
+        'subject'=>'Account Deactivated by Admin',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=>'<p>Hello, {{full_name}}</p><p>Your account is deactivated by {{actor_full_name}}</p>',
@@ -403,7 +485,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_ACTIVATED_AUTOMATICALLY_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Account Activated',
+        'subject'=>'Account Automatically Activated',
         'from'=>'info@site.com',
         'from_name'=>'Ride To Future',
         'body'=><<<EOT

@@ -1,4 +1,6 @@
 User (User\tests\Feature\User)
+ [x] Sponsor user green
+ [x] Sponsor user failure
  [x] Register new user green
  [x] Register new user not enough strong password
  [x] Login when user has not activate its account

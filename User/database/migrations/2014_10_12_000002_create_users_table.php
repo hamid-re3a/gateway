@@ -26,8 +26,9 @@ class CreateUsersTable extends Migration
             $table->mediumText('address_line1')->nullable();
             $table->mediumText('address_line2')->nullable();
             $table->string('email',100)->unique()->index();
-            $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
-            $table->timestamp('birthday')->nullable();
+            $table->string('gender')->nullable();
+            $table->date('birthday')->nullable();
+            $table->string('rank_name')->nullable();
             $table->string('password');
             $table->string('transaction_password')->nullable();
             $table->foreignId('country_id')->nullable()->constrained('countries');

@@ -7,10 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use MLM\Services\Grpc\MLMServiceClient;
 use User\database\factories\UserFactory;
 use User\Exceptions\InvalidFieldException;
 use Spatie\Permission\Traits\HasRoles;
 use User\Observers\UserObserver;
+use MLM\Services\MlmClientFacade;
 
 /**
  * User\Models\User
@@ -37,26 +39,39 @@ use User\Observers\UserObserver;
  * @property string $last_name
  * @property string|null $username
  * @property string|null $phone_number
+ * @property string|null $mobile_number
+ * @property string|null $landline_number
  * @property string $email
  * @property string $password
+ * @property string $address_line1
+ * @property string $address_line2
+ * @property string $gender
  * @property string|null $transaction_password
+ * @property string|null $rank_name
  * @property string|null $avatar
  * @property string|null $passport_number
  * @property int|null $is_passport_number_accepted
  * @property string|null $national_id
  * @property int|null $is_national_id_accepted
+ * @property int|null $state_id
+ * @property int|null $city_id
+ * @property int|null $country_id
+ * @property int|null $zip_code
  * @property string|null $driving_licence
  * @property int|null $is_driving_licence_accepted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $birthday
  * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User filter()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDrivingLicence($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereMemberId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsDrivingLicenceAccepted($value)
@@ -150,6 +165,7 @@ class User extends Authenticatable
         'email',
         'gender',
         'birthday',
+        'rank_name',
         'password',
         'transaction_password',
         'country_id',
@@ -176,29 +192,40 @@ class User extends Authenticatable
         'is_deactivate' => 'boolean',
     ];
 
-    public function setPasswordAttribute($value)
+    /**
+     * Scopes
+     */
+
+    public function scopeFilter($query)
     {
-        if(empty($this->attributes['member_id'])) {
-            //User member_id field
-            $member_id = mt_rand(121212121,999999999);
-            while ($this->where('member_id', $member_id)->count())
-                $member_id = mt_rand(121212121,999999999);
+        if(request()->has('username'))
+            $query->where('username','LIKE','%' . request()->get('username') . '%');
 
-            $this->attributes['member_id'] = $member_id;
-        }
+        if(request()->has('rank'))
+            $query->where('rank_name','LIKE', '%' . request()->get('rank') . '%');
 
-        $this->attributes['password'] = bcrypt($value);
+        if(request()->has('ranks') AND is_array(request()->get('ranks')))
+            foreach(request()->get('ranks') AS $rank)
+                $query->where('rank_name','LIKE', '%' . $rank . '%');
+
+        if(request()->has('email'))
+            $query->where('email','LIKE','%'. request()->get('email') .'%');
+
+        if(request()->has('membership_id'))
+            $query->where('membership_id','LIKE','%' . request()->get('membership_id') . '%');
+
+        return $query;
+
     }
 
-    public function setTransactionPasswordAttribute($value)
+    public function updateUserRank()
     {
-        $this->attributes['transaction_password'] = bcrypt($value);
+        $user_rank_grpc = MlmClientFacade::getUserRank($this->getGrpcMessage());
+        $this->update([
+            'rank_name' => $user_rank_grpc->getRankName()
+        ]);
     }
 
-    public function getFullNameAttribute()
-    {
-        return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
-    }
 
     /**
      * relations
@@ -213,10 +240,10 @@ class User extends Authenticatable
         return $this->hasMany(Otp::class);
     }
 
-    public function agents()
-    {
-        return $this->hasMany(Agent::class,'user_id','id');
-    }
+//    public function agents()
+//    {
+//        return $this->hasMany(Agent::class,'user_id','id');
+//    }
 
     public function ips()
     {
@@ -276,9 +303,9 @@ class User extends Authenticatable
 
     public function signOut()
     {
-        $this->agents()->update([
-            'token_id' => null
-        ]);
+//        $this->agents()->update([
+//            'token_id' => null
+//        ]);
         $this->tokens()->delete();
     }
 
@@ -299,27 +326,21 @@ class User extends Authenticatable
     /**
      * Methods
      */
-    public function getUserService()
+    public function getGrpcMessage()
     {
         $this->fresh();
         $user = new \User\Services\Grpc\User();
-        $user->setId($this->attributes['id']);
-        $user->setFirstName($this->attributes['first_name']);
-        $user->setLastName($this->attributes['last_name']);
-        $user->setUsername($this->attributes['username']);
-        $user->setEmail($this->attributes['email']);
-        $user->setMemberId($this->attributes['member_id']);
-        if (isset($this->attributes['sponsor_id']) AND !empty($this->attributes['sponsor_id']))
-            $user->setSponsorId($this->attributes['sponsor_id']);
-
-        if (isset($this->attributes['block_type']) AND !empty($this->attributes['block_type']))
-            $user->setBlockType($this->attributes['block_type']);
-
-        if (isset($this->attributes['is_deactivate']))
-            $user->setIsDeactivate($this->attributes['is_deactivate']);
-
-        if (isset($this->attributes['is_freeze']))
-            $user->setIsFreeze($this->attributes['is_freeze']);
+        $user->setId((int)$this->attributes['id']);
+        $user->setFirstName((string)$this->attributes['first_name']);
+        $user->setLastName((string)$this->attributes['last_name']);
+        $user->setUsername((string)$this->attributes['username']);
+        $user->setEmail((string)$this->attributes['email']);
+        $user->setMemberId((int)$this->attributes['member_id']);
+        $user->setSponsorId((int)$this->attributes['sponsor_id']);
+        $user->setBlockType((string)$this->attributes['block_type']);
+        $user->setIsDeactivate((boolean)$this->attributes['is_deactivate']);
+        $user->setIsFreeze((boolean)$this->attributes['is_freeze']);
+        $user->setGender((string)$this->attributes['gender']);
 
         if ($this->getRoleNames()->count()) {
             $role_name = implode(",", $this->getRoleNames()->toArray());
@@ -340,6 +361,7 @@ class User extends Authenticatable
         }
 
     }
+
     public function setMobileNumberAttribute($value)
     {
         if(!empty($value)){
@@ -347,6 +369,31 @@ class User extends Authenticatable
         }
 
     }
+
+    public function setPasswordAttribute($value)
+    {
+        if(empty($this->attributes['member_id'])) {
+            //User member_id field
+            $member_id = mt_rand(121212121,999999999);
+            while ($this->where('member_id', $member_id)->count())
+                $member_id = mt_rand(121212121,999999999);
+
+            $this->attributes['member_id'] = $member_id;
+        }
+
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function setTransactionPasswordAttribute($value)
+    {
+        $this->attributes['transaction_password'] = bcrypt($value);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
+    }
+
 
 
 }

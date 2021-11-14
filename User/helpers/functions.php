@@ -23,22 +23,35 @@ function getSetting($key)
 if (!function_exists('getMLMGrpcClient')) {
     function getMLMGrpcClient()
     {
-        return new \MLM\Services\Grpc\MLMServiceClient('staging-api-gateway.janex.org:9598', [
+        return new \MLM\Services\Grpc\MLMServiceClient(env('MLM_GRPC_URL','staging-api-gateway.janex.org:9598'), [
+            'credentials' => \Grpc\ChannelCredentials::createInsecure()
+        ]);
+    }
+}
+if (!function_exists('getOrderGrpcClient')) {
+    function getOrderGrpcClient()
+    {
+        return new \Orders\Services\Grpc\OrdersServiceClient(env('SUBSCRIPTION_GRPC_URL','staging-api-gateway.janex.org:9596'), [
             'credentials' => \Grpc\ChannelCredentials::createInsecure()
         ]);
     }
 }
 function getEmailAndTextSetting($key)
 {
-    // Comment Test
-    if (DB::table('email_content_settings')->exists()) {
-        $setting = EmailContentSetting::query()->where('key', $key)->first();
-        if ($setting && !empty($setting->body))
-            return $setting->toArray();
+    $email = null;
+
+    $setting = EmailContentSetting::query()->where('key',$key)->first();
+    if ($setting && !empty($setting->value)) {
+        $email = $setting->toArray();
     }
 
     if (isset(EMAIL_CONTENT_SETTINGS[$key]))
-        return EMAIL_CONTENT_SETTINGS[$key];
+        $email = EMAIL_CONTENT_SETTINGS[$key];
+
+    if($email AND is_array($email)) {
+        $email['from'] = env('MAIL_FROM', $email['from']);
+        return $email;
+    }
 
     throw new Exception(trans('user.responses.main-key-settings-is-missing'));
 }
@@ -104,14 +117,19 @@ function secondsToHumanReadable($seconds)
 function getDbTranslate($key,$defaultValue = null)
 {
 
-    $translate = cache()->get('dbTranslates')->where('key', $key)->first();
-    if($translate)
-        return $translate->value;
-
-    \User\Models\Translate::insertOrIgnore([
+    if(cache()->has('dbTranslates')) {
+        $translate = cache()->get('dbTranslates')->where('key', $key)->first();
+        if($translate)
+            return $translate->value;
+    }
+    $translate = \User\Models\Translate::query()->firstOrCreate([
         'key' => $key
     ]);
 
-    return $defaultValue ? $defaultValue : $key;
+    $return = $translate AND !empty($translate->value) ? $translate->value : $translate->key;
+    if(!empty($defaultValue))
+        $return = $defaultValue;
+
+    return $return;
 
 }

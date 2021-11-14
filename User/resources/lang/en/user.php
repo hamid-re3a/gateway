@@ -13,6 +13,7 @@ return [
         'invalid-inputs-from-user' => 'Email or password is not correct',
         '2FA-is-now-disabled' => 'You\'ve disabled 2fa',
         'Invalid-verification-Code-Please-try-again' => 'Enter a valid 2FA code',
+        '2FA-is-already-enabled' => '2Fa is already enabled',
         '2FA-is-enabled-successfully' => 'You\'ve enabled 2fa',
         'ok'=>'ok',
         'login-successful' => 'You\'ve successfully logged in ',
@@ -70,7 +71,8 @@ return [
         'invalid-setting-key' => 'Invalid setting key',
         'invalid-email-key' => 'Invalid email key',
         'invalid-login-attempt-id' => 'Invalid login attempt',
-        'we-are-under-maintenance' => 'We\'re under maintenance .',
+        'we-are-under-maintenance' => 'We\'re under maintenance.',
+        'sponsor-has-no-valid-package' => 'Sponsor has no valid package.',
 
     ],
     'validation' => [

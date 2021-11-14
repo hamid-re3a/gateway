@@ -28,7 +28,7 @@ class UserRepository
         /** @var $user User */
         $user = new $this->entity_name;
         $user = $user->query()->whereId($id)->first();
-        return !is_null($user) ? $user->getUserService() : new \User\Services\Grpc\User;
+        return !is_null($user) ? $user->getGrpcMessage() : new \User\Services\Grpc\User;
     }
 
     public function getUserDataByMemberId($member_id): \User\Services\Grpc\User
@@ -36,7 +36,7 @@ class UserRepository
         /** @var $user User */
         $user = new $this->entity_name;
         $user = $user->query()->where('member_id','=',$member_id)->first();
-        return !is_null($user) ? $user->getUserService() : new \User\Services\Grpc\User;
+        return !is_null($user) ? $user->getGrpcMessage() : new \User\Services\Grpc\User;
     }
 
     public function getUserWallet($id, $crypto_name)
@@ -55,6 +55,13 @@ class UserRepository
             return $wallet;
 
         return false;
+    }
+
+    public function getUsersCount()
+    {
+        /**@var $model User*/
+        $model = new $this->entity_name;
+        return $model->query()->count();
     }
 
 }
