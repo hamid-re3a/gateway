@@ -40,27 +40,30 @@ class UpdateWalletRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @param  \Illuminate\Validation\Validator  $validator
+     * @param \Illuminate\Validation\Validator $validator
      * @return void
      */
     public function withValidator($validator)
     {
-        $cryptoCurrency = CryptoCurrency::find($this->get('crypto_currency_id'));
-        if($cryptoCurrency) {
-            try {
-                $validator->after(function($validator) use($cryptoCurrency){
-                    if(!empty($this->address) AND strlen($this->address) > 10){
-                        $cryptoValidator = Validation::make($cryptoCurrency->iso);
-                        if(!$cryptoValidator->validate($this->address))
-                            $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
-                    }
-                });
-            } catch (\Throwable $exception) {
-                Log::error('AddWalletRequest => ' . $exception->getMessage());
-                $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+        Log::info('Environment => ' . app()->environment());
+        if (!in_array(app()->environment(), ['development', 'staging'])) {
+            $cryptoCurrency = CryptoCurrency::find($this->get('crypto_currency_id'));
+            if ($cryptoCurrency) {
+                try {
+                    $validator->after(function ($validator) use ($cryptoCurrency) {
+                        if (!empty($this->address) AND strlen($this->address) > 10) {
+                            $cryptoValidator = Validation::make($cryptoCurrency->iso);
+                            if (!$cryptoValidator->validate($this->address))
+                                $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+                        }
+                    });
+                } catch (\Throwable $exception) {
+                    Log::error('AddWalletRequest => ' . $exception->getMessage());
+                    $validator->errors()->add('address', trans('user.responses.wrong-wallet-address'));
+                }
             }
+            return;
         }
-        return;
 
     }
 }
