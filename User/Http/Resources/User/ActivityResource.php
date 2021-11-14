@@ -17,11 +17,12 @@ class ActivityResource extends JsonResource
 
         return [
             'when' => $this->created_at->diffForHumans(),
-            'country'=> ($this->ip->exists() AND !empty($this->ip->country)) ? $this->ip->country : 'Unknown',
-            'state'=> ($this->ip->exists() AND !empty($this->ip->state)) ? $this->ip->state : 'Unknown',
-            'ip' => $this->ip->ip,
-            'device' => ($this->agent->exists() AND !empty($this->agent->device_type)) ? $this->agent->device_type : 'Unknown',
-            'browser'=> ($this->agent->exists() AND !empty($this->agent->browser)) ? $this->agent->browser . ' ' . $this->agent->browser_version : 'Unknown',
+            'country'=> !empty($this->ip_id) ? $this->ip->country : 'Unknown',
+            'state'=> !empty($this->ip_id) ? $this->ip->state : 'Unknown',
+            'ip' => !empty($this->ip_id) ? $this->ip->ip : 'Unknown',
+            'device' => !empty($this->agent_id) ? $this->agent->device_type : 'Unknown',
+            'platform' => !empty($this->agent_id) ? $this->agent->platform . '(' . $this->agent->platform_version .')' : 'Unknown',
+            'browser'=> !empty($this->agent_id) ? $this->agent->browser . ' ' . $this->agent->browser_version : 'Unknown',
             'action' => getDbTranslate($this->route, $this->route)
         ];
     }

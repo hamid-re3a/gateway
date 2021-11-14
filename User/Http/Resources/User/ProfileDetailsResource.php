@@ -3,6 +3,7 @@
 namespace User\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 use User\Models\User;
 
 class ProfileDetailsResource extends JsonResource
@@ -10,39 +11,47 @@ class ProfileDetailsResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function toArray($request)
     {
+        /**@var $user User */
+        $user = $this;
+
+        $avatar = null;
+        $avatar_check = json_decode($user->avatar,true);
+
+        if(isset($avatar_check) AND is_array($avatar_check) AND array_key_exists('file_name', $avatar_check) AND Storage::disk('local')->exists('/avatars/' . $avatar_check['file_name']))
+            $avatar = base64_encode(Storage::disk('local')->get('/avatars/' . $avatar_check['file_name']));
+
         return [
-            'id' => $this->id,
-            'member_id' => $this->member_id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'full_name' => $this->full_name,
-            'username' => $this->username,
-            'mobile_number' => $this->mobile_number,
-            'landline_number' => $this->landline_number,
-            'address_line1' => $this->address_line1,
-            'address_line2' => $this->address_line2,
-            'sponsor' => $this->sponsor()->exists() ? $this->sponsor->username : null,
+            'id' => $user->id,
+            'member_id' => $user->member_id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'full_name' => $user->full_name,
+            'username' => $user->username,
+            'mobile_number' => $user->mobile_number,
+            'landline_number' => $user->landline_number,
+            'address_line1' => $user->address_line1,
+            'address_line2' => $user->address_line2,
+            'sponsor' => $user->sponsor()->exists() ? $user->sponsor->username : null,
             'placement' => null,
-            'rank' => null,
+            'rank' => $user->rank_name,
             'status' => null,
             'genealogy' => null,
-            'phone_number' => $this->phone_number,
-            'email' => $this->email,
-            'gender' => $this->gender,
-            'birthday' => $this->birthday ? $this->birthday->format('Y/m/d') : null,
-            'avatar' => route('customer.general.avatar-image', [
-                'member_id' => $this->member_id
-            ]),
-            'state' => $this->state_id ? $this->state->name : null,
-            'city' => $this->city_id ? $this->city->name  : null,
-            'country' => $this->country_id ? $this->country->name : null,
-            'zip_code' => $this->zip_code ? $this->zip_code  : null,
-            'roles' => $this->getRoleNames()->first()
+            'phone_number' => $user->phone_number,
+            'email' => $user->email,
+            'gender' => $user->gender,
+            'birthday' => $user->birthday ? $user->birthday->format('Y/m/d') : null,
+            'avatar' => $avatar,
+            'state' => $user->state_id ? $user->state->name : null,
+            'city' => $user->city_id ? $user->city->name  : null,
+            'country' => $user->country_id ? $user->country->name : null,
+            'zip_code' => $user->zip_code ? $user->zip_code  : null,
+            'roles' => $user->getRoleNames()->first()
         ];
     }
 }

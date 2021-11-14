@@ -44,7 +44,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
         'api' => [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+//            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
 //            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         '2fa' => \User\Http\Middlewares\Login2FAMiddleware::class,
+        'token_passed_2fa' => \User\Http\Middlewares\TokenHasPassed2FAMiddleware::class,
         'user_activity' => UserActivityMiddleware::class,
         'login_attempt' => LoginAttemptMiddleware::class,
         'email_verified' => EmailVerifiedMiddleware::class,

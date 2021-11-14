@@ -21,6 +21,7 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "laravel/slack-notification-channel": "^2.3",
         "merkeleon/php-cryptocurrency-address-validation": "^1.2",
         "mix/grpc": "^3.0",
         "pragmarx/countries": "^0.7.2",

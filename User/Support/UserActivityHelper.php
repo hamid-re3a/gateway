@@ -14,6 +14,7 @@ use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordOtpEmail;
 use User\Mail\User\WelcomeEmail;
+use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\Agent as AgentModel;
 use User\Models\Ip;
 use User\Models\Otp;
@@ -147,7 +148,8 @@ class UserActivityHelper
                 "type" => OTP_TYPE_EMAIL_VERIFICATION
             ]);
 
-            if ($is_welcome)
+
+             if ($is_welcome)
                 UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
                 UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
@@ -191,6 +193,7 @@ class UserActivityHelper
                 "otp" => $token,
                 "type" => OTP_TYPE_CHANGE_TRANSACTION_PASSWORD
             ]);
+
 
             UrgentEmailJob::dispatch(new TransactionPasswordOtpEmail($user, $token), $user->email);
 
@@ -239,4 +242,6 @@ class UserActivityHelper
         $data['try_in_timestamp'] = $try_in_sec;
         return $data;
     }
+
+
 }

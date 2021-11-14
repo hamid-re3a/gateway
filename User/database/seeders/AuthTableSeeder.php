@@ -21,7 +21,6 @@ class AuthTableSeeder extends Seeder
         foreach (USER_ROLES as $role) {
             Role::query()->firstOrCreate(['name' => $role]);
         }
-
         if (!User::query()->where('email', 'admin@yopmail.com')->exists()) {
             $admin = User::whereUsername('admin')->first();
             if(!$admin){

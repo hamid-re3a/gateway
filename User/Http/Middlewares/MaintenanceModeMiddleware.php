@@ -57,9 +57,6 @@ class MaintenanceModeMiddleware
                 $response = true;
         }
 
-        if($response AND getSetting('LOGOUT_CLIENTS_FOR_MAINTENANCE')) //Check if we should revoke current active tokens
-            PersonalAccessToken::query()->where('tokenable_type','=','User\Models\User')->can(USER_ROLE_CLIENT)->delete();
-
         return $response;
     }
 

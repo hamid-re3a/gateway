@@ -3,12 +3,17 @@
 namespace User;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use User\Convert\ConvertCommand;
 use User\Models\CryptoWallet;
 use User\Models\User;
 use User\Observers\CryptoWalletObserver;
 use User\Observers\UserObserver;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
+use MLM\Services\MlmClientFacade;
+use MLM\Services\MlmGrpcClientProvider;
+use Orders\Services\OrderClientFacade;
+use Orders\Services\OrderGrpcClientProvider;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -39,6 +44,9 @@ class UserServiceProvider extends ServiceProvider
 
     public function boot()
     {
+
+        OrderClientFacade::shouldProxyTo(OrderGrpcClientProvider::class);
+        MlmClientFacade::shouldProxyTo(MlmGrpcClientProvider::class);
         $this->registerHelpers();
 
         Route::prefix('api/gateway/default')
@@ -49,8 +57,12 @@ class UserServiceProvider extends ServiceProvider
             if (isset($_SERVER['argv']))
                 if (array_search('db:seed', $_SERVER['argv']))
                     Artisan::call('db:seed', ['--class' => "User\database\seeders\AuthTableSeeder"]);
-        }
 
+
+            $this->commands([
+                ConvertCommand::class
+            ]);
+        }
 
         if ($this->app->runningInConsole()) {
             $this->seed();
