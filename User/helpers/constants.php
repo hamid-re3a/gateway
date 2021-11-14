@@ -194,7 +194,7 @@ const LOGIN_ATTEMPT_SETTINGS = [
 const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
         'is_active' => true,
-        'subject' => 'Forgot Password Code',
+        'subject' => 'Forgot Password OTP',
         'from' => 'it@ridetothefuture.com',
         'from_name' => 'Janex Support Team',
         'body' => <<<EOT
@@ -238,7 +238,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'VERIFICATION_EMAIL_OTP_EMAIL'=>[
 
         'is_active' => true,
-        'subject'=>'Email Verification Code',
+        'subject'=>'Email Verification OTP',
         'from'=>'it@ridetothefuture.com',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
