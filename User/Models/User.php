@@ -198,9 +198,9 @@ class User extends Authenticatable
 
     public function scopeFilter($query)
     {
-        $query->where(1,'=',1);
-        if(request()->has('username'))
+        if(request()->has('username')){
             $query->orWhere('username','LIKE','%' . request()->get('username') . '%');
+        }
 
         if(request()->has('rank'))
             $query->orWhere('rank_name','LIKE', '%' . request()->get('rank') . '%');
