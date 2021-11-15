@@ -2,9 +2,8 @@
 
 namespace User\Observers;
 
-use Illuminate\Support\Facades\Log;
 use User\Mail\User\UserAccountActivatedEmail;
-use User\Jobs\TrivialEmailJob;
+use User\Jobs\EmailJob;
 use User\Models\User;
 
 class UserObserver
@@ -34,7 +33,7 @@ class UserObserver
             if($user->isDirty('block_type')){
 
                 if($data['block_type'] != USER_BLOCK_TYPE_AUTOMATIC)
-                    TrivialEmailJob::dispatch(new UserAccountActivatedEmail($user,$history),$user->email);
+                    EmailJob::dispatch(new UserAccountActivatedEmail($user,$history),$user->email);
 
             }
         }

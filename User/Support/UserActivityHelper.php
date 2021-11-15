@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
-use User\Jobs\TrivialEmailJob;
-use User\Jobs\UrgentEmailJob;
-use User\Mail\User\ProfileManagement\EmailChangeTransactionPasswordOTP;
+use User\Jobs\EmailJob;
 use User\Mail\User\EmailVerifyOtp;
 use User\Mail\User\ForgetPasswordOtpEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordOtpEmail;
 use User\Mail\User\WelcomeEmail;
-use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\Agent as AgentModel;
 use User\Models\Ip;
 use User\Models\Otp;
@@ -106,7 +103,7 @@ class UserActivityHelper
                 "otp" => $token,
                 "type" => OTP_TYPE_EMAIL_FORGOT_PASSWORD
             ]);
-            UrgentEmailJob::dispatch(new ForgetPasswordOtpEmail($user, $token), $user->email);
+            EmailJob::dispatch(new ForgetPasswordOtpEmail($user, $token), $user->email);
             return [$token, $error];
 
         }
@@ -150,9 +147,9 @@ class UserActivityHelper
 
 
              if ($is_welcome)
-                UrgentEmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
+                EmailJob::dispatch(new WelcomeEmail($user, $token), $user->email);
             else
-                UrgentEmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
+                EmailJob::dispatch(new EmailVerifyOtp($user, $token), $user->email);
             return [$data, $error];
 
         }
@@ -195,7 +192,7 @@ class UserActivityHelper
             ]);
 
 
-            UrgentEmailJob::dispatch(new TransactionPasswordOtpEmail($user, $token), $user->email);
+            EmailJob::dispatch(new TransactionPasswordOtpEmail($user, $token), $user->email);
 
             return [$data, $error];
 

@@ -3,18 +3,12 @@
 namespace User\Http\Controllers\Front;
 
 
-use App\Jobs\User\UserDataJob;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
-use MLM\Services\Grpc\MLMServiceClient;
 use User\Http\Requests\Auth\EmailExistenceRequest;
 use User\Http\Requests\Auth\EmailVerificationOtpRequest;
 use User\Http\Requests\Auth\ForgetPasswordRequest;
@@ -24,7 +18,7 @@ use User\Http\Requests\Auth\ResetForgetPasswordRequest;
 use User\Http\Requests\Auth\UsernameExistenceRequest;
 use User\Http\Requests\Auth\VerifyEmailOtpRequest;
 use User\Http\Resources\Auth\ProfileResource;
-use User\Jobs\UrgentEmailJob;
+use User\Jobs\EmailJob;
 use User\Mail\User\NormalLoginEmail;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
@@ -124,7 +118,7 @@ class AuthController extends Controller
         if($user->updated_at->addDay()->isPast())
             $user->updateUserRank();
 
-        UrgentEmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
+        EmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
         return $this->respondWithToken($token);
     }
 
@@ -245,7 +239,7 @@ class AuthController extends Controller
             $token = $this->getNewToken($user);
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            UrgentEmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
+            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
 
             return $this->respondWithToken($token, 'user.responses.email-verified-successfully');
         }
@@ -314,7 +308,7 @@ class AuthController extends Controller
                 ]);
 
                 list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-                UrgentEmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
+                EmailJob::dispatch(new PasswordChangedEmail($user, $ip_db, $agent_db), $user->email);
 
                 $fp_db->update([
                     'is_used' => true

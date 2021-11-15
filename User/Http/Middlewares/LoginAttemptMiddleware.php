@@ -2,11 +2,10 @@
 
 namespace User\Http\Middlewares;
 
-use User\Jobs\TrivialEmailJob;
+use User\Jobs\EmailJob;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
-use User\Jobs\UrgentEmailJob;
 use User\Mail\User\SuspiciousLoginAttemptEmail;
 use User\Mail\User\TooManyLoginAttemptPermanentBlockedEmail;
 use User\Mail\User\TooManyLoginAttemptTemporaryBlockedEmail;
@@ -157,14 +156,14 @@ class LoginAttemptMiddleware
 
         if ($type_block == 'temp') {
             if (isset($last_login) && isset($try_in)) {
-                UrgentEmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $failed_login_attempt_count, $try_in), $user->email);
-                TrivialEmailJob::dispatch(new UserAccountAutomaticActivatedEmail($user), $user->email)->delay($intervals[$layer]);
+                EmailJob::dispatch(new TooManyLoginAttemptTemporaryBlockedEmail($user, $login_attempt, $failed_login_attempt_count, $try_in), $user->email);
+                EmailJob::dispatch(new UserAccountAutomaticActivatedEmail($user), $user->email)->delay($intervals[$layer]);
             }
         } else if ($type_block == 'always') {
             $user->block_type = USER_BLOCK_TYPE_AUTOMATIC;
             $user->block_reason = 'user.responses.max-login-attempt-blocked';
             $user->save();
-            UrgentEmailJob::dispatch(new TooManyLoginAttemptPermanentBlockedEmail($user, $login_attempt), $user->email);
+            EmailJob::dispatch(new TooManyLoginAttemptPermanentBlockedEmail($user, $login_attempt), $user->email);
         }
 
 
@@ -187,7 +186,7 @@ class LoginAttemptMiddleware
         ) {
             $login_attempt->is_from_new_device = 1;
             $login_attempt->save();
-            UrgentEmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt), $user->email);
+            EmailJob::dispatch(new SuspiciousLoginAttemptEmail($user, $login_attempt), $user->email);
         }
     }
 

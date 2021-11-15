@@ -5,15 +5,12 @@ namespace User\Services;
 
 use Illuminate\Support\Str;
 use User\Http\Requests\User\SponsorUserRequest;
-use User\Jobs\UrgentEmailJob;
-use User\Mail\User\WelcomeWithPasswordEmail;
 use User\Models\User;
 use User\Repository\UserRepository;
 use User\Services\Grpc\Id;
 use User\Services\Grpc\WalletInfo;
 use User\Services\Grpc\WalletRequest;
 use User\Services\Grpc\WalletType;
-use User\Support\UserActivityHelper;
 
 class UserService
 {

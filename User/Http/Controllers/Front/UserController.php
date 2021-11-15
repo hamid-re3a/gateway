@@ -21,7 +21,7 @@ use User\Http\Requests\User\Profile\VerifyTransactionPasswordOtp;
 use User\Http\Requests\User\SponsorUserRequest;
 use User\Http\Resources\Auth\ProfileResource;
 use User\Http\Resources\User\ProfileDetailsResource;
-use User\Jobs\UrgentEmailJob;
+use User\Jobs\EmailJob;
 use User\Mail\User\PasswordChangedEmail;
 use User\Mail\User\ProfileManagement\TransactionPasswordChangedEmail;
 use User\Mail\User\WelcomeWithPasswordEmail;
@@ -68,7 +68,7 @@ class UserController extends Controller
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             if (getSetting('IS_LOGIN_PASSWORD_CHANGE_EMAIL_ENABLE'))
-                UrgentEmailJob::dispatch(new PasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
+                EmailJob::dispatch(new PasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
             DB::commit();
             return api()->success(trans('user.responses.password-successfully-changed'));
@@ -94,7 +94,7 @@ class UserController extends Controller
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
             if (getSetting('IS_TRANSACTION_PASSWORD_CHANGE_EMAIL_ENABLE'))
-                UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
+                EmailJob::dispatch(new TransactionPasswordChangedEmail($request->user(), $ip_db, $agent_db), $request->user()->email);
 
             DB::commit();
             return api()->success(trans('user.responses.transaction-password-successfully-changed'));
@@ -157,7 +157,7 @@ class UserController extends Controller
             $request->user()->update([
                 'transaction_password' => $request->get('password') //bcrypt in User model (Mutator)
             ]);
-            UrgentEmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
+            EmailJob::dispatch(new TransactionPasswordChangedEmail(auth()->user(), $ip_db, $agent_db), auth()->user()->email);
 
             return api()->success(trans('user.responses.transaction-password-successfully-changed'));
         }
@@ -282,7 +282,7 @@ class UserController extends Controller
 
         if ($acknowledge->getStatus()) {
             try {
-                UrgentEmailJob::dispatch(new WelcomeWithPasswordEmail($user, $password), $user->email);
+                EmailJob::dispatch(new WelcomeWithPasswordEmail($user, $password), $user->email);
             } catch (\Exception $exception) {
                 Log::error("UserController@sponsor => sending email failed " . $exception->getMessage());
             }
