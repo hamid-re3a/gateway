@@ -113,7 +113,7 @@ class GeneralController extends Controller
 
         $avatar = json_decode($user->avatar,true);
 
-        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('/avatars/' . $avatar['file_name']))
             return api()->error('',null,404);
 
         return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
@@ -136,12 +136,10 @@ class GeneralController extends Controller
 
         $avatar = json_decode($user->avatar,true);
 
-        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('avatars/' . $avatar['file_name']))
             return api()->error('',null,404);
 
 
-        return response()->file(Storage::disk('local')->path('/avatars/' . $avatar['file_name']),[
-            'Content-Type' => $avatar['mime']
-        ]);
+        return Storage::disk('s3')->response('avatars/' . $avatar['file_name']);
     }
 }
