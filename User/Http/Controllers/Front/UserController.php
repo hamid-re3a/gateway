@@ -212,13 +212,14 @@ class UserController extends Controller
      */
     public function updateAvatar(UpdateAvatarRequest $request)
     {
-        $fileName = auth()->user()->id . '-' . auth()->user()->member_id . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $fileName = auth()->user()->id . '-' . auth()->user()->member_id . '-' . mt_rand(100,99999) . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
         $mimeType = $request->file('avatar')->getMimeType();
-        $request->file('avatar')->storeAs('/avatars/', $fileName);
+        $path = $request->file('avatar')->storeAs('avatars', $fileName ,'s3');
         auth()->user()->update([
             'avatar' => [
                 'file_name' => $fileName,
-                'mime' => $mimeType
+                'mime' => $mimeType,
+                'url' => Storage::disk('s3')->url($path)
             ]
         ]);
 
@@ -253,14 +254,14 @@ class UserController extends Controller
     {
 
         if (empty(auth()->user()->avatar))
-            return api()->error(trans('user.responses.user-has-no-avatar'), null, 404);
+            throw new \Exception(trans('user.responses.user-has-no-avatar'),404);
 
         $avatar = json_decode(auth()->user()->avatar, true);
 
-        if (!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('local')->exists('/avatars/' . $avatar['file_name']))
+        if (!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('avatars/' . $avatar['file_name']))
             return api()->error('', null, 404);
 
-        return base64_encode(Storage::disk('local')->get('/avatars/' . $avatar['file_name']));
+        return base64_encode(Storage::disk('s3')->get('avatars/' . $avatar['file_name']));
     }
 
     /**
