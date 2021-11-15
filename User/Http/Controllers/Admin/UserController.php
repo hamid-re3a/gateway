@@ -19,7 +19,7 @@ use User\Http\Resources\User\LoginHistoryResource;
 use User\Http\Resources\User\PasswordHistoryResource;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Http\Resources\User\UserBlockHistoryResource;
-use User\Jobs\UrgentEmailJob;
+use User\Jobs\EmailJob;
 use User\Mail\User\UserAccountHasBeenActivatedEmail;
 use User\Mail\User\UserAccountHasBeenDeactivatedEmail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
@@ -118,7 +118,7 @@ class UserController extends Controller
             $user->update([
                 'is_deactivate' => false
             ]);
-            UrgentEmailJob::dispatch(new UserAccountHasBeenDeactivatedEmail($user), $user->email);
+            EmailJob::dispatch(new UserAccountHasBeenDeactivatedEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-activate-successfully'));
         } else if ($request->get('status') == 'deactivate') {
 
@@ -127,7 +127,7 @@ class UserController extends Controller
             ]);
 
             $user->signOut();
-            UrgentEmailJob::dispatch(new UserAccountHasBeenActivatedEmail($user), $user->email);
+            EmailJob::dispatch(new UserAccountHasBeenActivatedEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-deativate-successfully'));
         }
 
@@ -150,14 +150,14 @@ class UserController extends Controller
             $user->update([
                 'is_freeze' => true
             ]);
-            UrgentEmailJob::dispatch(new UserAccountHasBeenFrozenEmail($user), $user->email);
+            EmailJob::dispatch(new UserAccountHasBeenFrozenEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-frozen-successfully'));
         }
         if ($request->get('status') == 'unfreeze') {
             $user->update([
                 'is_freeze' => false,
             ]);
-            UrgentEmailJob::dispatch(new UserAccountHasBeenUnfrozenEmail($user), $user->email);
+            EmailJob::dispatch(new UserAccountHasBeenUnfrozenEmail($user), $user->email);
             return api()->success(trans('user.responses.user-account-unfreeze-successfully'));
         }
 
@@ -180,7 +180,7 @@ class UserController extends Controller
             $user->save();
 
             list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
-            UrgentEmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
+            EmailJob::dispatch(new SuccessfulEmailVerificationEmail($user, $ip_db, $agent_db), $user->email);
         }
         return api()->success(trans('user.responses.ok'));
     }
