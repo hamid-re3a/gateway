@@ -32,11 +32,11 @@ class UpdateContactDetails extends FormRequest
     public function rules()
     {
         return [
-            'country_id' => 'bail|required|integer|exists:countries,id',
+            'country_id' => 'nullable|integer|exists:countries,id',
             'state_id' => 'nullable|integer|exists:cities,id,country_id,' . $this->get('country_id'),
             'city_id' => 'nullable|integer|exists:cities,id,country_id,' . $this->get('country_id') . ',parent_id,' . $this->get('state_id'),
-            'mobile_number' => 'required|string|phone:' . $this->getCountryIso(),
-            'landline_number' => 'required|string|phone:' . $this->getCountryIso(),
+            'mobile_number' => 'nullable|string|phone:' . $this->getCountryIso(),
+            'landline_number' => 'nullable|string|phone:' . $this->getCountryIso(),
             'address_line1' => "nullable|string",
             'address_line2' => "nullable|string",
             'zip_code' => "nullable|string",
