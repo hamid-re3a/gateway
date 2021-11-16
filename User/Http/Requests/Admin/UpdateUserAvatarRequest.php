@@ -1,12 +1,12 @@
 <?php
 
-namespace User\Http\Requests\User\Profile;
+namespace User\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use User\Models\User;
 
-class UpdateAvatarRequest extends FormRequest
+class UpdateUserAvatarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
