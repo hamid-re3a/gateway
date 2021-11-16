@@ -27,7 +27,7 @@ class AuthTableSeeder extends Seeder
                 $admin = User::factory()->create([
                     'username' => 'admin',
                 ]);
-                $admin->password = 'password123';
+                $admin->password = 'PA$$W0RD';
                 $admin->member_id = 1000;
                 $admin->transaction_password = 'PA$$W0RD';
                 $admin->first_name = 'Doctor';
