@@ -5,12 +5,14 @@ namespace User\Http\Controllers\Admin;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 use User\Http\Requests\Admin\ActivateOrDeactivateUserAccount;
 use User\Http\Requests\Admin\BlockOrUnblockUser;
 use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
 use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
+use User\Http\Requests\Admin\UpdateUserAvatarRequest;
 use User\Http\Requests\Admin\UserListRequest;
 use User\Http\Requests\Admin\UserUpdateRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
@@ -267,5 +269,29 @@ class UserController extends Controller
             throw $e;
         }
 
+    }
+
+    /**
+     * Update user avatar
+     * @group
+     * Admin > User
+     * @param UpdateUserAvatarRequest $request
+     * @return JsonResponse
+     */
+    public function updateAvatar(UpdateUserAvatarRequest $request)
+    {
+        $user = User::whereMemberId($request->get('member_id'))->first();
+        $fileName = $user->id . '-' . $user->member_id . '-' . mt_rand(100,99999) . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $mimeType = $request->file('avatar')->getMimeType();
+        $path = $request->file('avatar')->storeAs('avatars', $fileName ,'s3');
+        $user->update([
+            'avatar' => [
+                'file_name' => $fileName,
+                'mime' => $mimeType,
+                'url' => Storage::disk('s3')->url($path)
+            ]
+        ]);
+
+        return api()->success();
     }
 }
