@@ -7,7 +7,9 @@ use Illuminate\Support\Str;
 use User\Http\Requests\User\SponsorUserRequest;
 use User\Models\User;
 use User\Repository\UserRepository;
+use User\Services\Grpc\Acknowledge;
 use User\Services\Grpc\Id;
+use User\Services\Grpc\UserTransactionPassword;
 use User\Services\Grpc\WalletInfo;
 use User\Services\Grpc\WalletRequest;
 use User\Services\Grpc\WalletType;
@@ -65,6 +67,18 @@ class UserService
         $user->assignRole(USER_ROLE_CLIENT);
 
         return [$user,$user_array['password']];
+    }
+
+
+    /**
+     * @param UserTransactionPassword $request
+     * @return Acknowledge
+     */
+    public function checkTransactionPassword(UserTransactionPassword $request): Acknowledge
+    {
+        $acknowledge = new Acknowledge();
+        $acknowledge->setStatus($this->user_repository->checkTransactionPassword($request->getUserId(),$request->getTransactionPassword()));
+        return $acknowledge;
     }
 
 }

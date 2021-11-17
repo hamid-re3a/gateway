@@ -10,6 +10,7 @@ use User\Services\UserService;
 class UserGrpcService implements UserServiceInterface
 {
 
+    /**@var $user_service UserService*/
     private $user_service;
 
     public function __construct()
@@ -39,5 +40,13 @@ class UserGrpcService implements UserServiceInterface
     public function getUserWalletInfo(Context $context, WalletRequest $request): WalletInfo
     {
         return $this->user_service->getUserWalletInfo($request);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function checkTransactionPassword(Context $context, UserTransactionPassword $request): Acknowledge
+    {
+        return $this->user_service->checkTransactionPassword($request);
     }
 }
