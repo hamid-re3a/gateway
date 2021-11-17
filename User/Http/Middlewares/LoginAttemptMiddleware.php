@@ -28,6 +28,9 @@ class LoginAttemptMiddleware
     {
         $user = User::whereEmail($request->get('email'))->first();
         if (!$user)
+            $user = User::whereUsername($request->get('email'))->first();
+
+        if (!$user)
             abort(422, trans('user.responses.invalid-inputs-from-user'));
 
         list($ip_db, $agent_db) = UserActivityHelper::getInfo($request);
@@ -121,7 +124,7 @@ class LoginAttemptMiddleware
             $already_blocked = LoginAttemptModel::query()
                 ->where('user_id', $user->id)
                 ->whereBetween('created_at', [now()->subSeconds($intervals[$blocked_layer])->format('Y-m-d H:i:s'), now()->format('Y-m-d H:i:s')])
-                ->where('blocked_tier','=', $blocked_layer)
+                ->where('blocked_tier', '=', $blocked_layer)
                 ->exists();
             if ($already_blocked) {
 //                $login_attempt->blocked_tier = $blocked_layer ;
@@ -130,9 +133,6 @@ class LoginAttemptMiddleware
                 return;
             }
         }
-
-
-
 
 
         $request->attributes->add(['left_attempts' => $tries[$layer] - $failed_login_attempt_count]);
