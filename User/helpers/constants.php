@@ -608,6 +608,48 @@ const EMAIL_CONTENT_SETTINGS = [
         'variables_description'=>'full_name user full name',
         'type'=>'email',
     ],
+    'USER_PASSWORD_HAS_BEEN_RESET_BY_ADMIN_REQUEST'=>[
+        'is_active' => true,
+        'subject'=>'Your password has been reset by admin',
+        'from'=>'it@ridetothefuture.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <div>Hello,&nbsp;{{full_name}}!</div>
+                <div>&nbsp;</div>
+                <div>As your request, Your password has been reset, You can use your new password.</div>
+                <div>&nbsp;</div>
+                <div>Here is your password <b>{{password}}</b> .</div>
+                <div>&nbsp;</div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
+    'USER_TRANSACTION_PASSWORD_HAS_BEEN_RESET_BY_ADMIN_REQUEST'=>[
+        'is_active' => true,
+        'subject'=>'Your transaction password has been reset by admin',
+        'from'=>'it@ridetothefuture.com',
+        'from_name'=>'Janex Support Team',
+        'body'=><<<EOT
+                <div>
+                <div>Hello,&nbsp;{{full_name}}!</div>
+                <div>&nbsp;</div>
+                <div>As you request, Your transaction password has been reset, You can use your new transaction password.</div>
+                <div>&nbsp;</div>
+                <div>Here is your transaction password <b>{{password}}</b> .</div>
+                <div>&nbsp;</div>
+                <p>Cheers,</p>
+                <p>Janex Support Team</p>
+                </div>
+            EOT,
+        'variables'=>'full_name',
+        'variables_description'=>'full_name user full name',
+        'type'=>'email',
+    ],
 ];
 
 const QUEUES_EMAIL = 'emails';
