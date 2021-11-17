@@ -39,7 +39,6 @@ class ProfileDetailsResource extends JsonResource
             'address_line2' => $user->address_line2,
             'sponsor' => $user->sponsor()->exists() ? $user->sponsor->username : null,
             'placement' => null,
-            'rank' => $user->rank_name,
             'status' => null,
             'genealogy' => null,
             'phone_number' => $user->phone_number,

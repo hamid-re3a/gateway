@@ -116,9 +116,6 @@ class AuthController extends Controller
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
 
-        if($user->updated_at->addDay()->isPast())
-            $user->updateUserRank();
-
         EmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
         return $this->respondWithToken($token);
     }
