@@ -76,11 +76,12 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-
-
         $credentials = $request->only(['email', 'password']);
-        $user = User::query()->where('email', $credentials['email'])->first();
-
+        $user = User::whereEmail($credentials['email'])->first();
+        if (!$user)
+            $user = User::whereUsername($credentials['email'])->first();
+        if (!$user)
+            abort(422, trans('user.responses.invalid-inputs-from-user'));
         //Check if system is not available
         if ($user->roles()->count() == 1 AND $user->hasRole(USER_ROLE_CLIENT) AND $this->systemIsUnderMaintenance())
             return api()->error(null, [
