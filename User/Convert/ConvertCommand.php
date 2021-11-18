@@ -68,6 +68,15 @@ class ConvertCommand extends Command
                     $email = $item->user_name . '@dreamcometrue.ai';
                 }
 
+                if (!is_null($item->user_name)) {
+                    if (User::query()->where('username', $item->user_name)->exists())
+                        $username = $item->user_name . random_int(99,999);
+                    else
+                        $username = $item->user_name;
+                } else {
+                    $username = \Str::random();
+                }
+
                 $current_user->update([
                     'email' => $email,
                     'password' => $item->user_name,
@@ -83,7 +92,7 @@ class ConvertCommand extends Command
                     'birthday' => (!is_null($item->detail) && !is_null($item->detail->user_detail_dob)) ? Carbon::make($item->detail->user_detail_dob)->toDate() : null,
                     'gender' => (!is_null($item->detail) && !is_null($item->detail->user_detail_gender)) ? ($item->detail->user_detail_gender == "F") ? "Female" : "Male" : "Male",
                     'sponsor_id' => $item->sponsor_id,
-                    'username' => $item->user_name,
+                    'username' => $username,
                     'email_verified_at' => now()
                 ]);
                 $current_user->assignRole(USER_ROLE_CLIENT);
