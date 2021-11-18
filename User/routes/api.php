@@ -32,7 +32,7 @@ Route::middleware('user_activity')->group(function () {
                 Route::middleware(['role:' . USER_ROLE_SUPER_ADMIN])->prefix('admin')->name('admin.')->group(function () {
 
                     Route::name('user.')->prefix('users')->group(function () {
-                        Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data');
+                        Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data-counts');
                         Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
                         Route::post('', [AdminUserController::class, 'index'])->name('users-list');
                         Route::post('/user', [AdminUserController::class, 'getUser'])->name('user-data');
