@@ -38,7 +38,7 @@ class AuthTableSeeder extends Seeder
             $admin->email = 'admin@yopmail.com';
             $admin->save();
 
-            $admin->assignRole([USER_ROLE_SUPER_ADMIN, USER_ROLE_CLIENT]);
+            $admin->assignRole([USER_ROLE_SUPER_ADMIN]);
         }
         if (!in_array(app()->environment(), ['production', 'staging'])) {
 
@@ -61,7 +61,7 @@ class AuthTableSeeder extends Seeder
                     ]);
                 }
 
-                $global->assignRole([USER_ROLE_SUPER_ADMIN, USER_ROLE_CLIENT]);
+                $global->assignRole([USER_ROLE_SUPER_ADMIN]);
             }
             if (!User::query()->where('email', 'customer@yopmail.com')->exists()) {
                 $global = User::whereUsername('george')->first();
@@ -106,7 +106,7 @@ class AuthTableSeeder extends Seeder
                         ]);
                     }
 
-                    $global->assignRole([USER_ROLE_SUPER_ADMIN, USER_ROLE_CLIENT]);
+                    $global->assignRole([USER_ROLE_CLIENT]);
                 }
         }
 
