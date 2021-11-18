@@ -315,7 +315,7 @@ class UserController extends Controller
             'password' => $new_password
         ]);
 
-        EmailJob::dispatch(new PasswordResetEmail($user,$new_password));
+        EmailJob::dispatch(new PasswordResetEmail($user,$new_password), $user->email);
 
         return api()->success();
     }
@@ -336,7 +336,7 @@ class UserController extends Controller
             'transaction_password' => $new_password
         ]);
 
-        EmailJob::dispatch(new TransactionPasswordResetEmail($user,$new_password));
+        EmailJob::dispatch(new TransactionPasswordResetEmail($user,$new_password), $user->email);
 
         return api()->success();
     }
