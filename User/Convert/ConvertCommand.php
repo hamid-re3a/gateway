@@ -55,6 +55,8 @@ class ConvertCommand extends Command
                 $current_user = User::query()->find($item->id);
                 if (!$current_user)
                     $current_user = User::factory()->create(['id' => $item->id]);
+                else
+                    break;
                 if (!is_null($item->detail)
                     && !is_null($item->detail->user_detail_email)
                     && !empty($item->detail->user_detail_email) &&

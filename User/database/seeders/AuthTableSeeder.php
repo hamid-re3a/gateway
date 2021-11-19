@@ -40,7 +40,7 @@ class AuthTableSeeder extends Seeder
 
             $admin->assignRole([USER_ROLE_SUPER_ADMIN]);
         }
-        if (!in_array(app()->environment(), ['production', 'staging'])) {
+        if (!in_array(app()->environment(), ['production'])) {
 
             if (!User::query()->where('email', 'janexstaging@gmail.com')->exists()) {
                 $global = User::whereUsername('johny')->first();

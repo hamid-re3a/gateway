@@ -65,7 +65,6 @@ class UserService
         $user_array['password'] = strtolower(Str::random(8));
         $user = User::query()->create($user_array);
         $user->assignRole(USER_ROLE_CLIENT);
-
         return [$user,$user_array['password']];
     }
 
