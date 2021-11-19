@@ -271,7 +271,6 @@ class UserController extends Controller
     public function sponsor(SponsorUserRequest $request)
     {
 
-
         list($user, $password) = $this->user_service->createAndSponsorUser($request);
 
         $order = new Order();
