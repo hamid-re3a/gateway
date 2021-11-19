@@ -37,7 +37,7 @@ Route::middleware('user_activity')->group(function () {
                         Route::post('', [AdminUserController::class, 'index'])->name('users-list');
                         Route::post('/user', [AdminUserController::class, 'getUser'])->name('user-data');
                         Route::patch('/', [AdminUserController::class, 'update'])->name('update');
-                        Route::patch('/update_avatar', [AdminUserController::class, 'updateAvatar'])->name('update-avatar');
+                        Route::post('/update_avatar', [AdminUserController::class, 'updateAvatar'])->name('update-avatar');
                         Route::patch('/reset_password', [AdminUserController::class, 'resetPassword'])->name('reset-password');
                         Route::patch('/reset_transaction_password', [AdminUserController::class, 'resetTransactionPassword'])->name('reset-transaction-password');
                         Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
