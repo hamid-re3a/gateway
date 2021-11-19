@@ -31,7 +31,7 @@ class UserUpdateRequest extends FormRequest
             'last_name' => 'required|string',
             'gender' => 'nullable|in:Male,Female,Other',
             'birthday' => 'nullable|date|before:' . now() . '|date_format:Y/m/d',
-            'country_id' => 'nullable|required|integer|exists:countries,id',
+            'country_id' => 'nullable|integer|exists:countries,id',
             'state_id' => 'nullable|integer|exists:cities,id,country_id,' . $this->get('country_id'),
             'city_id' => 'nullable|integer|exists:cities,id,country_id,' . $this->get('country_id') . ',parent_id,' . $this->get('state_id'),
             'mobile_number' => 'nullable|string|phone:' . $this->getCountryIso(),
