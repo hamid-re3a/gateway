@@ -340,7 +340,7 @@ class User extends Authenticatable
         $avatar = json_decode($this->avatar, true);
 
         if (!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('avatars/' . $avatar['file_name']))
-            return api()->notFound();
+            return null;
 
         return Storage::disk('s3')->response('avatars/' . $avatar['file_name']);
     }
@@ -350,7 +350,7 @@ class User extends Authenticatable
         $avatar = json_decode($this->avatar,true);
 
         if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('/avatars/' . $avatar['file_name']))
-            return api()->notFound();
+            return null;
 
         return base64_encode(Storage::disk('s3')->get('/avatars/' . $avatar['file_name']));
     }
