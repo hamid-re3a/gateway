@@ -16,7 +16,7 @@ class ActivityResource extends JsonResource
     {
 
         return [
-            'when' => $this->created_at->diffForHumans(),
+            'when' => $this->created_at->timestamp,
             'country'=> !empty($this->ip_id) ? $this->ip->country : 'Unknown',
             'state'=> !empty($this->ip_id) ? $this->ip->state : 'Unknown',
             'ip' => !empty($this->ip_id) ? $this->ip->ip : 'Unknown',
