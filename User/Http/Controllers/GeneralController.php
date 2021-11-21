@@ -112,7 +112,9 @@ class GeneralController extends Controller
         if(!$user)
             return api()->notFound();
 
-        return $user->getAvatarBase64();
+        $avatar = $user->getAvatarBase64();
+
+        return $avatar == null ? api()->notFound() : $avatar;
     }
 
     /**
@@ -131,6 +133,8 @@ class GeneralController extends Controller
         if(!$user)
             return api()->notFound();
 
-        return $user->getAvatarFile();
+        $avatar = $user->getAvatarFile();
+
+        return $avatar == null ? api()->notFound() : $avatar;
     }
 }
