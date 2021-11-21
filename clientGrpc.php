@@ -12,7 +12,7 @@ $client = new \User\Services\Grpc\UserServiceClient('staging.dreamcometrue.ai:95
     'credentials' => \Grpc\ChannelCredentials::createInsecure()
 ]);
 $request = new \User\Services\Grpc\Id();
-$request->setId((int)24);
+$request->setId((int)2);
 
 
 list($reply, $status) = $client->getUserById($request)->wait();
