@@ -49,7 +49,7 @@ class AuthController extends Controller
             ], 406);
 
         $data = $request->validated();
-        $sponsor = User::query()->where('username', $request->sponsor_username)->first();
+        $sponsor = User::query()->where('username', $request->get('sponsor_username'))->first();
         $ack = MlmClientFacade::hasValidPackage($sponsor->getGrpcMessage());
         if (!$ack->getStatus()) {
             return api()->error(null,'',422,[
