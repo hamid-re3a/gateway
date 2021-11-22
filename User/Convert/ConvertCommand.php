@@ -3,8 +3,10 @@
 namespace User\Convert;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Console\Command;
-use Illuminate\Validation\Rules\In;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
 use User\Convert\Models\Individual;
 use User\Models\User;
 
@@ -41,6 +43,7 @@ class ConvertCommand extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '-1');
         $count = Individual::query()->count();
         $this->info(PHP_EOL . 'number of user rows ' . $count . PHP_EOL);
 
@@ -48,22 +51,24 @@ class ConvertCommand extends Command
 
         $this->info(PHP_EOL . 'Start user conversion');
         $bar->start();
-        $users = Individual::with('detail')->
-        chunk(50, function ($users) use ($bar) {
-
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique('users_unique_email');
+            $table->dropUnique('users_unique_username');
+        });
+        Individual::with('detail')->
+        chunk(5000, function ($users) use ($bar) {
+            $last_users = [];
+            $last_user_roles = [];
             foreach ($users as $item) {
-                $current_user = User::query()->find($item->id);
-                if (!$current_user)
-                    $current_user = User::factory()->create(['id' => $item->id]);
-                else
-                    break;
+
+
                 if (!is_null($item->detail)
                     && !is_null($item->detail->user_detail_email)
                     && !empty($item->detail->user_detail_email) &&
                     filter_var($item->detail->user_detail_email, FILTER_VALIDATE_EMAIL)
                 ) {
-                    if (User::query()->where('email', $item->detail->user_detail_email)->exists())
-                        $email = $item->user_name . '@dreamcometrue.ai';
+                    if (User::query()->where('email', $item->detail->user_detail_email)->exists() || collect($last_users)->firstWhere('email', $item->detail->user_detail_email) !== null)
+                        $email = $item->user_name . random_int(99, 999) . '@dreamcometrue.ai';
                     else
                         $email = $item->detail->user_detail_email;
                 } else {
@@ -71,16 +76,22 @@ class ConvertCommand extends Command
                 }
 
                 if (!is_null($item->user_name)) {
-                    if (User::query()->where('username', $item->user_name)->exists())
-                        $username = $item->user_name . random_int(99,999);
+                    if (User::query()->where('username', $item->user_name)->exists() || collect($last_users)->firstWhere('username', $item->user_name) !== null)
+                        $username = $item->user_name . random_int(99, 999);
                     else
                         $username = $item->user_name;
                 } else {
                     $username = \Str::random();
                 }
-
-                $current_user->update([
+                $last_user_roles[] = [
+                    'model_id' => $item->id,
+                    'model_type' => 'User\Models\User',
+                    'role_id' => 10,
+                ];
+                $last_users[] = [
+                    'id' => $item->id,
                     'email' => $email,
+                    'username' => $username,
                     'password' => $item->user_name,
                     'transaction_password' => $item->user_name,
                     'first_name' => (!is_null($item->detail) && !is_null($item->detail->user_detail_name)) ? $item->detail->user_detail_name : "Unknown",
@@ -94,16 +105,30 @@ class ConvertCommand extends Command
                     'birthday' => (!is_null($item->detail) && !is_null($item->detail->user_detail_dob)) ? Carbon::make($item->detail->user_detail_dob)->toDate() : null,
                     'gender' => (!is_null($item->detail) && !is_null($item->detail->user_detail_gender)) ? ($item->detail->user_detail_gender == "F") ? "Female" : "Male" : "Male",
                     'sponsor_id' => $item->sponsor_id,
-                    'username' => $username,
                     'email_verified_at' => now()
-                ]);
-                $current_user->assignRole(USER_ROLE_CLIENT);
+                ];
+//                $current_user->assignRole(USER_ROLE_CLIENT);
                 $bar->advance();
             }
+            $insert_data = collect($last_users);
+            $chunks = $insert_data->chunk(500);
 
+            foreach ($chunks as $chunk) {
+                DB::table('users')->insert($chunk->toArray());
 
+            }
+            $insert_data = collect($last_user_roles);
+            $chunks = $insert_data->chunk(500);
+
+            foreach ($chunks as $chunk) {
+                DB::table('model_has_roles')->insert($chunk->toArray());
+
+            }
         });
-
+        Schema::table('users', function (Blueprint $table) {
+            $table->unique('email', 'users_unique_email');
+            $table->unique('username', 'users_unique_username');
+        });
         $bar->finish();
         $this->info(PHP_EOL . 'User Conversion Finished' . PHP_EOL);
     }
