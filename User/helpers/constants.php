@@ -195,7 +195,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'FORGOT_PASSWORD_OTP_EMAIL' => [
         'is_active' => true,
         'subject' => 'Forgot Password OTP',
-        'from' => 'it@dreamcometrue.com',
+        'from' => 'it@dreamcometrue.ai',
         'from_name' => 'Janex Support Team',
         'body' => <<<EOT
                 <div>
@@ -217,7 +217,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Transaction Password OTP',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -239,7 +239,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Email Verification OTP',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -261,7 +261,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Welcome to Janex',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -283,7 +283,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Welcome to Janex',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -305,7 +305,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Suspicious Login Attempt',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -332,7 +332,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'NORMAL_LOGIN_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Someone Logged-In',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -360,7 +360,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Too Many Attempts - Account blocked for sometime',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -391,7 +391,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Too Many Attempts - Account Blocked',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -418,7 +418,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Password Changed Warning',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -446,7 +446,7 @@ const EMAIL_CONTENT_SETTINGS = [
 
         'is_active' => true,
         'subject'=>'Email Verified Successfully',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -504,7 +504,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'TRANSACTION_PASSWORD_CHANGED_WARNING_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Transaction Password Changed Successfully',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -531,7 +531,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'FREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Your account has been frozen',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -551,7 +551,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'UNFREEZE_ACCOUNT_EMAIL'=>[
         'is_active' => true,
         'subject'=>'Your account has been unfrozen',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -571,7 +571,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_HAS_BEEN_DEACTIVATED'=>[
         'is_active' => true,
         'subject'=>'Your account has been deactivated',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -591,7 +591,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_ACCOUNT_HAS_BEEN_ACTIVATED'=>[
         'is_active' => true,
         'subject'=>'Your account has been activated',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -611,7 +611,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_PASSWORD_HAS_BEEN_RESET_BY_ADMIN_REQUEST'=>[
         'is_active' => true,
         'subject'=>'Your password has been reset by admin',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
@@ -632,7 +632,7 @@ const EMAIL_CONTENT_SETTINGS = [
     'USER_TRANSACTION_PASSWORD_HAS_BEEN_RESET_BY_ADMIN_REQUEST'=>[
         'is_active' => true,
         'subject'=>'Your transaction password has been reset by admin',
-        'from'=>'it@dreamcometrue.com',
+        'from'=>'it@dreamcometrue.ai',
         'from_name'=>'Janex Support Team',
         'body'=><<<EOT
                 <div>
