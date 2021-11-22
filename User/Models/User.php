@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use MLM\Services\Grpc\MLMServiceClient;
 use User\database\factories\UserFactory;
@@ -47,7 +48,6 @@ use MLM\Services\MlmClientFacade;
  * @property string $address_line2
  * @property string $gender
  * @property string|null $transaction_password
- * @property string|null $rank_name
  * @property string|null $avatar
  * @property string|null $passport_number
  * @property int|null $is_passport_number_accepted
@@ -148,6 +148,7 @@ class User extends Authenticatable
     {
         return UserFactory::new();
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -165,7 +166,6 @@ class User extends Authenticatable
         'email',
         'gender',
         'birthday',
-        'rank_name',
         'password',
         'transaction_password',
         'country_id',
@@ -198,35 +198,19 @@ class User extends Authenticatable
 
     public function scopeFilter($query)
     {
-        if(request()->has('username')){
-            $query->orWhere('username','LIKE','%' . request()->get('username') . '%');
+        if (request()->has('username')) {
+            $query->orWhere('username', 'LIKE', '%' . request()->get('username') . '%');
         }
 
-        if(request()->has('rank'))
-            $query->orWhere('rank_name','LIKE', '%' . request()->get('rank') . '%');
+        if (request()->has('email'))
+            $query->orWhere('email', 'LIKE', '%' . request()->get('email') . '%');
 
-        if(request()->has('ranks') AND is_array(request()->get('ranks')))
-            foreach(request()->get('ranks') AS $rank)
-                $query->orWhere('rank_name','LIKE', '%' . $rank . '%');
-
-        if(request()->has('email'))
-            $query->orWhere('email','LIKE','%'. request()->get('email') .'%');
-
-        if(request()->has('member_id'))
-            $query->orWhere('member_id','LIKE','%' . request()->get('member_id') . '%');
+        if (request()->has('member_id'))
+            $query->orWhere('member_id', 'LIKE', '%' . request()->get('member_id') . '%');
 
         return $query;
 
     }
-
-    public function updateUserRank()
-    {
-        $user_rank_grpc = MlmClientFacade::getUserRank($this->getGrpcMessage());
-        $this->update([
-            'rank_name' => $user_rank_grpc->getRankName()
-        ]);
-    }
-
 
     /**
      * relations
@@ -248,25 +232,25 @@ class User extends Authenticatable
 
     public function ips()
     {
-        return $this->hasMany(Ip::class,'user_id','id');
+        return $this->hasMany(Ip::class, 'user_id', 'id');
     }
 
     public function userHistories($field = null)
     {
-        if(!is_null($field) AND in_array($field, $this->getFillable()))
-            return $this->hasMany(UserHistory::class,'user_id','id')->distinct($field)->whereNotNull($field);
+        if (!is_null($field) AND in_array($field, $this->getFillable()))
+            return $this->hasMany(UserHistory::class, 'user_id', 'id')->distinct($field)->whereNotNull($field);
 
-        return $this->hasMany(UserHistory::class,'user_id','id');
+        return $this->hasMany(UserHistory::class, 'user_id', 'id');
     }
 
     public function wallets()
     {
-        return $this->hasMany(CryptoWallet::class,'user_id','id');
+        return $this->hasMany(CryptoWallet::class, 'user_id', 'id');
     }
 
     public function activities()
     {
-        return $this->hasMany(UserActivity::class,'user_id','id');
+        return $this->hasMany(UserActivity::class, 'user_id', 'id');
     }
 
     public function country()
@@ -276,17 +260,17 @@ class User extends Authenticatable
 
     public function state()
     {
-        return $this->belongsTo(City::class,'state_id','id')->whereNull('parent_id');
+        return $this->belongsTo(City::class, 'state_id', 'id')->whereNull('parent_id');
     }
 
     public function city()
     {
-        return $this->belongsTo(City::class,'city_id','id')->whereNotNull('parent_id');
+        return $this->belongsTo(City::class, 'city_id', 'id')->whereNotNull('parent_id');
     }
 
     public function sponsor()
     {
-        return $this->belongsTo(User::class,'sponsor_id','id');
+        return $this->belongsTo(User::class, 'sponsor_id', 'id');
     }
 
     /**
@@ -294,7 +278,7 @@ class User extends Authenticatable
      */
     public function isEmailVerified()
     {
-        return  ! is_null($this->email_verified_at);
+        return !is_null($this->email_verified_at);
     }
 
     public function isDeactivate()
@@ -310,14 +294,14 @@ class User extends Authenticatable
         $this->tokens()->delete();
     }
 
-    public function historyCheck($field,$value)
+    public function historyCheck($field, $value)
     {
         //Check columns
-        if(!in_array($field,$this->getFillable()))
+        if (!in_array($field, $this->getFillable()))
             return new InvalidFieldException();
         $history = $this->userHistories()->distinct($field)->pluck($field);
         foreach ($history as $item)
-            if(Hash::check($value, $item))
+            if (Hash::check($value, $item))
                 return true;
 
         return false;
@@ -349,6 +333,26 @@ class User extends Authenticatable
         }
 
         return $user;
+    }
+
+    public function getAvatarFile()
+    {
+        $avatar = json_decode($this->avatar, true);
+
+        if (!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('avatars/' . $avatar['file_name']))
+            return null;
+
+        return Storage::disk('s3')->response('avatars/' . $avatar['file_name']);
+    }
+
+    public function getAvatarBase64()
+    {
+        $avatar = json_decode($this->avatar,true);
+
+        if(!$avatar OR !is_array($avatar) OR !array_key_exists('file_name', $avatar) OR !Storage::disk('s3')->exists('/avatars/' . $avatar['file_name']))
+            return null;
+
+        return base64_encode(Storage::disk('s3')->get('/avatars/' . $avatar['file_name']));
     }
 
 

@@ -5,12 +5,16 @@ namespace User\Http\Controllers\Admin;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use User\Http\Requests\Admin\ActivateOrDeactivateUserAccount;
 use User\Http\Requests\Admin\BlockOrUnblockUser;
 use User\Http\Requests\Admin\CreateAdminRequest;
 use User\Http\Requests\Admin\FreezeOrUnfreezeUserAccountRequest;
 use User\Http\Requests\Admin\GetUserDataRequest;
 use User\Http\Requests\Admin\HistoryRequest;
+use User\Http\Requests\Admin\MemberIdRequest;
+use User\Http\Requests\Admin\UpdateUserAvatarRequest;
 use User\Http\Requests\Admin\UserListRequest;
 use User\Http\Requests\Admin\UserUpdateRequest;
 use User\Http\Requests\Admin\VerifyUserEmailRequest;
@@ -20,6 +24,8 @@ use User\Http\Resources\User\PasswordHistoryResource;
 use User\Http\Resources\User\ProfileDetailsResource;
 use User\Http\Resources\User\UserBlockHistoryResource;
 use User\Jobs\EmailJob;
+use User\Mail\Admin\PasswordResetEmail;
+use User\Mail\Admin\TransactionPasswordResetEmail;
 use User\Mail\User\UserAccountHasBeenActivatedEmail;
 use User\Mail\User\UserAccountHasBeenDeactivatedEmail;
 use User\Mail\User\SuccessfulEmailVerificationEmail;
@@ -267,5 +273,71 @@ class UserController extends Controller
             throw $e;
         }
 
+    }
+
+    /**
+     * Update user avatar
+     * @group
+     * Admin > User
+     * @param UpdateUserAvatarRequest $request
+     * @return JsonResponse
+     */
+    public function updateAvatar(UpdateUserAvatarRequest $request)
+    {
+        $user = User::whereMemberId($request->get('member_id'))->first();
+        $fileName = $user->id . '-' . $user->member_id . '-' . mt_rand(100,99999) . '-' . time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+        $mimeType = $request->file('avatar')->getMimeType();
+        $path = $request->file('avatar')->storeAs('avatars', $fileName ,'s3');
+        $user->update([
+            'avatar' => [
+                'file_name' => $fileName,
+                'mime' => $mimeType,
+                'url' => Storage::disk('s3')->url($path)
+            ]
+        ]);
+
+        return api()->success();
+    }
+
+    /**
+     * Reset password
+     * @group
+     * Admin > User
+     * @param MemberIdRequest $request
+     * @return JsonResponse
+     */
+    public function resetPassword(MemberIdRequest $request)
+    {
+        $user = User::query()->whereMemberId($request->get('member_id'))->first();
+        $new_password = strtolower(Str::random(8));
+
+        $user->update([
+            'password' => $new_password
+        ]);
+
+        EmailJob::dispatch(new PasswordResetEmail($user,$new_password), $user->email);
+
+        return api()->success();
+    }
+
+    /**
+     * Reset transaction password
+     * @group
+     * Admin > User
+     * @param MemberIdRequest $request
+     * @return JsonResponse
+     */
+    public function resetTransactionPassword(MemberIdRequest $request)
+    {
+        $user = User::query()->whereMemberId($request->get('member_id'))->first();
+        $new_password = strtolower(Str::random(8));
+
+        $user->update([
+            'transaction_password' => $new_password
+        ]);
+
+        EmailJob::dispatch(new TransactionPasswordResetEmail($user,$new_password), $user->email);
+
+        return api()->success();
     }
 }

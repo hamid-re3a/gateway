@@ -18,37 +18,15 @@ class CryptoSeeder extends Seeder
      */
     public function run()
     {
-        CryptoCurrency::insert([
+        CryptoCurrency::query()->updateOrCreate(
+            [
+                'iso' => 'BTC',
+            ],
             [
                 'name' => 'Bitcoin',
-                'iso' => 'BTC',
                 'description' => '',
                 'is_active' => true,
-            ],[
-                'name' => 'Cardano',
-                'iso' => 'ADA',
-                'description' => '',
-                'is_active' => false,
-            ],[
-                'name' => 'Bitcoin Cash',
-                'iso' => 'BCH',
-                'description' => '',
-                'is_active' => false,
-            ],[
-                'name' => 'Binance coin',
-                'iso' => 'BNB',
-                'description' => '',
-                'is_active' => false,
-            ],[
-                'name' => 'Tron',
-                'iso' => 'TRX',
-                'description' => '',
-                'is_active' => false,
-            ]
-        ]);
-        User::first()->wallets()->create([
-            'crypto_currency_id' => 1,
-            'address' => '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-        ]);
+            ],
+            );
     }
 }

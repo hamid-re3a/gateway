@@ -25,9 +25,6 @@ class UserListRequest extends FormRequest
     {
         return [
             'username' => 'nullable|string',
-            'rank' => 'nullable|string',
-            'ranks' => 'nullable|array',
-            'ranks.*' => 'nullable|string',
             'email' => 'nullable|email:rfc,dns',
             'membership_id' => 'nullable|numeric'
         ];

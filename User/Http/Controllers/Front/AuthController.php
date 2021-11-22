@@ -49,7 +49,7 @@ class AuthController extends Controller
             ], 406);
 
         $data = $request->validated();
-        $sponsor = User::query()->where('username', $request->sponsor_username)->first();
+        $sponsor = User::query()->where('username', $request->get('sponsor_username'))->first();
         $ack = MlmClientFacade::hasValidPackage($sponsor->getGrpcMessage());
         if (!$ack->getStatus()) {
             return api()->error(null,'',422,[
@@ -76,11 +76,12 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-
-
         $credentials = $request->only(['email', 'password']);
-        $user = User::query()->where('email', $credentials['email'])->first();
-
+        $user = User::whereEmail($credentials['email'])->first();
+        if (!$user)
+            $user = User::whereUsername($credentials['email'])->first();
+        if (!$user)
+            abort(422, trans('user.responses.invalid-inputs-from-user'));
         //Check if system is not available
         if ($user->roles()->count() == 1 AND $user->hasRole(USER_ROLE_CLIENT) AND $this->systemIsUnderMaintenance())
             return api()->error(null, [
@@ -114,9 +115,6 @@ class AuthController extends Controller
 
         $login_attempt->login_status = LOGIN_ATTEMPT_STATUS_SUCCESS;
         $login_attempt->save();
-
-        if($user->updated_at->addDay()->isPast())
-            $user->updateUserRank();
 
         EmailJob::dispatch(new NormalLoginEmail($user, $login_attempt), $user->email);
         return $this->respondWithToken($token);

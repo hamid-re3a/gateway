@@ -3,6 +3,7 @@
 namespace User\Repository;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
 use User\Models\User;
 
 class UserRepository
@@ -62,6 +63,14 @@ class UserRepository
         /**@var $model User*/
         $model = new $this->entity_name;
         return $model->query()->count();
+    }
+
+    public function checkTransactionPassword($user_id,$transaction_password)
+    {
+        /** @var $user User */
+        $user = new $this->entity_name;
+        $user = $user->query()->whereId($user_id)->first();
+        return Hash::check($transaction_password,$user->transaction_password);
     }
 
 }

@@ -126,10 +126,6 @@ function getDbTranslate($key,$defaultValue = null)
         'key' => $key
     ]);
 
-    $return = $translate AND !empty($translate->value) ? $translate->value : $translate->key;
-    if(!empty($defaultValue))
-        $return = $defaultValue;
-
-    return $return;
+    return $translate AND !empty($translate->value) ? $translate->value : $translate->key;
 
 }

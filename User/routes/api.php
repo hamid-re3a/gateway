@@ -32,11 +32,14 @@ Route::middleware('user_activity')->group(function () {
                 Route::middleware(['role:' . USER_ROLE_SUPER_ADMIN])->prefix('admin')->name('admin.')->group(function () {
 
                     Route::name('user.')->prefix('users')->group(function () {
-                        Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data');
+                        Route::post('/counts', [AdminDashboardController::class, 'counts'])->name('user-data-counts');
                         Route::post('/create_user', [AdminUserController::class, 'createUserByAdmin'])->name('create-user');
                         Route::post('', [AdminUserController::class, 'index'])->name('users-list');
                         Route::post('/user', [AdminUserController::class, 'getUser'])->name('user-data');
                         Route::patch('/', [AdminUserController::class, 'update'])->name('update');
+                        Route::post('/update_avatar', [AdminUserController::class, 'updateAvatar'])->name('update-avatar');
+                        Route::patch('/reset_password', [AdminUserController::class, 'resetPassword'])->name('reset-password');
+                        Route::patch('/reset_transaction_password', [AdminUserController::class, 'resetTransactionPassword'])->name('reset-transaction-password');
                         Route::post('/block_or_unblock_user', [AdminUserController::class, 'blockOrUnblockUser'])->name('block-or-unblock-user-account');
                         Route::post('/activate_or_deactivate_user', [AdminUserController::class, 'activateOrDeactivateUserAccount'])->name('activate-or-deactivate-user-account');
                         Route::post('/freeze_or_unfreeze_user', [AdminUserController::class, 'freezeOrUnfreezeUserAccount'])->name('freeze-or-unfreeze-user-account');
