@@ -51,10 +51,10 @@ class ConvertCommand extends Command
 
         $this->info(PHP_EOL . 'Start user conversion');
         $bar->start();
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique('users_unique_email');
-            $table->dropUnique('users_unique_username');
-        });
+//        Schema::table('users', function (Blueprint $table) {
+//            $table->dropUnique('users_unique_email');
+//            $table->dropUnique('users_unique_username');
+//        });
         Individual::with('detail')->
         chunk(5000, function ($users) use ($bar) {
             $last_users = [];
@@ -67,13 +67,14 @@ class ConvertCommand extends Command
                     && !empty($item->detail->user_detail_email) &&
                     filter_var($item->detail->user_detail_email, FILTER_VALIDATE_EMAIL)
                 ) {
-                    if (User::query()->where('email', $item->detail->user_detail_email)->exists() || collect($last_users)->firstWhere('email', $item->detail->user_detail_email) !== null)
+                    if (User::query()->where('email', strtolower($item->detail->user_detail_email))->exists() || collect($last_users)->firstWhere('email', strtolower($item->detail->user_detail_email)) !== null)
                         $email = $item->user_name . random_int(99, 999) . '@dreamcometrue.ai';
                     else
                         $email = $item->detail->user_detail_email;
                 } else {
                     $email = $item->user_name . '@dreamcometrue.ai';
                 }
+
 
                 if (!is_null($item->user_name)) {
                     if (User::query()->where('username', $item->user_name)->exists() || collect($last_users)->firstWhere('username', $item->user_name) !== null)
@@ -83,6 +84,11 @@ class ConvertCommand extends Command
                 } else {
                     $username = \Str::random();
                 }
+                $member_id = mt_rand(121212121, 999999999);
+                if (User::query()->where('member_id', $member_id)->exists() || collect($last_users)->firstWhere('member_id', $member_id) !== null)
+                    $member_id = mt_rand(121212121, 999999999);
+
+
                 $last_user_roles[] = [
                     'model_id' => $item->id,
                     'model_type' => 'User\Models\User',
@@ -90,7 +96,8 @@ class ConvertCommand extends Command
                 ];
                 $last_users[] = [
                     'id' => $item->id,
-                    'email' => $email,
+                    'member_id' => $member_id,
+                    'email' => strtolower($email),
                     'username' => $username,
                     'password' => $item->user_name,
                     'transaction_password' => $item->user_name,
@@ -125,10 +132,10 @@ class ConvertCommand extends Command
 
             }
         });
-        Schema::table('users', function (Blueprint $table) {
-            $table->unique('email', 'users_unique_email');
-            $table->unique('username', 'users_unique_username');
-        });
+//        Schema::table('users', function (Blueprint $table) {
+//            $table->unique('email', 'users_unique_email');
+//            $table->unique('username', 'users_unique_username');
+//        });
         $bar->finish();
         $this->info(PHP_EOL . 'User Conversion Finished' . PHP_EOL);
     }
