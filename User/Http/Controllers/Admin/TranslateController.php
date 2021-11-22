@@ -15,12 +15,6 @@ use User\Services\TranslateService;
 
 class TranslateController extends Controller
 {
-    private $translate_service;
-
-    public function __construct(TranslateService $translate_service)
-    {
-        $this->translate_service = $translate_service;
-    }
     /**
      * List translates
      * @group Admin > Translates
@@ -28,7 +22,14 @@ class TranslateController extends Controller
      */
     public function index()
     {
-        return api()->success(null,TranslateResource::collection($this->translate_service->list())->response()->getData());
+        $list = Translate::query()->paginate();
+        return api()->success(null,[
+            'list' => TranslateResource::collection($list),
+            'pagination' => [
+                'total' => $list->total(),
+                'per_page' => $list->perPage()
+            ]
+        ]);
 
     }
 
@@ -38,8 +39,15 @@ class TranslateController extends Controller
      */
     public function unfinished()
     {
+        $list = Translate::query()->whereNull('value')->paginate();
 
-        return api()->success(null,TranslateResource::collection(Translate::whereNull('value')->simplePaginate())->response()->getData());
+        return api()->success(null,[
+        'list' => TranslateResource::collection($list),
+        'pagination' => [
+            'total' => $list->total(),
+            'per_page' => $list->perPage()
+        ]
+    ]);
 
     }
 
@@ -52,7 +60,7 @@ class TranslateController extends Controller
     public function store(StoreTranslateRequest $request)
     {
 
-        $translate = Translate::create([
+        $translate = Translate::query()->create([
             'key' => $request->get('key'),
             'value' => $request->get('value')
         ]);
@@ -71,7 +79,7 @@ class TranslateController extends Controller
     public function show(ShowTranslateRequest $request)
     {
 
-        return api()->success(null,TranslateResource::make(Translate::where('key',$request->get('key'))->first()));
+        return api()->success(null,TranslateResource::make(Translate::query()->where('key',$request->get('key'))->first()));
 
     }
 
@@ -84,7 +92,7 @@ class TranslateController extends Controller
     public function update(UpdateTranslateRequest $request)
     {
 
-        $translate = Translate::where('key',$request->get('key'))->first();
+        $translate = Translate::query()->where('key',$request->get('key'))->first();
         $translate->update([
             'value' => $request->get('value')
         ]);
@@ -103,7 +111,7 @@ class TranslateController extends Controller
     public function destroy(ShowTranslateRequest $request)
     {
 
-        Translate::where('key',$request->get('key'))->delete();
+        Translate::query()->where('key',$request->get('key'))->delete();
         $this->cacheAllTranslates();
 
         return api()->success(trans('user.responses.ok'));
