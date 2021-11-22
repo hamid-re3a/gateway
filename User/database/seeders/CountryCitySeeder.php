@@ -78,7 +78,7 @@ class CountryCitySeeder extends Seeder
                 ]);
             }
             foreach(collect($cities_to_db)->chunk(150) AS $chunked_cities)
-                City::query()->insert($chunked_cities->toArray());
+                City::query()->upsert($chunked_cities->toArray(),['country_id','parent_id','name']);
             DB::commit();
         } catch (\Throwable $e) {
 
