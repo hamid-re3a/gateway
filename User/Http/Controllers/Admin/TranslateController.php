@@ -15,12 +15,6 @@ use User\Services\TranslateService;
 
 class TranslateController extends Controller
 {
-    private $translate_service;
-
-    public function __construct(TranslateService $translate_service)
-    {
-        $this->translate_service = $translate_service;
-    }
     /**
      * List translates
      * @group Admin > Translates
