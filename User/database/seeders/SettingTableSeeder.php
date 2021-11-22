@@ -20,30 +20,39 @@ class SettingTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach (SETTINGS as $key => $setting) {
-            $key = Setting::query()->firstOrCreate([
-                'key' => $key
-            ]);
-            if (is_null($key->value)) {
-                $key->value = $setting['value'];
-                $key->description = $setting['description'];
-                $key->category = $setting['category'];
-                $key->save();
+        if (defined('SETTINGS'))
+            foreach (SETTINGS as $key => $setting) {
+                $key = Setting::query()->firstOrCreate([
+                    'key' => $key
+                ]);
+                if (is_null($key->value)) {
+                    $key->value = $setting['value'];
+                    $key->description = $setting['description'];
+                    $key->category = $setting['category'];
+                    $key->save();
+                }
             }
-        }
-        foreach (EMAIL_CONTENT_SETTINGS as $key => $setting) {
 
-            if (!EmailContentSetting::query()->whereKey($key)->exists()) {
-                EmailContentSetting::query()->create([
-                    'key' => $key,
-                    'is_active' => $setting['is_active'],
-                    'subject' => $setting['subject'],
-                    'from' => env('MAIL_FROM',$setting['from']),
-                    'from_name' => $setting['from_name'],
-                    'body' => $setting['body'],
-                    'variables' => $setting['variables'],
-                    'variables_description' => $setting['variables_description'],
-                    'type' => $setting['type'],
+        if (defined('EMAIL_CONTENT_SETTINGS') AND is_array(EMAIL_CONTENT_SETTINGS)) {
+            $now = now()->toDateTimeString();
+            foreach (EMAIL_CONTENT_SETTINGS AS $key => $email) {
+                if (filter_var(env('MAIL_FROM', $email['from']), FILTER_VALIDATE_EMAIL))
+                    $from = env('MAIL_FROM', $email['from']);
+                else
+                    $from = $email['from'];
+                EmailContentSetting::query()->updateOrCreate(
+                    ['key' => $key],
+                    [
+                    'is_active' => $email['is_active'],
+                    'subject' => $email['subject'],
+                    'from' => $from,
+                    'from_name' => $email['from_name'],
+                    'body' => $email['body'],
+                    'variables' => $email['variables'],
+                    'variables_description' => $email['variables_description'],
+                    'type' => $email['type'],
+                    'created_at' => $now,
+                    'updated_at' => $now
                 ]);
             }
         }
@@ -51,12 +60,12 @@ class SettingTableSeeder extends Seeder
         if (LoginAttemptSetting::query()->get()->count() == 0) {
             foreach (LOGIN_ATTEMPT_SETTINGS as $key => $setting) {
 
-                LoginAttemptSetting::query()->create([
+                LoginAttemptSetting::query()->upsert([
                     'times' => $setting['times'],
                     'duration' => $setting['duration'],
                     'priority' => $setting['priority'],
                     'blocking_duration' => $setting['blocking_duration'],
-                ]);
+                ], 'times');
             }
         }
 
