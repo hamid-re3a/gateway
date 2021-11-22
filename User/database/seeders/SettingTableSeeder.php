@@ -60,12 +60,12 @@ class SettingTableSeeder extends Seeder
         if (LoginAttemptSetting::query()->get()->count() == 0) {
             foreach (LOGIN_ATTEMPT_SETTINGS as $key => $setting) {
 
-                LoginAttemptSetting::query()->upsert([
+                LoginAttemptSetting::query()->updateOrCreate([
                     'times' => $setting['times'],
                     'duration' => $setting['duration'],
                     'priority' => $setting['priority'],
                     'blocking_duration' => $setting['blocking_duration'],
-                ], 'times');
+                ]);
             }
         }
 
