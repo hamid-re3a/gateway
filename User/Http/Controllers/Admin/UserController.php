@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function index(UserListRequest $request)
     {
-        $list = User::query()->filter()->paginate();
+        $list = User::query()->filter()->orderByDesc('id')->paginate();
         return api()->success(null, [
             'list' => ProfileDetailsResource::collection($list),
             'pagination' => [
