@@ -2,6 +2,7 @@
 
 namespace RequestRouter\database\seeders;
 
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Database\Seeder;
 use RequestRouter\Model\GatewayServices;
 
@@ -14,8 +15,7 @@ class GatewayServicesSeeder extends Seeder
      */
     public function run()
     {
-
-        GatewayServices::insert([
+        $services = [
             [
                 'name' => 'default',
                 'doc_point' => '/docs',
@@ -53,7 +53,13 @@ class GatewayServicesSeeder extends Seeder
                 'just_current_routes' => false,
                 'domain' => 'https://google.com/'
             ],
-        ]);
+        ];
+
+        foreach($services AS $service)
+            GatewayServices::query()->updateOrCreate(
+                ['name' => $service['name'] ],
+                $service
+            );
 
     }
 }
