@@ -21,7 +21,8 @@ class CountryCitySeeder extends Seeder
      */
     public function run()
     {
-
+        if (Country::query()->count() > 0)
+            return;
         try {
             DB::beginTransaction();
 
