@@ -99,7 +99,7 @@ class ConvertCommand extends Command
                     'member_id' => $member_id,
                     'email' => strtolower($email),
                     'username' => $username,
-                    'password' => $item->user_name,
+                    'password' => bcrypt($item->user_name),
                     'transaction_password' => $item->user_name,
                     'first_name' => (!is_null($item->detail) && !is_null($item->detail->user_detail_name)) ? $item->detail->user_detail_name : "Unknown",
                     'last_name' => (!is_null($item->detail) && !is_null($item->detail->user_detail_second_name)) ? $item->detail->user_detail_second_name : "Unknown",
