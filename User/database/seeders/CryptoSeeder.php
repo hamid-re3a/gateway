@@ -18,6 +18,8 @@ class CryptoSeeder extends Seeder
      */
     public function run()
     {
+        if (CryptoCurrency::query()->count() > 0)
+            return;
         CryptoCurrency::query()->firstOrCreate(
             [
                 'iso' => 'BTC',
