@@ -40,7 +40,7 @@ class SettingTableSeeder extends Seeder
                     $from = env('MAIL_FROM', $email['from']);
                 else
                     $from = $email['from'];
-                EmailContentSetting::query()->updateOrCreate(
+                EmailContentSetting::query()->firstOrCreate(
                     ['key' => $key],
                     [
                     'is_active' => $email['is_active'],
