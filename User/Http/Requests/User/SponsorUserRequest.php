@@ -28,8 +28,8 @@ class SponsorUserRequest extends FormRequest
             'package_id' => 'required|numeric',
 
 
-            'attach_to_user_id' =>  ['sometimes', 'exists:users,id'],
-            'attach_to_user_position' =>  ['required_if:attach_to_user_id', 'in:right,left'],
+            'attach_to_user_id' =>  ['nullable', 'exists:users,id'],
+            'attach_to_user_position' =>  ['required_if:attach_to_user_id,!=,null', 'in:right,left'],
         ];
     }
 
