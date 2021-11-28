@@ -277,6 +277,14 @@ class UserController extends Controller
         $order->setFromUserId((int)auth()->user()->id);
         $order->setUserId((int)$user->id);
         $order->setPackageId((int)$request->package_id);
+
+        if($request->attach_to_user_id){
+            $attach_to_user_id = User::query()->find($request->attach_to_user_id);
+            $order->setAttachUserId((int)$attach_to_user_id->id);
+            $position = ($request->attach_to_user_id == 'left')? 0 : 1;
+            $order->setAttachUserPosition((int)$position);
+        }
+
         $acknowledge = OrderClientFacade::sponsorPackage($order);
 
         if ($acknowledge->getStatus()) {

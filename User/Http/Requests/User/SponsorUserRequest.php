@@ -26,6 +26,10 @@ class SponsorUserRequest extends FormRequest
             'birthday' => 'nullable|date|before:' . now() . '|date_format:Y/m/d',
 
             'package_id' => 'required|numeric',
+
+
+            'attach_to_user_id' =>  ['sometimes', 'exists:users,id'],
+            'attach_to_user_position' =>  ['required_if:attach_to_user_id', 'in:right,left'],
         ];
     }
 
