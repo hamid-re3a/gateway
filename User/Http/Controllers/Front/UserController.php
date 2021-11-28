@@ -281,7 +281,7 @@ class UserController extends Controller
         if($request->attach_to_user_id){
             $attach_to_user_id = User::query()->find($request->attach_to_user_id);
             $order->setAttachUserId((int)$attach_to_user_id->id);
-            $position = ($request->attach_to_user_id == 'left')? 0 : 1;
+            $position = ($request->attach_to_user_position == 'left')? 0 : 1;
             $order->setAttachUserPosition((int)$position);
         }
 

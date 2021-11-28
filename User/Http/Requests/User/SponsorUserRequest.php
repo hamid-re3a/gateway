@@ -29,7 +29,7 @@ class SponsorUserRequest extends FormRequest
 
 
             'attach_to_user_id' =>  ['nullable', 'exists:users,id'],
-            'attach_to_user_position' =>  ['required_if:attach_to_user_id,!=,null', 'in:right,left'],
+            'attach_to_user_position' =>  ['required_if:attach_to_user_id,!=,null', 'in:Left leg,Right leg'],
         ];
     }
 
